@@ -62,8 +62,6 @@ public extension ModulePath {
         case ThirdPartyLib
         case DesignSystem
         case Util
-//        case ThirdPartyLib
-//        case Util
         
         public static let name: String = "Shared"
     }

@@ -13,10 +13,13 @@ let project = Project.makeModule(
             implements: .ThirdPartyLib,
             factory: .init(
                 dependencies: [
-                    .shared(interface: .ThirdPartyLib)
+                    .shared(interface: .ThirdPartyLib),
+                    .SPM.ComposableArchitecture,
+                    .SPM.Alamofire,
+                    .SPM.Kingfisher,
+                    .SPM.Moya,
                 ]
             )
         ),
-
     ]
 )
