@@ -8,17 +8,14 @@
 import ProjectDescription
 
 public extension Project {
-    static func makeModule(name: String, targets: [Target]) -> Self {
+    static func makeModule(name: String, targets: [Target], schemes: [Scheme] = []) -> Self {
         let name: String = name
         let organizationName: String? = nil
         let options: Project.Options = .options()
         let packages: [Package] = []
-        let settings: Settings? = .settings(configurations: [
-            .debug(name: "debug"),
-            .release(name: "release")
-        ])
+        let settings: Settings? = .projectSettings
         let targets: [Target] = targets
-        let schemes: [Scheme] = []
+        let schemes: [Scheme] = schemes
         let fileHeaderTemplate: FileHeaderTemplate? = nil
         let additionalFiles: [FileElement] = []
         let resourceSynthesizers: [ResourceSynthesizer] = []

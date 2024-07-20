@@ -16,7 +16,14 @@ let targets: [Target] = [
             .feature
     ]))
 ]
+
 let project = Project.makeModule(
-    name: "App",
-    targets: targets
+    name: Project.Environment.appName,
+    targets: targets,
+    schemes: [
+        .makeScheme(.dev, name: Project.Environment.appName),
+        .makeScheme(.prod, name: Project.Environment.appName),
+        .makeScheme(.test, name: Project.Environment.appName)
+    ]
 )
+
