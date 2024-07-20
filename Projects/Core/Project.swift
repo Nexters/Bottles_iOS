@@ -11,6 +11,7 @@ import DependencyPlugin
 
 let targets: [Target] = [
     .core(factory: .init(
+        product: .framework,
         sources: nil,
         dependencies: [
             .shared
