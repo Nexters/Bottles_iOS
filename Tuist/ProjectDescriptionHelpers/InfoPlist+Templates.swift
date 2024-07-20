@@ -10,13 +10,13 @@ import ProjectDescription
 public extension InfoPlist {
     static var app: InfoPlist {
         return .extendingDefault(with: [
-            "BaseURL": "$(BASE_URL)"
+            "BASE_URL": "$(BASE_URL)"
         ])
     }
     
     static var example: InfoPlist {
         return .extendingDefault(with: [
-            "BaseURL": "$(BASE_URL)"
+            "BASE_URL": "$(BASE_URL)"
         ])
     }
 }
