@@ -7,6 +7,7 @@
 
 import ProjectDescription
 import DependencyPlugin
+import ConfiguratipnPlugin
 
 // MARK: - Target + Template
 
@@ -125,6 +126,7 @@ public extension Target {
             newFactory.product = .app
             newFactory.name = Project.Environment.appName
             newFactory.bundleId = Project.Environment.bundlePrefix
+            newFactory.settings = .targetSettings
             newFactory.resources = ["Resources/**"]
             newFactory.sources = ["Sources/**"]
             newFactory.productName = "Bottle"

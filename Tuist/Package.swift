@@ -3,7 +3,9 @@ import PackageDescription
 
 #if TUIST
     import ProjectDescription
-
+    import ProjectDescriptionHelpers
+    import ConfiguratipnPlugin
+    
     let packageSettings = PackageSettings(
         productTypes: [
             "ComposableArchitecture": .framework,
@@ -11,12 +13,7 @@ import PackageDescription
             "Alamofire": .framework,
             "Moya": .framework,
         ],
-        baseSettings: .settings(
-            configurations: [
-                .debug(name: "debug"),
-                .release(name: "release")
-            ]
-        )
+        baseSettings: .packageSettings
     )
 #endif
 
