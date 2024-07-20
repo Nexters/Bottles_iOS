@@ -4,15 +4,6 @@ import ProjectDescriptionHelpers
 let targets: [Target] = [
     .app(implements: .iOS, factory: .init(
         product: .framework,
-        infoPlist: .extendingDefault(
-            with: [
-                "UILaunchScreen": [
-                    "UIColorName": "",
-                    "UIImageName": "",
-                ],
-            ]
-        ),
-        
         dependencies: [
             .feature
     ]))

@@ -130,6 +130,7 @@ public extension Target {
             newFactory.resources = ["Resources/**"]
             newFactory.sources = ["Sources/**"]
             newFactory.productName = "Bottle"
+            newFactory.infoPlist = .app
             return make(factory: newFactory)
         }
     }
@@ -183,6 +184,7 @@ public extension Target {
         newFactory.name = ModulePath.Feature.name + module.rawValue + "Example"
         newFactory.sources = .exampleSources
         newFactory.product = .app
+        newFactory.infoPlist = .example
         
         return make(factory: newFactory)
     }
