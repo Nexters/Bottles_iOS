@@ -42,7 +42,7 @@ public struct TargetFactory {
         productName: String? = nil,
         bundleId: String? = nil,
         deploymentTargets: DeploymentTargets? = nil,
-        infoPlist: InfoPlist? = nil,
+        infoPlist: InfoPlist? = .default,
         sources: SourceFilesList? = .sources,
         resources: ResourceFileElements? = nil,
         copyFiles: [CopyFilesAction]? = nil,

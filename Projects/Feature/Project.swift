@@ -11,6 +11,7 @@ import DependencyPlugin
 
 let targets: [Target] = [
     .feature(factory: .init(
+        product: .framework,
         sources: nil,
         dependencies: [
             .domain
