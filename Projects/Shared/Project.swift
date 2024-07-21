@@ -11,7 +11,7 @@ import DependencyPlugin
 
 let targets: [Target] = [
     .shared(factory: .init(
-        product: .framework,
+        product: .staticFramework,
         sources: nil,
         dependencies: ModulePath.Shared.allCases.map {
             .shared(implements: $0)
