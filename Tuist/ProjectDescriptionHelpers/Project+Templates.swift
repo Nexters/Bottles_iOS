@@ -11,7 +11,7 @@ public extension Project {
     static func makeModule(name: String, targets: [Target], schemes: [Scheme] = []) -> Self {
         let name: String = name
         let organizationName: String? = nil
-        let options: Project.Options = .options()
+        let options: Project.Options = .options(textSettings: .textSettings(indentWidth: 2, tabWidth: 2))
         let packages: [Package] = []
         let settings: Settings? = .projectSettings
         let targets: [Target] = targets
