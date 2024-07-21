@@ -7,7 +7,11 @@ let project = Project.makeModule(
     targets: [    
         .core(
             interface: .Network,
-            factory: .init()
+            factory: .init(
+                dependencies: [
+                    .shared(implements: .ThirdPartyLib)
+                ]
+            )
         ),
         .core(
             implements: .Network,
