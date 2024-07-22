@@ -1,5 +1,5 @@
 //
-//  SplashStore.swift
+//  SplashFeature.swift
 //  Bottle
 //
 //  Created by JongHoon on 7/21/24.
@@ -7,10 +7,14 @@
 
 import Foundation
 
+import CoreUtil
+import Feature
+
 import ComposableArchitecture
 
 @Reducer
 public struct SplashFeature {
+  private let rootViewChanger = RootViewChanger()
   
   public struct State: Equatable {
   }
@@ -23,11 +27,10 @@ public struct SplashFeature {
     Reduce<State, Action> { state, action in
       switch action {
       case .viewLoaded:
-        print("loaded")
-        return .none
-        
-      default:
-        return .none
+        return .run { _ in
+          try await Task.sleep(nanoseconds: 2500_000_000)
+          rootViewChanger.changeRootView(rootView: .tabView)
+        }
       }
     }
   }
