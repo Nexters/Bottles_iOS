@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 private struct OnLoadTaskModifier: ViewModifier {
   @State private var didLoad = false
   private let action: () -> Void

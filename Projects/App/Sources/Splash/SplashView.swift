@@ -1,6 +1,7 @@
 import SwiftUI
 
 import CoreUtil
+import Feature
 
 import ComposableArchitecture
 
@@ -12,9 +13,13 @@ public struct SplashView: View {
   }
   
   public var body: some View {
-    Text("Splash View")
-      .onLoadTask {
-        store.send(.viewLoaded)
+    NavigationStack {
+      VStack {
+        Text("Splash View")
+          .onLoadTask {
+            store.send(.viewLoaded, animation: .default)
+          }
       }
+    }
   }
 }
