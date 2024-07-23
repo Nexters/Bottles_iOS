@@ -7,7 +7,11 @@ let project = Project.makeModule(
     targets: [    
         .feature(
             interface: .Login,
-            factory: .init()
+            factory: .init(
+                dependencies: [
+                    .domain
+                ]
+            )
         ),
         .feature(
             implements: .Login,
