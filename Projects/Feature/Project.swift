@@ -14,7 +14,7 @@ let targets: [Target] = [
         product: .staticFramework,
         sources: .sources,
         dependencies: [
-            .domain
+          
         ] + ModulePath.Feature.allCases.map {
             .feature(implements: $0)
         }
