@@ -23,7 +23,6 @@ struct HomeFeature {
       switch action {
       case .viewLoaded:
         return .run { _ in
-          try await Task.sleep(nanoseconds: 2500_000_000)
           
         }
       }

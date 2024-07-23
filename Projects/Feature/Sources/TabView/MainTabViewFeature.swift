@@ -1,5 +1,5 @@
 //
-//  BottleTabViewFeature.swift
+//  MainTabViewFeature.swift
 //  Feature
 //
 //  Created by JongHoon on 7/22/24.
@@ -8,7 +8,7 @@
 import ComposableArchitecture
 
 @Reducer
-public struct BottleTabViewFeature {
+public struct MainTabViewFeature {
   
   public struct State: Equatable {
     
