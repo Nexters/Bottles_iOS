@@ -1,8 +1,17 @@
-import FeatureLoginInterface
+//
+//  MyPageFeature.swift
+//  FeatureMyPageInterface
+//
+//  Created by JongHoon on 7/24/24.
+//
+
+import Foundation
+
+import FeatureMyPageInterface
 
 import ComposableArchitecture
 
-extension LoginFeature {
+extension MyPageFeature {
   public init() {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
@@ -13,3 +22,4 @@ extension LoginFeature {
     self.init(reducer: reducer)
   }
 }
+
