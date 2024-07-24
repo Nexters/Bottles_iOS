@@ -67,6 +67,31 @@ private extension Log {
     }
 #endif
   }
+  
+  static func simpleLog(message: Any?, level: Level, fileName: String) {
+    #if DEBUG
+    let logger = Logger(subsystem: OSLog.subsystem, category: level.category)
+    let moduleName = fileName.prefix(while: { $0 != "/" })
+
+    var logMessage = "[\(moduleName)]"
+    
+    if let message = message {
+        logMessage += " - \(message)"
+    }
+    
+    switch level {
+    case .debug:
+      logger.debug("✨ \(logMessage, privacy: .public)")
+    case .info:
+      logger.info("ℹ️ \(logMessage, privacy: .public)")
+    case .error:
+      logger.error("🚨 \(logMessage, privacy: .public)")
+    case .fault:
+      logger.fault("‼️ \(logMessage, privacy: .public)")
+    }
+    
+    #endif
+  }
 }
 
 // MARK: - Public Methods
@@ -86,5 +111,9 @@ public extension Log {
   
   static func fault(_ message: Any?, fileName: String = #fileID, line: Int = #line, funcName: StaticString = #function) {
     log(message: message, level: .fault, fileName: fileName, line: line, funcName: funcName)
+  }
+  
+  static func network(_ message: Any?, level: Level, fileName: String = #fileID) {
+    simpleLog(message: message, level: level, fileName: fileName)
   }
 }
