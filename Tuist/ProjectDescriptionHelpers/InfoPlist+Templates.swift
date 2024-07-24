@@ -17,6 +17,7 @@ public extension InfoPlist {
     
     static var example: InfoPlist {
         return .extendingDefault(with: [
+            "UILaunchScreen": [:],
             "BASE_URL": "$(BASE_URL)"
         ])
     }
