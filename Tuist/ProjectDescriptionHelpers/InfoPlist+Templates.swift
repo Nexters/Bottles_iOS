@@ -10,6 +10,7 @@ import ProjectDescription
 public extension InfoPlist {
     static var app: InfoPlist {
         return .extendingDefault(with: [
+            "UILaunchScreen": [:],
             "BASE_URL": "$(BASE_URL)"
         ])
     }
