@@ -10,7 +10,15 @@ import CoreNetworkInterface
 import Moya
 
 struct Provider<APIType: BaseTargetType>: Providable {
-  private let moyaProvider = MoyaProvider<APIType>()
+  private let moyaProvider: MoyaProvider<APIType>
+  
+  public init(moyaProvider: MoyaProvider<APIType>) {
+    self.moyaProvider = moyaProvider
+  }
+
+  public init() {
+    self.moyaProvider = MoyaProvider<APIType>(plugins: [MoyaLoggingPlugin()])
+  }
   
   func reqeust(api: APIType) async throws -> Response {
     return try await withCheckedThrowingContinuation { continuation in
