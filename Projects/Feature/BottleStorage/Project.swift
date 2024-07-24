@@ -3,10 +3,10 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: ModulePath.Feature.name+ModulePath.Feature.Home.rawValue,
+    name: ModulePath.Feature.name+ModulePath.Feature.BottleStorage.rawValue,
     targets: [
         .feature(
-            interface: .Home,
+            interface: .BottleStorage,
             factory: .init(
                 dependencies: [
                     .domain
@@ -14,38 +14,38 @@ let project = Project.makeModule(
             )
         ),
         .feature(
-            implements: .Home,
+            implements: .BottleStorage,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .Home)
+                    .feature(interface: .BottleStorage)
                 ]
             )
         ),
     
         .feature(
-            testing: .Home,
+            testing: .BottleStorage,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .Home)
+                    .feature(interface: .BottleStorage)
                 ]
             )
         ),
         .feature(
-            tests: .Home,
+            tests: .BottleStorage,
             factory: .init(
                 dependencies: [
-                    .feature(testing: .Home),
-                    .feature(implements: .Home)
+                    .feature(testing: .BottleStorage),
+                    .feature(implements: .BottleStorage)
                 ]
             )
         ),
     
         .feature(
-            example: .Home,
+            example: .BottleStorage,
             factory: .init(
                 dependencies: [
-                    .feature(testing: .Home),
-                    .feature(implements: .Home)
+                    .feature(testing: .BottleStorage),
+                    .feature(implements: .BottleStorage)
                 ]
             )
         )

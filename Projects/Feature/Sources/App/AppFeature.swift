@@ -36,6 +36,9 @@ public struct AppFeature {
   public init() {}
   
   public var body: some ReducerOf<Self> {
+    Scope(state: \.appDelegate, action: \.appDelegate) {
+      AppDelegateFeature()
+    }
     Reduce(feature)
       .ifLet(\.tabView, action: \.tabView) {
         MainTabViewFeature()
@@ -77,5 +80,3 @@ public struct AppFeature {
     }
   }
 }
-
-
