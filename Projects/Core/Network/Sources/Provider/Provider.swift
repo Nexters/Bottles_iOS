@@ -17,7 +17,7 @@ struct Provider<APIType: BaseTargetType>: Providable {
   }
 
   public init() {
-    self.moyaProvider = MoyaProvider<APIType>(plugins: [MoyaLoggingPlugin()])
+    self.moyaProvider = MoyaProvider<APIType>(plugins: [MoyaLoggerPlugin()])
   }
   
   func reqeust(api: APIType) async throws -> Response {
