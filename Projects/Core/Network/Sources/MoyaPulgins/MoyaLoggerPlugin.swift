@@ -75,6 +75,13 @@ final class MoyaLoggerPlugin: PluginType {
     log += "---------------------------------------------\n"
     log += "Error - \(error.failureReason ?? error.errorDescription ?? "unknown error")\n"
     log += "ErrorCode - \(error.errorCode)\n"
+    
+    if let data = error.response?.data {
+      log += "Data - \(data)\n"
+    } else {
+      log += "Data - empty"
+    }
+    
     log += "---------------------------------------------"
     Log.network(log, level: .error)
   }
