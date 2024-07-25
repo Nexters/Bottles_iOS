@@ -55,6 +55,12 @@ private extension Log {
     if let message = message {
       logMessage += " - \(message)"
     }
+    
+    if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+      print(logMessage)
+      return
+    }
+    
     switch level {
     case .debug:
       logger.debug("✨ \(logMessage, privacy: .public)")
@@ -79,6 +85,11 @@ private extension Log {
         logMessage += " - \(message)"
     }
     
+    if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+      print(logMessage)
+      return
+    }
+    
     switch level {
     case .debug:
       logger.debug("✨ \(logMessage, privacy: .public)")
@@ -94,12 +105,12 @@ private extension Log {
   }
   
   static func assertion(message: Any?, level: Level, fileName: String, line: Int, funcName: StaticString) {
-    var logMessage = "\(message ?? "")"
+    let logMessage = "\(message ?? "")"
     assertionFailure(logMessage)
   }
   
   static func fatal(message: Any?, level: Level, fileName: String, line: Int, funcName: StaticString) {
-    var logMessage = "\(message ?? "")"
+    let logMessage = "\(message ?? "")"
     fatalError(logMessage)
   }
 }
