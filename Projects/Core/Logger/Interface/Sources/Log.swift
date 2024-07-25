@@ -92,6 +92,16 @@ private extension Log {
     
     #endif
   }
+  
+  static func assertion(message: Any?, level: Level, fileName: String, line: Int, funcName: StaticString) {
+    var logMessage = "\(message ?? "")"
+    assertionFailure(logMessage)
+  }
+  
+  static func fatal(message: Any?, level: Level, fileName: String, line: Int, funcName: StaticString) {
+    var logMessage = "\(message ?? "")"
+    fatalError(logMessage)
+  }
 }
 
 // MARK: - Public Methods
