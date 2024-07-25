@@ -17,7 +17,8 @@ let project = Project.makeModule(
             implements: .Network,
             factory: .init(
                 dependencies: [
-                    .core(interface: .Network)
+                    .core(interface: .Network),
+                    .core(interface: .Logger)
                 ]
             )
         ),
