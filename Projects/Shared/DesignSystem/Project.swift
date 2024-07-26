@@ -19,6 +19,7 @@ let project = Project.makeModule(
         ),
     ],
     resourceSynthesizers: [
-        .assets()
+        .assets(),
+        .fonts()
     ]
 )
