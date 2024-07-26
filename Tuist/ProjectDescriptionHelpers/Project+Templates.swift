@@ -8,7 +8,7 @@
 import ProjectDescription
 
 public extension Project {
-    static func makeModule(name: String, targets: [Target], schemes: [Scheme] = []) -> Self {
+    static func makeModule(name: String, targets: [Target], schemes: [Scheme] = [], resourceSynthesizers: [ResourceSynthesizer] = []) -> Self {
         let name: String = name
         let organizationName: String? = nil
         let options: Project.Options = .options(textSettings: .textSettings(indentWidth: 2, tabWidth: 2))
@@ -18,7 +18,6 @@ public extension Project {
         let schemes: [Scheme] = schemes
         let fileHeaderTemplate: FileHeaderTemplate? = nil
         let additionalFiles: [FileElement] = []
-        let resourceSynthesizers: [ResourceSynthesizer] = []
         
         return .init(
             name: name,
