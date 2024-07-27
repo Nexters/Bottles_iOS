@@ -5,7 +5,7 @@
 //  Created by 임현규 on 7/27/24.
 //
 
-import Foundation
+import SwiftUI
 
 public extension ColorToken {
   enum Border: Colorable {
