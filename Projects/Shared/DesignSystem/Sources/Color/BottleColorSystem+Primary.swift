@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public extension Color.BottleColorSystem {
+extension Color.BottleColorSystem {
   enum Primary: Colorable {
     case purple100
     case purple200
@@ -17,7 +17,7 @@ public extension Color.BottleColorSystem {
   }
 }
 
-public extension Color.BottleColorSystem.Primary {
+extension Color.BottleColorSystem.Primary {
   var color: Color {
     switch self {
     case .purple100:

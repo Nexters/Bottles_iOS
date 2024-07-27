@@ -3,10 +3,10 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: ModulePath.Feature.name+ModulePath.Feature.Login.rawValue,
-    targets: [    
+    name: ModulePath.Feature.name+ModulePath.Feature.SandBeach.rawValue,
+    targets: [
         .feature(
-            interface: .Login,
+            interface: .SandBeach,
             factory: .init(
                 dependencies: [
                     .domain
@@ -14,38 +14,38 @@ let project = Project.makeModule(
             )
         ),
         .feature(
-            implements: .Login,
+            implements: .SandBeach,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .Login)
+                    .feature(interface: .SandBeach)
                 ]
             )
         ),
     
         .feature(
-            testing: .Login,
+            testing: .SandBeach,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .Login)
+                    .feature(interface: .SandBeach)
                 ]
             )
         ),
         .feature(
-            tests: .Login,
+            tests: .SandBeach,
             factory: .init(
                 dependencies: [
-                    .feature(testing: .Login),
-                    .feature(implements: .Login)
+                    .feature(testing: .SandBeach),
+                    .feature(implements: .SandBeach)
                 ]
             )
         ),
     
         .feature(
-            example: .Login,
+            example: .SandBeach,
             factory: .init(
                 dependencies: [
-                    .feature(testing: .Login),
-                    .feature(implements: .Login)
+                    .feature(testing: .SandBeach),
+                    .feature(implements: .SandBeach)
                 ]
             )
         )

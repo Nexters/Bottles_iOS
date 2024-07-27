@@ -12,9 +12,9 @@ import DependencyPlugin
 let targets: [Target] = [
     .feature(factory: .init(
         product: .staticFramework,
-        sources: nil,
+        sources: .sources,
         dependencies: [
-            .domain
+          
         ] + ModulePath.Feature.allCases.map {
             .feature(implements: $0)
         }

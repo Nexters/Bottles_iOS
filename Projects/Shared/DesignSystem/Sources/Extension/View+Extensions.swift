@@ -8,18 +8,17 @@
 import SwiftUI
 
 public extension View {
-  
-  // MARK: - ColorType
-  
-  func foregroundStyle(to colorType: Color.BottleColorSystem) -> some View {
-    self.foregroundStyle(colorType.color)
+
+  // MARK: - colorToken
+  func background(to colorToken: ColorToken) -> some View {
+    self.background(colorToken.color)
   }
   
-  func background(_ colorType: Color.BottleColorSystem) -> some View {
-    self.background(colorType.color)
+  func tint(to colorToken: ColorToken) -> some View {
+    self.tint(colorToken.color)
   }
   
-  func tint(_ colorType: Color.BottleColorSystem) -> some View {
-    self.tint(colorType.color)
+  func foregroundStyle(to colorToken: ColorToken) -> some View {
+    self.foregroundStyle(colorToken.color)
   }
 }

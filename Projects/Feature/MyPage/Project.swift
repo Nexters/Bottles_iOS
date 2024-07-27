@@ -3,10 +3,10 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: ModulePath.Feature.name+ModulePath.Feature.Login.rawValue,
+    name: ModulePath.Feature.name+ModulePath.Feature.MyPage.rawValue,
     targets: [    
         .feature(
-            interface: .Login,
+            interface: .MyPage,
             factory: .init(
                 dependencies: [
                     .domain
@@ -14,38 +14,38 @@ let project = Project.makeModule(
             )
         ),
         .feature(
-            implements: .Login,
+            implements: .MyPage,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .Login)
+                    .feature(interface: .MyPage)
                 ]
             )
         ),
     
         .feature(
-            testing: .Login,
+            testing: .MyPage,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .Login)
+                    .feature(interface: .MyPage)
                 ]
             )
         ),
         .feature(
-            tests: .Login,
+            tests: .MyPage,
             factory: .init(
                 dependencies: [
-                    .feature(testing: .Login),
-                    .feature(implements: .Login)
+                    .feature(testing: .MyPage),
+                    .feature(implements: .MyPage)
                 ]
             )
         ),
     
         .feature(
-            example: .Login,
+            example: .MyPage,
             factory: .init(
                 dependencies: [
-                    .feature(testing: .Login),
-                    .feature(implements: .Login)
+                    .feature(testing: .MyPage),
+                    .feature(implements: .MyPage)
                 ]
             )
         )
