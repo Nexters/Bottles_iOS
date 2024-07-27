@@ -27,7 +27,13 @@ struct DesignSystemExampleView: View {
               destination: LaundaryGothicsStyleTextTestView(),
               label: { Text("Laundary Gothic Text Test View") }
             )
+            NavigationLink(
+              destination:
+                SolidButtonTestView(), 
+              label: { Text("SolidButton Test View") }
+            )
           },
+            
           header: {
             Text("Custom Text View")
               .font(.headline)
