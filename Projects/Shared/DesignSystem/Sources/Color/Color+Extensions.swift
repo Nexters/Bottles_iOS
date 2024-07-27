@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-public extension Color {
+extension Color {
   enum BottleColorSystem: Colorable {
     case primary(Primary)
     case neutral(Neutral)
     case sub(Sub)
     
-    public var color: Color {
+    var color: Color {
       switch self {
       case .primary(let primary):
         return primary.color

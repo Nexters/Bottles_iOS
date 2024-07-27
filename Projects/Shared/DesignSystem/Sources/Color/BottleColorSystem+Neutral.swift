@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public extension Color.BottleColorSystem {
+extension Color.BottleColorSystem {
   enum Neutral: Colorable {
     case neutral100
     case neutral200
@@ -21,7 +21,7 @@ public extension Color.BottleColorSystem {
   }
 }
 
-public extension Color.BottleColorSystem.Neutral {
+extension Color.BottleColorSystem.Neutral {
   var color: Color {
     switch self {
     case .neutral100:

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public extension Color.BottleColorSystem {
+extension Color.BottleColorSystem {
   enum Sub: Colorable {
     case black
     case gradient
@@ -16,7 +16,7 @@ public extension Color.BottleColorSystem {
   }
 }
 
-public extension Color.BottleColorSystem.Sub {
+extension Color.BottleColorSystem.Sub {
   var color: Color {
     switch self {
     case .black:
