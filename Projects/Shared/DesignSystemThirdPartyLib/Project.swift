@@ -3,19 +3,18 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: ModulePath.Shared.name+ModulePath.Shared.ThirdPartyLib.rawValue,
+    name: ModulePath.Shared.name+ModulePath.Shared.DesignSystemThirdPartyLib.rawValue,
     targets: [    
         .shared(
-            interface: .ThirdPartyLib,
+            interface: .DesignSystemThirdPartyLib,
             factory: .init()
         ),
         .shared(
-            implements: .ThirdPartyLib,
+            implements: .DesignSystemThirdPartyLib,
             factory: .init(
                 dependencies: [
-                    .shared(interface: .ThirdPartyLib),
-                    .SPM.ComposableArchitecture,
-                    .SPM.Moya,
+                    .shared(interface: .DesignSystemThirdPartyLib),
+                    .SPM.Kingfisher,
                 ]
             )
         ),
