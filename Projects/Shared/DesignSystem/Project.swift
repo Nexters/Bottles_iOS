@@ -4,16 +4,16 @@ import DependencyPlugin
 
 let project = Project.makeModule(
     name: ModulePath.Shared.name+ModulePath.Shared.DesignSystem.rawValue,
-    targets: [    
+    targets: [
         .shared(
-            interface: .DesignSystem,
+            implements: .DesignSystem,
             factory: .init()
         ),
         .shared(
-            implements: .DesignSystem,
+            example: .DesignSystem,
             factory: .init(
                 dependencies: [
-                    .shared(interface: .DesignSystem)
+                    .shared(implements: .DesignSystem)
                 ]
             )
         ),
