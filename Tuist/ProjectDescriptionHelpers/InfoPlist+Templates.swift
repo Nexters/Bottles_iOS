@@ -12,7 +12,10 @@ public extension InfoPlist {
         return .extendingDefault(with: [
             "UIUserInterfaceStyle": "Light",
             "UILaunchScreen": [:],
-            "BASE_URL": "$(BASE_URL)",
+            "UISupportedInterfaceOrientations": [
+                "UIInterfaceOrientationPortrait"
+            ],
+            "BASE_URL": "$(BASE_URL)"
         ])
     }
     
@@ -20,6 +23,9 @@ public extension InfoPlist {
         return .extendingDefault(with: [
             "UIUserInterfaceStyle": "Light",
             "UILaunchScreen": [:],
+            "UISupportedInterfaceOrientations": [
+                "UIInterfaceOrientationPortrait"
+            ],
             "BASE_URL": "$(BASE_URL)"
         ])
     }
