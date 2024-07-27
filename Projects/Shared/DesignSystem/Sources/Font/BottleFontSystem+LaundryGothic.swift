@@ -21,3 +21,5 @@ public extension Font.BottleFontSystem.LaundryGothic {
     }
   }
 }
+
+extension Font.BottleFontSystem.LaundryGothic: CaseIterable { }

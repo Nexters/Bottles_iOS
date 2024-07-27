@@ -36,3 +36,5 @@ public extension Font.BottleFontSystem.WantedSans {
     }
   }
 }
+
+extension Font.BottleFontSystem.WantedSans: CaseIterable { }

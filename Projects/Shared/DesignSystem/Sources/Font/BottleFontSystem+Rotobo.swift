@@ -21,3 +21,5 @@ public extension Font.BottleFontSystem.Roboto {
     }
   }
 }
+
+extension Font.BottleFontSystem.Roboto: CaseIterable { }

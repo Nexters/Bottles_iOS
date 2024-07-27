@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import SharedDesignSystem
+
 struct DesignSystemExampleView: View {
   var body: some View {
     NavigationStack {
@@ -14,17 +16,21 @@ struct DesignSystemExampleView: View {
         Section(
           content: {
             NavigationLink(
-              destination: TestView(),
-              label: { Text("Test View") }
+              destination: WantedSansStyleTextTestView(),
+              label: { Text("Wanted Sans Text Test View") }
             )
             NavigationLink(
-              destination: Text("Test Button"),
-              label: { Text("Test Button") }
+              destination: RobotoStyleTextTestView(),
+              label: { Text("Roboto Text Test View") }
+            )
+            NavigationLink(
+              destination: LaundaryGothicsStyleTextTestView(),
+              label: { Text("Laundary Gothic Text Test View") }
             )
           },
           header: {
-            Text("Components")
-              .font(.title)
+            Text("Custom Text View")
+              .font(.headline)
           }
         )
       }

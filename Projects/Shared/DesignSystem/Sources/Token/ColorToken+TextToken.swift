@@ -42,6 +42,7 @@ public extension ColorToken.TextToken {
 
     case .secondary:
       return Color.BottleColorSystem.neutral(.neutral900).color
+      
     case .tertiary:
       return Color.BottleColorSystem.neutral(.neutral600).color
 
