@@ -59,25 +59,6 @@ public struct MainTabView: View {
   }
 }
 
-public enum TabType: Hashable {
-  case sandBeach
-  case bottleStorage
-  case myPage
-  
-  var title: String {
-    switch self {
-    case .sandBeach:
-      return "모래사장"
-      
-    case .bottleStorage:
-      return "보틀 보관함"
-      
-    case .myPage:
-      return "마이페이지"
-    }
-  }
-}
-
 extension UITabBarController {
   open override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
@@ -86,8 +67,8 @@ extension UITabBarController {
     tabBar.layer.cornerRadius = 24.0
     tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     var tabFrame = self.tabBar.frame
-    tabFrame.size.height = 94.0  // 원하는 높이로 설정
-    tabFrame.origin.y = self.view.frame.size.height - 94.0  // 높이에 맞게 위치 조정
+    tabFrame.size.height = 94.0 
+    tabFrame.origin.y = self.view.frame.size.height - 94.0
     tabBar.frame = tabFrame
     
     if let shadowView = view.subviews.first(where: { $0.accessibilityIdentifier == "TabBarShadow" }) {
