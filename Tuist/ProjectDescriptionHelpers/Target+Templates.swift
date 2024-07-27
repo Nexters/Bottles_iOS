@@ -306,5 +306,14 @@ public extension Target {
         
         return make(factory: newFactory)
     }
+    
+    static func shared(example module: ModulePath.Shared, factory: TargetFactory) -> Self {
+        var newFactory = factory
+        newFactory.name = module.rawValue + "Example"
+        newFactory.sources = .exampleSources
+        newFactory.product = .app
+        newFactory.infoPlist = .example
+        
+        return make(factory: newFactory)
+    }
 }
-

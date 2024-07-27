@@ -8,7 +8,7 @@
 import SwiftUI
 
 public extension View {
-  
+
   // MARK: - colorToken
   func background(to colorToken: ColorToken) -> some View {
     self.background(colorToken.color)

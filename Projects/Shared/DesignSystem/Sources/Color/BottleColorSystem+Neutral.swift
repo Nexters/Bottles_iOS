@@ -20,7 +20,6 @@ extension Color.BottleColorSystem {
     case neutral900
   }
 }
-
 extension Color.BottleColorSystem.Neutral {
   var color: Color {
     switch self {
