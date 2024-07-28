@@ -40,15 +40,15 @@ struct SolidButtonStyle: ButtonStyle {
   
   func makeBody(configuration: Configuration) -> some View {
     var buttonState: ButtonStateType {
-      if configuration.isPressed {
-        return .selected
-      }
-      
       if isEnabled {
-        return .enabled
+        if configuration.isPressed {
+          return .selected
+        } else {
+          return .enabled
+        }
+      } else {
+        return .disabled
       }
-      
-      return .disabled
     }
 
     return configuration.label
