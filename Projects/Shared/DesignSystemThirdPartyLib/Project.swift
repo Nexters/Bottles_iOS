@@ -4,16 +4,11 @@ import DependencyPlugin
 
 let project = Project.makeModule(
     name: ModulePath.Shared.name+ModulePath.Shared.DesignSystemThirdPartyLib.rawValue,
-    targets: [    
-        .shared(
-            interface: .DesignSystemThirdPartyLib,
-            factory: .init()
-        ),
+    targets: [
         .shared(
             implements: .DesignSystemThirdPartyLib,
             factory: .init(
                 dependencies: [
-                    .shared(interface: .DesignSystemThirdPartyLib),
                     .SPM.Kingfisher,
                 ]
             )

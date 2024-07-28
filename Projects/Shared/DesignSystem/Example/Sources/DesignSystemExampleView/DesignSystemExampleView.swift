@@ -27,11 +27,6 @@ struct DesignSystemExampleView: View {
               destination: LaundaryGothicsStyleTextTestView(),
               label: { Text("Laundary Gothic Text Test View") }
             )
-            NavigationLink(
-              destination:
-                SolidButtonTestView(), 
-              label: { Text("SolidButton Test View") }
-            )
           },
             
           header: {
@@ -49,6 +44,10 @@ struct DesignSystemExampleView: View {
             NavigationLink(
               destination: OutlinedStyleToggleButtonTestView(),
               label: { Text("Outlined Style Toggle Button") }
+            )
+            NavigationLink(
+              destination: SolidButtonTestView(),
+              label: { Text("SolidButton Test View") }
             )
           },
           header: {
