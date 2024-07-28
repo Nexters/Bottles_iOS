@@ -16,28 +16,6 @@ struct SolidButtonStyle: ButtonStyle {
     self.sizeType = sizeType
   }
   
-  enum ButtonStateType {
-    case enabled
-    case selected
-    case disabled
-    
-    var backgroundColor: Color {
-      switch self {
-      case .enabled: return ColorToken.container(.enableSecondary).color
-      case .selected: return ColorToken.container(.pressed).color
-      case .disabled: return ColorToken.container(.disableSecondary).color
-      }
-    }
-    
-    var foregroundColor: Color {
-      switch self {
-      case .enabled: return ColorToken.text(.enablePrimary).color
-      case .selected: return ColorToken.text(.pressed).color
-      case .disabled: return ColorToken.text(.disablePrimary).color
-      }
-    }
-  }
-  
   func makeBody(configuration: Configuration) -> some View {
     let buttonState = makeButtonState(configuration)
     
@@ -45,10 +23,10 @@ struct SolidButtonStyle: ButtonStyle {
       .padding(.horizontal, .sm)
       .frame(height: height)
       .frame(maxWidth: width)
-      .foregroundStyle(buttonState.foregroundColor)
+      .foregroundStyle(foregroundColor(buttonState))
       .background {
         RoundedRectangle(cornerRadius: cornerRadius.value)
-          .fill(buttonState.backgroundColor)
+          .fill(backgroundColor(buttonState))
       }
   }
 }
@@ -88,6 +66,23 @@ private extension SolidButtonStyle {
   
   func makeButtonState(_ configuration: Configuration) -> ButtonStateType {
     return !isEnabled ? .disabled : configuration.isPressed ? .selected : .enabled
+  }
+  
+  
+  func backgroundColor(_ buttonState: ButtonStateType) -> Color {
+    switch buttonState {
+    case .enabled: return ColorToken.container(.enableSecondary).color
+    case .selected: return ColorToken.container(.pressed).color
+    case .disabled: return ColorToken.container(.disableSecondary).color
+    }
+  }
+  
+  func foregroundColor(_ buttonState: ButtonStateType) -> Color {
+    switch buttonState {
+    case .enabled: return ColorToken.text(.enablePrimary).color
+    case .selected: return ColorToken.text(.pressed).color
+    case .disabled: return ColorToken.text(.disablePrimary).color
+    }
   }
 }
 

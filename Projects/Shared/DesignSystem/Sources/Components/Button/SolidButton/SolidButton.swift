@@ -45,12 +45,6 @@ public extension SolidButton {
     case large
     case full
   }
-  
-  enum ButtonType {
-    case normal
-    case throttle
-    case debounce
-  }
 }
 
 
