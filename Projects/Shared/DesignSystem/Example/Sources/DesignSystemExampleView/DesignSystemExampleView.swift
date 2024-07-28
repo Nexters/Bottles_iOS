@@ -33,6 +33,23 @@ struct DesignSystemExampleView: View {
               .font(.headline)
           }
         )
+        
+        Section(
+          content: {
+            NavigationLink(
+              destination: OutlinedStyleButtonTestView(),
+              label: { Text("Outlined Style Button") }
+            )
+            NavigationLink(
+              destination: OutlinedStyleToggleButtonTestView(),
+              label: { Text("Outlined Style Toggle Button") }
+            )
+          },
+          header: {
+            Text("Button")
+              .font(.headline)
+          }
+        )
       }
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle("Design System Example View")

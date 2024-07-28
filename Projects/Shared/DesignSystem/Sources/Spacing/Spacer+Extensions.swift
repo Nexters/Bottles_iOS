@@ -9,12 +9,19 @@ import SwiftUI
 
 public extension Spacer {
   enum BottleSpacingType: Spacable {
+    /// 32.0
     case xxl
+    /// 24.0
     case xl
+    /// 20.0
     case lg
+    /// 16.0
     case md
+    /// 12.0
     case sm
+    /// 8.0
     case xs
+    /// 4.0
     case xxs
     
     var minLength: CGFloat {

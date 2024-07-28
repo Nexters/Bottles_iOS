@@ -62,6 +62,7 @@ public extension ModulePath {
 
 public extension ModulePath {
     enum Shared: String, CaseIterable {
+        case DesignSystemThirdPartyLib
         case ThirdPartyLib
         case DesignSystem
         case Util
