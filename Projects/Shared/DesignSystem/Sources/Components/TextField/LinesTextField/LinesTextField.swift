@@ -112,6 +112,7 @@ private extension LinesTextField {
           buttonType: .normal,
           action: {}
         )
+        .disabled(isDisabledButton)
       }
     }
   }
@@ -160,6 +161,15 @@ private extension LinesTextField {
     case .active:  return .container(.Active)
     case .focused: return .container(.focuseSecondary)
     case .error:   return .container(.errorSecondary)
+    }
+  }
+  
+  var isDisabledButton: Bool {
+    switch textFieldState {
+    case .enabled: return true
+    case .active:  return false
+    case .focused: return false
+    case .error:   return true
     }
   }
 }
