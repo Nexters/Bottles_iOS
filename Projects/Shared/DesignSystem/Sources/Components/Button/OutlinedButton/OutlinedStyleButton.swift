@@ -64,11 +64,8 @@ public extension OutlinedStyleButton {
 
 private extension OutlinedStyleButton {
   var titleText: some View {
-    WantedSansStyleText(
-      title,
-      style: .body,
-      color: .secondary
-    )
+    Text(title)
+      .font(to: .wantedSans(.body))
   }
   
   @ViewBuilder
