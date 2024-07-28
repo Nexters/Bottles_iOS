@@ -9,17 +9,17 @@ import SwiftUI
 import SharedDesignSystem
 
 struct SolidButtonTestView: View {
-  @State var isDisabledExtraSmallButton: Bool = false
-  @State var isDisabledSmallButton: Bool = false
-  @State var isDisabledMediumButton: Bool = false
-  @State var isDisabledLargeButton: Bool = false
-  @State var isDisabledFullButton: Bool = false
+  @State private var isDisabledExtraSmallButton: Bool = false
+  @State private var isDisabledSmallButton: Bool = false
+  @State private var isDisabledMediumButton: Bool = false
+  @State private var isDisabledLargeButton: Bool = false
+  @State private var isDisabledFullButton: Bool = false
   
-  @State var extraSmallButtonPadding: CGFloat = 0.0
-  @State var smallButtonPadding: CGFloat = 0.0
-  @State var mediumButtonPadding: CGFloat = 0.0
-  @State var largeButtonPadding: CGFloat = 0.0
-  @State var fullButtonPadding: CGFloat = 0.0
+  @State private var extraSmallButtonPadding: CGFloat = 0.0
+  @State private var smallButtonPadding: CGFloat = 0.0
+  @State private var mediumButtonPadding: CGFloat = 0.0
+  @State private var largeButtonPadding: CGFloat = 0.0
+  @State private var fullButtonPadding: CGFloat = 0.0
   
   var body: some View {
     ScrollView {
@@ -68,11 +68,22 @@ struct SolidButtonTestView: View {
 }
 
 struct ButtonToggleView: View {
-  var title: String
-  @Binding var isDisabled: Bool
-  @Binding var padding: CGFloat
+  @Binding private var isDisabled: Bool
+  @Binding private var padding: CGFloat
+  private var title: String
+  private var sizeType: SolidButton.SizeType
   
-  var sizeType: SolidButton.SizeType
+  init(
+    title: String,
+    isDisabled: Binding<Bool>,
+    padding: Binding<CGFloat>,
+    sizeType: SolidButton.SizeType
+  ) {
+    self._isDisabled = isDisabled
+    self._padding = padding
+    self.title = title
+    self.sizeType = sizeType
+  }
   
   var body: some View {
     VStack(spacing: 10) {
