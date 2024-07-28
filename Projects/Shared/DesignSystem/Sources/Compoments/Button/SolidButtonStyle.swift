@@ -39,18 +39,8 @@ struct SolidButtonStyle: ButtonStyle {
   }
   
   func makeBody(configuration: Configuration) -> some View {
-    var buttonState: ButtonStateType {
-      if isEnabled {
-        if configuration.isPressed {
-          return .selected
-        } else {
-          return .enabled
-        }
-      } else {
-        return .disabled
-      }
-    }
-
+    let buttonState = makeButtonState(configuration)
+    
     return configuration.label
       .padding(.horizontal, .sm)
       .frame(height: height)
@@ -95,4 +85,9 @@ private extension SolidButtonStyle {
     case .full:       return .md
     }
   }
+  
+  func makeButtonState(_ configuration: Configuration) -> ButtonStateType {
+    return !isEnabled ? .disabled : configuration.isPressed ? .selected : .enabled
+  }
 }
+
