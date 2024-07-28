@@ -8,12 +8,16 @@
 import SwiftUI
 
 public enum BottlePaddingType {
+  /// 24.0
   case xl
+  /// 16.0
   case md
+  /// 12.0
   case sm
+  /// 8.0
   case xs
   
-  var length: CGFloat {
+  public var length: CGFloat {
     switch self {
     case .xl: return 24
     case .md: return 16
