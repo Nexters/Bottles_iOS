@@ -9,11 +9,14 @@ import SwiftUI
 
 public struct PopupView: View {
   private var popupType: PopupType
-  private var action: () -> Void
-  
-  public init(popupType: PopupType, action: @escaping () -> Void) {
+  private let _action: (() -> Void)?
+  private var action: () -> Void {
+    return _action ?? {}
+  }
+
+  public init(popupType: PopupType, action: (() -> Void)? = nil) {
     self.popupType = popupType
-    self.action = action
+    self._action = action
   }
   
   public var body: some View {
@@ -49,11 +52,11 @@ private extension PopupView {
   @ViewBuilder
   var popupItem: some View {
     switch popupType {
-    case .text(let content):
+    case .text:
       popupText
         .padding(.sm)
         .overlay(popupRectangle)
-    case .button(let content, let buttonTitle):
+    case .button(_, let buttonTitle):
       VStack(spacing: .xxs) {
         popupText
           .padding([.horizontal, .top], .md)
