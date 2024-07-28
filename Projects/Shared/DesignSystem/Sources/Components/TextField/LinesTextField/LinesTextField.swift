@@ -55,11 +55,30 @@ private extension LinesTextField {
     case .letter:       return 186
     }
   }
+  
+  var textCountLimit: Int {
+    switch textFieldType {
+    case .introduction: return 100
+    case .letter:       return 150
+    }
+  }
 }
 
 // MARK: - Views
 
 private extension LinesTextField {
+  var textCounter: some View {
+    Text("\(content.count) / \(textCountLimit)")
+      .font(to: .wantedSans(.body))
+      .foregroundStyle(to: .text(.enableTertiary))
+      .padding(.md)
+      .onChange(of: content) { _, newValue in
+        if newValue.count > textCountLimit {
+          content = String(newValue.prefix(textCountLimit))
+        }
+      }
+  }
+  
   @ViewBuilder
   var textEditer: some View {
     GeometryReader { geometry in
@@ -69,6 +88,9 @@ private extension LinesTextField {
         .font(to: .wantedSans(.body))
         .colorMultiply(to: .onContainer(.enablePrimary))
         .frame(height: height)
+        .overlay(alignment: .bottomTrailing) {
+          textCounter
+        }
     }
   }
   
