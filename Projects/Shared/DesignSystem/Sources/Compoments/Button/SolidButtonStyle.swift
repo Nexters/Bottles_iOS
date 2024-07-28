@@ -10,7 +10,11 @@ import SwiftUI
 struct SolidButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled: Bool
   
-  let sizeType: SolidButton.SizeType
+  private let sizeType: SolidButton.SizeType
+  
+  public init(sizeType: SolidButton.SizeType) {
+    self.sizeType = sizeType
+  }
   
   enum ButtonStateType {
     case enabled
