@@ -72,10 +72,10 @@ private extension LinesTextField {
   
   var placeHolderText: some View {
     Text(placeHolder)
-        .padding(.leading, 5)
-        .padding(.top, 8)
-        .font(to: .wantedSans(.body))
-        .foregroundStyle(to: textColor)
+      .padding(.leading, 5)
+      .padding(.top, 8)
+      .font(to: .wantedSans(.body))
+      .foregroundStyle(to: textColor)
   }
   
   @ViewBuilder
