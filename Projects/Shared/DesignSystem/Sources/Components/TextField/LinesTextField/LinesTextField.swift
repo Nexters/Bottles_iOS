@@ -84,9 +84,11 @@ private extension LinesTextField {
     GeometryReader { geometry in
       let height = geometry.size.height
       TextEditor(text: $content)
+        .padding(.md)
+        .background(to: .onContainer(.enablePrimary))
         .clipShape(RoundedRectangle(cornerRadius: BottleRadiusType.sm.value))
+        .scrollContentBackground(.hidden)
         .font(to: .wantedSans(.body))
-        .colorMultiply(to: .onContainer(.enablePrimary))
         .frame(height: height)
         .overlay(alignment: .bottomTrailing) {
           textCounter
