@@ -21,4 +21,8 @@ public extension View {
   func foregroundStyle(to colorToken: ColorToken) -> some View {
     self.foregroundStyle(colorToken.color)
   }
+  
+  func colorMultiply(to colorToken: ColorToken) -> some View {
+    self.colorMultiply(colorToken.color)
+  }
 }
