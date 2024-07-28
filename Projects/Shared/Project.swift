@@ -13,9 +13,10 @@ let targets: [Target] = [
     .shared(factory: .init(
         product: .staticFramework,
         sources: nil,
-        dependencies: ModulePath.Shared.allCases.map {
-            .shared(implements: $0)
-        }
+        dependencies: [
+            .shared(implements: .DesignSystem),
+            .shared(implements: .Util)
+        ]
     ))
 ]
 
