@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct TriangleView: View {
-  private let triangleWidth: CGFloat = 10.39
-  private let triangleHeight: CGFloat = 6
+  private let triangleWidth: CGFloat
+  private let triangleHeight: CGFloat
+  
+  init(triangleWidth: CGFloat, triangleHeight: CGFloat) {
+    self.triangleWidth = triangleWidth
+    self.triangleHeight = triangleHeight
+  }
   
   var body: some View {
     GeometryReader { geometry in
