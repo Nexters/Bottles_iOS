@@ -28,6 +28,6 @@ public struct CustomStyleText<F: Fontable>: View {
   public var body: some View {
     Text(content)
       .font(font)
-      .foregroundStyle(to: .text(color))
+      .foregroundStyle(to: color)
   }
 }

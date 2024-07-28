@@ -9,7 +9,7 @@ import SwiftUI
 
 public extension Text {
   // MARK: - colorToken
-  func foregroundStyle(to colorToken: ColorToken) -> Text {
+  func foregroundStyle(to colorToken: Colorable) -> Text {
     self.foregroundStyle(colorToken.color)
   }
 }

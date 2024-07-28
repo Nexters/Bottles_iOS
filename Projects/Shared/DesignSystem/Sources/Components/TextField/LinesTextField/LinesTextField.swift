@@ -128,39 +128,39 @@ private extension LinesTextField {
     }
   }
   
-  var textColor: ColorToken {
+  var textColor: ColorToken.TextToken {
     switch textFieldState {
-    case .enabled: return .text(.enableTertiary)
-    case .active:  return .text(.activePrimary)
-    case .focused: return .text(.focusePrimary)
-    case .error:   return .text(.errorSecondary)
+    case .enabled: return .enableTertiary
+    case .active:  return .activePrimary
+    case .focused: return .focusePrimary
+    case .error:   return .errorSecondary
     }
   }
   
-  var borderColor: ColorToken {
+  var borderColor: ColorToken.Border {
     switch textFieldState {
-    case .enabled: return .border(.enabled)
-    case .active:  return .border(.active)
-    case .focused: return .border(.focused)
-    case .error:   return .border(.error)
+    case .enabled: return .enabled
+    case .active:  return .active
+    case .focused: return .focused
+    case .error:   return .error
     }
   }
   
-  var textEditorColor: ColorToken {
+  var textEditorColor: ColorToken.OnContainer {
     switch textFieldState {
-    case .enabled: return .onContainer(.enablePrimary)
-    case .active:  return .onContainer(.active)
-    case .focused: return .onContainer(.focuse)
-    case .error:   return .onContainer(.error)
+    case .enabled: return .enablePrimary
+    case .active:  return .active
+    case .focused: return .focuse
+    case .error:   return .error
     }
   }
   
-  var containerColor: ColorToken {
+  var containerColor: ColorToken.Container {
     switch textFieldState {
-    case .enabled: return .container(.enablePrimary)
-    case .active:  return .container(.Active)
-    case .focused: return .container(.focuseSecondary)
-    case .error:   return .container(.errorSecondary)
+    case .enabled: return .enablePrimary
+    case .active:  return .Active
+    case .focused: return .focuseSecondary
+    case .error:   return .errorSecondary
     }
   }
   
