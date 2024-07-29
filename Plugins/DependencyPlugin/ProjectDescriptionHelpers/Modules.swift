@@ -40,6 +40,7 @@ public extension ModulePath {
 
 public extension ModulePath {
     enum Domain: String, CaseIterable {
+        case Bottle
         case Profile
         case SandBeach
         case Auth

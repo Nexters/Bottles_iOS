@@ -30,6 +30,8 @@ public struct SandBeachFeature {
     case writeButtonDidTapped
     case fetchUserStateRequest
     case fetchUserStateResponse(TaskResult<UserStateType>)
+    case fetchNewBottleCountRequest
+    case fetchNetBottleCountResponse(TaskResult<Int>)
   }
   
   public var body: some ReducerOf<Self> {
