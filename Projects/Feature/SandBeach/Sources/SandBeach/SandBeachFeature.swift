@@ -23,9 +23,9 @@ extension SandBeachFeature {
       switch action {
       case .onAppear:
         return .run { send in
-          await send(.fetchUserStateResponse(
+          await send(.checkExistIntroduction(
             TaskResult {
-              try await profileClient.fetchUserState()
+              try await profileClient.checkExistIntroduction()
             }
           ))
         }
@@ -40,12 +40,10 @@ extension SandBeachFeature {
       case .writeButtonDidTapped:
         // TODO: - 자기소개 작성 Feature로 이동.
         return .none
-      case .fetchUserStateRequest:
-        return .none
-      case let .fetchUserStateResponse(.success(userState)):
-        return userState == .noIntroduction ? .none : .send(.fetchNewBottleCountRequest)
+      case let .checkExistIntroduction(.success(isExistIntroduction)):
+        return isExistIntroduction ? .send(.fetchNewBottleCountRequest) : .none
       case let .fetchNetBottleCountResponse(.success(newBottleCount)):
-        state.userState = newBottleCount > 0 ? .hasBottle : .noBottle
+        state.userState = newBottleCount > 0 ? .hasBottle(bottleCount: newBottleCount) : .noBottle
         return .none
       default:
         return .none

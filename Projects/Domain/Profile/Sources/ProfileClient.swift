@@ -18,9 +18,9 @@ extension ProfileClient: DependencyKey {
     @Dependency(\.network) var networkManager
     
     return .init(
-      fetchUserState: {
+      checkExistIntroduction: {
         let profile = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
-        return profile.introduction == nil ? .noIntroduction : .noBottle
+        return profile.introduction != nil ? true : false
       }
     )
   }
@@ -28,7 +28,7 @@ extension ProfileClient: DependencyKey {
 
 extension ProfileClient {
   static public var previewValue = Self(
-    fetchUserState: { UserStateType.hasBottle })
+    checkExistIntroduction: { false })
 }
 
 extension DependencyValues {

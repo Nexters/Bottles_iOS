@@ -9,13 +9,13 @@ import Foundation
 import ComposableArchitecture
 
 public struct ProfileClient {
-  private var fetchUserState: () async throws -> UserStateType
+  private var checkExistIntroduction: () async throws -> Bool
   
-  public init(fetchUserState: @escaping () async throws -> UserStateType) {
-    self.fetchUserState = fetchUserState
+  public init(checkExistIntroduction: @escaping () async throws -> Bool) {
+    self.checkExistIntroduction = checkExistIntroduction
   }
   
-  public func fetchUserState() async throws -> UserStateType {
-    try await fetchUserState()
+  public func checkExistIntroduction() async throws -> Bool {
+    try await checkExistIntroduction()
   }
 }
