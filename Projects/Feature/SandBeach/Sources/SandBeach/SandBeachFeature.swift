@@ -17,6 +17,9 @@ extension SandBeachFeature {
       switch action {
       case .onAppear:
         return .none
+      case .writeButtonDidTapped:
+        // TODO: - 자기소개 작성 Feature로 이동.
+        return .none
       }
     }
     self.init(reducer: reducer)

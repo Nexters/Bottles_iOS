@@ -12,7 +12,7 @@ public enum UserStateType {
   case noBottle        /// 도착한 보틀 X
   case hasBottle       /// 도착한 보틀 O
   
-  var popUpText: String {
+  public var popUpText: String {
     switch self {
     case .noIntroduction: return "자기소개 작성 후 열어볼 수 있어요"
     case .noBottle:       return "n시간 후 새로운 보틀이 도착해요"
@@ -20,7 +20,7 @@ public enum UserStateType {
     }
   }
   
-  var buttonText: String? {
+  public var buttonText: String? {
     switch self {
     case .noIntroduction: return "자기소개 작성하기"
     default:              return nil
