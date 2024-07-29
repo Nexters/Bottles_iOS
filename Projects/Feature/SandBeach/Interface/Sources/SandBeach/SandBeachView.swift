@@ -33,6 +33,9 @@ public struct SandBeachView: View {
       .overlay(roundedRectangle)
       .padding(.bottom, 52)
     }
+    .onAppear {
+      store.send(.onAppear)
+    }
   }
 }
 

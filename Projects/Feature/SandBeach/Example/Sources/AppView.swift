@@ -14,8 +14,15 @@ struct AppView: App {
   var body: some Scene {
     WindowGroup {
       SandBeachView(store: store)
-        .border(.red)
     }
   }
 }
 
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+      SandBeachView(store: Store(
+        initialState: SandBeachFeature.State(),
+        reducer: { SandBeachFeature() }
+      ))
+    }
+}

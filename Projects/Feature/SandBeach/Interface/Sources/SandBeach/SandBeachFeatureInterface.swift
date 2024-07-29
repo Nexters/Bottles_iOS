@@ -7,8 +7,7 @@
 
 import Foundation
 
-import DomainSandBeachInterface
-
+import DomainProfileInterface
 import ComposableArchitecture
 
 @Reducer
@@ -21,17 +20,36 @@ public struct SandBeachFeature {
   
   @ObservableState
   public struct State: Equatable {
-    var userState: UserStateType = .noIntroduction
-    var imageURL: String = "https://static.wikia.nocookie.net/wallaceandgromit/images/3/38/Gromit-3.png/revision/latest/scale-to-width/360?cb=20191228190308" // 임시
+    public var userState: UserStateType = .noIntroduction
+    public var imageURL: String = "https://static.wikia.nocookie.net/wallaceandgromit/images/3/38/Gromit-3.png/revision/latest/scale-to-width/360?cb=20191228190308" // 임시
     public init() {}
   }
   
-  public enum Action {
+  public enum Action: Equatable {
     case onAppear
     case writeButtonDidTapped
+    case fetchUserStateRequest
+    case fetchUserStateResponse(TaskResult<UserStateType>)
   }
   
   public var body: some ReducerOf<Self> {
     reducer
+  }
+}
+
+extension UserStateType {
+  var popUpText: String {
+    switch self {
+    case .noIntroduction: return "자기소개 작성 후 열어볼 수 있어요"
+    case .noBottle:       return "n시간 후 새로운 보틀이 도착해요"
+    case .hasBottle:      return "새로운 보틀이 도착했어요"
+    }
+  }
+  
+  var buttonText: String? {
+    switch self {
+    case .noIntroduction: return "자기소개 작성하기"
+    default:              return nil
+    }
   }
 }
