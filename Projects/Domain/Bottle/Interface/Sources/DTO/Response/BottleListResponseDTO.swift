@@ -16,8 +16,9 @@ public struct BottleListResponseDTO: Decodable {
     let age: Int
     let expiredAt: String
     let id: Int
-    let keyword: [String]
-    let mbti, userName: String
+    let keyword: [String]?
+    let mbti: String?
+    let userName: String
   }
 }
 
