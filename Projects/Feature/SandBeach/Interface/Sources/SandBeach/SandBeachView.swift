@@ -50,24 +50,27 @@ public extension SandBeachView {
       )
   }
   
-  var popup: PopupView {
+  @ViewBuilder
+  var popup: some View {
     let userState = store.userState
     
     switch userState {
     case .noIntroduction:
-      return PopupView(
+      PopupView(
         popupType: .button(
           content: userState.popUpText,
           buttonTitle: userState.buttonText ?? ""),
         action: { store.send(.writeButtonDidTapped) })
     case .noBottle:
-      return PopupView(
+      PopupView(
         popupType: .text(content: userState.popUpText)
       )
     case .hasBottle:
-      return PopupView(
+      PopupView(
         popupType: .text(content: userState.popUpText)
       )
+    default:
+      EmptyView()
     }
   }
 }

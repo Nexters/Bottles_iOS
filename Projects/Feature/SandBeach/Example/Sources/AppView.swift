@@ -8,7 +8,7 @@ import ComposableArchitecture
 @main
 struct AppView: App {
   private let store = Store(
-    initialState: SandBeachFeature.State(),
+    initialState: SandBeachFeature.State(userState: .noIntroduction),
     reducer: { SandBeachFeature() }
   )
   var body: some Scene {
@@ -21,7 +21,7 @@ struct AppView: App {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
       SandBeachView(store: Store(
-        initialState: SandBeachFeature.State(),
+        initialState: SandBeachFeature.State(userState: .noIntroduction),
         reducer: { SandBeachFeature() }
       ))
     }

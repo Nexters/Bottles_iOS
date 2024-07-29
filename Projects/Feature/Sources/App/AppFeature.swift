@@ -8,12 +8,16 @@
 import Foundation
 
 import FeatureLoginInterface
+import FeatureSandBeachInterface
 import FeatureLogin
 
 import ComposableArchitecture
 
 @Reducer
 public struct AppFeature {
+  @Dependency(\.profileClient) var profileClient
+  @Dependency(\.bottleClient) var bottleClient
+  
   @ObservableState
   public struct State: Equatable {
     public var appDelegate: AppDelegateFeature.State
@@ -28,6 +32,7 @@ public struct AppFeature {
   public enum Action {
     case onAppear
     case loginCheckComplted(isLoggedIn: Bool)
+    case userStateCheckCompleted(SandBeachFeature.UserStateType)
     case appDelegate(AppDelegateFeature.Action)
     case tabView(MainTabViewFeature.Action)
     case login(LoginFeature.Action)
@@ -55,9 +60,26 @@ public struct AppFeature {
     switch action {
     case .onAppear:
       return .run { send in
-        try await Task.sleep(nanoseconds: 2500_000_000)
-        let isLoggedIn = true
-        await send(.loginCheckComplted(isLoggedIn: isLoggedIn), animation: .default)
+        do {
+          // TODO: - Login 상태 처리
+          let isLoggedIn = true
+          await send(.loginCheckComplted(isLoggedIn: isLoggedIn), animation: .default)
+          
+          let isExistIntroduction = try await profileClient.checkExistIntroduction()
+          let bottlesCount = try await bottleClient.fetchNewBottlesCount()
+
+          if !isExistIntroduction {
+            await send(.userStateCheckCompleted(.noIntroduction))
+          } else if bottlesCount == 0 {
+            await send(.userStateCheckCompleted(.noBottle))
+          } else {
+            await send(.userStateCheckCompleted(.hasBottle(bottleCount: bottlesCount)))
+          }
+          
+        } catch {
+          await send(.loginCheckComplted(isLoggedIn: true), animation: .default)
+          await send(.userStateCheckCompleted(.noIntroduction))
+        }
       }
       
     case let .loginCheckComplted(isLoggedIn):
@@ -68,7 +90,9 @@ public struct AppFeature {
         state.login = LoginFeature.State()
       }
       return .none
-      
+    case .userStateCheckCompleted(let userState):
+      state.tabView?.sandBeach = SandBeachFeature.State(userState: userState)
+      return .none
     case .appDelegate(_):
       return .none
       
