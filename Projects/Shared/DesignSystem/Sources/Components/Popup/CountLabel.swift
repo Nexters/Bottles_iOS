@@ -25,7 +25,7 @@ struct CountLabel: View {
     .frame(minWidth: radius)
     .frame(height: radius)
     .frame(maxWidth: nil)
-    .background(to: .icon(.update))
+    .background(to: ColorToken.icon(.update))
     .clipShape(RoundedRectangle(cornerRadius: radius / 2))
   }
 }
