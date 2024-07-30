@@ -65,10 +65,19 @@ public extension SandBeachView {
       PopupView(
         popupType: .text(content: userState.popUpText)
       )
-    case .hasBottle:
+    case .hasBottle(let count):
       PopupView(
         popupType: .text(content: userState.popUpText)
       )
+      .overlay(
+        GeometryReader { geometry in
+          CountLabel(text: "\(count)")
+            .frame(width: geometry.size.width * 2)
+            .frame(height: 0)
+        }
+      )
+      .asButton(
+        action: { store.send(.newBottlePopupDidTapped) })
     default:
       EmptyView()
     }

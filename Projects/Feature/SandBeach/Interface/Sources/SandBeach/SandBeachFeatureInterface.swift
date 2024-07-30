@@ -30,6 +30,7 @@ public struct SandBeachFeature {
   public enum Action: Equatable {
     case onAppear
     case writeButtonDidTapped
+    case newBottlePopupDidTapped
   }
   
   public var body: some ReducerOf<Self> {

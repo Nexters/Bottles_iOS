@@ -23,6 +23,9 @@ extension SandBeachFeature {
       case .writeButtonDidTapped:
         Log.debug("writeButtonDidTapped")
         return .none
+      case .newBottlePopupDidTapped:
+        Log.debug("newBottlePopupDidTapped")
+        return .none
       }
     }
     self.init(reducer: reducer)
