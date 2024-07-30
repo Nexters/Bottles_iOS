@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct CountLabel: View {
+public struct CountLabel: View {
   private let radius: CGFloat = 24
   private let text: String
   
-  init(text: String) {
+  public init(text: String) {
     self.text = text
   }
   
-  var body: some View {
+  public var body: some View {
     WantedSansStyleText(
       text,
       style: .body,

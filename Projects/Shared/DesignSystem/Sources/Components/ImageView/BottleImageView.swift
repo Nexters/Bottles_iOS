@@ -10,7 +10,7 @@ import SwiftUI
 public struct BottleImageView: View {
   private let type: ImageViewType
   
-  init(type: ImageViewType) {
+  public init(type: ImageViewType) {
     self.type = type
   }
   

@@ -40,6 +40,8 @@ public extension ModulePath {
 
 public extension ModulePath {
     enum Domain: String, CaseIterable {
+        case Bottle
+        case Profile
         case Auth
 
         public static let name: String = "Domain"
