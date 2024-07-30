@@ -10,15 +10,19 @@ import SwiftUI
 public extension View {
 
   // MARK: - colorToken
-  func background(to colorToken: ColorToken) -> some View {
+  func background(to colorToken: Colorable) -> some View {
     self.background(colorToken.color)
   }
   
-  func tint(to colorToken: ColorToken) -> some View {
+  func tint(to colorToken: Colorable) -> some View {
     self.tint(colorToken.color)
   }
   
-  func foregroundStyle(to colorToken: ColorToken) -> some View {
+  func foregroundStyle(to colorToken: Colorable) -> some View {
     self.foregroundStyle(colorToken.color)
+  }
+  
+  func colorMultiply(to colorToken: Colorable) -> some View {
+    self.colorMultiply(colorToken.color)
   }
 }
