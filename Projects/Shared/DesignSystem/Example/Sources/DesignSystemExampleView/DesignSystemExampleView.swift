@@ -55,6 +55,25 @@ struct DesignSystemExampleView: View {
               .font(.headline)
           }
         )
+
+        Section(
+          content: {
+            NavigationLink(
+              destination:
+                IntroductionTextFieldTestView(),
+              label: { Text("Introdection TextField") }
+            )
+            NavigationLink(
+              destination:
+                LetterTextFieldTestView(),
+              label: { Text("Letter TextField") }
+            )
+          },
+          header: {
+            Text("Lines TextField")
+              .font(.headline)
+          }
+        )
       }
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle("Design System Example View")
