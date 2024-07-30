@@ -66,14 +66,16 @@ public struct AppFeature {
           await send(.loginCheckComplted(isLoggedIn: isLoggedIn), animation: .default)
           
           let isExistIntroduction = try await profileClient.checkExistIntroduction()
-          let bottlesCount = try await bottleClient.fetchNewBottlesCount()
 
           if !isExistIntroduction {
             await send(.userStateCheckCompleted(.noIntroduction))
-          } else if bottlesCount == 0 {
-            await send(.userStateCheckCompleted(.noBottle))
           } else {
-            await send(.userStateCheckCompleted(.hasBottle(bottleCount: bottlesCount)))
+            let bottlesCount = try await bottleClient.fetchNewBottlesCount()
+            guard let count = bottlesCount else {
+              await send(.userStateCheckCompleted(.noBottle))
+              return
+            }
+            await send(.userStateCheckCompleted(.hasBottle(bottleCount: count)))
           }
           
         } catch {

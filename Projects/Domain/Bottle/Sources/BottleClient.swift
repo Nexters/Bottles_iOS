@@ -20,7 +20,7 @@ extension BottleClient: DependencyKey {
     return .init(
       fetchNewBottlesCount: {
         let newBottleList = try await networkManager.reqeust(api: .apiType(BottleAPI.fetchBottles), dto: BottleListResponseDTO.self)
-        return newBottleList.bottles.count
+        return newBottleList.bottles?.count
       }
     )
   }
