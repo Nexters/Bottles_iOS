@@ -9,16 +9,16 @@ import Foundation
 
 // MARK: - BottleList
 public struct BottleListResponseDTO: Decodable {
-  public let bottles: [BottleItemDTO]
+  public let bottles: [BottleItemDTO]?
   
   // MARK: - BottleItem
   public struct BottleItemDTO: Codable {
-    let age: Int
-    let expiredAt: String
-    let id: Int
+    let age: Int?
+    let expiredAt: String?
+    let id: Int?
     let keyword: [String]?
     let mbti: String?
-    let userName: String
+    let userName: String?
   }
 }
 
