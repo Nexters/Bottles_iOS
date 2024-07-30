@@ -78,7 +78,6 @@ private extension LinesTextField {
       .foregroundStyle(to: textColor)
   }
   
-  @ViewBuilder
   var textEditor: some View {
     GeometryReader { geometry in
       let height = geometry.size.height
