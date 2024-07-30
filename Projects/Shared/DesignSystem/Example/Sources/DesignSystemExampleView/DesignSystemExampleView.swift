@@ -28,7 +28,7 @@ struct DesignSystemExampleView: View {
               label: { Text("Laundary Gothic Text Test View") }
             )
           },
-            
+          
           header: {
             Text("Custom Text View")
               .font(.headline)
@@ -55,7 +55,38 @@ struct DesignSystemExampleView: View {
               .font(.headline)
           }
         )
-
+        
+        Section(
+          content: {
+            NavigationLink(
+              destination: PopupView(
+                popupType: .text(
+                  content: "1시간 후 새로운 보틀이 도착해요"
+                )
+              ),
+              label: {
+                Text("Text Popup View")
+              }
+            )
+            
+            NavigationLink(
+              destination: PopupView(
+                popupType: .button(
+                  content: "자기소개 작성 후 열어볼 수 있어요",
+                  buttonTitle: "자기소개 작성하기"
+                )
+              ),
+              label: {
+                Text("Button Popup View")
+              }
+            )
+          },
+          header: {
+            Text("Popup")
+              .font(.headline)
+          }
+        )
+        
         Section(
           content: {
             NavigationLink(
@@ -74,9 +105,10 @@ struct DesignSystemExampleView: View {
               .font(.headline)
           }
         )
+     
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("Design System Example View")
       }
-      .navigationBarTitleDisplayMode(.inline)
-      .navigationTitle("Design System Example View")
     }
   }
 }
