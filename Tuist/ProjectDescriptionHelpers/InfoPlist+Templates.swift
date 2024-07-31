@@ -16,7 +16,14 @@ public extension InfoPlist {
                 "UIInterfaceOrientationPortrait"
             ],
             "BASE_URL": "$(BASE_URL)",
-            "LSApplicationQueriesSchemes": ["kakaokompassauth"]
+            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)",
+            "LSApplicationQueriesSchemes": ["kakaokompassauth"],
+            "CFBundleURLTypes": [
+                "CFBundleTypeRole": "Editor",
+                "CFBundleURLSchemes": [
+                    "kakao$(KAKAO_APP_KEY)://oauth"
+                ]
+            ]
         ])
     }
     
@@ -28,7 +35,14 @@ public extension InfoPlist {
                 "UIInterfaceOrientationPortrait"
             ],
             "BASE_URL": "$(BASE_URL)",
-            "LSApplicationQueriesSchemes": ["kakaokompassauth"]
+            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)",
+            "LSApplicationQueriesSchemes": ["kakaokompassauth"],
+            "CFBundleURLTypes": [
+                "CFBundleTypeRole": "Editor",
+                "CFBundleURLSchemes": [
+                    "kakao$(KAKAO_APP_KEY)://oauth"
+                ]
+            ]
         ])
     }
 }
