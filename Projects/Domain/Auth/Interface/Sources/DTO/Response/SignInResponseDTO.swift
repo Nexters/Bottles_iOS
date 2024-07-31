@@ -11,4 +11,11 @@ public struct SignInResponseDTO: Decodable {
   public let accessToken: String?
   public let isSignUp: Bool?
   public let refreshToken: String?
+  
+  public func toDomain() -> Token {
+    return Token(
+      accessToken: accessToken ?? "",
+      refershToken: refreshToken ?? ""
+    )
+  }
 }
