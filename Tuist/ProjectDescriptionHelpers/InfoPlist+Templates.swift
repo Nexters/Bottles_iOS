@@ -15,7 +15,8 @@ public extension InfoPlist {
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
-            "BASE_URL": "$(BASE_URL)"
+            "BASE_URL": "$(BASE_URL)",
+            "LSApplicationQueriesSchemes": ["kakaokompassauth"]
         ])
     }
     
@@ -26,7 +27,8 @@ public extension InfoPlist {
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
-            "BASE_URL": "$(BASE_URL)"
+            "BASE_URL": "$(BASE_URL)",
+            "LSApplicationQueriesSchemes": ["kakaokompassauth"]
         ])
     }
 }
