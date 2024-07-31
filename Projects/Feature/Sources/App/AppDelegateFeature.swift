@@ -9,6 +9,8 @@ import Foundation
 
 import ComposableArchitecture
 
+import KakaoSDKCommon
+
 @Reducer
 public struct AppDelegateFeature {
   public struct State: Equatable {
@@ -29,6 +31,11 @@ public struct AppDelegateFeature {
   ) -> EffectOf<Self> {
     switch action {
     case .didFinishLunching:
+      guard let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_APP_KEY"] as? String else { 
+        fatalError("XCConfig Setting Error")
+      }
+      
+      KakaoSDK.initSDK(appKey: kakaoAppKey)
       return .none
     }
   }
