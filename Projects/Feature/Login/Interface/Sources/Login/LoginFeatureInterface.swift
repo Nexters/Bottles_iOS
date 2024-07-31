@@ -7,6 +7,8 @@
 
 import Foundation
 
+import DomainAuthInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -23,6 +25,8 @@ public struct LoginFeature {
   
   public enum Action {
     case onAppear
+    case signInKakaoRequest
+    case signInKakaoResponse(TaskResult<Token>)
   }
   
   public var body: some ReducerOf<Self> {
