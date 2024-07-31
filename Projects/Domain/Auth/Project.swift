@@ -7,7 +7,11 @@ let project = Project.makeModule(
     targets: [    
         .domain(
             interface: .Auth,
-            factory: .init()
+            factory: .init(
+                dependencies: [
+                    .core
+                ]
+            )
         ),
         .domain(
             implements: .Auth,
