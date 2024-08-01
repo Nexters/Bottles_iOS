@@ -13,15 +13,26 @@ import CoreLoggerInterface
 import Alamofire
 import Dependencies
 
+
 public struct TokenInterceptor: RequestInterceptor {
   public static let shared = TokenInterceptor()
+  private let lock = NSLock()
   
   public init() {}
   
   public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
     var urlRequest = urlRequest
-    let accessToken = KeyChainTokenStore.shared.load(property: .accessToken)
-    urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+    lock.lock()
+    defer { lock.unlock() }
+    
+    if let pathComponents = urlRequest.url?.pathComponents, pathComponents.contains("refresh") {
+      let refreshToken = KeyChainTokenStore.shared.load(property: .refreshToken)
+      urlRequest.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")
+    } else {
+      let accessToken = KeyChainTokenStore.shared.load(property: .accessToken)
+      urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+    }
+    
     completion(.success(urlRequest))
   }
   
@@ -33,7 +44,9 @@ public struct TokenInterceptor: RequestInterceptor {
       completion(.doNotRetryWithError(error))
       return
     }
-      
+    lock.lock()
+    defer { lock.unlock() }
+        
     @Dependency(\.network) var networkManager
         
     Task {
@@ -43,8 +56,7 @@ public struct TokenInterceptor: RequestInterceptor {
         let token = try await networkManager.reqeust(api: .apiType(RefreshAPI.refresh), dto: RefreshResponseDTO.self)
         
         guard let accessToken = token.accessToken,
-              let refreshToken = token.refreshToken
-        else {
+              let refreshToken = token.refreshToken else {
           completion(.doNotRetry)
           return
         }
