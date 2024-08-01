@@ -18,7 +18,7 @@ final class Provider<APIType: BaseTargetType>: Providable {
 
   public init() {    
     self.moyaProvider = MoyaProvider<APIType>.init(
-      session: Session(interceptor: TokenInterceptor.Shared),
+      session: Session(interceptor: TokenInterceptor.shared),
       plugins: [MoyaLoggerPlugin()]
     )
   }
@@ -44,7 +44,7 @@ final class Provider<APIType: BaseTargetType>: Providable {
   func addAuthorizationHeader(token: String) {
     let provider = MoyaProvider<APIType>(
       endpointClosure: endpointClouser(token: token),
-      session: Session(interceptor: TokenInterceptor.Shared),
+      session: Session(interceptor: TokenInterceptor.shared),
       plugins: [MoyaLoggerPlugin()]
     )
     
