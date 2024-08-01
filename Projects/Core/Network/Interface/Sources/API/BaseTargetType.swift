@@ -22,4 +22,8 @@ public extension BaseTargetType {
   var headers: [String : String]? {
     return ["Content-type": "application/json"]
   }
+  
+  var validationType: ValidationType {
+    return .successCodes
+  }
 }
