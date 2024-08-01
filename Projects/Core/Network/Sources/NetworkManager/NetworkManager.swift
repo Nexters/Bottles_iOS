@@ -43,6 +43,10 @@ extension NetworkManager: NetworkManagable {
   public func reqeust(api: APIType) async throws {
     _ = try await provider.reqeust(api: api)
   }
+  
+  public func addAuthorizationHeader(token: String) {
+    provider.addAuthorizationHeader(token: token)
+  }
 }
 
 // MARK: - DependencyValues

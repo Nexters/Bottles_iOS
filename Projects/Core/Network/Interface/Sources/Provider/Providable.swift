@@ -16,4 +16,5 @@ public protocol Providable<APIType> {
   ///  - Parameters:
   ///   - api: BaseTargetType을 준수하는 API
   func reqeust(api: APIType) async throws -> Response
+  func addAuthorizationHeader(token: String)
 }
