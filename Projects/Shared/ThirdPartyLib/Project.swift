@@ -11,6 +11,8 @@ let project = Project.makeModule(
                 dependencies: [
                     .SPM.ComposableArchitecture,
                     .SPM.Moya,
+                    .SPM.KakaoSDKAuth,
+                    .SPM.KakaoSDKUser
                 ]
             )
         ),

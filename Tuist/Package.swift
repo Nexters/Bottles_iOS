@@ -12,6 +12,7 @@ import PackageDescription
             "Kingfisher": .framework,
             "Alamofire": .framework,
             "Moya": .framework,
+            "KakaoSDK": .framework
         ],
         baseSettings: .packageSettings
     )
@@ -23,6 +24,7 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.11.2"),
         .package(url: "https://github.com/onevcat/Kingfisher", from: "7.12.0"),
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
-        .package(url: "https://github.com/Moya/Moya.git", exact: "15.0.3")
+        .package(url: "https://github.com/Moya/Moya.git", exact: "15.0.3"),
+        .package(url: "https://github.com/kakao/kakao-ios-sdk.git", exact: "2.22.5")
     ]
 )

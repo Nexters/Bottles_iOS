@@ -3,39 +3,39 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: ModulePath.Domain.name+ModulePath.Domain.Auth.rawValue,
+    name: ModulePath.Core.name+ModulePath.Core.KeyChainStore.rawValue,
     targets: [    
-        .domain(
-            interface: .Auth,
+        .core(
+            interface: .KeyChainStore,
             factory: .init(
                 dependencies: [
-                    .core
+                    .shared
                 ]
             )
         ),
-        .domain(
-            implements: .Auth,
+        .core(
+            implements: .KeyChainStore,
             factory: .init(
                 dependencies: [
-                    .domain(interface: .Auth)
+                    .core(interface: .KeyChainStore)
                 ]
             )
         ),
     
-        .domain(
-            testing: .Auth,
+        .core(
+            testing: .KeyChainStore,
             factory: .init(
                 dependencies: [
-                    .domain(interface: .Auth)
+                    .core(interface: .KeyChainStore)
                 ]
             )
         ),
-        .domain(
-            tests: .Auth,
+        .core(
+            tests: .KeyChainStore,
             factory: .init(
                 dependencies: [
-                    .domain(testing: .Auth),
-                    .domain(implements: .Auth)
+                    .core(testing: .KeyChainStore),
+                    .core(implements: .KeyChainStore)
                 ]
             )
         ),
