@@ -46,13 +46,21 @@ public struct TokenInterceptor: RequestInterceptor {
     }
     lock.lock()
     defer { lock.unlock() }
+    
+    // header에 있는 token과 Local token 불일치 -> retry
+    let accessToken = "Bearer \(KeyChainTokenStore.shared.load(property: .accessToken))"
+    let headerToken = request.request?.headers.dictionary["Authorization"]
+    
+    if accessToken != headerToken {
+      completion(.retry)
+      return
+    }
         
     @Dependency(\.network) var networkManager
         
     Task {
       do {
         let refreshToken = KeyChainTokenStore.shared.load(property: .refreshToken)
-        networkManager.addAuthorizationHeader(token: refreshToken)
         let token = try await networkManager.reqeust(api: .apiType(RefreshAPI.refresh), dto: RefreshResponseDTO.self)
         
         guard let accessToken = token.accessToken,
