@@ -105,7 +105,28 @@ struct DesignSystemExampleView: View {
               .font(.headline)
           }
         )
-     
+        
+        
+        Section(
+          content: {
+            NavigationLink(
+              destination:
+                ClipListContainerViewTest(),
+              label: { Text("ClipListContainerView") }
+            )
+            
+            NavigationLink(
+              destination:
+                ClipListViewTest(),
+              label: { Text("ClipListView") }
+            )
+          },
+          header: {
+            Text("Card")
+              .font(.headline)
+          }
+        )
+        
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Design System Example View")
       }
