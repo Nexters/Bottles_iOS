@@ -33,6 +33,9 @@ extension ProfileClient: DependencyKey {
         let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
         let userProfile = responseData.toProfileDomain()
         return userProfile
+      },
+      uploadProfileImage: { imageData in
+        _ = try await networkManager.reqeust(api: .apiType(ProfileAPI.uploadProfileImage(data: imageData)))
       }
     )
   }
