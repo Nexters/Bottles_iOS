@@ -8,11 +8,14 @@
 import SwiftUI
 import WebKit
 
+import CoreLoggerInterface
+import CoreWebViewInterface
+
 import ComposableArchitecture
 
 internal struct OnboardingWebView: UIViewRepresentable {
   private var store: StoreOf<OnboardingFeature>
-  private var webView: WKWebView?
+  private let webView: WKWebView
   
   init(
     store: StoreOf<OnboardingFeature>
@@ -22,12 +25,19 @@ internal struct OnboardingWebView: UIViewRepresentable {
     preferences.javaScriptCanOpenWindowsAutomatically = true
     let configuration = WKWebViewConfiguration()
     configuration.preferences = preferences
+    configuration.defaultWebpagePreferences.allowsContentJavaScript = true
     webView = WKWebView(frame: .zero, configuration: configuration)
   }
   
   func makeUIView(context: Context) -> WKWebView {
-    webView?.navigationDelegate = context.coordinator
-    return webView ?? WKWebView()
+    webView.configuration.userContentController.add(context.coordinator, name: WebViewMessageHandler.default.name)
+    webView.navigationDelegate = context.coordinator
+    webView.scrollView.isScrollEnabled = false
+        
+    let request = URLRequest(url: WebViewURL.createProfile.url)
+    webView.load(request)
+    
+    return webView
   }
   
   func updateUIView(_ uiView: WKWebView, context: Context) {
@@ -37,11 +47,23 @@ internal struct OnboardingWebView: UIViewRepresentable {
     Coordinator(parent: self)
   }
   
-  final class Coordinator: NSObject, WKNavigationDelegate {
+  final class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
     private let parent: OnboardingWebView
     
     init(parent: OnboardingWebView) {
       self.parent = parent
+    }
+    
+    func userContentController(
+      _ userContentController: WKUserContentController,
+      didReceive message: WKScriptMessage
+    ) {
+      Log.debug(message.name)
+      guard message.name == WebViewMessageHandler.default.name
+      else {
+        return
+      }
+      Log.debug("test!")
     }
   }
 }

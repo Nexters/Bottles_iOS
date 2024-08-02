@@ -13,11 +13,12 @@ import ComposableArchitecture
 public struct OnboardingView: View {
   private var store: StoreOf<OnboardingFeature>
   
-  init(store: StoreOf<OnboardingFeature>) {
+  public init(store: StoreOf<OnboardingFeature>) {
     self.store = store
   }
   
   public var body: some View {
-      EmptyView()
+      OnboardingWebView(store: store)
+      .ignoresSafeArea()
   }
 }
