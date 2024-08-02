@@ -17,7 +17,7 @@ extension AuthClient: DependencyKey {
   public static var liveValue: AuthClient = .live()
   private static func live() -> AuthClient {
     @Dependency(\.network) var networkManager
-    let loginManager = LoginManager()
+    @Dependency(\.loginManager) var loginManager
     
     return .init(
       signInWithKakao: {
