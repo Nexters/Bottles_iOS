@@ -5,6 +5,8 @@
 //  Created by 임현규 on 7/29/24.
 //
 
+import Foundation
+
 import CoreNetworkInterface
 
 import Moya
@@ -13,6 +15,7 @@ public enum ProfileAPI {
   case fetchProfile
   case registerIntroduction(requestData: RegisterIntroductionRequestDTO)
   case checkIntroduction
+  case uploadProfileImage(data: Data)
 }
 
 extension ProfileAPI: BaseTargetType {
@@ -24,6 +27,8 @@ extension ProfileAPI: BaseTargetType {
       return "api/v1/profile/introduction"
     case .checkIntroduction:
       return "api/v1/profile/introduction/exist"
+    case .uploadProfileImage:
+      return "api/v1/profile/images"
     }
   }
   
@@ -35,6 +40,8 @@ extension ProfileAPI: BaseTargetType {
       return .post
     case .checkIntroduction:
       return .get
+    case .uploadProfileImage:
+      return .post
     }
   }
   
@@ -46,6 +53,9 @@ extension ProfileAPI: BaseTargetType {
       return .requestJSONEncodable(requestData)
     case .checkIntroduction:
       return .requestPlain
+    case .uploadProfileImage(let data):
+      let imageData = MultipartFormData(provider: .data(data), name: "profile.jpeg", mimeType: "image/jpeg")
+      return .uploadMultipart([imageData])
     }
   }
 }
