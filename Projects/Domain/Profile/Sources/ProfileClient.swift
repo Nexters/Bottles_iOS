@@ -21,6 +21,12 @@ extension ProfileClient: DependencyKey {
       checkExistIntroduction: {
         let profile = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
         return profile.introduction != nil ? true : false
+      },
+      registerIntroduction: { answer in
+        let requestData = RegisterIntroductionRequestDTO(answer: answer, question: "")
+        _ = try await networkManager.reqeust(
+          api: .apiType(ProfileAPI.registerIntroduction(requestData: requestData))
+        )
       }
     )
   }
@@ -28,7 +34,9 @@ extension ProfileClient: DependencyKey {
 
 extension ProfileClient {
   static public var previewValue = Self(
-    checkExistIntroduction: { false })
+    checkExistIntroduction: { false },
+    registerIntroduction: { introduction in }
+    )
 }
 
 extension DependencyValues {
