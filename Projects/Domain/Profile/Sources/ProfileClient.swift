@@ -25,7 +25,7 @@ extension ProfileClient: DependencyKey {
       },
       registerIntroduction: { answer in
         let requestData = RegisterIntroductionRequestDTO(answer: answer, question: "")
-        _ = try await networkManager.reqeust(
+        try await networkManager.reqeust(
           api: .apiType(ProfileAPI.registerIntroduction(requestData: requestData))
         )
       },
@@ -35,7 +35,7 @@ extension ProfileClient: DependencyKey {
         return userProfile
       },
       uploadProfileImage: { imageData in
-        _ = try await networkManager.reqeust(api: .apiType(ProfileAPI.uploadProfileImage(data: imageData)))
+        try await networkManager.reqeust(api: .apiType(ProfileAPI.uploadProfileImage(data: imageData)))
       }
     )
   }
