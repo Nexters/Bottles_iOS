@@ -28,16 +28,14 @@ extension ProfileClient: DependencyKey {
         _ = try await networkManager.reqeust(
           api: .apiType(ProfileAPI.registerIntroduction(requestData: requestData))
         )
+      },
+      fetchUserProfile: {
+        let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
+        let userProfile = responseData.toProfileDomain()
+        return userProfile
       }
     )
   }
-}
-
-extension ProfileClient {
-  static public var previewValue = Self(
-    checkExistIntroduction: { false },
-    registerIntroduction: { introduction in }
-    )
 }
 
 extension DependencyValues {

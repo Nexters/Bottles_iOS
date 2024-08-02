@@ -70,7 +70,7 @@ public struct ProfileResponseDTO: Decodable {
     }
   }
   
-  func toProfileDomain() -> UserProfile? {
+  public func toProfileDomain() -> UserProfile {
     guard let profileSelect = profileSelect else {
       return UserProfile(
         mbti: "",

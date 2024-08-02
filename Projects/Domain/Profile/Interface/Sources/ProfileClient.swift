@@ -11,12 +11,16 @@ import ComposableArchitecture
 public struct ProfileClient {
   private var checkExistIntroduction: () async throws -> Bool
   private var registerIntroduction: (String) async throws -> Void
+  private var fetchUserProfile: () async throws -> UserProfile
+  
   public init(
     checkExistIntroduction: @escaping () async throws -> Bool,
-    registerIntroduction: @escaping (String) async throws -> Void
+    registerIntroduction: @escaping (String) async throws -> Void,
+    fetchUserProfile: @escaping () async throws -> UserProfile
   ) {
     self.checkExistIntroduction = checkExistIntroduction
     self.registerIntroduction = registerIntroduction
+    self.fetchUserProfile = fetchUserProfile
   }
   
   public func checkExistIntroduction() async throws -> Bool {
@@ -25,5 +29,9 @@ public struct ProfileClient {
   
   public func registerIntroduction(answer: String) async throws -> Void {
     try await registerIntroduction(answer)
+  }
+  
+  public func fetchUserProfile() async throws -> UserProfile {
+    try await fetchUserProfile()
   }
 }
