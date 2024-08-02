@@ -7,84 +7,26 @@
 
 import Foundation
 
-import DomainAuthInterface
 import CoreLoggerInterface
 
-import KakaoSDKUser
 import ComposableArchitecture
 
-extension LoginManager: DependencyKey {
-  static public let liveValue: LoginManager = .live()
-  
-  static public func live() -> Self {
-    return .init(
-      signIn: { loginType in
-        switch loginType {
-        case .kakao:
-          return try await signInWithKakao()
-        case .sms:
-          return ""
-        }
-      }
-    )
-  }
-}
-
-extension DependencyValues {
-  public var loginManager: LoginManager {
-    get { self[LoginManager.self] }
-    set { self[LoginManager.self] = newValue }
-  }
-}
-
-// MARK: - Kakao SignIn Methods
-extension LoginManager {  
-  @MainActor
-  private static func signInWithKakao() async throws -> String {
-    var accessToken = ""
-    if UserApi.isKakaoTalkLoginAvailable() {
-      accessToken = try await loginWithKakaoTalk()
-    } else {
-      accessToken = try await loginWithKakaoAccount()
-    }
-    
-    return accessToken
+public struct LoginManager {
+  public enum LoginType {
+    case kakao
+    case sms
   }
   
-  @MainActor
-  private static func loginWithKakaoTalk() async throws -> String {
-    return try await withCheckedThrowingContinuation { continuation in
-      UserApi.shared.loginWithKakaoTalk { oauthToken, error in
-        if let error = error {
-          Log.error(error)
-          continuation.resume(throwing: error)
-        } else if let token = oauthToken?.accessToken {
-          Log.debug("Received accessToken: \(token)")
-          continuation.resume(returning: token)
-        } else {
-          continuation.resume(throwing: URLError(.badServerResponse))
-          Log.error("Kakao Login Error")
-        }
-      }
-    }
+  private var signIn: (_ loginType: LoginType) async throws -> String
+
+  public init(signIn: @escaping (_ loginType: LoginType) async throws -> String) {
+    self.signIn = signIn
   }
   
-  @MainActor
-  private static func loginWithKakaoAccount() async throws -> String {
-    return try await withCheckedThrowingContinuation { continuation in
-      UserApi.shared.loginWithKakaoAccount { oauthToken, error in
-        if let error = error {
-          Log.error(error)
-          continuation.resume(throwing: error)
-        } else if let token = oauthToken?.accessToken {
-          Log.debug("Received accessToken: \(token)")
-          continuation.resume(returning: token)
-        } else {
-          continuation.resume(throwing: URLError(.badServerResponse))
-          Log.error("Kakao Login Error")
-        }
-      }
-    }
+  /// 로그인 타입에 따라 Provider로 부터 받은 AuthToken & AccessToken을 반환합니다.
+  /// - Parameters:
+  ///   - loginType: 로그인하는 Type
+  public func signIn(loginType: LoginType) async throws -> String {
+    try await signIn(loginType)
   }
 }
-

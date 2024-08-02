@@ -29,16 +29,68 @@ public struct ProfileResponseDTO: Decodable {
     let mbti: String?
     let region: RegionDTO?
     let religion, smoking: String?
+    
+    public func toDomain() -> UserProfile {
+      return .init(
+        mbti: mbti ?? "",
+        keyword: keyword ?? [],
+        interset: interest?.toDomain() ?? 
+        UserInterest(culture: [], sports: [], entertainment: [], etc: []),
+        job: job ?? "",
+        smoke: smoking ?? "",
+        alcohol: alcohol ?? "",
+        region: region?.toDomain() ?? 
+        UserRegion(city: "", state: "")
+      )
+    }
   }
 
   // MARK: - Interest
   struct InterestDTO: Decodable {
     let culture, entertainment, etc, sports: [String]?
+    
+    public func toDomain() -> UserInterest {
+      return .init(
+        culture: culture,
+        sports: sports,
+        entertainment: entertainment,
+        etc: etc)
+    }
   }
 
   // MARK: - Region
   struct RegionDTO: Decodable {
     let city, state: String?
+    
+    func toDomain() -> UserRegion {
+      return .init(
+        city: city ?? "",
+        state: state ?? ""
+      )
+    }
+  }
+  
+  public func toProfileDomain() -> UserProfile {
+    guard let profileSelect = profileSelect else {
+      return UserProfile(
+        mbti: "",
+        keyword: [],
+        interset: UserInterest(
+          culture: nil, 
+          sports: nil,
+          entertainment: nil,
+          etc: nil
+        ),
+        job: "",
+        smoke: "",
+        alcohol: "",
+        region: UserRegion(
+          city: "", 
+          state: ""
+        )
+      )
+    }
+    return profileSelect.toDomain()
   }
 }
 

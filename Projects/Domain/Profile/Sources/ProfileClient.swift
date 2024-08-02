@@ -19,16 +19,26 @@ extension ProfileClient: DependencyKey {
     
     return .init(
       checkExistIntroduction: {
-        let profile = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
-        return profile.introduction != nil ? true : false
+        let isExistIntroduction = try await networkManager.reqeust(api: .apiType(ProfileAPI.checkIntroduction), dto: IntroductionExistResponseDTO.self)
+        guard let isExist = isExistIntroduction.isExist else { return false }
+        return isExist
+      },
+      registerIntroduction: { answer in
+        let requestData = RegisterIntroductionRequestDTO(answer: answer, question: "")
+        try await networkManager.reqeust(
+          api: .apiType(ProfileAPI.registerIntroduction(requestData: requestData))
+        )
+      },
+      fetchUserProfile: {
+        let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
+        let userProfile = responseData.toProfileDomain()
+        return userProfile
+      },
+      uploadProfileImage: { imageData in
+        try await networkManager.reqeust(api: .apiType(ProfileAPI.uploadProfileImage(data: imageData)))
       }
     )
   }
-}
-
-extension ProfileClient {
-  static public var previewValue = Self(
-    checkExistIntroduction: { false })
 }
 
 extension DependencyValues {
