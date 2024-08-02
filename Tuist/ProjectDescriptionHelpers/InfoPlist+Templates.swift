@@ -29,6 +29,9 @@ public extension InfoPlist {
                 ]
             ],
             "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)",
+            "BASE_URL": "$(BASE_URL)",
+            "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
+            "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)"
         ])
     }
     
@@ -39,20 +42,7 @@ public extension InfoPlist {
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
-            "BASE_URL": "$(BASE_URL)",
-            "LSApplicationQueriesSchemes": ["kakaokompassauth"],
-            "CFBundleURLTypes": [
-                [
-                    "CFBundleTypeRole": "Editor",
-                    "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)://oauth"]
-                ],
-                
-                [
-                    "CFBundleTypeRole": "Editor",
-                    "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)"]
-                ]
-            ],
-            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)",
+            "BASE_URL": "$(BASE_URL)"
         ])
     }
 }
