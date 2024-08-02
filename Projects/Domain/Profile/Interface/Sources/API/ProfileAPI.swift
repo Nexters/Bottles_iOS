@@ -12,6 +12,7 @@ import Moya
 public enum ProfileAPI {
   case fetchProfile
   case registerIntroduction(requestData: RegisterIntroductionRequestDTO)
+  case checkIntroduction
 }
 
 extension ProfileAPI: BaseTargetType {
@@ -21,6 +22,8 @@ extension ProfileAPI: BaseTargetType {
       return "api/v1/profile"
     case .registerIntroduction:
       return "api/v1/profile/introduction"
+    case .checkIntroduction:
+      return "api/v1/profile/introduction/exist"
     }
   }
   
@@ -30,6 +33,8 @@ extension ProfileAPI: BaseTargetType {
       return .get
     case .registerIntroduction: 
       return .post
+    case .checkIntroduction:
+      return .get
     }
   }
   
@@ -39,6 +44,8 @@ extension ProfileAPI: BaseTargetType {
       return .requestPlain
     case .registerIntroduction(let requestData):
       return .requestJSONEncodable(requestData)
+    case .checkIntroduction:
+      return .requestPlain
     }
   }
 }
