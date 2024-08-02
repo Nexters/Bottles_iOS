@@ -16,8 +16,8 @@ public struct ClipListContainerView: View {
   
   public var body: some View {
     VStack(spacing: .xl) {
-      ForEach(clipItemList, id: \.self) { clip in
-        ClipListView(title: clip.title, tagList: clip.list)
+      ForEach(clipItemList, id: \.self) { clipItem in
+        ClipListView(clipItem: clipItem)
       }
     }
     .padding(.horizontal, .md)

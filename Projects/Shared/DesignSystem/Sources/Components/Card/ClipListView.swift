@@ -8,12 +8,10 @@
 import SwiftUI
 
 public struct ClipListView: View {
-  private let title: String
-  private let tagList: [String]
+  private let clipItem: ClipItem
   
-  public init(title: String, tagList: [String]) {
-    self.title = title
-    self.tagList = tagList
+  public init(clipItem: ClipItem) {
+    self.clipItem = clipItem
   }
   
   public var body: some View {
@@ -30,7 +28,7 @@ public struct ClipListView: View {
 private extension ClipListView {
   var titleText: some View {
     WantedSansStyleText(
-      title,
+      clipItem.title,
       style: .subTitle2,
       color: .tertiary
     )
@@ -38,7 +36,7 @@ private extension ClipListView {
   
   var clipList: some View {
     ClipListLayout() {
-      ForEach(tagList, id: \.self) { item in
+      ForEach(clipItem.list, id: \.self) { item in
         WantedSansStyleText(
           item,
           style: .body,
