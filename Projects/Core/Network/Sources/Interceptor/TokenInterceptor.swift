@@ -14,17 +14,14 @@ import Alamofire
 import Dependencies
 
 
-public struct TokenInterceptor: RequestInterceptor {
+public class TokenInterceptor: RequestInterceptor {
   public static let shared = TokenInterceptor()
-  private let lock = NSLock()
+  private var isRefreshing = false
   
   public init() {}
   
   public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
     var urlRequest = urlRequest
-    lock.lock()
-    defer { lock.unlock() }
-    
     if let pathComponents = urlRequest.url?.pathComponents, pathComponents.contains("refresh") {
       let refreshToken = KeyChainTokenStore.shared.load(property: .refreshToken)
       urlRequest.setValue("Bearer \(refreshToken)", forHTTPHeaderField: "Authorization")
@@ -44,8 +41,6 @@ public struct TokenInterceptor: RequestInterceptor {
       completion(.doNotRetryWithError(error))
       return
     }
-    lock.lock()
-    defer { lock.unlock() }
     
     // header에 있는 token과 Local token 불일치 -> retry
     let accessToken = "Bearer \(KeyChainTokenStore.shared.load(property: .accessToken))"
@@ -55,22 +50,30 @@ public struct TokenInterceptor: RequestInterceptor {
       completion(.retry)
       return
     }
-        
+    
+    // 토큰 재발행 요청중인 경우 들어온 401 응답 -> retry
+    if isRefreshing {
+      completion(.retry)
+      return
+    }
+    
+    isRefreshing = true
+    
     @Dependency(\.network) var networkManager
         
     Task {
       do {
-        let refreshToken = KeyChainTokenStore.shared.load(property: .refreshToken)
         let token = try await networkManager.reqeust(api: .apiType(RefreshAPI.refresh), dto: RefreshResponseDTO.self)
         
-        guard let accessToken = token.accessToken,
-              let refreshToken = token.refreshToken else {
+        guard let newAccessToken = token.accessToken,
+              let newRefreshToken = token.refreshToken else {
           completion(.doNotRetry)
           return
         }
         
-        KeyChainTokenStore.shared.save(property: .accessToken, value: accessToken)
-        KeyChainTokenStore.shared.save(property: .refreshToken, value: refreshToken)
+        KeyChainTokenStore.shared.save(property: .accessToken, value: newAccessToken)
+        KeyChainTokenStore.shared.save(property: .refreshToken, value: newRefreshToken)
+        self.isRefreshing = false
         completion(.retry)
       } catch {
         completion(.doNotRetry)
