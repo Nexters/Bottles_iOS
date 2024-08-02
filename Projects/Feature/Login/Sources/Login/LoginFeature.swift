@@ -30,13 +30,25 @@ extension LoginFeature {
             }
           ))
         }
-      case let .signInKakaoResponse(.success(token)):
+      case let .signInKakaoResponse(.success(userInfo)):
+        let token = userInfo.token
+        Log.debug(token)
         authClient.saveToken(token: token)
-        return .none
-      // TODO: - SNS 로그인화면으로 이동.
-      // 카카오 로그인 취소하면 해당 Action으로 옴
+        let isSignUp = userInfo.isSignUp
+        return .send(.signUpCheckCompleted(isSignUp: isSignUp))
       case let .signInKakaoResponse(.failure(error)):
+        // TODO: - SNS 로그인화면으로 이동.
         return .none
+      case let .signUpCheckCompleted(isSignUp):
+        if isSignUp {
+          // TODO: TabView로 이동
+          Log.debug(isSignUp)
+          return .none
+        } else {
+          // TODO: OnboardingView로 이동
+          Log.debug(isSignUp)
+          return .none
+        }
       }
     }
     self.init(reducer: reducer)

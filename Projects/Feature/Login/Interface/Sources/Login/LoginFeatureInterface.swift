@@ -26,7 +26,8 @@ public struct LoginFeature {
   public enum Action {
     case onAppear
     case signInKakaoRequest
-    case signInKakaoResponse(TaskResult<Token>)
+    case signInKakaoResponse(TaskResult<UserInfo>)
+    case signUpCheckCompleted(isSignUp: Bool)
   }
   
   public var body: some ReducerOf<Self> {

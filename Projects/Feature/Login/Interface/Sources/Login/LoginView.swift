@@ -37,7 +37,6 @@ public extension LoginView {
   var mainText: some View {
     LaundryGothicStyleText("진심을 담은 보틀로\n서로를 밀도있게 알아가요", style: .title1, color: .primary)
       .padding(.horizontal, .md)
-      .border(.red)
       .multilineTextAlignment(.center)
   }
   
@@ -47,7 +46,6 @@ public extension LoginView {
       downsamplingWidth: 180,
       downsamplingHeight: 180))
     .frame(width: 180, height: 180)
-    .border(.red)
   }
   
   // TODO: 카카오 로그인 버튼 Style로 수정

@@ -14,6 +14,7 @@ import CoreLoggerInterface
 import CoreKeyChainStore
 
 import ComposableArchitecture
+import KakaoSDKUser
 
 @Reducer
 public struct AppFeature {
@@ -64,7 +65,7 @@ public struct AppFeature {
     case .onAppear:
       return .run(operation: { send in
         let isLoggedIn = authClient.checkTokenIsExist()
-        await send(.loginCheckComplted(isLoggedIn: true), animation: .default)
+        await send(.loginCheckComplted(isLoggedIn: isLoggedIn), animation: .default)
         
         // 로그인 상태인 경우 SandBeachFeature.State 업데이트
         if isLoggedIn {
