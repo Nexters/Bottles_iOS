@@ -62,23 +62,20 @@ public struct AppFeature {
   ) -> EffectOf<Self> {
     switch action {
     case .onAppear:
-      return .run { send in
-        do {
-          let isLoggedIn = authClient.checkTokenIsExist()
-          await send(.loginCheckComplted(isLoggedIn: isLoggedIn), animation: .default)
-          
-          // 로그인 상태인 경우 SandBeachFeature.State 업데이트
-          if isLoggedIn {
-            let userState = try await checkUserState()
-            await send(.userStateCheckCompleted(userState))
-            
-            Log.debug(userState)
-          }
-        } catch {
-          // TODO: error 처리
-          await send(.loginCheckComplted(isLoggedIn: false), animation: .default)
+      return .run(operation: { send in
+        let isLoggedIn = authClient.checkTokenIsExist()
+        await send(.loginCheckComplted(isLoggedIn: true), animation: .default)
+        
+        // 로그인 상태인 경우 SandBeachFeature.State 업데이트
+        if isLoggedIn {
+          let userState = try await checkUserState()
+          await send(.userStateCheckCompleted(userState))
         }
-      }
+      }, catch: { error, send in
+        KeyChainTokenStore.shared.deleteAll()
+        await send(.loginCheckComplted(isLoggedIn: false), animation: .default)
+      })
+      
       
     case let .loginCheckComplted(isLoggedIn):
       switch isLoggedIn {
