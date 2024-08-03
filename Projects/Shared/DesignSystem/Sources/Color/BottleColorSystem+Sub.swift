@@ -20,13 +20,13 @@ extension Color.BottleColorSystem.Sub {
   var color: Color {
     switch self {
     case .black:
-      return Color(asset: SharedDesignSystemAsset.black100)
+      return Color(asset: SharedDesignSystemAsset.Colors.black100)
     case .gradient:
-      return Color(asset: SharedDesignSystemAsset.gradient)
+      return Color(asset: SharedDesignSystemAsset.Colors.gradient)
     case .red:
-      return Color(asset: SharedDesignSystemAsset.red)
+      return Color(asset: SharedDesignSystemAsset.Colors.red)
     case .white:
-      return Color(asset: SharedDesignSystemAsset.white100)
+      return Color(asset: SharedDesignSystemAsset.Colors.white100)
     }
   }
 }
