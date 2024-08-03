@@ -11,6 +11,6 @@ public extension Project {
     enum Environment {
         public static let appName = "Bottle"
         public static let deploymentTarget = DeploymentTargets.iOS("16.0")
-        public static let bundlePrefix = "com.bottles.bottle"
+        public static let bundlePrefix = "asia.bottles"
     }
 }
