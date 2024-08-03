@@ -21,15 +21,15 @@ extension Color.BottleColorSystem.Primary {
   var color: Color {
     switch self {
     case .purple100:
-      return Color(asset: SharedDesignSystemAsset.primaryPurple100)
+      return Color(asset: SharedDesignSystemAsset.Colors.primaryPurple100)
     case .purple200:
-      return Color(asset: SharedDesignSystemAsset.primaryPurple200)
+      return Color(asset: SharedDesignSystemAsset.Colors.primaryPurple200)
     case .purple300:
-      return Color(asset: SharedDesignSystemAsset.primaryPurple300)
+      return Color(asset: SharedDesignSystemAsset.Colors.primaryPurple300)
     case .purple400:
-      return Color(asset: SharedDesignSystemAsset.primaryPurple400)
+      return Color(asset: SharedDesignSystemAsset.Colors.primaryPurple400)
     case .purple500:
-      return Color(asset: SharedDesignSystemAsset.primaryPurple500)
+      return Color(asset: SharedDesignSystemAsset.Colors.primaryPurple500)
     }
   }
 }

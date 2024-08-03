@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import CoreLoggerInterface
-
 struct ClipListLayout: Layout {
   var spacing: Spacer.BottleSpacingType = .xs
   var rowSpacing: Spacer.BottleSpacingType = .sm

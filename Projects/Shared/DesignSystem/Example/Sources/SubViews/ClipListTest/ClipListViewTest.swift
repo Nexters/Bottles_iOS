@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import SharedDesignSystem
+
 public struct ClipListViewTest: View {
   public init() {}
   public var body: some View {
