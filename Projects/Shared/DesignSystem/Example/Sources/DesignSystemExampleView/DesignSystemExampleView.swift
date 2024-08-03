@@ -143,6 +143,33 @@ struct EtcSection: View {
             PageIndicatorTestView(),
           label: { Text("PageIndicator") }
         )
+        
+        NavigationLink(
+          destination:
+            VStack(spacing: .xl) {
+              
+              TitleView(title: "TitleTitleTitleTitleTitle")
+              .frame(maxWidth: .infinity)
+              .border(.red)
+              
+              
+              TitleView(title: "TitleTitleTitleTitleTitle", caption: "CaptionCaptionCaptionCaption")
+              .frame(maxWidth: .infinity)
+              .border(.red)
+              
+              
+              TitleView(pageInfo: PageInfo(nowPage: 1, totalCount: 2), title: "TitleTitleTitleTitleTitle", caption: "CaptionCaptionCaptionCaption")
+              .frame(maxWidth: .infinity)
+              .border(.red)
+              
+              
+              TitleView(pageInfo: PageInfo(nowPage: 1, totalCount: 2), title: "TitleTitleTitleTitleTitle")
+              .frame(maxWidth: .infinity)
+              .border(.red)
+            }
+          ,
+          label: { Text("TitleView With Only Title") }
+        )
       },
       header: {
         Text("ETC")

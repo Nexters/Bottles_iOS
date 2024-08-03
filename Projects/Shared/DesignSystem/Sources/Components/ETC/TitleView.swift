@@ -78,10 +78,7 @@ private extension TitleView {
   @ViewBuilder
   var pageIndicator: some View {
     if let pageInfo {
-      PageIndicatorView(
-        nowNumber: pageInfo.nowPage,
-        totalCount: pageInfo.totalCount
-      )
+      PageIndicatorView(pageInfo: pageInfo)
     } else {
       EmptyView()
     }
