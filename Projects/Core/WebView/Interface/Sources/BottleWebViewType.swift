@@ -1,5 +1,5 @@
 //
-//  WebViewURL.swift
+//  BottleWebViewType.swift
 //  CoreUtilInterface
 //
 //  Created by JongHoon on 8/2/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum WebViewURL {
+public enum BottleWebViewType {
   private var baseURL: String {
     (Bundle.main.infoDictionary?["WEB_VIEW_BASE_URL"] as? String) ?? ""
   }
@@ -27,6 +27,13 @@ public enum WebViewURL {
       return URL(string: baseURL + "/signup")!
     case .login:
       return URL(string: baseURL + "/login")!
+    }
+  }
+  
+  public var messageHandler: WebViewMessageHandler {
+    switch self {
+    default:
+      return .default
     }
   }
 }

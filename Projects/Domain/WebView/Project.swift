@@ -3,39 +3,35 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: ModulePath.Core.name+ModulePath.Core.WebView.rawValue,
+    name: ModulePath.Domain.name+ModulePath.Domain.WebView.rawValue,
     targets: [    
-        .core(
+        .domain(
             interface: .WebView,
-            factory: .init(
-              dependencies: [
-                  .shared(implements: .ThirdPartyLib)
-              ]
-            )
+            factory: .init()
         ),
-        .core(
+        .domain(
             implements: .WebView,
             factory: .init(
                 dependencies: [
-                    .core(interface: .WebView)
+                    .domain(interface: .WebView)
                 ]
             )
         ),
     
-        .core(
+        .domain(
             testing: .WebView,
             factory: .init(
                 dependencies: [
-                    .core(interface: .WebView)
+                    .domain(interface: .WebView)
                 ]
             )
         ),
-        .core(
+        .domain(
             tests: .WebView,
             factory: .init(
                 dependencies: [
-                    .core(testing: .WebView),
-                    .core(implements: .WebView)
+                    .domain(testing: .WebView),
+                    .domain(implements: .WebView)
                 ]
             )
         ),

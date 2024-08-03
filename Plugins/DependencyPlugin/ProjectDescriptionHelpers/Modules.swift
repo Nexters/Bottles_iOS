@@ -27,6 +27,7 @@ public extension ModulePath {
 // MARK: - FeatureModule
 public extension ModulePath {
     enum Feature: String, CaseIterable {
+        case BaseWebView
         case Onboarding
         case MyPage
         case BottleStorage
@@ -41,6 +42,7 @@ public extension ModulePath {
 
 public extension ModulePath {
     enum Domain: String, CaseIterable {
+        case WebView
         case Bottle
         case Profile
         case Auth

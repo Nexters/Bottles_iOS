@@ -8,6 +8,7 @@
 import Foundation
 
 import FeatureOnboardingInterface
+import CoreLoggerInterface
 
 import ComposableArchitecture
 
@@ -17,6 +18,10 @@ extension OnboardingFeature
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
+        return .none
+        
+      case let .webViewActionInputted(action):
+        Log.debug(action)
         return .none
       }
     }

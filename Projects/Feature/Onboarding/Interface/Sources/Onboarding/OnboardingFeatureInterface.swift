@@ -7,6 +7,8 @@
 
 import Foundation
 
+import CoreWebViewInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -23,6 +25,7 @@ public struct OnboardingFeature {
   
   public enum Action {
     case onAppear
+    case webViewActionInputted(BottleWebViewAction)
   }
   
   public var body: some ReducerOf<Self> {
