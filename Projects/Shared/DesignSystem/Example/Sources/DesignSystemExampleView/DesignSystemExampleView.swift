@@ -170,6 +170,15 @@ struct EtcSection: View {
           ,
           label: { Text("TitleView With Only Title") }
         )
+        
+        NavigationLink(
+          destination:
+            ImagePickerButton()
+            .asDebounceButton {}
+            .padding(.xl)
+          ,
+          label: { Text("ImagePickerButton") }
+        )
       },
       header: {
         Text("ETC")
