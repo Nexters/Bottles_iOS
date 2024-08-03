@@ -20,4 +20,9 @@ public protocol NetworkManagable<APIType> {
   /// - Parameters:
   ///   - api: BaseTargetType을 준수하는 API
   func reqeust(api: APIType) async throws
+  
+  /// Endpoint의 Authorization HTTPHeader 추가하는 메소드
+  /// - Parameters:
+  ///   - token: AccessToken or RefreshToken
+  func addAuthorizationHeader(token: String)
 }

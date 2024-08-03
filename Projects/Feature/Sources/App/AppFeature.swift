@@ -10,13 +10,17 @@ import Foundation
 import FeatureLoginInterface
 import FeatureSandBeachInterface
 import FeatureLogin
+import CoreLoggerInterface
+import CoreKeyChainStore
 
 import ComposableArchitecture
+import KakaoSDKUser
 
 @Reducer
 public struct AppFeature {
   @Dependency(\.profileClient) var profileClient
   @Dependency(\.bottleClient) var bottleClient
+  @Dependency(\.authClient) var authClient
   
   @ObservableState
   public struct State: Equatable {
@@ -59,30 +63,20 @@ public struct AppFeature {
   ) -> EffectOf<Self> {
     switch action {
     case .onAppear:
-      return .run { send in
-        do {
-          // TODO: - Login 상태 처리
-          let isLoggedIn = true
-          await send(.loginCheckComplted(isLoggedIn: isLoggedIn), animation: .default)
-          
-          let isExistIntroduction = try await profileClient.checkExistIntroduction()
-
-          if !isExistIntroduction {
-            await send(.userStateCheckCompleted(.noIntroduction))
-          } else {
-            let bottlesCount = try await bottleClient.fetchNewBottlesCount()
-            guard let count = bottlesCount else {
-              await send(.userStateCheckCompleted(.noBottle))
-              return
-            }
-            await send(.userStateCheckCompleted(.hasBottle(bottleCount: count)))
-          }
-          
-        } catch {
-          await send(.loginCheckComplted(isLoggedIn: true), animation: .default)
-          await send(.userStateCheckCompleted(.noIntroduction))
+      return .run(operation: { send in
+        let isLoggedIn = authClient.checkTokenIsExist()
+        await send(.loginCheckComplted(isLoggedIn: isLoggedIn), animation: .default)
+        
+        // 로그인 상태인 경우 SandBeachFeature.State 업데이트
+        if isLoggedIn {
+          let userState = try await checkUserState()
+          await send(.userStateCheckCompleted(userState))
         }
-      }
+      }, catch: { error, send in
+        KeyChainTokenStore.shared.deleteAll()
+        await send(.loginCheckComplted(isLoggedIn: false), animation: .default)
+      })
+      
       
     case let .loginCheckComplted(isLoggedIn):
       switch isLoggedIn {
@@ -104,5 +98,16 @@ public struct AppFeature {
     case .login:
       return .none
     }
+  }
+}
+
+// MARK: - Private Extension
+private extension AppFeature {
+  func checkUserState() async throws -> SandBeachFeature.UserStateType {
+    let isExistIntroduction = try await profileClient.checkExistIntroduction()
+    if isExistIntroduction { return .noIntroduction }
+    let bottlesCount = try await bottleClient.fetchNewBottlesCount()
+    guard let count = bottlesCount else { return .noBottle }
+    return .hasBottle(bottleCount: count)
   }
 }

@@ -9,15 +9,18 @@ import Foundation
 import CoreNetworkInterface
 import Moya
 
-struct Provider<APIType: BaseTargetType>: Providable {
-  private let moyaProvider: MoyaProvider<APIType>
+final class Provider<APIType: BaseTargetType>: Providable {
+  private var moyaProvider: MoyaProvider<APIType>
   
   public init(moyaProvider: MoyaProvider<APIType>) {
     self.moyaProvider = moyaProvider
   }
 
-  public init() {
-    self.moyaProvider = MoyaProvider<APIType>(plugins: [MoyaLoggerPlugin()])
+  public init() {    
+    self.moyaProvider = MoyaProvider<APIType>.init(
+      session: Session(interceptor: TokenInterceptor.shared),
+      plugins: [MoyaLoggerPlugin()]
+    )
   }
   
   func reqeust(api: APIType) async throws -> Response {
@@ -37,4 +40,27 @@ struct Provider<APIType: BaseTargetType>: Providable {
       }
     }
   }
+  
+  func addAuthorizationHeader(token: String) {
+    let provider = MoyaProvider<APIType>(
+      endpointClosure: endpointClouser(token: token),
+      session: Session(interceptor: TokenInterceptor.shared),
+      plugins: [MoyaLoggerPlugin()]
+    )
+    
+    moyaProvider = provider
+  }
 }
+
+// MARK: - Private Extension
+private extension Provider {
+  func endpointClouser(token: String) -> MoyaProvider<APIType>.EndpointClosure {
+    return { (targetType: APIType) -> Endpoint in
+      var endpoint = MoyaProvider.defaultEndpointMapping(for: targetType)
+      endpoint = endpoint.adding(newHTTPHeaderFields: ["Authorization": "Bearer \(token)"])
+      return endpoint
+    }
+  }
+}
+
+
