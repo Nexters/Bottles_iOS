@@ -8,21 +8,16 @@
 import SwiftUI
 
 public struct PageIndicatorView: View {
-  private var nowNumber: Int
-  private var totalCount: Int
+  private var pageInfo: PageInfo
   
-  public init(
-    nowNumber: Int,
-    totalCount: Int
-  ) {
-    self.nowNumber = nowNumber
-    self.totalCount = totalCount
+  public init(pageInfo: PageInfo) {
+    self.pageInfo = pageInfo
   }
   
   public var body: some View {
     HStack(spacing: .xxs) {
       WantedSansStyleText(
-        "\(nowNumber)",
+        "\(pageInfo.nowPage)",
         style: .subTitle2,
         color: .quinary
       )
@@ -35,7 +30,7 @@ public struct PageIndicatorView: View {
       )
       
       WantedSansStyleText(
-        "\(totalCount)",
+        "\(pageInfo.totalCount)",
         style: .subTitle2,
         color: .senary
       )

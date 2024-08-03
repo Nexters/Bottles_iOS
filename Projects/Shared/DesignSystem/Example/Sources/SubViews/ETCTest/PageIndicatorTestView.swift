@@ -13,7 +13,12 @@ public struct PageIndicatorTestView: View {
   public init() {}
   
   public var body: some View {
-    PageIndicatorView(nowNumber: 1, totalCount: 2)
+    PageIndicatorView(
+      pageInfo: PageInfo(
+        nowPage: 1,
+        totalCount: 2
+      )
+    )
   }
 }
 
