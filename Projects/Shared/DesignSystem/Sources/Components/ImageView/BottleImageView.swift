@@ -16,8 +16,8 @@ public struct BottleImageView: View {
   
   public var body: some View {
     switch type {
-    case let .local(imageNmae):
-      LocalImageView(imageName: imageNmae)
+    case let .local(bottleImageSystem):
+      LocalImageView(bottleImageSystem)
       
     case let .remote(url, downsamplingWidth, downsamplingHeight):
       RemoteImageView(

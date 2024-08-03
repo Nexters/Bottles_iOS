@@ -54,7 +54,7 @@ public extension OutlinedStyleButton {
       
       public enum ImageType {
         case remote(url: String)
-        case local(imageName: String)
+        case local(bottleImageSystem: Image.BottleImageSystem)
       }
     }
   }
@@ -137,11 +137,11 @@ private extension OutlinedStyleButton {
           
         default:
           assertionFailure("Wrong Image Configuration")
-          return .local(imageNmae: "no")
+          return .local(bottleImageSystem: .icom(.siren))
         }
             
-      case let .local(imageName):
-        return .local(imageNmae: imageName)
+      case let .local(bottleImageSystem):
+        return .local(bottleImageSystem: bottleImageSystem)
       }
     }
     
