@@ -21,8 +21,7 @@ public struct OnboardingView: View {
   }
   
   public var body: some View {
-    BaseWebView<OnboardingFeature>(
-      store: store,
+    BaseWebView(
       type: .createProfile,
       actionDidInputted: { action in
         store.send(.webViewActionInputted(action))

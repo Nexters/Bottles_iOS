@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import FeatureBaseWebViewInterface
+
 import ComposableArchitecture
 
 public struct MyPageView: View {
@@ -17,6 +19,12 @@ public struct MyPageView: View {
   }
   
   public var body: some View {
-    Text("My Page view")
+    BaseWebView(
+      type: .myPage,
+      isScrollEnabled: true
+    ) { action in
+      
+    }
+    .ignoresSafeArea()
   }
 }

@@ -13,19 +13,19 @@ import DomainWebView
 
 import ComposableArchitecture
 
-public struct BaseWebView<R: Reducer>: UIViewRepresentable {
-  private var store: Store<R.State, R.Action>
+public struct BaseWebView: UIViewRepresentable {
   private let webView: WKWebView
   private let type: BottleWebViewType
+  private let isScrollEnabled: Bool
   private let actionDidInputted: ((BottleWebViewAction) -> Void)?
-
+  
   public init(
-    store: Store<R.State, R.Action>,
     type: BottleWebViewType,
+    isScrollEnabled: Bool = false,
     actionDidInputted: ((BottleWebViewAction) -> Void)? = nil
   ) {
-    self.store = store
     self.type = type
+    self.isScrollEnabled = isScrollEnabled
     self.actionDidInputted = actionDidInputted
     let preferences = WKPreferences()
     preferences.javaScriptCanOpenWindowsAutomatically = true
@@ -41,8 +41,8 @@ public struct BaseWebView<R: Reducer>: UIViewRepresentable {
       name: type.messageHandler.name
     )
     webView.navigationDelegate = context.coordinator
-    webView.scrollView.isScrollEnabled = false
-        
+    webView.scrollView.isScrollEnabled = isScrollEnabled
+    
     let request = URLRequest(url: type.url)
     webView.load(request)
     return webView
