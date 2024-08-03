@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-public struct LocalImageView:View {
+public struct LocalImageView: View {
   // TODO: 추후 이미지 관련 네임스페이스 처리 후 개선 필요
-  private let imageName: String
+  private let bottleImageSystem: Image.BottleImageSystem
   
   public init(
-    imageName: String
+    _ bottleImageSystem: Image.BottleImageSystem
   ) {
-    self.imageName = imageName
+    self.bottleImageSystem = bottleImageSystem
   }
   
   public var body: some View {
-    Image(imageName)
+    bottleImageSystem.image
   }
 }
