@@ -33,13 +33,14 @@ public struct AppFeature {
     }
   }
   
-  public enum Action {
+  public enum Action: BindableAction {
     case onAppear
     case loginCheckComplted(isLoggedIn: Bool)
     case userStateCheckCompleted(SandBeachFeature.UserStateType)
     case appDelegate(AppDelegateFeature.Action)
     case tabView(MainTabViewFeature.Action)
     case login(LoginFeature.Action)
+    case binding(BindingAction<State>)
   }
   
   public init() {}
@@ -96,6 +97,8 @@ public struct AppFeature {
       return .none
       
     case .login:
+      return .none
+    case .binding:
       return .none
     }
   }

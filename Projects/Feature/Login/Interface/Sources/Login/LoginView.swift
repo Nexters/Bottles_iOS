@@ -12,23 +12,36 @@ import SharedDesignSystem
 import ComposableArchitecture
 
 public struct LoginView: View {
-  let store: StoreOf<LoginFeature>
+  @Perception.Bindable private var store: StoreOf<LoginFeature>
   
   public init(store: StoreOf<LoginFeature>) {
     self.store = store
   }
   
   public var body: some View {
-    VStack(spacing: 0) {
-      Spacer()
-      mainText
-      Spacer()
-        .frame(height: 52)
-      bottleImage
-      Spacer()
-      signInWithKakaoButton
-      Spacer()
-        .frame(height: 21)
+    WithPerceptionTracking {
+      NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+        VStack(spacing: 0) {
+          Spacer()
+          mainText
+          Spacer()
+            .frame(height: 52)
+          bottleImage
+          Spacer()
+          signInWithKakaoButton
+          Spacer()
+            .frame(height: 21)
+        }
+      } destination: { store in
+        WithPerceptionTracking {
+          switch store.state {
+          case .generalLogin:
+            if let store = store.scope(state: \.generalLogin, action: \.generalLogin) {
+              GeneralLogInView(store: store)
+            }
+          }
+        }
+      }
     }
   }
 }
