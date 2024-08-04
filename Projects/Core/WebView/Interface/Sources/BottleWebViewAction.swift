@@ -20,7 +20,7 @@ public enum BottleWebViewAction: Equatable {
   // MARK: - SignUp
   
   /// 회원가입 성공 콜백
-  case signUpComplted(accessToken: String, refreshToken: String)
+  case signUpDidComplted(accessToken: String, refreshToken: String)
   
   // MARK: - LogIn
   
@@ -83,7 +83,7 @@ public enum BottleWebViewAction: Equatable {
         )
         return nil
       }
-      self = .signUpComplted(
+      self = .signUpDidComplted(
         accessToken: accessToken,
         refreshToken: refreshToken
       )
