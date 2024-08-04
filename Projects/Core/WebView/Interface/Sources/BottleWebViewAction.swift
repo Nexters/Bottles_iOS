@@ -13,7 +13,7 @@ public enum BottleWebViewAction: Equatable {
   /// 웹뷰 종료 호출
   case closeWebView
   /// 토스트 호출
-  case showTaost(mesage: String)
+  case showTaost(message: String)
   /// 토큰 전송
   case tokenDidSend(accessToken: String, refreshToken: String)
   
@@ -40,7 +40,7 @@ public enum BottleWebViewAction: Equatable {
   // MARK: - My Page
   
   /// 로그아웃 성공
-  case logoutDidCompleted
+  case logOutDidCompleted
   /// 회원탈퇴
   case withdrawalDidCompleted
   
@@ -57,7 +57,7 @@ public enum BottleWebViewAction: Equatable {
     case "onWebViewClose":
       self = .closeWebView
     case "onToastOpen":
-      self = .showTaost(mesage: message ?? "")
+      self = .showTaost(message: message ?? "")
     case "onTokenSend":
       guard let accessToken,
             let refreshToken
@@ -117,7 +117,7 @@ public enum BottleWebViewAction: Equatable {
     // MARK: - My Page
       
     case "logout":
-      self = .logoutDidCompleted
+      self = .logOutDidCompleted
       
     case "deleteUser":
       self = .withdrawalDidCompleted
