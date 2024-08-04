@@ -28,8 +28,8 @@ public struct MyPageView: View {
           store.send(.presentToastRequired(message: message))
         case .logOutDidCompleted:
           store.send(.logOutDidCompleted)
-        case .withdrawalDidCompleted:
-          store.send(.withdrawalDidCompleted)
+        case .withdrawalButtonDidTap:
+          store.send(.withdrawalButtonDidTap)
         default:
           break
         }

@@ -26,8 +26,8 @@ extension MyPageFeature {
         // TODO: log out handling
         return .none
         
-      case .withdrawalDidCompleted:
-        // TODO: withdarawal completed handling
+      case .withdrawalButtonDidTap:
+        // TODO: withdarawal handling
         return .none
       }
     }

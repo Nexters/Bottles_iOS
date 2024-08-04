@@ -25,7 +25,7 @@ public struct MyPageFeature {
     case onAppear
     case presentToastRequired(message: String)
     case logOutDidCompleted
-    case withdrawalDidCompleted
+    case withdrawalButtonDidTap
   }
   
   public var body: some ReducerOf<Self> {

@@ -42,7 +42,7 @@ public enum BottleWebViewAction: Equatable {
   /// 로그아웃 성공
   case logOutDidCompleted
   /// 회원탈퇴
-  case withdrawalDidCompleted
+  case withdrawalButtonDidTap
   
   public init?(
     type: String,
@@ -120,7 +120,7 @@ public enum BottleWebViewAction: Equatable {
       self = .logOutDidCompleted
       
     case "deleteUser":
-      self = .withdrawalDidCompleted
+      self = .withdrawalButtonDidTap
       
     default:
       return nil
