@@ -2,6 +2,7 @@ import SwiftUI
 
 import Feature
 import CoreLoggerInterface
+import SharedDesignSystem
 
 import ComposableArchitecture
 import KakaoSDKAuth
@@ -13,13 +14,14 @@ struct AppRoot: App {
   
   var body: some Scene {
     WindowGroup {
-      AppView(store: appDelegate.store)
-        .onOpenURL(perform: { url in
-          if (AuthApi.isKakaoTalkLoginUrl(url)) {
-            _ = AuthController.handleOpenUrl(url: url)
-          }
-        }
-      )
+      RootView {
+        AppView(store: appDelegate.store)
+          .onOpenURL(perform: { url in
+            if (AuthApi.isKakaoTalkLoginUrl(url)) {
+              _ = AuthController.handleOpenUrl(url: url)
+            }
+          })
+      }
     }
   }
 }
