@@ -103,16 +103,6 @@ private extension Log {
     
     #endif
   }
-  
-  static func assertion(message: Any?, level: Level, fileName: String, line: Int, funcName: StaticString) {
-    let logMessage = "\(message ?? "")"
-    assertionFailure(logMessage)
-  }
-  
-  static func fatal(message: Any?, level: Level, fileName: String, line: Int, funcName: StaticString) {
-    let logMessage = "\(message ?? "")"
-    fatalError(logMessage)
-  }
 }
 
 // MARK: - Public Methods
@@ -136,5 +126,17 @@ public extension Log {
   
   static func network(_ message: Any?, level: Level, fileName: String = #fileID) {
     simpleLog(message: message, level: level, fileName: fileName)
+  }
+  
+  static func assertion(message: Any?, level: Level = .fault, fileName: String = #fileID, line: Int = #line, funcName: StaticString = #function) {
+    let logMessage = "\(message ?? "")"
+    log(message: logMessage, level: level, fileName: fileName, line: line, funcName: funcName)
+    assertionFailure(logMessage)
+  }
+  
+  static func fatal(message: Any?, level: Level = .fault, fileName: String = #fileID, line: Int = #line, funcName: StaticString = #function) {
+    let logMessage = "\(message ?? "")"
+    log(message: message, level: level, fileName: fileName, line: line, funcName: funcName)
+    fatalError(logMessage)
   }
 }
