@@ -59,25 +59,49 @@ public enum BottleWebViewAction: Equatable {
     case "onToastOpen":
       self = .showTaost(mesage: message ?? "")
     case "onTokenSend":
+      guard let accessToken,
+            let refreshToken
+      else {
+        Log.assertion(
+          message: "accessToken: \(String(describing: accessToken)), refreshToken: \(String(describing: refreshToken))"
+        )
+        return nil
+      }
       self = .tokenDidSend(
-        accessToken: accessToken ?? "",
-        refreshToken: refreshToken ?? ""
+        accessToken: accessToken,
+        refreshToken: refreshToken
       )
       
     // MARK: - SignUp
       
     case "onSignup":
+      guard let accessToken,
+            let refreshToken
+      else {
+        Log.assertion(
+          message: "accessToken: \(String(describing: accessToken)), refreshToken: \(String(describing: refreshToken))"
+        )
+        return nil
+      }
       self = .signUpComplted(
-        accessToken: accessToken ?? "",
-        refreshToken: refreshToken ?? ""
+        accessToken: accessToken,
+        refreshToken: refreshToken
       )
       
     // MARK: - LogIn
       
     case "onLogin":
+      guard let accessToken,
+            let refreshToken
+      else {
+        Log.assertion(
+          message: "accessToken: \(String(describing: accessToken)), refreshToken: \(String(describing: refreshToken))"
+        )
+        return nil
+      }
       self = .loginDidCompleted(
-        accessToken: accessToken ?? "",
-        refreshToken: refreshToken ?? ""
+        accessToken: accessToken,
+        refreshToken: refreshToken
       )
             
     // MARK: - Onboarding(Create Profile)
