@@ -14,7 +14,7 @@ import FeatureSandBeachInterface
 import ComposableArchitecture
 
 public struct MainTabView: View {
-  @Bindable private var store: StoreOf<MainTabViewFeature>
+  @Perception.Bindable private var store: StoreOf<MainTabViewFeature>
 
   public init(store: StoreOf<MainTabViewFeature>) {
     self.store = store
