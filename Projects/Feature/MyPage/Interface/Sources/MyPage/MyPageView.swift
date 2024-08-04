@@ -12,7 +12,7 @@ import FeatureBaseWebViewInterface
 import ComposableArchitecture
 
 public struct MyPageView: View {
-  let store: StoreOf<MyPageFeature>
+  private let store: StoreOf<MyPageFeature>
   
   public init(store: StoreOf<MyPageFeature>) {
     self.store = store
@@ -21,10 +21,20 @@ public struct MyPageView: View {
   public var body: some View {
     BaseWebView(
       type: .myPage,
-      isScrollEnabled: true
-    ) { action in
-      
-    }
+      isScrollEnabled: true,
+      actionDidInputted: { action in
+        switch action {
+        case let .showTaost(message):
+          store.send(.presentToastRequired(message: message))
+        case .logOutDidCompleted:
+          store.send(.logOutDidCompleted)
+        case .withdrawalDidCompleted:
+          store.send(.withdrawalDidCompleted)
+        default:
+          break
+        }
+      }
+    )
     .ignoresSafeArea()
   }
 }
