@@ -24,7 +24,16 @@ public struct OnboardingView: View {
     BaseWebView(
       type: .createProfile,
       actionDidInputted: { action in
-        store.send(.webViewActionInputted(action))
+        switch action {
+        case .closeWebView:
+          store.send(.closeButtonDidTap)
+        case let .showTaost(message):
+          store.send(.presentToastDidRequired(message: message))
+        case .createProfileDidCompleted:
+          store.send(.createProfileDidCompleted)
+        default:
+          break
+        }
       }
     )
     .ignoresSafeArea()

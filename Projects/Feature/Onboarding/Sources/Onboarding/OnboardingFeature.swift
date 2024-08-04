@@ -20,8 +20,16 @@ extension OnboardingFeature
       case .onAppear:
         return .none
         
-      case let .webViewActionInputted(action):
-        Log.debug(action)
+      case .closeButtonDidTap:
+        // TODO: close webview
+        return .none
+        
+      case let .presentToastDidRequired(message):
+        // TODO: present toast
+        return .none
+        
+      case .createProfileDidCompleted:
+        // TODO: present main tab view
         return .none
       }
     }

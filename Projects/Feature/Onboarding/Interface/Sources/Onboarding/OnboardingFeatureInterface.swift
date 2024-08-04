@@ -25,7 +25,9 @@ public struct OnboardingFeature {
   
   public enum Action {
     case onAppear
-    case webViewActionInputted(BottleWebViewAction)
+    case closeButtonDidTap
+    case presentToastDidRequired(message: String)
+    case createProfileDidCompleted
   }
   
   public var body: some ReducerOf<Self> {
