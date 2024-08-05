@@ -29,6 +29,7 @@ public extension ModulePath {
     enum Feature: String, CaseIterable {
         case GeneralSignUp
         case BaseWebView
+        case ProfileSetup
         case Onboarding
         case MyPage
         case BottleStorage
