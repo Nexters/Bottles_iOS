@@ -51,6 +51,7 @@ private extension ProfileSetupView {
       textFieldState: $store.textFieldState,
       text: $store.introductionText,
       placeHolder: "호기심이 많고 새로운 경험을 즐깁니다. 주말엔 책을 읽거나 맛집을 찾아다니며 여유를 즐기고, 친구들과 소소한 모임으로 에너지를 충전해요.",
+      errorMessage: "최소 \(store.maxLength)글자 이상 작성해주세요",
       textLimit: 300
     )
     .focused($isTextFieldFocused)

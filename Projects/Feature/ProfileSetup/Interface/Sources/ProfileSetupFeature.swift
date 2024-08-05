@@ -27,6 +27,7 @@ public struct ProfileSetupFeature {
     public var textFieldState: TextFieldState = .enabled
     public var keywordItem: [ClipItem] = []
     public var isNextButtonDisable: Bool = true
+    public let maxLength: Int = 50
     public init() {}
   }
   
