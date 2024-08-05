@@ -8,6 +8,14 @@
 import Foundation
 
 public struct RegisterIntroductionRequestDTO: Encodable {
+  public let introduction: [IntroductionReqeustDTO]
+  
+  public init(introduction: [IntroductionReqeustDTO]) {
+    self.introduction = introduction
+  }
+}
+
+public struct IntroductionReqeustDTO: Encodable {
   public let answer: String
   public let question: String
   
