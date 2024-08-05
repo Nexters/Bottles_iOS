@@ -1,20 +1,58 @@
 //
-//  ProfileSetupFeature.swift
-//  FeatureProfileSetup
+//  IntroductionSetupFeature.swift
+//  FeatureProfileSetupInterface
 //
 //  Created by 임현규 on 8/5/24.
 //
 
 import Foundation
 
-import FeatureProfileSetupInterface
+import DomainProfileInterface
 import DomainProfile
-
 import SharedDesignSystem
 import CoreLoggerInterface
+
 import ComposableArchitecture
 
-extension ProfileSetupFeature {
+@Reducer
+public struct IntroductionSetupFeature {
+  private let reducer: Reduce<State, Action>
+  
+  public init(reducer: Reduce<State, Action>) {
+    self.reducer = reducer
+  }
+  
+  @ObservableState
+  public struct State: Equatable {
+    public var introductionText: String = ""
+    public var textFieldState: TextFieldState = .enabled
+    public var keywordItem: [ClipItem] = []
+    public var isNextButtonDisable: Bool = true
+    public let maxLength: Int = 50
+    public init() {}
+  }
+  
+  public enum Action: BindableAction {
+    case onAppear
+    case texFieldDidFocused(isFocused: Bool)
+    case binding(BindingAction<State>)
+    case setKeyworkItem(UserProfile)
+    case nextButtonDidTapped
+    case onTapGesture
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case nextButtonDidTapped(introductionText: String)
+    }
+  }
+  
+  public var body: some ReducerOf<Self> {
+    BindingReducer()
+    reducer
+  }
+}
+
+extension IntroductionSetupFeature {
   public init() {
     let reducer = Reduce<State, Action> { state, action in
       @Dependency(\.profileClient) var profileClient
@@ -22,6 +60,7 @@ extension ProfileSetupFeature {
       switch action {
       case .onAppear:
         return .run { send in
+          Log.error("run")
           let userProfile = try await profileClient.fetchUserProfile()
           await send(.setKeyworkItem(userProfile))
         }
@@ -66,14 +105,17 @@ extension ProfileSetupFeature {
         return .none
         
       case .nextButtonDidTapped:
-        // TODO: 다음 페이지로 화면 이동
-        Log.debug("nextButtonDidTapped")
-        return .none
+        return .run { [introductionText = state.introductionText] send in
+          Log.debug("nextButtonDidTapped")
+          await send(.delegate(.nextButtonDidTapped(introductionText: introductionText)))
+        }
         
       case .onTapGesture:
         state.textFieldState = .active
         return .none
       case .binding(_):
+        return .none
+      case .delegate:
         return .none
       }
     }

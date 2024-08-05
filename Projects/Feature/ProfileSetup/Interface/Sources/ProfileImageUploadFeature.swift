@@ -7,6 +7,8 @@
 
 import Foundation
 
+import CoreLoggerInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -19,7 +21,7 @@ public struct ProfileImageUploadFeature {
   
   @ObservableState
   public struct State: Equatable {
-    public var selectedImageData: Data?
+    public var selectedImageData: Data = .init()
     public var isDisableDoneButton: Bool = true
     public init() {}
   }
@@ -28,6 +30,11 @@ public struct ProfileImageUploadFeature {
     case onAppear
     case doneButtonDidTapped
     case imageDidSelected(selectedImageData: Data)
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case doneButtonDidTapped(selectedImageData: Data)
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -43,10 +50,14 @@ extension ProfileImageUploadFeature {
       case .onAppear:
         return .none
       case .doneButtonDidTapped:
-        return .none
+        return .run { [imageData = state.selectedImageData] send in
+          await send(.delegate(.doneButtonDidTapped(selectedImageData: imageData)))
+        }
       case let .imageDidSelected(selectedImageData):
         state.selectedImageData = selectedImageData
         state.isDisableDoneButton = false
+        return .none
+      case .delegate:
         return .none
       }
     }

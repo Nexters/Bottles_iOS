@@ -68,7 +68,7 @@ private extension ProfileImageUploadView {
       title: "완료",
       sizeType: .full,
       buttonType: .throttle,
-      action: {}
+      action: { store.send(.doneButtonDidTapped) }
     )
     .disabled(store.isDisableDoneButton)
   }
