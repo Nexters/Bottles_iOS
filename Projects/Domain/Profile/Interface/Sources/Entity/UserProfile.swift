@@ -14,6 +14,7 @@ public struct UserProfile {
   public let job: String
   public let smoke: String
   public let alcohol: String
+  public let height: Int
   public let region: UserRegion
   
   public init(
@@ -23,6 +24,7 @@ public struct UserProfile {
     job: String,
     smoke: String,
     alcohol: String,
+    height: Int,
     region: UserRegion
   ) {
     self.mbti = mbti
@@ -31,6 +33,7 @@ public struct UserProfile {
     self.job = job
     self.smoke = smoke
     self.alcohol = alcohol
+    self.height = height
     self.region = region
   }
 }

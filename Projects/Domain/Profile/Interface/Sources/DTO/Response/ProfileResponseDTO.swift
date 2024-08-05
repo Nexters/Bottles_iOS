@@ -39,7 +39,8 @@ public struct ProfileResponseDTO: Decodable {
         job: job ?? "",
         smoke: smoking ?? "",
         alcohol: alcohol ?? "",
-        region: region?.toDomain() ?? 
+        height: height ?? 0,
+        region: region?.toDomain() ??
         UserRegion(city: "", state: "")
       )
     }
@@ -84,6 +85,7 @@ public struct ProfileResponseDTO: Decodable {
         job: "",
         smoke: "",
         alcohol: "",
+        height: 0,
         region: UserRegion(
           city: "", 
           state: ""

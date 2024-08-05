@@ -7,6 +7,8 @@
 
 import Foundation
 
+import DomainProfileInterface
+
 import SharedDesignSystem
 
 import ComposableArchitecture
@@ -23,7 +25,8 @@ public struct ProfileSetupFeature {
   public struct State: Equatable {
     public var introductionText: String = ""
     public var textFieldState: TextFieldState = .enabled
-
+    public var keywordItem: [ClipItem] = []
+    public var isNextButtonDisable: Bool = true
     public init() {}
   }
   
@@ -31,6 +34,9 @@ public struct ProfileSetupFeature {
     case onAppear
     case texFieldDidFocused(isFocused: Bool)
     case binding(BindingAction<State>)
+    case setKeyworkItem(UserProfile)
+    case nextButtonDidTapped
+    case onTapGesture
   }
   
   public var body: some ReducerOf<Self> {

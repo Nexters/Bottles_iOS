@@ -8,11 +8,12 @@
 import SwiftUI
 
 import SharedDesignSystem
+import CoreLoggerInterface
 
 import ComposableArchitecture
 
 public struct ProfileSetupView: View {
-  @State var store: StoreOf<ProfileSetupFeature>
+  @Perception.Bindable private var store: StoreOf<ProfileSetupFeature>
   @FocusState private var isTextFieldFocused: Bool
 
   public init(store: StoreOf<ProfileSetupFeature>) {
@@ -25,6 +26,10 @@ public struct ProfileSetupView: View {
       introductionTextField
       keywordList
       nextButton
+    }.onAppear {
+      store.send(.onAppear)
+    }.onTapGesture {
+      store.send(.onTapGesture)
     }
   }
 }
@@ -49,29 +54,20 @@ private extension ProfileSetupView {
       textLimit: 300
     )
     .focused($isTextFieldFocused)
+    .padding(.horizontal, .md)
+    .padding(.bottom, .sm)
     .onChange(of: isTextFieldFocused) { isFocused in
       store.send(.texFieldDidFocused(isFocused: isFocused))
     }
-    .padding(.horizontal, .md)
-    .padding(.bottom, .sm)
+    .onChange(of: store.textFieldState) { textFieldState in
+      Log.error(textFieldState)
+      isTextFieldFocused = textFieldState == .active ? false : true
+    }
   }
   
   var keywordList: some View {
     ClipListContainerView(
-      clipItemList: [
-        ClipItem(
-          title: "내 키워드를 참고해보세요",
-          list: ["직장인", "MBTI", "city_name", "height", "흡연 안해요", "술을 즐겨요"]
-        ),
-        ClipItem(
-          title: "나의 성격은",
-          list: ["적극적인", "열정적인", "예의바른", "자유로운", "쿨한"]
-        ),
-        ClipItem(
-          title: "내가 푹 빠진 취미는",
-          list: ["코인노래방", "헬스", "드라이브", "만화 웹툰 정주행", "자전거"]
-        )
-      ]
+      clipItemList: store.keywordItem
     )
     .padding(.horizontal, .md)
     .padding(.bottom, 47)
@@ -82,8 +78,9 @@ private extension ProfileSetupView {
       title: "다음",
       sizeType: .full,
       buttonType: .throttle,
-      action: { }
+      action: { store.send(.nextButtonDidTapped) }
     )
     .padding(.horizontal, .md)
+    .disabled(store.isNextButtonDisable)
   }
 }
