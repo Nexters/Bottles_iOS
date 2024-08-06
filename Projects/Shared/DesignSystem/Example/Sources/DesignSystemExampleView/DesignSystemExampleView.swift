@@ -19,6 +19,7 @@ struct DesignSystemExampleView: View {
         LinesTextFieldSection()
         CardSection()
         EtcSection()
+        ToastSection()
       }
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle("Design System Example View")
@@ -206,6 +207,23 @@ struct CardSection: View {
       },
       header: {
         Text("Card")
+          .font(.headline)
+      }
+    )
+  }
+}
+
+struct ToastSection: View {
+  var body: some View {
+    Section(
+      content: {
+        NavigationLink(
+          destination: ToastTestView(),
+          label: { Text("Toast Test") }
+        )
+      },
+      header: {
+        Text("Toast")
           .font(.headline)
       }
     )

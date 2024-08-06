@@ -23,6 +23,9 @@ public struct MyPageFeature {
   
   public enum Action {
     case onAppear
+    case presentToastRequired(message: String)
+    case logOutDidCompleted
+    case withdrawalButtonDidTap
   }
   
   public var body: some ReducerOf<Self> {

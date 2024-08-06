@@ -17,6 +17,18 @@ extension MyPageFeature {
       switch action {
       case .onAppear:
         return .none
+        
+      case let .presentToastRequired(message):
+        // TODO: present toast
+        return .none
+        
+      case .logOutDidCompleted:
+        // TODO: log out handling
+        return .none
+        
+      case .withdrawalButtonDidTap:
+        // TODO: withdarawal handling
+        return .none
       }
     }
     self.init(reducer: reducer)

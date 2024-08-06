@@ -8,6 +8,9 @@
 import SwiftUI
 import WebKit
 
+import CoreWebViewInterface
+import FeatureBaseWebViewInterface
+
 import ComposableArchitecture
 
 public struct OnboardingView: View {
@@ -18,7 +21,21 @@ public struct OnboardingView: View {
   }
   
   public var body: some View {
-      OnboardingWebView(store: store)
-      .ignoresSafeArea()
+    BaseWebView(
+      type: .createProfile,
+      actionDidInputted: { action in
+        switch action {
+        case .closeWebView:
+          store.send(.closeButtonDidTap)
+        case let .showTaost(message):
+          store.send(.presentToastDidRequired(message: message))
+        case .createProfileDidCompleted:
+          store.send(.createProfileDidCompleted)
+        default:
+          break
+        }
+      }
+    )
+    .ignoresSafeArea()
   }
 }

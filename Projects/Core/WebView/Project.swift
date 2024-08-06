@@ -7,7 +7,11 @@ let project = Project.makeModule(
     targets: [    
         .core(
             interface: .WebView,
-            factory: .init()
+            factory: .init(
+              dependencies: [
+                  .shared(implements: .ThirdPartyLib)
+              ]
+            )
         ),
         .core(
             implements: .WebView,

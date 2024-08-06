@@ -9,7 +9,8 @@ let project = Project.makeModule(
             interface: .Onboarding,
             factory: .init(
                 dependencies: [
-                    .domain
+                    .domain,
+                    .feature(interface: .BaseWebView)
                 ]
             )
         ),
