@@ -33,7 +33,7 @@ public struct IntroductionSetupFeature {
   }
   
   public enum Action: BindableAction {
-    case onAppear
+    case onLoad
     case texFieldDidFocused(isFocused: Bool)
     case binding(BindingAction<State>)
     case setKeyworkItem(UserProfile)
@@ -58,9 +58,8 @@ extension IntroductionSetupFeature {
       @Dependency(\.profileClient) var profileClient
       
       switch action {
-      case .onAppear:
+      case .onLoad:
         return .run { send in
-          Log.error("run")
           let userProfile = try await profileClient.fetchUserProfile()
           await send(.setKeyworkItem(userProfile))
         }

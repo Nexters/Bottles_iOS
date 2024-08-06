@@ -26,8 +26,8 @@ public struct IntroductionSetupView: View {
       introductionTextField
       keywordList
       nextButton
-    }.onAppear {
-      store.send(.onAppear)
+    }.onLoad {
+      store.send(.onLoad)
     }.onTapGesture {
       store.send(.onTapGesture)
     }
