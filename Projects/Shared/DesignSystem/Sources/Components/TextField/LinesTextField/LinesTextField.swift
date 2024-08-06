@@ -76,6 +76,7 @@ private extension LinesTextField {
   
   var placeHolderText: some View {
     Text(placeHolder)
+      .lineSpacing(6)
       .padding(.leading, 5)
       .padding(.top, 8)
       .font(to: .wantedSans(.body))
@@ -86,6 +87,7 @@ private extension LinesTextField {
     GeometryReader { geometry in
       let height = geometry.size.height
       TextEditor(text: $text)
+        .lineSpacing(6)
         .background(alignment: .topLeading) {
           if text.isEmpty && textFieldState == .enabled { placeHolderText }
         }
