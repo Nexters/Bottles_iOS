@@ -22,7 +22,7 @@ public struct AppView: View {
   public var body: some View {
     Group {
       WithPerceptionTracking {
-        if let tabViewStore = store.scope(state: \.tabView, action: \.tabView) {
+        if let tabViewStore = store.scope(state: \.mainTab, action: \.mainTab) {
           MainTabView(store: tabViewStore)
         } else if let loginStore = store.scope(state: \.login, action: \.login) {
           LoginView(store: loginStore)
