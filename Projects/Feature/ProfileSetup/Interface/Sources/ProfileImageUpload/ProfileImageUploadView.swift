@@ -60,7 +60,10 @@ private extension ProfileImageUploadView {
   }
   
   var imagePickerButton: some View {
-    ImagePickerButton(selectedImage: $selectedImage)
+    ImagePickerButton(
+      selectedImage: $selectedImage,
+      action: { store.send(.imageDeleteButtonDidTapped) }
+    )
   }
   
   var doneButton: some View {
@@ -82,10 +85,9 @@ private extension ProfileImageUploadView {
         case .success(let data):
           if let data = data, let newImage = UIImage(data: data) {
             DispatchQueue.main.async {
-              selectedImage.append(newImage)
-              // TODO: 임시로 이미지 데이터 줄임
+              selectedImage = [newImage]
+              // TODO: 이미지 다운 샘플링
               store.send(.imageDidSelected(selectedImageData: data))
-              print(type(of: data))
             }
           }
           

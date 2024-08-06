@@ -30,6 +30,7 @@ public struct ProfileImageUploadFeature {
     case onAppear
     case doneButtonDidTapped
     case imageDidSelected(selectedImageData: Data)
+    case imageDeleteButtonDidTapped
     case delegate(Delegate)
     
     public enum Delegate {
@@ -56,6 +57,11 @@ extension ProfileImageUploadFeature {
       case let .imageDidSelected(selectedImageData):
         state.selectedImageData = selectedImageData
         state.isDisableDoneButton = false
+        return .none
+        
+      case .imageDeleteButtonDidTapped:
+        state.selectedImageData = .empty
+        state.isDisableDoneButton = true
         return .none
       case .delegate:
         return .none

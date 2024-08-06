@@ -14,6 +14,7 @@ public extension Image.BottleImageSystem {
     case right
     case up
     case delete
+    case clearDelete
     case share
     case siren
     case plus
@@ -33,6 +34,8 @@ public extension Image.BottleImageSystem.Icon {
       return SharedDesignSystemAsset.Images.iconUp.swiftUIImage
     case .delete:
       return SharedDesignSystemAsset.Images.iconDelete.swiftUIImage
+    case .clearDelete:
+      return SharedDesignSystemAsset.Images.iconClearDelete.swiftUIImage
     case .share:
       return SharedDesignSystemAsset.Images.iconShare.swiftUIImage
     case .siren:
