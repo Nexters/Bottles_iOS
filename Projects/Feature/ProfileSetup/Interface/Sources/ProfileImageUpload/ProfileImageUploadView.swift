@@ -83,7 +83,9 @@ private extension ProfileImageUploadView {
           if let data = data, let newImage = UIImage(data: data) {
             DispatchQueue.main.async {
               selectedImage.append(newImage)
+              // TODO: 임시로 이미지 데이터 줄임
               store.send(.imageDidSelected(selectedImageData: data))
+              print(type(of: data))
             }
           }
           

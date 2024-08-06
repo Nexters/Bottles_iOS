@@ -9,7 +9,8 @@ let project = Project.makeModule(
             interface: .SandBeach,
             factory: .init(
                 dependencies: [
-                    .domain
+                    .domain,
+                    .feature(interface: .ProfileSetup)
                 ]
             )
         ),

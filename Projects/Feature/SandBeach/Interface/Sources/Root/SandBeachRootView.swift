@@ -1,28 +1,28 @@
 //
-//  ProfileSetupView.swift
-//  FeatureProfileSetupInterface
+//  SandBeachRootView.swift
+//  FeatureSandBeach
 //
-//  Created by 임현규 on 8/5/24.
+//  Created by 임현규 on 8/6/24.
 //
 
 import SwiftUI
 
-import SharedDesignSystem
+import FeatureProfileSetupInterface
 import CoreLoggerInterface
 
 import ComposableArchitecture
 
-public struct ProfileSetupView: View {
-  @Perception.Bindable private var store: StoreOf<ProfileSetupFeature>
+public struct SandBeachRootView: View {
+  @Perception.Bindable private var store: StoreOf<SandBeachRootFeature>
   
-  public init(store: StoreOf<ProfileSetupFeature>) {
+  public init(store: StoreOf<SandBeachRootFeature>) {
     self.store = store
   }
   
   public var body: some View {
     WithPerceptionTracking {
       NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-        EmptyView()
+        SandBeachView(store: store.scope(state: \.sandBeach, action: \.sandBeach))
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
@@ -33,6 +33,7 @@ public struct ProfileSetupView: View {
                 action: \.IntroductionSetup
               )
             )
+            
           case .ProfileImageUpload:
             ProfileImageUploadView(
               store: store.scope(
@@ -43,9 +44,7 @@ public struct ProfileSetupView: View {
           }
         }
       }
-      .onAppear {
-        store.send(.onAppear)
-      }
     }
   }
 }
+

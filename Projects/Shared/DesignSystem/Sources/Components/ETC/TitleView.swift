@@ -66,7 +66,7 @@ private extension TitleView {
     if let caption {
       WantedSansStyleText(
         caption,
-        style: .caption,
+        style: .body,
         color: .tertiary
       )
       .multilineTextAlignment(.leading)

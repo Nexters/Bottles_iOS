@@ -7,22 +7,14 @@ import ComposableArchitecture
 
 @main
 struct AppView: App {
-  private let store = Store(
-    initialState: SandBeachFeature.State(userState: .noIntroduction),
-    reducer: { SandBeachFeature() }
-  )
+  private let rootStore = Store(
+    initialState: SandBeachRootFeature.State(
+      sandBeach: .init(userState: .noIntroduction)),
+    reducer: { SandBeachRootFeature() })
+  
   var body: some Scene {
     WindowGroup {
-      SandBeachView(store: store)
+      SandBeachRootView(store: rootStore)
     }
   }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-      SandBeachView(store: Store(
-        initialState: SandBeachFeature.State(userState: .noIntroduction),
-        reducer: { SandBeachFeature() }
-      ))
-    }
 }

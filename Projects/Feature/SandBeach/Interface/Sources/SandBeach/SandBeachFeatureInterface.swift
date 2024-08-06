@@ -8,6 +8,13 @@
 import Foundation
 
 import DomainProfileInterface
+import SharedDesignSystem
+import CoreLoggerInterface
+import DomainProfile
+import DomainAuth
+import DomainAuthInterface
+import FeatureProfileSetupInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -38,6 +45,21 @@ public struct SandBeachFeature {
   }
 }
 
+
+// MARK: - init {
+extension SandBeachFeature {
+  public init() {
+    let reducer = Reduce<State, Action> { state, action in
+      switch action {
+      case .onAppear:
+        return .none
+      default:
+        return .none
+      }
+    }
+    self.init(reducer: reducer)
+  }
+}
 // MARK: - Public Extension
 
 public extension SandBeachFeature {
