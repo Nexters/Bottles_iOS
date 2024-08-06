@@ -34,6 +34,7 @@ public struct LoginFeature {
     case signInKakaoRequest
     case signInKakaoResponse(TaskResult<UserInfo>)
     case signUpCheckCompleted(isSignUp: Bool)
+    case goToMainTab
     case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
   }

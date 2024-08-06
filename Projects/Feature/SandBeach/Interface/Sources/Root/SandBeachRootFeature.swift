@@ -33,13 +33,11 @@ public struct SandBeachRootFeature {
     var path = StackState<Path.State>()
     var introduction: String = ""
     var profileImageData: Data = .init()
-    public var sandBeach: SandBeachFeature.State = .init(userState: .noIntroduction)
+    public var sandBeach: SandBeachFeature.State = .init()
     public var introductionSetup: IntroductionSetupFeature.State = .init()
     public var profileImageUpload: ProfileImageUploadFeature.State = .init()
     
-    public init(sandBeach: SandBeachFeature.State) {
-      self.sandBeach = sandBeach
-    }
+    public init() {}
   }
   
   public enum Action {

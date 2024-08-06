@@ -21,13 +21,13 @@ public struct MainTabViewFeature {
   
   @ObservableState
   public struct State: Equatable {
-    var sandBeach: SandBeachFeature.State
+    var sandBeachRoot: SandBeachRootFeature.State
     var bottleStorage: BottleStorageFeature.State
     var myPage: MyPageFeature.State
     var selectedTab: TabType
     
     public init() {
-      self.sandBeach = .init()
+      self.sandBeachRoot = .init()
       self.bottleStorage = .init()
       self.myPage = .init()
       self.selectedTab = .sandBeach
@@ -35,7 +35,7 @@ public struct MainTabViewFeature {
   }
   
   public enum Action: BindableAction {
-    case sandBeach(SandBeachFeature.Action)
+    case sandBeachRoot(SandBeachRootFeature.Action)
     case bottleStorage(BottleStorageFeature.Action)
     case myPage(MyPageFeature.Action)
     case selectedTabChanged(TabType)
@@ -43,8 +43,8 @@ public struct MainTabViewFeature {
   }
   
   public var body: some ReducerOf<Self> {
-    Scope(state: \.sandBeach, action: \.sandBeach) {
-      SandBeachFeature()
+    Scope(state: \.sandBeachRoot, action: \.sandBeachRoot) {
+      SandBeachRootFeature()
     }
     Scope(state: \.bottleStorage, action: \.bottleStorage) {
       BottleStorageFeature()

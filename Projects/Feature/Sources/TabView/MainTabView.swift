@@ -25,7 +25,7 @@ public struct MainTabView: View {
     
     WithViewStore(store, observe: \.selectedTab) { viewStore in
       TabView(selection: $store.selectedTab.sending(\.selectedTabChanged)) {
-        SandBeachView(store: store.scope(state: \.sandBeach, action: \.sandBeach))
+        SandBeachRootView(store: store.scope(state: \.sandBeachRoot, action: \.sandBeachRoot))
           .tabItem {
             VStack(spacing: 8.0) {
               Image(systemName: "house.fill")
