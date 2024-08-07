@@ -12,7 +12,7 @@ import SharedDesignSystem
 import ComposableArchitecture
 
 public struct SandBeachView: View {
-  let store: StoreOf<SandBeachFeature>
+  private let store: StoreOf<SandBeachFeature>
   
   public init(store: StoreOf<SandBeachFeature>) {
     self.store = store

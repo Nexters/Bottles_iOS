@@ -7,8 +7,6 @@
 
 import Foundation
 
-import FeatureLoginInterface
-import CoreNetwork
 import DomainAuth
 import CoreLoggerInterface
 
@@ -57,3 +55,11 @@ extension LoginFeature {
   }
 }
 
+extension LoginFeature {
+  // MARK: - Path
+  
+  @Reducer(state: .equatable)
+  public enum Path {
+    case generalLogin(GeneralLogInFeature)
+  }
+}
