@@ -3,50 +3,49 @@ import ProjectDescriptionHelpers
 import DependencyPlugin
 
 let project = Project.makeModule(
-    name: ModulePath.Feature.name+ModulePath.Feature.SandBeach.rawValue,
-    targets: [
+    name: ModulePath.Feature.name+ModulePath.Feature.ProfileSetup.rawValue,
+    targets: [    
         .feature(
-            interface: .SandBeach,
+            interface: .ProfileSetup,
             factory: .init(
                 dependencies: [
-                    .domain,
+                    .domain
+                ]
+            )
+        ),
+        .feature(
+            implements: .ProfileSetup,
+            factory: .init(
+                dependencies: [
+                    .feature(interface: .ProfileSetup)
+                ]
+            )
+        ),
+    
+        .feature(
+            testing: .ProfileSetup,
+            factory: .init(
+                dependencies: [
                     .feature(interface: .ProfileSetup)
                 ]
             )
         ),
         .feature(
-            implements: .SandBeach,
+            tests: .ProfileSetup,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .SandBeach)
+                    .feature(testing: .ProfileSetup),
+                    .feature(implements: .ProfileSetup)
                 ]
             )
         ),
     
         .feature(
-            testing: .SandBeach,
+            example: .ProfileSetup,
             factory: .init(
                 dependencies: [
-                    .feature(interface: .SandBeach)
-                ]
-            )
-        ),
-        .feature(
-            tests: .SandBeach,
-            factory: .init(
-                dependencies: [
-                    .feature(testing: .SandBeach),
-                    .feature(implements: .SandBeach)
-                ]
-            )
-        ),
-    
-        .feature(
-            example: .SandBeach,
-            factory: .init(
-                dependencies: [
-                    .feature(testing: .SandBeach),
-                    .feature(implements: .SandBeach)
+                    .feature(testing: .ProfileSetup),
+                    .feature(implements: .ProfileSetup)
                 ]
             )
         )

@@ -54,7 +54,13 @@ extension ProfileAPI: BaseTargetType {
     case .checkIntroduction:
       return .requestPlain
     case .uploadProfileImage(let data):
-      let imageData = MultipartFormData(provider: .data(data), name: "profile.jpeg", mimeType: "image/jpeg")
+      let imageData = MultipartFormData(
+        provider: .data(data),
+        name: "file",
+        fileName: "filename.jpeg",
+        mimeType: "image/jpeg"
+      )
+      
       return .uploadMultipart([imageData])
     }
   }

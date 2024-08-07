@@ -37,17 +37,21 @@ public struct LinesTextField: View {
   }
   
   public var body: some View {
-    RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
-      .strokeBorder(
-        borderColor.color,
-        lineWidth: 1
-      )
-      .frame(height: height)
-      .background(to: containerColor)
-      .overlay(alignment: .center) {
-        linesTextFieldForm
-          .padding(.md)
-      }
+    VStack(spacing: .xxs) {
+      RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
+        .strokeBorder(
+          borderColor.color,
+          lineWidth: 1
+        )
+        .frame(height: height)
+        .background(to: containerColor)
+        .overlay(alignment: .center) {
+          linesTextFieldForm
+            .padding(.md)
+        }
+      
+      errorText
+    }
   }
 }
 
@@ -72,6 +76,7 @@ private extension LinesTextField {
   
   var placeHolderText: some View {
     Text(placeHolder)
+      .lineSpacing(6)
       .padding(.leading, 5)
       .padding(.top, 8)
       .font(to: .wantedSans(.body))
@@ -82,6 +87,7 @@ private extension LinesTextField {
     GeometryReader { geometry in
       let height = geometry.size.height
       TextEditor(text: $text)
+        .lineSpacing(6)
         .background(alignment: .topLeading) {
           if text.isEmpty && textFieldState == .enabled { placeHolderText }
         }
@@ -115,6 +121,23 @@ private extension LinesTextField {
       }
     }
   }
+  
+  @ViewBuilder
+  var errorText: some View {
+    if let errorMessage {
+      if textFieldState == .error {
+        HStack(spacing: 0) {
+          WantedSansStyleText(
+            errorMessage,
+            style: .caption,
+            color: .errorPrimary)
+          Spacer()
+        }
+      }
+    } else {
+      EmptyView()
+    }
+  }
 }
 
 // MARK: - Private Extension
@@ -122,7 +145,7 @@ private extension LinesTextField {
 private extension LinesTextField {
   var height: CGFloat {
     switch textFieldType {
-    case .introduction: return 197
+    case .introduction: return 301
     case .letter:       return 186
     }
   }

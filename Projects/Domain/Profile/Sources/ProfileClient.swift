@@ -24,7 +24,7 @@ extension ProfileClient: DependencyKey {
         return isExist
       },
       registerIntroduction: { answer in
-        let requestData = RegisterIntroductionRequestDTO(answer: answer, question: "")
+        let requestData = RegisterIntroductionRequestDTO(introduction: [IntroductionReqeustDTO(answer: answer, question: "")])
         try await networkManager.reqeust(
           api: .apiType(ProfileAPI.registerIntroduction(requestData: requestData))
         )

@@ -12,29 +12,31 @@ import SharedDesignSystem
 import ComposableArchitecture
 
 public struct SandBeachView: View {
-  let store: StoreOf<SandBeachFeature>
+  private let store: StoreOf<SandBeachFeature>
   
   public init(store: StoreOf<SandBeachFeature>) {
     self.store = store
   }
   
   public var body: some View {
-    VStack(spacing: .sm) {
-      Spacer()
-
-      popup
-      
-      BottleImageView(type: .remote(
-        url: store.imageURL,
-        downsamplingWidth: 100,
-        downsamplingHeight: 100)
-      )
-      .frame(width: 100, height: 100)
-      .overlay(roundedRectangle)
-      .padding(.bottom, 52)
-    }
-    .onAppear {
-      store.send(.onAppear)
+    WithPerceptionTracking {
+      VStack(spacing: .sm) {
+        Spacer()
+        
+        popup
+        
+        BottleImageView(type: .remote(
+          url: store.imageURL,
+          downsamplingWidth: 100,
+          downsamplingHeight: 100)
+        )
+        .frame(width: 100, height: 100)
+        .overlay(roundedRectangle)
+        .padding(.bottom, 52)
+      }
+      .onAppear {
+        store.send(.onAppear)
+      }
     }
   }
 }

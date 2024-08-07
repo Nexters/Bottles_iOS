@@ -19,22 +19,24 @@ public struct MyPageView: View {
   }
   
   public var body: some View {
-    BaseWebView(
-      type: .myPage,
-      isScrollEnabled: true,
-      actionDidInputted: { action in
-        switch action {
-        case let .showTaost(message):
-          store.send(.presentToastRequired(message: message))
-        case .logOutDidCompleted:
-          store.send(.logOutDidCompleted)
-        case .withdrawalButtonDidTap:
-          store.send(.withdrawalButtonDidTap)
-        default:
-          break
+    WithPerceptionTracking {
+      BaseWebView(
+        type: .myPage,
+        isScrollEnabled: true,
+        actionDidInputted: { action in
+          switch action {
+          case let .showTaost(message):
+            store.send(.presentToastRequired(message: message))
+          case .logOutDidCompleted:
+            store.send(.logOutDidCompleted)
+          case .withdrawalButtonDidTap:
+            store.send(.withdrawalButtonDidTap)
+          default:
+            break
+          }
         }
-      }
-    )
-    .ignoresSafeArea()
+      )
+      .ignoresSafeArea()
+    }
   }
 }
