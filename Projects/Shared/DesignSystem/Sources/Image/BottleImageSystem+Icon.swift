@@ -18,6 +18,7 @@ public extension Image.BottleImageSystem {
     case share
     case siren
     case plus
+    case verticalLine
   }
 }
 
@@ -42,6 +43,8 @@ public extension Image.BottleImageSystem.Icon {
       return SharedDesignSystemAsset.Images.iconSiren.swiftUIImage
     case .plus:
       return SharedDesignSystemAsset.Images.iconPlus.swiftUIImage
+    case .verticalLine:
+      return SharedDesignSystemAsset.Images.iconVerticalLine.swiftUIImage
     }
   }
 }
