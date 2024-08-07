@@ -22,23 +22,24 @@ extension LoginFeature {
       switch action {
       case .onAppear:
         return .none
-      case .signInKakaoRequest:
+        
+      case .signInKakaoButtonDidTapped:
         return .run { send in
-          await send(.signInKakaoResponse(
-            TaskResult {
-              try await authClient.signInWithKakao().toDomain()
-            }
-          ))
+          let userInfo = try await authClient.signInWithKakao().toDomain()
+          await send(.signInKakaoDidSuccess(userInfo))
+        } catch: { error, send in
+          await send(.goToGeneralLogin)
         }
-      case let .signInKakaoResponse(.success(userInfo)):
-        let token = userInfo.token
-        Log.debug(token)
+        
+      case let .signInKakaoDidSuccess(userInfo):
+        let token = userInfo.token, isSignUp = userInfo.isSignUp
         authClient.saveToken(token: token)
-        let isSignUp = userInfo.isSignUp
         return .send(.signUpCheckCompleted(isSignUp: isSignUp))
-      case let .signInKakaoResponse(.failure(error)):
+        
+      case .goToGeneralLogin:
         // TODO: - 일반 로그인 화면으로 이동.
         return .none
+        
       case let .signUpCheckCompleted(isSignUp):
         if !isSignUp {
           return .send(.goToMainTab)

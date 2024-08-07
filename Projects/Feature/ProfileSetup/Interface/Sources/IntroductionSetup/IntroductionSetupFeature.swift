@@ -49,7 +49,7 @@ public struct IntroductionSetupFeature {
     case onLoad
     case texFieldDidFocused(isFocused: Bool)
     case binding(BindingAction<State>)
-    case setKeyworkItem(UserProfile)
+    case userProfileDidFatched(UserProfile)
     case nextButtonDidTapped
     case onTapGesture
     case delegate(Delegate)
@@ -74,14 +74,12 @@ extension IntroductionSetupFeature {
       case .onLoad:
         return .run { send in
           let userProfile = try await profileClient.fetchUserProfile()
-          await send(.setKeyworkItem(userProfile))
+          await send(.userProfileDidFatched(userProfile))
         }
       case let .texFieldDidFocused(isFocused):
         state.textFieldState = isFocused ? .focused : .active
         return .none
-      case .setKeyworkItem(let userProfile):
-        Log.debug(userProfile)
-        
+      case .userProfileDidFatched(let userProfile):
         // TODO: 코드 개선
         state.keywordItem = [
           ClipItem(

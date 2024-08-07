@@ -31,10 +31,11 @@ public struct LoginFeature {
   
   public enum Action: BindableAction {
     case onAppear
-    case signInKakaoRequest
-    case signInKakaoResponse(TaskResult<UserInfo>)
+    case signInKakaoButtonDidTapped
+    case signInKakaoDidSuccess(UserInfo)
     case signUpCheckCompleted(isSignUp: Bool)
     case goToMainTab
+    case goToGeneralLogin
     case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
   }

@@ -59,7 +59,7 @@ public struct SandBeachRootFeature {
     case sandBeach(SandBeachFeature.Action)
     case introductionSetup(IntroductionSetupFeature.Action)
     case profileImageUpload(ProfileImageUploadFeature.Action)
-    case requestsCompleted(TaskResult<Void>)
+    case profileSetupDidCompleted
   }
   
   public var body: some ReducerOf<Self> {
@@ -91,18 +91,21 @@ extension SandBeachRootFeature {
         state.profileImageData = selectedImageData
         
         return .run { [introduction = state.introduction, imageData = state.profileImageData] send in
-          await send(.requestsCompleted(TaskResult {
-            try await withThrowingTaskGroup(of: Void.self) { group in
-              group.addTask {
-                try await profileClient.registerIntroduction(answer: introduction)
-              }
-              
-              group.addTask {
-                try await profileClient.uploadProfileImage(imageData: imageData)
-              }
-              for try await _ in group {}
+          try await withThrowingTaskGroup(of: Void.self) { group in
+            group.addTask {
+              try await profileClient.registerIntroduction(answer: introduction)
             }
-          }))
+            
+            group.addTask {
+              try await profileClient.uploadProfileImage(imageData: imageData)
+            }
+            for try await _ in group {}
+          }
+          
+          await send(.profileSetupDidCompleted)
+
+        } catch: { error, send in
+          // TODO: 자기소개 만들기 완료 실패 - 에러 핸들링
         }
         
       case .sandBeach(.newBottlePopupDidTapped):
@@ -113,15 +116,12 @@ extension SandBeachRootFeature {
         state.path.append(.IntroductionSetup(IntroductionSetupFeature.State()))
         return .none
         
-      case .requestsCompleted(.success):
+      case .profileSetupDidCompleted:
         state.path.removeAll()
         return .none
-      
-      case .requestsCompleted(.failure):
-        // TODO: 네트워크 에러 처리.
-        return .none
-                
+
       default:
+        // TODO: 네트워크 에러 처리.
         return .none
       }
     }
