@@ -17,7 +17,9 @@ public struct BottleStorageView: View {
   }
   
   public var body: some View {
-    Text("Bottle Storage View")
+    WithPerceptionTracking {
+      Text("Bottle Storage View")
+    }
   }
 }
 

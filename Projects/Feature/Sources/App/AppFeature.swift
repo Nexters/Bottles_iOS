@@ -27,7 +27,7 @@ public struct AppFeature {
     }
   }
   
-  public enum Action: BindableAction {
+  public enum Action {
     case onAppear
     case appDelegate(AppDelegateFeature.Action)
     case mainTab(MainTabViewFeature.Action)
@@ -74,8 +74,6 @@ public struct AppFeature {
       return .none
       
     default:
-      return .none
-    case .binding:
       return .none
     }
   }

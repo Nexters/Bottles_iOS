@@ -21,15 +21,17 @@ public struct IntroductionSetupView: View {
   }
   
   public var body: some View {
-    ScrollView {
-      introductionTitle
-      introductionTextField
-      keywordList
-      nextButton
-    }.onLoad {
-      store.send(.onLoad)
-    }.onTapGesture {
-      store.send(.onTapGesture)
+    WithPerceptionTracking {
+      ScrollView {
+        introductionTitle
+        introductionTextField
+        keywordList
+        nextButton
+      }.onLoad {
+        store.send(.onLoad)
+      }.onTapGesture {
+        store.send(.onTapGesture)
+      }
     }
   }
 }

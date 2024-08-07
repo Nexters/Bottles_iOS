@@ -26,20 +26,22 @@ public struct ProfileImageUploadView: View {
     ScrollView {
       titleView
       GeometryReader { geometry in
-        VStack(spacing: 0) {
-          PhotosPicker(
-            selection: $selectedItems,
-            maxSelectionCount: 1,
-            matching: .images
-          ) {
-            imagePickerButton
-              .frame(height: geometry.size.width)
-              .padding(.bottom, .md)
+        WithPerceptionTracking {
+          VStack(spacing: 0) {
+            PhotosPicker(
+              selection: $selectedItems,
+              maxSelectionCount: 1,
+              matching: .images
+            ) {
+              imagePickerButton
+                .frame(height: geometry.size.width)
+                .padding(.bottom, .md)
+            }
+            .onChange(of: selectedItems) { item in
+              handleSelectedPhotos(item)
+            }
+            doneButton
           }
-          .onChange(of: selectedItems) { item in
-            handleSelectedPhotos(item)
-          }
-          doneButton
         }
       }
       .padding(.horizontal, .md)
@@ -91,7 +93,7 @@ private extension ProfileImageUploadView {
             }
           }
           
-        // TODO: 이미지 로드 실패 처리
+          // TODO: 이미지 로드 실패 처리
         case .failure(_):
           return
         }

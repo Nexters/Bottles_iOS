@@ -81,6 +81,7 @@ extension IntroductionSetupFeature {
         return .none
       case .userProfileDidFatched(let userProfile):
         // TODO: 코드 개선
+        // TODO: 없으면 ClipItem nil로
         state.keywordItem = [
           ClipItem(
             title: "내 키워드를 참고해보세요",
