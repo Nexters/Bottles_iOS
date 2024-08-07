@@ -24,12 +24,25 @@ public struct IntroductionSetupFeature {
   
   @ObservableState
   public struct State: Equatable {
-    public var introductionText: String = ""
-    public var textFieldState: TextFieldState = .enabled
-    public var keywordItem: [ClipItem] = []
-    public var isNextButtonDisable: Bool = true
-    public let maxLength: Int = 50
-    public init() {}
+    public var introductionText: String
+    public var textFieldState: TextFieldState
+    public var keywordItem: [ClipItem]
+    public var isNextButtonDisable: Bool
+    public var maxLength: Int
+    
+    public init(
+      introductionText: String = "",
+      textFieldState: TextFieldState = .enabled,
+      keywordItem: [ClipItem] = [],
+      isNextButtonDisable: Bool = false,
+      maxLength: Int = 50
+    ) {
+      self.introductionText = introductionText
+      self.textFieldState = textFieldState
+      self.keywordItem = keywordItem
+      self.isNextButtonDisable = isNextButtonDisable
+      self.maxLength = maxLength
+    }
   }
   
   public enum Action: BindableAction {

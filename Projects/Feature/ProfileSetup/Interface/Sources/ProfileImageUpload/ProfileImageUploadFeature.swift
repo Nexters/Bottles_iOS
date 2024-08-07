@@ -21,9 +21,16 @@ public struct ProfileImageUploadFeature {
   
   @ObservableState
   public struct State: Equatable {
-    public var selectedImageData: Data = .init()
-    public var isDisableDoneButton: Bool = true
-    public init() {}
+    public var selectedImageData: Data
+    public var isDisableDoneButton: Bool
+    
+    public init(
+      selectedImageData: Data = .init(),
+      isDisableDoneButton: Bool = true
+    ) {
+      self.selectedImageData = selectedImageData
+      self.isDisableDoneButton = isDisableDoneButton
+    }
   }
   
   public enum Action {

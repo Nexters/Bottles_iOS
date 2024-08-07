@@ -31,7 +31,6 @@ public struct IntroductionSetupView: View {
     }.onTapGesture {
       store.send(.onTapGesture)
     }
-    .navigationBarTitleDisplayMode(.inline)
   }
 }
 
@@ -83,6 +82,7 @@ private extension IntroductionSetupView {
       action: { store.send(.nextButtonDidTapped) }
     )
     .padding(.horizontal, .md)
+    .padding(.bottom, .xl)
     .disabled(store.isNextButtonDisable)
   }
 }

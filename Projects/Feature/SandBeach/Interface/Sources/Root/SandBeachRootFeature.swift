@@ -31,13 +31,27 @@ public struct SandBeachRootFeature {
   @ObservableState
   public struct State: Equatable {
     var path = StackState<Path.State>()
-    var introduction: String = ""
-    var profileImageData: Data = .init()
-    public var sandBeach: SandBeachFeature.State = .init()
-    public var introductionSetup: IntroductionSetupFeature.State = .init()
-    public var profileImageUpload: ProfileImageUploadFeature.State = .init()
+    var introduction: String
+    var profileImageData: Data
+    public var sandBeach: SandBeachFeature.State
+    public var introductionSetup: IntroductionSetupFeature.State
+    public var profileImageUpload: ProfileImageUploadFeature.State
     
-    public init() {}
+    public init(
+      path: StackState<Path.State> = StackState<Path.State>(),
+      introduction: String = "",
+      profileImageData: Data = .init(),
+      sandBeach: SandBeachFeature.State = .init(),
+      introductionSetup: IntroductionSetupFeature.State = .init(),
+      profileImageUpload: ProfileImageUploadFeature.State = .init()
+    ) {
+      self.path = path
+      self.introduction = introduction
+      self.profileImageData = profileImageData
+      self.sandBeach = sandBeach
+      self.introductionSetup = introductionSetup
+      self.profileImageUpload = profileImageUpload
+    }
   }
   
   public enum Action {
