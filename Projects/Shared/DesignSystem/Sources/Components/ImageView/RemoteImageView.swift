@@ -29,8 +29,7 @@ public struct RemoteImageView: View {
     KFImage(URL(string: imageURL))
       .cancelOnDisappear(true)
       .placeholder {
-        // TODO: 플레이스 홀더 정해지면 수정필요
-        Color.BottleColorSystem.neutral(.neutral400).color
+        ColorToken.icon(.secondary).color
       }
       .downsampling(size: downsamplingSize)
       .scaleFactor(UIScreen.main.scale)
