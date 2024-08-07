@@ -18,4 +18,5 @@ public extension TargetDependency.SPM {
     static let Moya: TargetDependency = .external(name: "Moya")
     static let KakaoSDKAuth: TargetDependency = .external(name: "KakaoSDKAuth")
     static let KakaoSDKUser: TargetDependency = .external(name: "KakaoSDKUser")
+    static let Lottie: TargetDependency = .external(name: "Lottie")
 }

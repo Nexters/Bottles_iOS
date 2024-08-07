@@ -24,6 +24,7 @@ let project = Project.makeModule(
     ],
     resourceSynthesizers: [
         .assets(),
-        .fonts()
+        .fonts(),
+        .custom(name: "Lottie", parser: .json, extensions: ["lottie"])
     ]
 )
