@@ -211,6 +211,14 @@ struct CardSection: View {
           destination: LetterCardTestView(),
           label: { Text("LettetCardView") }
         )
+        
+        
+        NavigationLink(
+          destination: UserProfileTestView(),
+          label: {
+            Text("UserProfileView")
+          }
+        )
       },
       header: {
         Text("Card")
