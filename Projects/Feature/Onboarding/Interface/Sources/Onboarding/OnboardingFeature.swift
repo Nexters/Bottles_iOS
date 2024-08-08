@@ -7,21 +7,15 @@
 
 import Foundation
 
-import FeatureOnboardingInterface
 import CoreLoggerInterface
 
 import ComposableArchitecture
 
-extension OnboardingFeature
-{
+extension OnboardingFeature {
   public init() {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
-        return .none
-        
-      case .closeButtonDidTap:
-        // TODO: close webview
         return .none
         
       case let .presentToastDidRequired(message):

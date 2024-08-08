@@ -25,9 +25,12 @@ public struct OnboardingFeature {
   
   public enum Action {
     case onAppear
-    case closeButtonDidTap
     case presentToastDidRequired(message: String)
     case createProfileDidCompleted
+    
+    public enum Delegate {
+      case createProfileDidCompleted
+    }
   }
   
   public var body: some ReducerOf<Self> {

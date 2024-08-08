@@ -25,8 +25,6 @@ public struct OnboardingView: View {
       type: .createProfile,
       actionDidInputted: { action in
         switch action {
-        case .closeWebView:
-          store.send(.closeButtonDidTap)
         case let .showTaost(message):
           store.send(.presentToastDidRequired(message: message))
         case .createProfileDidCompleted:
