@@ -7,6 +7,8 @@
 
 import Foundation
 
+import DomainBottleInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -19,8 +21,21 @@ public struct BottleStorageFeature {
   
   @ObservableState
   public struct State: Equatable {
+    // 보틀 상태 선택 탭(대화 중, 완료)
     let bottleActiveStateTabs: [BottleActiveState]
     var selectedActiveStateTab: BottleActiveState
+    var currentSelectedBottles: [BottleStorageItem] {
+      switch selectedActiveStateTab {
+      case .active:
+        return activeBottleList ?? []
+      case .done:
+        return doneBottlsList ?? []
+      }
+    }
+    
+    // 보틀 리스트
+    var activeBottleList: [BottleStorageItem]?
+    var doneBottlsList: [BottleStorageItem]?
     
     public init() {
       self.bottleActiveStateTabs = BottleActiveState.allCases
@@ -29,10 +44,16 @@ public struct BottleStorageFeature {
   }
   
   public enum Action: BindableAction {
+    // View Life Cycle
     case onAppear
     
+    // 보틀 상태 선택 탭(대화 중, 완료)
     case bottleActiveStateTabButtonTapped(BottleActiveState)
     
+    // 보틀 리스트
+    case bottleStorageListFetched(BottleStorageList)
+    
+    // ETC.
     case binding(BindingAction<State>)
   }
   

@@ -21,4 +21,3 @@ public struct BottleListResponseDTO: Decodable {
     let userName: String?
   }
 }
-

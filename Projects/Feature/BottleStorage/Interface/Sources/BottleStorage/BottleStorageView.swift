@@ -24,8 +24,15 @@ public struct BottleStorageView: View {
         VStack(spacing: 0.0) {
           bottleActiveStateSelectTab
           
-          Spacer()
+          bottlsList
+            .padding(.horizontal, .md)
+            .padding(.top, 32.0)
+            .padding(.bottom, 36.0)
         }
+        .frame(maxHeight: .infinity, alignment: .top)
+      }
+      .onAppear {
+        store.send(.onAppear)
       }
     }
   }
@@ -60,5 +67,42 @@ private extension BottleStorageView {
     }
     .padding(.md)
     .padding(.top, 48.0)
+  }
+  
+  @ViewBuilder
+  var bottlsList: some View {
+    if store.currentSelectedBottles.isEmpty {
+      VStack(spacing: .xxl) {
+        HStack(spacing: 0.0) {
+          WantedSansStyleText(
+            "아직 보관 중인\n보틀이 없어요!",
+            style: .title1,
+            color: .primary
+          )
+          
+          Spacer()
+        }
+        
+        Image(systemName: "photo")
+          .resizable()
+          .frame(width: 180.0, height: 180.0)
+      }
+    } else {
+      ScrollView {
+        VStack(spacing: .md) {
+          ForEach(store.currentSelectedBottles, id: \.id) { bottle in
+            BottleStorageItem(
+              userName: bottle.userName ?? "(없음)",
+              age: bottle.age ?? 0,
+              mbti: bottle.mbti,
+              keywords: bottle.keyword,
+              imageURL: bottle.userImageUrl,
+              isRead: bottle.isRead ?? false
+            )
+          }
+        }
+      }
+      .scrollIndicators(.hidden)
+    }
   }
 }
