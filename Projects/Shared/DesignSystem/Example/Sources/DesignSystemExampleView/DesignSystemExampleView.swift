@@ -182,6 +182,12 @@ struct EtcSection: View {
 //          ,
           label: { Text("ImagePickerButton") }
         )
+        
+        NavigationLink(
+          "Loading Indicator",
+          destination: {
+            LoadingIndicator()
+          })
       },
       header: {
         Text("ETC")
