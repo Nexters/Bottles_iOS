@@ -1,6 +1,6 @@
 //
 //  QuestionStateType.swift
-//  DesignSystemExample
+//  SharedDesignSystem
 //
 //  Created by 임현규 on 8/9/24.
 //
@@ -12,6 +12,7 @@ public enum QuestionStateType: Equatable {
   case bothAnswered(peer: String, mySelf: String) /// 상대방 답변 O, 본인 답변 O
   case selfAnswered(mySelf: String)               /// 상대방 답변 X, 본인 답변 O
   case noAnswer                                   /// 상대방 답변 X, 본인 답변 X
+  case none
   
   var peerAnswer: String? {
     switch self {
