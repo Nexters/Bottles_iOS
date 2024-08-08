@@ -33,17 +33,29 @@ private extension PingPongBubble {
   }
   
   var text: some View {
-    WantedSansStyleText(
-      content,
-      style: .body,
-      color: .secondary
-    )
-    .lineSpacing(5)
-    .padding(.horizontal, .md)
-    .padding(.vertical, .sm)
-    .background {
-      roundedRectangle
+    HStack(spacing: 0) {
+      
+      if isRight {
+        Spacer()
+      }
+      
+      WantedSansStyleText(
+        content,
+        style: .body,
+        color: .secondary
+      )
+      .lineSpacing(5)
+      .padding(.horizontal, .md)
+      .padding(.vertical, .sm)
+      .background {
+        roundedRectangle
+      }
+      
+      if !isRight {
+        Spacer()
+      }
     }
+    .frame(maxWidth: 240)
   }
   
   var backgroundColor: Color {
