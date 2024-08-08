@@ -8,7 +8,9 @@
 import SwiftUI
 import WebKit
 
+import CoreLoggerInterface
 import CoreWebViewInterface
+import SharedDesignSystem
 import FeatureBaseWebViewInterface
 
 import ComposableArchitecture
@@ -21,19 +23,33 @@ public struct OnboardingView: View {
   }
   
   public var body: some View {
-    BaseWebView(
-      type: .createProfile,
-      actionDidInputted: { action in
-        switch action {
-        case let .showTaost(message):
-          store.send(.presentToastDidRequired(message: message))
-        case .createProfileDidCompleted:
-          store.send(.createProfileDidCompleted)
-        default:
-          break
+    WithPerceptionTracking {
+      BaseWebView(
+        type: .createProfile,
+        actionDidInputted: { action in
+          switch action {
+          case .webViewLoadingCompleted:
+            store.send(.webViewLoadingCompleted)
+            
+          case let .showTaost(message):
+            store.send(.presentToastDidRequired(message: message))
+            
+          case .createProfileDidCompleted:
+            store.send(.createProfileDidCompleted)
+            
+          default:
+            Log.assertion(message: "not handled web view action")
+            break
+          }
+        }
+      )
+      .ignoresSafeArea()
+      .toolbar(.hidden, for: .navigationBar)
+      .overlay {
+        if store.isShowLoadingProgressView {
+          LoadingIndicator()
         }
       }
-    )
-    .ignoresSafeArea()
+    }
   }
 }

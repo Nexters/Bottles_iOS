@@ -73,6 +73,11 @@ public struct AppFeature {
       }
       return .none
       
+    case .login(.delegate(.createOnboardingProfileDidCompleted)):
+      state.login = nil
+      state.mainTab = MainTabViewFeature.State()
+      return .none
+      
     default:
       return .none
     }

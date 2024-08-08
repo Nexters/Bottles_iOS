@@ -19,17 +19,26 @@ public struct OnboardingFeature {
     self.reducer = reducer
   }
   
+  @ObservableState
   public struct State: Equatable {
-    public init() {}
+    var isShowLoadingProgressView: Bool
+    
+    public init() {
+      self.isShowLoadingProgressView = true
+    }
   }
   
-  public enum Action {
+  public enum Action: BindableAction {
     case onAppear
     case presentToastDidRequired(message: String)
     case createProfileDidCompleted
+    case webViewLoadingCompleted
+    case delegate(Delegate)
+    
+    case binding(BindingAction<State>)
     
     public enum Delegate {
-      case createProfileDidCompleted
+      case createOnboardingProfileDidCompleted
     }
   }
   

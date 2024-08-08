@@ -8,22 +8,33 @@
 import Foundation
 
 import CoreLoggerInterface
+import CoreToastInterface
 
 import ComposableArchitecture
 
 extension OnboardingFeature {
   public init() {
+    @Dependency(\.toastClient) var toastClient
+    
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
         return .none
         
       case let .presentToastDidRequired(message):
-        // TODO: present toast
+        toastClient.presentToast(message: message)
+        return .none
+        
+      case .webViewLoadingCompleted:
+        state.isShowLoadingProgressView = false
         return .none
         
       case .createProfileDidCompleted:
-        // TODO: present main tab view
+        return .run { send in
+          await send(.delegate(.createOnboardingProfileDidCompleted))
+        }
+      
+      case .binding, .delegate:
         return .none
       }
     }
