@@ -21,6 +21,13 @@ extension BottleClient: DependencyKey {
       fetchNewBottlesCount: {
         let newBottleList = try await networkManager.reqeust(api: .apiType(BottleAPI.fetchBottles), dto: BottleListResponseDTO.self)
         return newBottleList.bottles?.count
+      }, 
+      fetchBottleStorageList: {
+        let bottleStorageList = try await networkManager.reqeust(
+          api: .apiType(BottleAPI.fetchBottleStorageList),
+          dto: BottleStorageListResponseDTO.self
+        ).toDomain()
+        return bottleStorageList
       }
     )
   }
@@ -28,7 +35,14 @@ extension BottleClient: DependencyKey {
 
 extension BottleClient {
   static public var previewValue = Self(
-    fetchNewBottlesCount: { 5 })
+    fetchNewBottlesCount: { 5 }, 
+    fetchBottleStorageList: {
+      return BottleStorageList(
+        activeBottles: [],
+        doneBottles: []
+      )
+    }
+  )
 }
 
 extension DependencyValues {
