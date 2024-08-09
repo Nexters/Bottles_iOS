@@ -116,12 +116,10 @@ extension SandBeachFeature {
       case .bottleStorageIslandDidTapped:
         Log.debug("bottleStorageIslandDidTapped")
         return .send(.delegate(.bottleStorageIslandDidTapped))
-        }
         
       case .newBottleIslandDidTapped:
         Log.debug("newBottleIslandDidTapped")
         return .send(.delegate(.newBottleIslandDidTapped))
-        }
         
       default:
         return .none
