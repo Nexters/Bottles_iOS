@@ -31,6 +31,7 @@ public struct PingPongContainer<Content: View>: View {
         Divider()
           .padding(.horizontal, .md)
         content
+          .transition(.move(edge: .top))
       }
     }
     .clipped()
