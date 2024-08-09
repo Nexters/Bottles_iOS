@@ -28,13 +28,14 @@ extension WebViewClient: DependencyKey {
       throw NSError(domain: "unknown", code: 0)
     }
     
-    if let dict = try JSONSerialization.jsonObject(with: jsonData) as? [String: String] {
+    if let dict = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any] {
       guard let type = dict["type"],
             let action = BottleWebViewAction(
-              type: type,
-              message: dict["message"],
-              accessToken: dict["accessToken"],
-              refreshToken: dict["refreshToken"]
+              type: type as? String ?? "",
+              message: dict["message"] as? String ?? "",
+              accessToken: dict["accessToken"] as? String ?? "",
+              refreshToken: dict["refreshToken"] as? String ?? "",
+              isCompletedOnboardingIntroduction: dict["hasCompleteIntroduction"] as? Bool ?? false
             )
       else {
         throw NSError(domain: "unknown", code: 0)
