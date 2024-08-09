@@ -39,5 +39,13 @@ public struct AuthClient {
   public func checkTokenIsExist() -> Bool {
     return _checkTokenIsExist()
   }
+  
+  public func withdraw() async throws {
+    try await withdraw()
+  }
+  
+  public func logout() async throws {
+    try await logout()
+  }
 }
 

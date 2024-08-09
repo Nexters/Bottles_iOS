@@ -7,15 +7,22 @@
 
 import Foundation
 
-import FeatureMyPageInterface
+import DomainAuth
+import CoreKeyChainStore
 
 import ComposableArchitecture
 
 extension MyPageFeature {
   public init() {
+    @Dependency(\.authClient) var authClient
+    
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
+        return .none
+        
+      case .webViewLoadingCompleted:
+        state.isShowLoadingProgressView = false
         return .none
         
       case let .presentToastRequired(message):
@@ -27,7 +34,17 @@ extension MyPageFeature {
         return .none
         
       case .withdrawalButtonDidTap:
-        // TODO: withdarawal handling
+        return .run { send in
+          try await authClient.withdraw()
+          await send(.withdrawalCompleted)
+        }
+        
+      case .withdrawalCompleted:
+        KeyChainTokenStore.shared.deleteAll()
+        // 화면이동
+        return .none
+        
+      case .binding:
         return .none
       }
     }
