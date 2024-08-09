@@ -31,6 +31,12 @@ extension AuthClient: DependencyKey {
       },
       checkTokenIsExist: {
         LocalAuthDataSourceImpl.checkTokeinIsExist()
+      },
+      logout: {
+        try await networkManager.reqeust(api: .apiType(AuthAPI.logout))
+      },
+      withdraw: {
+        try await networkManager.reqeust(api: .apiType(AuthAPI.withdraw))
       }
     )
   }
