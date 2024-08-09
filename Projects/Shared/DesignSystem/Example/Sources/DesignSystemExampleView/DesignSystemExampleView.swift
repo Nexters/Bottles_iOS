@@ -175,11 +175,11 @@ struct EtcSection: View {
         NavigationLink(
           destination:
             EmptyView(),
-              // TODO: - ImagePickerButton Test 뷰 추가
-//            ImagePickerButton()
-//            .asDebounceButton {}
-//            .padding(.xl)
-//          ,
+          // TODO: - ImagePickerButton Test 뷰 추가
+          //            ImagePickerButton()
+          //            .asDebounceButton {}
+          //            .padding(.xl)
+          //          ,
           label: { Text("ImagePickerButton") }
         )
       },
@@ -192,6 +192,12 @@ struct EtcSection: View {
 }
 
 struct CardSection: View {
+  
+  @State var textFieldState: TextFieldState = .enabled
+  @State var text: String = ""
+  @State var isSelctedYesButton: Bool = false
+  @State var isSelctedNoButton: Bool = false
+  
   var body: some View {
     Section(
       content: {
@@ -224,6 +230,46 @@ struct CardSection: View {
           destination: StopCardTestView(),
           label: {
             Text("StopCardView")
+          }
+        )
+        
+        NavigationLink(
+          destination: 
+            QuestionPingPongTestView(),
+          label: {
+            Text("Question PingPong View")
+          }
+        )
+        
+        NavigationLink(
+          destination: 
+            PhotoSharePingPongTestView(),
+          label: {
+            Text("PhotoShare PingPong View")
+          }
+        )
+        
+        NavigationLink(
+          destination: 
+            FinalSelectPingPongTestView(),
+          label: {
+            Text("FinalSelectPingPongView")
+          }
+        )
+        
+        NavigationLink(
+          destination: VStack(spacing: 30) {
+            HStack(spacing: 0) {
+              PingPongBubble(content: "어떤 날은 아침에 눈이 번쩍 떠지는 게 힘이 펄펄 나는 것 같은가 하면 또 어떤 날은 몸이 진흙으로 만들어진 것 같은 때가 있습니다. 몸이 힘들면 마음이 가라앉기 마련입니다. ", isRight: false)
+              Spacer()
+            }
+            HStack(spacing: 0) {
+              Spacer()
+              PingPongBubble(content: "ㅇㅇ", isRight: true)
+            }
+          },
+          label: {
+            Text("PingPongBubble")
           }
         )
       },
