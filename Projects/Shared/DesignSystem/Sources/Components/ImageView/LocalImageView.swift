@@ -19,5 +19,6 @@ public struct LocalImageView: View {
   
   public var body: some View {
     bottleImageSystem.image
+      .renderingMode(.template)
   }
 }

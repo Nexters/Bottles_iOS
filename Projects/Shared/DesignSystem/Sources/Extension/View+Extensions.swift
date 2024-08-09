@@ -26,3 +26,26 @@ public extension View {
     self.colorMultiply(colorToken.color)
   }
 }
+
+// MARK: - Private Methods
+extension View {
+  func makeLeftBubbleText(text: String) -> some View {
+    HStack(spacing: 0) {
+      PingPongBubble(
+        content: text,
+        isRight: false
+      )
+      Spacer()
+    }
+  }
+  
+  func makeRightBubbleText(text: String) -> some View {
+    HStack(spacing: 0) {
+      Spacer()
+      PingPongBubble(
+        content: text,
+        isRight: true
+      )
+    }
+  }
+}

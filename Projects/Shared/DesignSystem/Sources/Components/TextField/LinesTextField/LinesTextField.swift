@@ -11,7 +11,10 @@ import Combine
 public struct LinesTextField: View {
   @Binding private var text: String
   @Binding private var textFieldState: TextFieldState
-  
+  private let _action: (() -> Void)?
+  private var action: () -> Void {
+    return _action ?? {}
+  }
   private let textFieldType: LinesTextFieldType
   private let errorMessage: String?
   private let buttonTitle: String?
@@ -25,7 +28,8 @@ public struct LinesTextField: View {
     placeHolder: String,
     buttonTitle: String? = nil,
     errorMessage: String? = nil,
-    textLimit: Int
+    textLimit: Int,
+    action: (() -> Void)? = nil
   ) {
     self.textFieldType = textFieldType
     self._textFieldState = textFieldState
@@ -34,6 +38,7 @@ public struct LinesTextField: View {
     self.buttonTitle = buttonTitle
     self.errorMessage = errorMessage
     self.textLimit = textLimit
+    self._action = action
   }
   
   public var body: some View {
@@ -115,7 +120,7 @@ private extension LinesTextField {
           title: buttonTitle ?? "",
           sizeType: .medium,
           buttonType: .normal,
-          action: {}
+          action: { action() }
         )
         .disabled(isDisabledButton)
       }
@@ -146,7 +151,7 @@ private extension LinesTextField {
   var height: CGFloat {
     switch textFieldType {
     case .introduction: return 301
-    case .letter:       return 186
+    case .letter:       return 240
     }
   }
   

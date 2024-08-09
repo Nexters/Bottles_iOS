@@ -92,15 +92,11 @@ private extension OutlinedStyleButton {
         titleText
         
       case let .image(imageType):
-        GeometryReader { geometry in
-          let width = geometry.size.width
           VStack(spacing: .sm) {
             imageView(imageType: imageType)
-              .frame(width: width, height: width)
-            
+              .frame(width: 100, height: 100)
             titleText
-          }
-        }
+          }        
       }
       
     case .large:
