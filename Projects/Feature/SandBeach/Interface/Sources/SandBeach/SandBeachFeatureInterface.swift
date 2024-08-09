@@ -111,20 +111,16 @@ extension SandBeachFeature {
         return .none
                 
       case .writeButtonDidTapped:
-        return .run { send in
-          await send(.delegate(.writeButtonDidTapped))
-        }
+        return .send(.delegate(.writeButtonDidTapped))
         
       case .bottleStorageIslandDidTapped:
         Log.debug("bottleStorageIslandDidTapped")
-        return .run { send in
-          await send(.delegate(.bottleStorageIslandDidTapped))
+        return .send(.delegate(.bottleStorageIslandDidTapped))
         }
         
       case .newBottleIslandDidTapped:
         Log.debug("newBottleIslandDidTapped")
-        return .run { send in
-          await send(.delegate(.newBottleIslandDidTapped))
+        return .send(.delegate(.newBottleIslandDidTapped))
         }
         
       default:
