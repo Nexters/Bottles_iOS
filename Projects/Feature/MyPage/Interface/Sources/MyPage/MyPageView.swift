@@ -26,17 +26,17 @@ public struct MyPageView: View {
         isScrollEnabled: true,
         actionDidInputted: { action in
           switch action {
-          case .webViewLoadingCompleted:
-            store.send(.webViewLoadingCompleted)
+          case .webViewLoadingDidCompleted:
+            store.send(.webViewLoadingDidCompleted)
             
           case let .showTaost(message):
-            store.send(.presentToastRequired(message: message))
+            store.send(.presentToastDidRequired(message: message))
             
-          case .logOutDidCompleted:
-            store.send(.logOutDidCompleted)
+          case .logOutButtonDidTapped:
+            store.send(.logOutButtonDidTapped)
             
           case .withdrawalButtonDidTap:
-            store.send(.withdrawalButtonDidTap)
+            store.send(.withdrawalButtonDidTapped)
             
           default:
             break

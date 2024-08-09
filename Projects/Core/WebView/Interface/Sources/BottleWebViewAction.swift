@@ -17,7 +17,7 @@ public enum BottleWebViewAction: Equatable {
   /// 토큰 전송
   case tokenDidSend(accessToken: String, refreshToken: String)
   /// web view loading 완료
-  case webViewLoadingCompleted
+  case webViewLoadingDidCompleted
   
   // MARK: - SignUp
   
@@ -41,8 +41,8 @@ public enum BottleWebViewAction: Equatable {
   
   // MARK: - My Page
   
-  /// 로그아웃 성공
-  case logOutDidCompleted
+  /// 로그아웃
+  case logOutButtonDidTapped
   /// 회원탈퇴
   case withdrawalButtonDidTap
   
@@ -119,7 +119,7 @@ public enum BottleWebViewAction: Equatable {
     // MARK: - My Page
       
     case "logout":
-      self = .logOutDidCompleted
+      self = .logOutButtonDidTapped
       
     case "deleteUser":
       self = .withdrawalButtonDidTap

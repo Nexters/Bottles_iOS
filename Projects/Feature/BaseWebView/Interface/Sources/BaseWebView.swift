@@ -93,7 +93,7 @@ public struct BaseWebView: UIViewRepresentable {
       _ webView: WKWebView,
       didFinish navigation: WKNavigation!
     ) {
-      actionDidInputted?(.webViewLoadingCompleted)
+      actionDidInputted?(.webViewLoadingDidCompleted)
     }
   }
 }

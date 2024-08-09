@@ -9,37 +9,45 @@ import Foundation
 
 import DomainAuth
 import CoreKeyChainStore
+import CoreToastInterface
 
 import ComposableArchitecture
 
 extension MyPageFeature {
   public init() {
     @Dependency(\.authClient) var authClient
+    @Dependency(\.toastClient) var toastClient
     
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
         return .none
         
-      case .webViewLoadingCompleted:
+      case .webViewLoadingDidCompleted:
         state.isShowLoadingProgressView = false
         return .none
         
-      case let .presentToastRequired(message):
-        // TODO: present toast
+      case let .presentToastDidRequired(message):
+        toastClient.presentToast(message: message)
         return .none
         
-      case .logOutDidCompleted:
-        // TODO: log out handling
-        return .none
-        
-      case .withdrawalButtonDidTap:
+      case .logOutButtonDidTapped:
         return .run { send in
-          try await authClient.withdraw()
-          await send(.withdrawalCompleted)
+          try await authClient.logout()
+          await send(.logOutDidCompleted)
         }
         
-      case .withdrawalCompleted:
+      case .logOutDidCompleted:
+        KeyChainTokenStore.shared.deleteAll()
+        return .none
+        
+      case .withdrawalButtonDidTapped:
+        return .run { send in
+          try await authClient.withdraw()
+          await send(.withdrawalDidCompleted)
+        }
+        
+      case .withdrawalDidCompleted:
         KeyChainTokenStore.shared.deleteAll()
         // 화면이동
         return .none

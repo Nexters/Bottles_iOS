@@ -27,12 +27,17 @@ public struct MyPageFeature {
   }
   
   public enum Action: BindableAction {
+    // View Life Cycle
     case onAppear
-    case webViewLoadingCompleted
-    case presentToastRequired(message: String)
+    
+    case webViewLoadingDidCompleted
+    case presentToastDidRequired(message: String)
+    case logOutButtonDidTapped
     case logOutDidCompleted
-    case withdrawalButtonDidTap
-    case withdrawalCompleted
+    case withdrawalButtonDidTapped
+    case withdrawalDidCompleted
+    
+    // ETC
     case binding(BindingAction<State>)
   }
   
