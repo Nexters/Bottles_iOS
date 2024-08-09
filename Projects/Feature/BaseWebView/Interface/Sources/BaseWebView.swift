@@ -8,6 +8,7 @@
 import SwiftUI
 import WebKit
 
+import CoreLoggerInterface
 import CoreWebViewInterface
 import DomainWebView
 
@@ -79,7 +80,20 @@ public struct BaseWebView: UIViewRepresentable {
       else {
         return
       }
-      let aciton = try? webViewClient.messageToAction(with: message.body)
+      do {
+        let action = try webViewClient.messageToAction(with: message.body)
+        actionDidInputted?(action)
+      } catch {
+        Log.assertion(message: "webview action parsing error")
+        return
+      }
+    }
+    
+    public func webView(
+      _ webView: WKWebView,
+      didFinish navigation: WKNavigation!
+    ) {
+      actionDidInputted?(.webViewLoadingCompleted)
     }
   }
 }

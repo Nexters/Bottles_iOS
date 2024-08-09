@@ -16,6 +16,8 @@ public enum BottleWebViewAction: Equatable {
   case showTaost(message: String)
   /// 토큰 전송
   case tokenDidSend(accessToken: String, refreshToken: String)
+  /// web view loading 완료
+  case webViewLoadingCompleted
   
   // MARK: - SignUp
   

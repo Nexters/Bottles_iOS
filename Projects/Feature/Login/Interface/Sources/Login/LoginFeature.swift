@@ -9,6 +9,7 @@ import Foundation
 
 import DomainAuth
 import CoreLoggerInterface
+import FeatureOnboardingInterface
 
 import ComposableArchitecture
 
@@ -31,23 +32,33 @@ extension LoginFeature {
         
       case let .signInKakaoDidSuccess(userInfo):
         let token = userInfo.token, isSignUp = userInfo.isSignUp
+        let isCompletedOnboardingIntroduction = userInfo.isCompletedOnboardingIntroduction
         authClient.saveToken(token: token)
+        if isSignUp && !isCompletedOnboardingIntroduction {
+          return goToOboarding(state: &state)
+        }
         return .send(.signUpCheckCompleted(isSignUp: isSignUp))
-        
+          
       case .goToGeneralLogin:
         // TODO: - 일반 로그인 화면으로 이동.
         return .none
         
       case let .signUpCheckCompleted(isSignUp):
         if !isSignUp {
-          return .send(.goToMainTab)
+          return .send(.goToMainTab, animation: .default)
         } else {
-          // TODO: OnboardingView로 이동
-          Log.debug(isSignUp)
-          return .none
+          return goToOboarding(state: &state)
         }
         
+      case .path(.element(id: _, action: .onBoarding(.delegate(.createOnboardingProfileDidCompleted)))):
+        return .send(.delegate(.createOnboardingProfileDidCompleted))
+        
       default:
+        return .none
+      }
+      
+      func goToOboarding(state: inout LoginFeature.State) -> Effect<Action> {
+        state.path.append(.onBoarding(.init()))
         return .none
       }
     }
@@ -61,5 +72,6 @@ extension LoginFeature {
   @Reducer(state: .equatable)
   public enum Path {
     case generalLogin(GeneralLogInFeature)
+    case onBoarding(OnboardingFeature)
   }
 }

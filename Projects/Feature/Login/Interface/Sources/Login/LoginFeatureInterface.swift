@@ -37,6 +37,11 @@ public struct LoginFeature {
     case goToGeneralLogin
     case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case createOnboardingProfileDidCompleted
+    }
   }
   
   public var body: some ReducerOf<Self> {
