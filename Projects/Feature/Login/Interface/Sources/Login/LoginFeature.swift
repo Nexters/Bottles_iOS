@@ -8,6 +8,7 @@
 import Foundation
 
 import DomainAuth
+import DomainAuthInterface
 import CoreLoggerInterface
 import FeatureOnboardingInterface
 
@@ -31,20 +32,14 @@ extension LoginFeature {
         }
         
       case let .signInKakaoDidSuccess(userInfo):
-        let token = userInfo.token, isSignUp = userInfo.isSignUp
-        let isCompletedOnboardingIntroduction = userInfo.isCompletedOnboardingIntroduction
-        authClient.saveToken(token: token)
-        if isSignUp && !isCompletedOnboardingIntroduction {
-          return goToOboarding(state: &state)
-        }
-        return .send(.signUpCheckCompleted(isSignUp: isSignUp))
+        return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
           
       case .goToGeneralLogin:
         // TODO: - 일반 로그인 화면으로 이동.
         return .none
         
       case let .signUpCheckCompleted(isSignUp):
-        if !isSignUp {
+        if isSignUp {
           return .send(.goToMainTab, animation: .default)
         } else {
           return goToOboarding(state: &state)
@@ -53,6 +48,12 @@ extension LoginFeature {
       case .path(.element(id: _, action: .onBoarding(.delegate(.createOnboardingProfileDidCompleted)))):
         return .send(.delegate(.createOnboardingProfileDidCompleted))
         
+      case let .path(.element(id: _, action: .generalLogin(.delegate(delegate)))):
+        switch delegate {
+        case let .generalLogInDidSucess(userInfo):
+          return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
+        }
+        
       default:
         return .none
       }
@@ -60,6 +61,16 @@ extension LoginFeature {
       func goToOboarding(state: inout LoginFeature.State) -> Effect<Action> {
         state.path.append(.onBoarding(.init()))
         return .none
+      }
+      
+      func handleLoginSuccessUserInfo(state: inout State, userInfo: UserInfo) -> Effect<Action> {
+        let token = userInfo.token, isSignUp = userInfo.isSignUp
+        let isCompletedOnboardingIntroduction = userInfo.isCompletedOnboardingIntroduction
+        authClient.saveToken(token: token)
+        if isSignUp && !isCompletedOnboardingIntroduction {
+          return goToOboarding(state: &state)
+        }
+        return .send(.signUpCheckCompleted(isSignUp: isSignUp))
       }
     }
     self.init(reducer: reducer)

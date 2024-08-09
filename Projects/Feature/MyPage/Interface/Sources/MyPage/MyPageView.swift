@@ -43,7 +43,7 @@ public struct MyPageView: View {
           }
         }
       )
-      .ignoresSafeArea()
+      .ignoresSafeArea(.all, edges: .bottom)
       .overlay {
         if store.isShowLoadingProgressView {
           LoadingIndicator()

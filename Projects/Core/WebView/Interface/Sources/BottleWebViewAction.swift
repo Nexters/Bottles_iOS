@@ -27,7 +27,7 @@ public enum BottleWebViewAction: Equatable {
   // MARK: - LogIn
   
   /// 로그인 성공
-  case loginDidCompleted(accessToken: String, refreshToken: String)
+  case loginDidCompleted(accessToken: String, refreshToken: String, isCompletedOnboardingIntroduction: Bool)
   
   // MARK: - Onboarding(Create Profile)
   
@@ -101,9 +101,11 @@ public enum BottleWebViewAction: Equatable {
         )
         return nil
       }
+      // TODO: 웹뷰 값 변경되면 isCompletedOnboardingIntroduction 실제값 넣어줘야함
       self = .loginDidCompleted(
         accessToken: accessToken,
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
+        isCompletedOnboardingIntroduction: true
       )
             
     // MARK: - Onboarding(Create Profile)

@@ -29,7 +29,7 @@ public extension View {
 
 // MARK: - Private Methods
 extension View {
-  func makeLeftBubbleText(text: String) -> some View {
+  public func makeLeftBubbleText(text: String) -> some View {
     HStack(spacing: 0) {
       PingPongBubble(
         content: text,
@@ -39,7 +39,7 @@ extension View {
     }
   }
   
-  func makeRightBubbleText(text: String) -> some View {
+  public func makeRightBubbleText(text: String) -> some View {
     HStack(spacing: 0) {
       Spacer()
       PingPongBubble(
