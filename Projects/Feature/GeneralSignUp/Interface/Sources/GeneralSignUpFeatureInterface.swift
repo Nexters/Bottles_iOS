@@ -7,6 +7,8 @@
 
 import Foundation
 
+import DomainAuthInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -17,18 +19,37 @@ public struct GeneralSignUpFeature {
     self.reducer = reducer
   }
   
+  @ObservableState
   public struct State: Equatable {
-    public init() {}
+    var isShowLoadingProgressView: Bool
+    
+    public init() {
+      isShowLoadingProgressView = true
+    }
   }
   
-  public enum Action {
+  public enum Action: BindableAction {
+    // View Life Cycle
     case onAppear
+    
+    case webViewLoadingDidCompleted
     case closeButtonDidTap
     case presentToastDidRequired(message: String)
     case signUpDidCompleted(accessToken: String, refreshToken: String)
+    
+    // ETC
+    case binding(BindingAction<State>)
+    
+    // Delegate
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case signUpDidCompleted(UserInfo)
+    }
   }
   
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     reducer
   }
 }

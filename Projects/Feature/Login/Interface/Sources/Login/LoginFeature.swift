@@ -11,6 +11,7 @@ import DomainAuth
 import DomainAuthInterface
 import CoreLoggerInterface
 import FeatureOnboardingInterface
+import FeatureGeneralSignUpInterface
 
 import ComposableArchitecture
 
@@ -54,6 +55,12 @@ extension LoginFeature {
           return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
         }
         
+      case let .path(.element(id: _, action: .generalSignUp(.delegate(delegate)))):
+        switch delegate {
+        case let .signUpDidCompleted(userInfo):
+          return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
+        }
+        
       default:
         return .none
       }
@@ -83,6 +90,7 @@ extension LoginFeature {
   @Reducer(state: .equatable)
   public enum Path {
     case generalLogin(GeneralLogInFeature)
+    case generalSignUp(GeneralSignUpFeature)
     case onBoarding(OnboardingFeature)
   }
 }

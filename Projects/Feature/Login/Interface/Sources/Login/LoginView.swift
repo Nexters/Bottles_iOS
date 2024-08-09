@@ -9,6 +9,7 @@ import SwiftUI
 
 import SharedDesignSystem
 import FeatureOnboardingInterface
+import FeatureGeneralSignUpInterface
 
 import ComposableArchitecture
 
@@ -43,6 +44,10 @@ public struct LoginView: View {
           case .onBoarding:
             if let store = store.scope(state: \.onBoarding, action: \.onBoarding) {
               OnboardingView(store: store)
+            }
+          case .generalSignUp:
+            if let store = store.scope(state: \.generalSignUp, action: \.generalSignUp) {
+              GeneralSignUpView(store: store)
             }
           }
         }

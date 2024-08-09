@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import SharedDesignSystem
 import FeatureBaseWebViewInterface
 
 import ComposableArchitecture
@@ -23,6 +24,9 @@ public struct GeneralSignUpView: View {
       type: .login,
       actionDidInputted: { action in
         switch action {
+        case .webViewLoadingDidCompleted:
+          store.send(.webViewLoadingDidCompleted)
+          
         case .closeWebView:
           store.send(.closeButtonDidTap)
           
@@ -40,6 +44,12 @@ public struct GeneralSignUpView: View {
         }
       }
     )
+    .ignoresSafeArea(.all, edges: .bottom)
+    .overlay {
+      if store.isShowLoadingProgressView {
+        LoadingIndicator()
+      }
+    }
   }
 }
 
