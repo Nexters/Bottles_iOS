@@ -25,22 +25,32 @@ public struct SandBeachFeature {
   @ObservableState
   public struct State: Equatable {
     public var userState: UserStateType = .none
-    public var imageURL: String = "https://static.wikia.nocookie.net/wallaceandgromit/images/3/38/Gromit-3.png/revision/latest/scale-to-width/360?cb=20191228190308" // 임시
+    public var isLoading: Bool = false
+    public var isDisableIslandBottle: Bool = false
+    
     public init() {}
   }
   
   public enum Action: Equatable {
     case onAppear
-    case updateUserState(userState: UserStateType)
+    case userStateFetchCompleted(userState: UserStateType, isDisableButton: Bool)
+    case updateIsDisableBottle(isDisable: Bool)
     case writeButtonDidTapped
-    case newBottlePopupDidTapped
+    case newBottleIslandDidTapped
+    case bottleStorageIslandDidTapped
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case writeButtonDidTapped
+      case newBottleIslandDidTapped
+      case bottleStorageIslandDidTapped
+    }
   }
   
   public var body: some ReducerOf<Self> {
     reducer
   }
 }
-
 
 // MARK: - init {
 extension SandBeachFeature {
@@ -51,62 +61,70 @@ extension SandBeachFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
+        state.isLoading = true
+
         return .run { send in
           let isExsit = try await profileClient.checkExistIntroduction()
-          // 자기소개 있는 경우
+          // 자기소개 없는 상태
           if isExsit {
-            await send(.updateUserState(userState: .noIntroduction))
+            await send(.userStateFetchCompleted(
+              userState: .noIntroduction,
+              isDisableButton: true))
             return
           }
-          // 자기소개 없는 경우
-          let bottlesCount = try await bottleClient.fetchNewBottlesCount()
-          // 새로 도착한 보틀이 없는 경우
-          guard let count = bottlesCount else {
-            await send(.updateUserState(userState: .noBottle) )
+          let newBottlesCount = try await bottleClient.fetchNewBottlesCount()
+
+          guard let count = newBottlesCount else {
+            let bottlesStorageList = try await bottleClient.fetchBottleStorageList()
+            let activeBottlesCount = bottlesStorageList.activeBottles.count
+            
+            // 자기소개만 작성한 상태
+            if activeBottlesCount <= 0 {
+              // TODO: time 설정
+              await send(.userStateFetchCompleted(
+                userState: .noBottle(time: 3),
+                isDisableButton: true)
+              )
+            } else { // 대화 중인 보틀이 있는 상태
+              await send(.userStateFetchCompleted(
+                userState: .hasActiveBottle(bottleCount: activeBottlesCount),
+                isDisableButton: false)
+              )
+            }
             return
           }
-          // 새로 도착한 보틀이 있는 경우
-          await send(.updateUserState(userState: .hasBottle(bottleCount: count)))
+          // 새로 도착한 보틀이 있는 상태
+          await send(.userStateFetchCompleted(
+            userState: .hasNewBottle(bottleCount: count),
+            isDisableButton: false)
+          )
+          
         } catch: { error, send in
           // TODO: 에러 핸들링
           Log.error(error)
         }
-
         
-      case let .updateUserState(userState):
-        state.userState = .noIntroduction
-        Log.debug(state.userState)
+      case let .userStateFetchCompleted(userState, isDisableButton):
+        state.userState = userState
+        state.isDisableIslandBottle = isDisableButton
+        state.isLoading = false
         return .none
+                
+      case .writeButtonDidTapped:
+        return .send(.delegate(.writeButtonDidTapped))
+        
+      case .bottleStorageIslandDidTapped:
+        Log.debug("bottleStorageIslandDidTapped")
+        return .send(.delegate(.bottleStorageIslandDidTapped))
+        
+      case .newBottleIslandDidTapped:
+        Log.debug("newBottleIslandDidTapped")
+        return .send(.delegate(.newBottleIslandDidTapped))
+        
       default:
         return .none
       }
     }
     self.init(reducer: reducer)
-  }
-}
-// MARK: - Public Extension
-
-public extension SandBeachFeature {
-  enum UserStateType: Equatable {
-    case noIntroduction              /// 자기소개 작성 X
-    case noBottle                    /// 도착한 보틀 X
-    case hasBottle(bottleCount: Int) /// 도착한 보틀 O
-    case none                        /// 아무 상태도 아님
-    
-    var popUpText: String {
-      switch self {
-      case .noIntroduction: return "자기소개 작성 후 매칭을 받을 수 있어요"
-      case .noBottle:       return "n시간 후 새로운 보틀이 도착해요"
-      case .hasBottle:      return "새로운 보틀이 도착했어요"
-      default:              return ""
-      }
-    }
-    
-    var buttonText: String? {
-      switch self {
-      case .noIntroduction: return "자기소개 작성하기"
-      default:              return nil
-      }
-    }
   }
 }

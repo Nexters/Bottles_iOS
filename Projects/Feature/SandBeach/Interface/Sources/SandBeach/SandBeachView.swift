@@ -20,58 +20,66 @@ public struct SandBeachView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      ZStack {
-        GeometryReader { geo in
-          
-          VStack(spacing: 0) {
-            Spacer()
+      GeometryReader { geo in
+        WithPerceptionTracking {
+          if store.isLoading {
+            LoadingIndicator()
+          } else {
+            VStack(spacing: 0) {
+              Spacer()
+              BottleImageView(type: .local(bottleImageSystem: .illustraition(.logo)))
+                .frame(width: 78.06, height: 20)
+                .padding(.top, geo.safeAreaInsets.top + 14)
+                .padding(.bottom, 38)
               
-            BottleImageView(type: .local(bottleImageSystem: .illustraition(.logo)))
-            
-              .frame(width: 78.06, height: 20)
-              .padding(.bottom, 32)
-
-            WantedSansStyleText(
-              "보틀에 오신 것을\n환영해요!", style: .title1, color: .secondary)
-            .multilineTextAlignment(.center)
-            .padding(.bottom ,32)
-
-            popup
-            
-            
-            BottleImageView(type: .local(bottleImageSystem: .illustraition(.islandEmptyBottle)))
+              WantedSansStyleText(
+                store.userState.title, style: .title1, color: .secondary)
+              .frame(height: 62)
+              .multilineTextAlignment(.center)
+              .padding(.bottom, 24)
+              Spacer()
+              
+              popup
+                .padding(.bottom, 8)
+              
+              BottleImageView(type: .local(
+                bottleImageSystem:
+                  store.userState.isEmptyBottle ? .illustraition(.islandEmptyBottle) : .illustraition(.islandHasBottle))
+              )
               .frame(width: geo.size.width)
               .frame(height: geo.size.width)
+              .asThrottleButton {
+                if store.userState.isHasNewBottle {
+                  store.send(.newBottleIslandDidTapped)
+                }
+                
+                if store.userState.isHasActiveBottle {
+                  store.send(.bottleStorageIslandDidTapped)
+                }
+              }
+              .disabled(store.isDisableIslandBottle)
               
-            Spacer()
+              Spacer()
+            }
           }
         }
-        
-        .onAppear {
-          store.send(.onAppear)
-        }
-        .zIndex(1)
-        
-        BottleImageView(type: .local(bottleImageSystem: .illustraition(.sandBeachBackground)))
-          .scaledToFill()
-          .frame(minWidth: 0) // 👈 This will keep other views (like a large text) in the frame
-          .edgesIgnoringSafeArea(.all)
+      }
+      .onAppear {
+        store.send(.onAppear)
+      }
+      .background {
+        BottleImageView(
+          type: .local(bottleImageSystem: .illustraition(.sandBeachBackground))
+        )
       }
     }
+    .edgesIgnoringSafeArea([.top, .bottom])
   }
 }
 
 // MARK: - Views
 
 public extension SandBeachView {
-  var roundedRectangle: some View  {
-    RoundedRectangle(cornerRadius: BottleRadiusType.md.value)
-      .strokeBorder(
-        ColorToken.border(.primary).color,
-        lineWidth: 1
-      )
-  }
-  
   @ViewBuilder
   var popup: some View {
     let userState = store.userState
@@ -87,19 +95,18 @@ public extension SandBeachView {
       PopupView(
         popupType: .text(content: userState.popUpText)
       )
-    case .hasBottle(let count):
+    case .hasNewBottle(let count):
       PopupView(
         popupType: .text(content: userState.popUpText)
       )
-      .overlay(
-        GeometryReader { geometry in
-          CountLabel(text: "\(count)")
-            .frame(width: geometry.size.width * 2)
-            .frame(height: 0)
-        }
+      .overlay(alignment: .topTrailing) {
+        CountLabel(text: "\(count)")
+          .offset(y: -12)
+      }
+    case .hasActiveBottle:
+      PopupView(
+        popupType: .text(content: userState.popUpText)
       )
-      .asButton(
-        action: { store.send(.newBottlePopupDidTapped) })
     default:
       EmptyView()
     }

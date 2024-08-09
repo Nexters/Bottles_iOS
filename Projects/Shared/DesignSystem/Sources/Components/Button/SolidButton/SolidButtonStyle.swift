@@ -37,7 +37,7 @@ private extension SolidButtonStyle {
   var height: CGFloat {
     switch sizeType {
     case .extraSmall: return 36
-    case .small:      return 56
+    case .small:      return 36
     case .medium:     return 56
     case .large:      return 64
     case .full:       return 64
@@ -57,7 +57,7 @@ private extension SolidButtonStyle {
   var cornerRadius: BottleRadiusType {
     switch sizeType {
     case .extraSmall: return .xs
-    case .small:      return .sm
+    case .small:      return .xs
     case .medium:     return .md
     case .large:      return .md
     case .full:       return .md

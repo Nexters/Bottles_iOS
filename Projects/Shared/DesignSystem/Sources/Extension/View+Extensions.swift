@@ -27,7 +27,7 @@ public extension View {
   }
 }
 
-// MARK: - Private Methods
+// MARK: - public Methods
 extension View {
   public func makeLeftBubbleText(text: String) -> some View {
     HStack(spacing: 0) {

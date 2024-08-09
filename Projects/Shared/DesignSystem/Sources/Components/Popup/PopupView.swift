@@ -27,6 +27,10 @@ public struct PopupView: View {
           triangleHeight: triangleHeight
         )
       )
+      .background {
+        RoundedRectangle(cornerRadius: BottleRadiusType.lg.value)
+          .fill(ColorToken.container(.primary).color)
+      }
   }
 }
 
@@ -35,9 +39,9 @@ private extension PopupView {
   var popupText: some View {
     switch popupType {
     case .text(let content):
-      WantedSansStyleText(content, style: .body, color: .secondary)
+      WantedSansStyleText(content, style: .subTitle2, color: .secondary)
     case .button(let content, _):
-      WantedSansStyleText(content, style: .body, color: .secondary)
+      WantedSansStyleText(content, style: .subTitle2, color: .secondary)
     }
   }
   
@@ -55,18 +59,16 @@ private extension PopupView {
     case .text:
       popupText
         .padding(.sm)
-        .overlay(popupRectangle)
     case .button(_, let buttonTitle):
-      VStack(spacing: .xxs) {
+      VStack(spacing: .sm) {
         popupText
-          .padding([.horizontal, .top], .md)
         SolidButton(title: buttonTitle,
-                    sizeType: .extraSmall,
+                    sizeType: .small,
                     buttonType: .normal,
                     action: action)
-          .padding([.horizontal, .bottom], .md)
+        .frame(width: 227)
       }
-      .overlay(popupRectangle)
+      .padding(.lg)
     }
   }
 }
@@ -82,8 +84,8 @@ private extension PopupView {
   
   var height: CGFloat {
     switch popupType {
-    case .button: return 93
-    case .text:   return 36
+    case .button: return 106
+    case .text:   return 42
     }
   }
 }

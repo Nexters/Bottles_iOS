@@ -8,8 +8,11 @@
 import Foundation
 
 public enum BottleRadiusType {
+
   /// 24.0
   case xl
+  /// 2.0
+  case lg
   /// 16.0
   case md
   /// 12.0
@@ -20,6 +23,7 @@ public enum BottleRadiusType {
   public var value: CGFloat {
     switch self {
     case .xl: return 24
+    case .lg: return 20
     case .md: return 16
     case .sm: return 12
     case .xs: return 8
