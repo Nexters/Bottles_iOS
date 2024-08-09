@@ -20,6 +20,7 @@ struct DesignSystemExampleView: View {
         CardSection()
         EtcSection()
         ToastSection()
+        ListSection()
       }
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle("Design System Example View")
@@ -174,12 +175,10 @@ struct EtcSection: View {
         
         NavigationLink(
           destination:
-            EmptyView(),
-              // TODO: - ImagePickerButton Test 뷰 추가
-//            ImagePickerButton()
-//            .asDebounceButton {}
-//            .padding(.xl)
-//          ,
+            ImagePickerButton(selectedImage: .constant([]), action: { })
+            .asDebounceButton {}
+            .padding(.xl)
+          ,
           label: { Text("ImagePickerButton") }
         )
         
@@ -252,6 +251,23 @@ struct ToastSection: View {
       },
       header: {
         Text("Toast")
+          .font(.headline)
+      }
+    )
+  }
+}
+
+struct ListSection: View {
+  var body: some View {
+    Section(
+      content: {
+        NavigationLink(
+          destination: BottleStorageList(),
+          label: { Text("Bottle Storage List") }
+        )
+      },
+      header: {
+        Text("List")
           .font(.headline)
       }
     )

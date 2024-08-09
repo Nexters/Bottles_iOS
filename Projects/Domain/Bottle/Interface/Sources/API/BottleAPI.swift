@@ -11,6 +11,7 @@ import Moya
 
 public enum BottleAPI {
   case fetchBottles
+  case fetchBottleStorageList
 }
 
 extension BottleAPI: BaseTargetType {
@@ -18,6 +19,8 @@ extension BottleAPI: BaseTargetType {
     switch self {
     case .fetchBottles:
       return "api/v1/bottles"
+    case .fetchBottleStorageList:
+      return "api/v1/bottles/ping-pong"
     }
   }
   
@@ -25,12 +28,16 @@ extension BottleAPI: BaseTargetType {
     switch self {
     case .fetchBottles:
       return .get
+    case .fetchBottleStorageList:
+      return .get
     }
   }
   
   public var task: Moya.Task {
     switch self {
     case .fetchBottles:
+      return .requestPlain
+    case .fetchBottleStorageList:
       return .requestPlain
     }
   }

@@ -7,10 +7,12 @@
 
 import SwiftUI
 
+import SharedDesignSystem
+
 import ComposableArchitecture
 
 public struct BottleStorageView: View {
-  let store: StoreOf<BottleStorageFeature>
+  @Perception.Bindable private var store: StoreOf<BottleStorageFeature>
   
   public init(store: StoreOf<BottleStorageFeature>) {
     self.store = store
@@ -18,9 +20,89 @@ public struct BottleStorageView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      Text("Bottle Storage View")
+      NavigationStack {
+        VStack(spacing: 0.0) {
+          bottleActiveStateSelectTab
+          
+          bottlsList
+            .padding(.horizontal, .md)
+            .padding(.top, 32.0)
+            .padding(.bottom, 36.0)
+        }
+        .frame(maxHeight: .infinity, alignment: .top)
+      }
+      .onAppear {
+        store.send(.onAppear)
+      }
     }
   }
 }
 
+// MARK: - Private Views
 
+private extension BottleStorageView {
+  var bottleActiveStateSelectTab: some View {
+    HStack(spacing: .xs) {
+      OutlinedStyleButton(
+        .small(contentType: .text),
+        title: BottleActiveState.active.title,
+        buttonType: .throttle,
+        isSelected: store.selectedActiveStateTab == BottleActiveState.active,
+        action: {
+          store.send(.bottleActiveStateTabButtonTapped(.active))
+        }
+      )
+      
+      OutlinedStyleButton(
+        .small(contentType: .text),
+        title: BottleActiveState.done.title,
+        buttonType: .throttle,
+        isSelected: store.selectedActiveStateTab == BottleActiveState.done,
+        action: {
+          store.send(.bottleActiveStateTabButtonTapped(.done))
+        }
+      )
+      
+      Spacer()
+    }
+    .padding(.md)
+    .padding(.top, 48.0)
+  }
+  
+  @ViewBuilder
+  var bottlsList: some View {
+    if store.currentSelectedBottles.isEmpty {
+      VStack(spacing: .xxl) {
+        HStack(spacing: 0.0) {
+          WantedSansStyleText(
+            "아직 보관 중인\n보틀이 없어요!",
+            style: .title1,
+            color: .primary
+          )
+          
+          Spacer()
+        }
+        
+        Image(systemName: "photo")
+          .resizable()
+          .frame(width: 180.0, height: 180.0)
+      }
+    } else {
+      ScrollView {
+        VStack(spacing: .md) {
+          ForEach(store.currentSelectedBottles, id: \.id) { bottle in
+            BottleStorageItem(
+              userName: bottle.userName ?? "(없음)",
+              age: bottle.age ?? 0,
+              mbti: bottle.mbti,
+              keywords: bottle.keyword,
+              imageURL: bottle.userImageUrl,
+              isRead: bottle.isRead ?? false
+            )
+          }
+        }
+      }
+      .scrollIndicators(.hidden)
+    }
+  }
+}
