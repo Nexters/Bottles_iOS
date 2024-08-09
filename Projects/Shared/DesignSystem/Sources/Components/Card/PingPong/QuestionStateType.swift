@@ -18,7 +18,7 @@ public enum QuestionStateType: Equatable {
   case noAnswer
   case none
   
-  var peerAnswer: String? {
+  public var peerAnswer: String? {
     switch self {
     case .peerAnswered(let peer):
       return peer
@@ -29,7 +29,7 @@ public enum QuestionStateType: Equatable {
     }
   }
   
-  var myAnswer: String? {
+  public var myAnswer: String? {
     switch self {
     case .bothAnswered(_, let mySelf):
       return mySelf

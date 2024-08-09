@@ -20,7 +20,7 @@ public enum PhotoShareStateType: Equatable {
   /// 상대방 아직 선택 X, 본인 공개 O
   case waitingForPeer
   
-  var peerProfileImageURL: String? {
+  public var peerProfileImageURL: String? {
     switch self {
     case .bothPublic(let peerProfileImageURL, _):
       return peerProfileImageURL
@@ -29,7 +29,7 @@ public enum PhotoShareStateType: Equatable {
     }
   }
 
-  var myProfileImageURL: String? {
+  public var myProfileImageURL: String? {
     switch self {
     case .bothPublic(_, let myProfileImageURL):
       return myProfileImageURL
