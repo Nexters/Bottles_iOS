@@ -20,36 +20,38 @@ public struct GeneralSignUpView: View {
   }
   
   public var body: some View {
-    BaseWebView(
-      type: .login,
-      actionDidInputted: { action in
-        switch action {
-        case .webViewLoadingDidCompleted:
-          store.send(.webViewLoadingDidCompleted)
-          
-        case .closeWebView:
-          store.send(.closeButtonDidTap)
-          
-        case let .showTaost(message):
-          store.send(.presentToastDidRequired(message: message))
-          
-        case let .signUpDidComplted(accessToken, refreshToken):
-          store.send(.signUpDidCompleted(
-            accessToken: accessToken,
-            refreshToken: refreshToken
-          ))
-          
-        default:
-          break
+    WithPerceptionTracking {
+      BaseWebView(
+        type: .signUp,
+        actionDidInputted: { action in
+          switch action {
+          case .webViewLoadingDidCompleted:
+            store.send(.webViewLoadingDidCompleted)
+            
+          case .closeWebView:
+            store.send(.closeButtonDidTap)
+            
+          case let .showTaost(message):
+            store.send(.presentToastDidRequired(message: message))
+            
+          case let .signUpDidComplted(accessToken, refreshToken):
+            store.send(.signUpDidCompleted(
+              accessToken: accessToken,
+              refreshToken: refreshToken
+            ))
+            
+          default:
+            break
+          }
+        }
+      )
+      .overlay {
+        if store.isShowLoadingProgressView {
+          LoadingIndicator()
         }
       }
-    )
-    .ignoresSafeArea(.all, edges: .bottom)
-    .overlay {
-      if store.isShowLoadingProgressView {
-        LoadingIndicator()
-      }
+      .toolbar(.hidden, for: .navigationBar)
+      .ignoresSafeArea(.all, edges: .bottom)
     }
   }
 }
-

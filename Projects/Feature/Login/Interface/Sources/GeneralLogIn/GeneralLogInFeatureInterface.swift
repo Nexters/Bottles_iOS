@@ -53,6 +53,7 @@ public struct GeneralLogInFeature {
   }
   
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     reducer
   }
 }

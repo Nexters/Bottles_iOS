@@ -32,6 +32,14 @@ extension LoginFeature {
           await send(.goToGeneralLogin)
         }
         
+      case .generalLogInButtonDidTapped:
+        state.path.append(.generalLogin(.init()))
+        return .none
+        
+      case .generalSignUpButtonDidTapped:
+        state.path.append(.generalSignUp(.init()))
+        return .none
+        
       case let .signInKakaoDidSuccess(userInfo):
         return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
           
@@ -64,6 +72,8 @@ extension LoginFeature {
       default:
         return .none
       }
+      
+      // MARK: - Inner Methods
       
       func goToOboarding(state: inout LoginFeature.State) -> Effect<Action> {
         state.path.append(.onBoarding(.init()))

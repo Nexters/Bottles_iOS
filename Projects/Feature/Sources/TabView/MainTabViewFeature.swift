@@ -51,6 +51,7 @@ public struct MainTabViewFeature {
   }
   
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     Scope(state: \.sandBeachRoot, action: \.sandBeachRoot) {
       SandBeachRootFeature()
     }

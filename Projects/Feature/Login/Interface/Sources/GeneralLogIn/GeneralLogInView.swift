@@ -20,33 +20,39 @@ public struct GeneralLogInView: View {
   }
   
   public var body: some View {
-    BaseWebView(
-      type: .login,
-      actionDidInputted: { action in
-        switch action {
-        case .webViewLoadingDidCompleted:
-          store.send(.webViewLoadingDidCompleted)
-          
-        case let .showTaost(message):
-          store.send(.presentToastDidRequired(message: message))
-          
-        case let .loginDidCompleted(accessToken, refreshToken, isCompletedOnboardingIntroduction):
-          store.send(.loginDidCompleted(
-            accessToken: accessToken,
-            refreshToken: refreshToken,
-            isCompletedOnboardingIntroduction: true
-          ))
-          
-        default:
-          break
+    WithPerceptionTracking {
+      BaseWebView(
+        type: .login,
+        actionDidInputted: { action in
+          switch action {
+          case .webViewLoadingDidCompleted:
+            store.send(.webViewLoadingDidCompleted)
+            
+          case let .showTaost(message):
+            store.send(.presentToastDidRequired(message: message))
+            
+          case let .loginDidCompleted(accessToken, refreshToken, isCompletedOnboardingIntroduction):
+            store.send(.loginDidCompleted(
+              accessToken: accessToken,
+              refreshToken: refreshToken,
+              isCompletedOnboardingIntroduction: isCompletedOnboardingIntroduction
+            ))
+            
+          case .closeWebView:
+            store.send(.closeButtonDidTapped)
+            
+          default:
+            break
+          }
+        }
+      )
+      .overlay {
+        if store.isShowLoadingProgressView {
+          LoadingIndicator()
         }
       }
-    )
-    .ignoresSafeArea(.all, edges: .bottom)
-    .overlay {
-      if store.isShowLoadingProgressView {
-        LoadingIndicator()
-      }
+      .ignoresSafeArea(.all, edges: .bottom)
+      .toolbar(.hidden, for: .navigationBar)
     }
   }
 }

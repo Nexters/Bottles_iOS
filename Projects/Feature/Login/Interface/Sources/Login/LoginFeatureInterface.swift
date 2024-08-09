@@ -29,14 +29,21 @@ public struct LoginFeature {
   }
   
   public enum Action: BindableAction {
+    // View Life Cycle
     case onAppear
+    
     case signInKakaoButtonDidTapped
+    case generalLogInButtonDidTapped
+    case generalSignUpButtonDidTapped
+    
     case signInKakaoDidSuccess(UserInfo)
     case signUpCheckCompleted(isSignUp: Bool)
     case goToMainTab
     case goToGeneralLogin
+    
     case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
+    
     case delegate(Delegate)
     
     public enum Delegate {

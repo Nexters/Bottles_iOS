@@ -43,6 +43,7 @@ public struct OnboardingFeature {
   }
   
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     reducer
   }
 }
