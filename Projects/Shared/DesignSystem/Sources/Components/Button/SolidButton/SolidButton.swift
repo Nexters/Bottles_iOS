@@ -53,7 +53,7 @@ public extension SolidButton {
 extension SolidButton {
   var titleText: some View {
     switch sizeType {
-    case .extraSmall:
+    case .extraSmall, .small:
       Text(title)
         .font(to: .wantedSans(.body))
       

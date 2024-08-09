@@ -20,58 +20,51 @@ public struct SandBeachView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      ZStack {
-        GeometryReader { geo in
-          
+      GeometryReader { geo in
+        if store.isLoading {
+          LoadingIndicator()
+        } else {
           VStack(spacing: 0) {
             Spacer()
-              
             BottleImageView(type: .local(bottleImageSystem: .illustraition(.logo)))
-            
               .frame(width: 78.06, height: 20)
-              .padding(.bottom, 32)
-
+              .padding(.top, geo.safeAreaInsets.top + 14)
+              .padding(.bottom, 38)
+            
             WantedSansStyleText(
               "보틀에 오신 것을\n환영해요!", style: .title1, color: .secondary)
+            .frame(height: 62)
             .multilineTextAlignment(.center)
-            .padding(.bottom ,32)
-
-            popup
+            .padding(.bottom, 24)
+            Spacer()
             
+            popup
+              .padding(.bottom, 8)
             
             BottleImageView(type: .local(bottleImageSystem: .illustraition(.islandEmptyBottle)))
               .frame(width: geo.size.width)
               .frame(height: geo.size.width)
-              
+            
             Spacer()
           }
         }
-        
-        .onAppear {
-          store.send(.onAppear)
-        }
-        .zIndex(1)
-        
-        BottleImageView(type: .local(bottleImageSystem: .illustraition(.sandBeachBackground)))
-          .scaledToFill()
-          .frame(minWidth: 0) // 👈 This will keep other views (like a large text) in the frame
-          .edgesIgnoringSafeArea(.all)
+      }
+      .onAppear {
+        store.send(.onAppear)
+      }
+      .background {
+        BottleImageView(
+          type: .local(bottleImageSystem: .illustraition(.sandBeachBackground))
+        )
       }
     }
+    .edgesIgnoringSafeArea([.top, .bottom])
   }
 }
 
 // MARK: - Views
 
 public extension SandBeachView {
-  var roundedRectangle: some View  {
-    RoundedRectangle(cornerRadius: BottleRadiusType.md.value)
-      .strokeBorder(
-        ColorToken.border(.primary).color,
-        lineWidth: 1
-      )
-  }
-  
   @ViewBuilder
   var popup: some View {
     let userState = store.userState

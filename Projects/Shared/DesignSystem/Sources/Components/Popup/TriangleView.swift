@@ -18,11 +18,11 @@ struct TriangleView: View {
   
   var body: some View {
     TriangleShape(width: triangleWidth, height: triangleHeight)
-      .fill(ColorToken.border(.primary).color)
+      .fill(ColorToken.container(.primary).color)
       .overlay(
         TriangleShape(width: triangleWidth, height: triangleHeight)
           .stroke(
-            ColorToken.border(.primary).color,
+            ColorToken.container(.primary).color,
             style: StrokeStyle(lineCap: .round, lineJoin: .round)
           )
       )

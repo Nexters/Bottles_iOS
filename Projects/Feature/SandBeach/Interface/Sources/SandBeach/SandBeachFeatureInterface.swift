@@ -25,7 +25,7 @@ public struct SandBeachFeature {
   @ObservableState
   public struct State: Equatable {
     public var userState: UserStateType = .none
-    public var imageURL: String = "https://static.wikia.nocookie.net/wallaceandgromit/images/3/38/Gromit-3.png/revision/latest/scale-to-width/360?cb=20191228190308" // 임시
+    public var isLoading: Bool = false
     public init() {}
   }
   
@@ -51,6 +51,8 @@ extension SandBeachFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
+        state.isLoading = true
+
         return .run { send in
           let isExsit = try await profileClient.checkExistIntroduction()
           // 자기소개 있는 경우
@@ -69,12 +71,14 @@ extension SandBeachFeature {
           await send(.updateUserState(userState: .hasBottle(bottleCount: count)))
         } catch: { error, send in
           // TODO: 에러 핸들링
+          await send(.updateUserState(userState: .noIntroduction))
           Log.error(error)
         }
 
         
       case let .updateUserState(userState):
         state.userState = .noIntroduction
+        state.isLoading = false
         Log.debug(state.userState)
         return .none
       default:
