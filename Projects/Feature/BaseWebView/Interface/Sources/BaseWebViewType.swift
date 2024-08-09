@@ -1,8 +1,8 @@
 //
-//  BottleWebViewType.swift
-//  CoreUtilInterface
+//  BaseWebViewType.swift
+//  FeatureBaseWebViewInterface
 //
-//  Created by JongHoon on 8/2/24.
+//  Created by JongHoon on 8/9/24.
 //
 
 import Foundation

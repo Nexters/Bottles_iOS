@@ -83,6 +83,7 @@ public struct BaseWebView: UIViewRepresentable {
       do {
         let action = try webViewClient.messageToAction(with: message.body)
         actionDidInputted?(action)
+        Log.debug(action)
       } catch {
         Log.assertion(message: "webview action parsing error")
         return
@@ -93,7 +94,7 @@ public struct BaseWebView: UIViewRepresentable {
       _ webView: WKWebView,
       didFinish navigation: WKNavigation!
     ) {
-      actionDidInputted?(.webViewLoadingCompleted)
+      actionDidInputted?(.webViewLoadingDidCompleted)
     }
   }
 }

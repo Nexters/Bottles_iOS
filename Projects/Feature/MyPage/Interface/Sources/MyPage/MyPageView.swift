@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import SharedDesignSystem
 import FeatureBaseWebViewInterface
 
 import ComposableArchitecture
@@ -25,18 +26,29 @@ public struct MyPageView: View {
         isScrollEnabled: true,
         actionDidInputted: { action in
           switch action {
+          case .webViewLoadingDidCompleted:
+            store.send(.webViewLoadingDidCompleted)
+            
           case let .showTaost(message):
-            store.send(.presentToastRequired(message: message))
-          case .logOutDidCompleted:
-            store.send(.logOutDidCompleted)
+            store.send(.presentToastDidRequired(message: message))
+            
+          case .logOutButtonDidTapped:
+            store.send(.logOutButtonDidTapped)
+            
           case .withdrawalButtonDidTap:
-            store.send(.withdrawalButtonDidTap)
+            store.send(.withdrawalButtonDidTapped)
+            
           default:
             break
           }
         }
       )
       .ignoresSafeArea()
+      .overlay {
+        if store.isShowLoadingProgressView {
+          LoadingIndicator()
+        }
+      }
     }
   }
 }

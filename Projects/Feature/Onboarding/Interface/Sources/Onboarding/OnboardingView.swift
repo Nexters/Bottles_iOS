@@ -28,7 +28,7 @@ public struct OnboardingView: View {
         type: .createProfile,
         actionDidInputted: { action in
           switch action {
-          case .webViewLoadingCompleted:
+          case .webViewLoadingDidCompleted:
             store.send(.webViewLoadingCompleted)
             
           case let .showTaost(message):
@@ -43,7 +43,7 @@ public struct OnboardingView: View {
           }
         }
       )
-      .ignoresSafeArea()
+      .ignoresSafeArea(.all, edges: .bottom)
       .toolbar(.hidden, for: .navigationBar)
       .overlay {
         if store.isShowLoadingProgressView {

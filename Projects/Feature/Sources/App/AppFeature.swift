@@ -78,6 +78,14 @@ public struct AppFeature {
       state.mainTab = MainTabViewFeature.State()
       return .none
       
+    case let .mainTab(.delegate(delegate)):
+      switch delegate {
+      case .logoutDidCompleted, .withdrawalDidCompleted:
+        state.login = .init()
+        state.mainTab = nil
+        return .none
+      }
+      
     default:
       return .none
     }

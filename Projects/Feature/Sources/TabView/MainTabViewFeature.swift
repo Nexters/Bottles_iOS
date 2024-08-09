@@ -39,7 +39,15 @@ public struct MainTabViewFeature {
     case bottleStorage(BottleStorageFeature.Action)
     case myPage(MyPageFeature.Action)
     case selectedTabChanged(TabType)
+    
     case binding(BindingAction<State>)
+    
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case logoutDidCompleted
+      case withdrawalDidCompleted
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -61,8 +69,13 @@ public struct MainTabViewFeature {
   ) -> EffectOf<Self> {
     switch action {
     case let .selectedTabChanged(tab):
-      
       return .none
+      
+    case .myPage(.delegate(.logoutDidCompleted)):
+      return .send(.delegate(.logoutDidCompleted))
+      
+    case .myPage(.delegate(.withdrawalDidCompleted)):
+      return .send(.delegate(.withdrawalDidCompleted))
       
     default:
       return .none
