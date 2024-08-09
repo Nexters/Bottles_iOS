@@ -174,10 +174,12 @@ struct EtcSection: View {
         
         NavigationLink(
           destination:
-            ImagePickerButton()
-            .asDebounceButton {}
-            .padding(.xl)
-          ,
+            EmptyView(),
+              // TODO: - ImagePickerButton Test 뷰 추가
+//            ImagePickerButton()
+//            .asDebounceButton {}
+//            .padding(.xl)
+//          ,
           label: { Text("ImagePickerButton") }
         )
       },
@@ -203,6 +205,11 @@ struct CardSection: View {
           destination:
             ClipListViewTest(),
           label: { Text("ClipListView") }
+        )
+        
+        NavigationLink(
+          destination: LetterCardTestView(),
+          label: { Text("LettetCardView") }
         )
       },
       header: {
