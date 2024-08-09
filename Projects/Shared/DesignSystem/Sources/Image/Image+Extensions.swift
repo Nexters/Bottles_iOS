@@ -20,5 +20,14 @@ public extension Image {
         return illustraition.image
       }
     }
+    
+    public var description: String {
+      switch self {
+      case .icom:
+        return "icon"
+      case .illustraition:
+        return "illustraition"
+      }
+    }
   }
 }

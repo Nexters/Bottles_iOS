@@ -1,11 +1,12 @@
 //
 //  QuestionPingPongView.swift
-//  DesignSystemExample
+//  FeatureBottleStorageInterface
 //
-//  Created by 임현규 on 8/7/24.
+//  Created by 임현규 on 8/9/24.
 //
 
 import SwiftUI
+import SharedDesignSystem
 
 public struct QuestionPingPongView: View {
   

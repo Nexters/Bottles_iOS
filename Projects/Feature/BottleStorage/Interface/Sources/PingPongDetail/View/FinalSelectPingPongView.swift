@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SharedDesignSystem
 
 public struct FinalSelectPingPongView: View {
   private let isActive: Bool

@@ -18,7 +18,11 @@ public struct LocalImageView: View {
   }
   
   public var body: some View {
-    bottleImageSystem.image
-      .renderingMode(.template)
+    if bottleImageSystem.description == "icon" {
+      bottleImageSystem.image
+    } else {
+      bottleImageSystem.image
+        .resizable()
+    }
   }
 }

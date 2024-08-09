@@ -74,7 +74,7 @@ extension SandBeachFeature {
 
         
       case let .updateUserState(userState):
-        state.userState = userState
+        state.userState = .noIntroduction
         Log.debug(state.userState)
         return .none
       default:
@@ -95,7 +95,7 @@ public extension SandBeachFeature {
     
     var popUpText: String {
       switch self {
-      case .noIntroduction: return "자기소개 작성 후 열어볼 수 있어요"
+      case .noIntroduction: return "자기소개 작성 후 매칭을 받을 수 있어요"
       case .noBottle:       return "n시간 후 새로운 보틀이 도착해요"
       case .hasBottle:      return "새로운 보틀이 도착했어요"
       default:              return ""
