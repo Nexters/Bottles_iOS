@@ -43,7 +43,7 @@ public struct OnboardingView: View {
           }
         }
       )
-      .ignoresSafeArea()
+      .ignoresSafeArea(.all, edges: .bottom)
       .toolbar(.hidden, for: .navigationBar)
       .overlay {
         if store.isShowLoadingProgressView {
