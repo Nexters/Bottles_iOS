@@ -32,10 +32,6 @@ extension GeneralLogInFeature {
         return .none
         
       case let .loginDidCompleted(accessToken, refreshToken, isCompletedOnboardingIntroduction):
-        authClient.saveToken(token: .init(
-          accessToken: accessToken,
-          refershToken: refreshToken
-        ))
         return .send(.delegate(.generalLogInDidSucess(.init(
           token: .init(
             accessToken: accessToken,
