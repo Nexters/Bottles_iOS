@@ -108,11 +108,15 @@ extension SandBeachRootFeature {
           // TODO: 자기소개 만들기 완료 실패 - 에러 핸들링
         }
         
-      case .sandBeach(.newBottlePopupDidTapped):
-        // TODO: 도착한 보틀 보관함으로 이동.
+      case .sandBeach(.delegate(.bottleStorageIslandDidTapped)):
+        // TODO: 보틀 보관함으로 이동.
         return .none
         
-      case .sandBeach(.writeButtonDidTapped):
+      case .sandBeach(.delegate(.newBottleIslandDidTapped)):
+        // TODO: 도착한 보틀 화면으로 이동
+        return .none
+        
+      case .sandBeach(.delegate(.writeButtonDidTapped)):
         state.path.append(.IntroductionSetup(IntroductionSetupFeature.State()))
         return .none
         

@@ -32,7 +32,7 @@ public struct SandBeachView: View {
               .padding(.bottom, 38)
             
             WantedSansStyleText(
-              "보틀에 오신 것을\n환영해요!", style: .title1, color: .secondary)
+              store.userState.title, style: .title1, color: .secondary)
             .frame(height: 62)
             .multilineTextAlignment(.center)
             .padding(.bottom, 24)
@@ -41,9 +41,22 @@ public struct SandBeachView: View {
             popup
               .padding(.bottom, 8)
             
-            BottleImageView(type: .local(bottleImageSystem: .illustraition(.islandEmptyBottle)))
-              .frame(width: geo.size.width)
-              .frame(height: geo.size.width)
+            BottleImageView(type: .local(
+              bottleImageSystem:
+                store.userState.isEmptyBottle ? .illustraition(.islandEmptyBottle) : .illustraition(.islandHasBottle))
+            )
+            .frame(width: geo.size.width)
+            .frame(height: geo.size.width)
+            .asThrottleButton {
+              if store.userState.isHasNewBottle {
+                store.send(.newBottleIslandDidTapped)
+              }
+              
+              if store.userState.isHasActiveBottle {
+                store.send(.bottleStorageIslandDidTapped)
+              }
+            }
+            .disabled(store.isDisableIslandBottle)
             
             Spacer()
           }
@@ -80,19 +93,18 @@ public extension SandBeachView {
       PopupView(
         popupType: .text(content: userState.popUpText)
       )
-    case .hasBottle(let count):
+    case .hasNewBottle(let count):
       PopupView(
         popupType: .text(content: userState.popUpText)
       )
-      .overlay(
-        GeometryReader { geometry in
-          CountLabel(text: "\(count)")
-            .frame(width: geometry.size.width * 2)
-            .frame(height: 0)
-        }
+      .overlay(alignment: .topTrailing) {
+        CountLabel(text: "\(count)")
+          .offset(y: -12)
+      }
+    case .hasActiveBottle:
+      PopupView(
+        popupType: .text(content: userState.popUpText)
       )
-      .asButton(
-        action: { store.send(.newBottlePopupDidTapped) })
     default:
       EmptyView()
     }
