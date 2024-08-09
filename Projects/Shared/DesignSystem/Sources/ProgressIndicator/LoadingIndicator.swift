@@ -22,6 +22,7 @@ public struct LoadingIndicator: View {
         .looping()
         .frame(width: 150.0, height: 84.0)
     }
+    .ignoresSafeArea()
   }
 }
 
