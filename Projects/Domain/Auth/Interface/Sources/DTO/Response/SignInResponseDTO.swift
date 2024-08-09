@@ -12,7 +12,7 @@ public struct UserInfo {
   public let isSignUp: Bool
   public let isCompletedOnboardingIntroduction: Bool
   
-  init(
+  public init(
     token: Token,
     isSignUp: Bool,
     isCompletedOnboardingIntroduction: Bool
@@ -22,6 +22,7 @@ public struct UserInfo {
     self.isCompletedOnboardingIntroduction = isCompletedOnboardingIntroduction
   }
 }
+
 public struct SignInResponseDTO: Decodable {
   public let accessToken: String
   public let refreshToken: String
@@ -33,7 +34,8 @@ public struct SignInResponseDTO: Decodable {
       token: Token(
         accessToken: accessToken,
         refershToken: refreshToken),
-      isSignUp: isSignUp, 
+      // 서버에서 회원 가입 시 isSignUp: false로 내려 줌
+      isSignUp: !isSignUp,
       isCompletedOnboardingIntroduction: hasCompleteIntroduction
     )
   }

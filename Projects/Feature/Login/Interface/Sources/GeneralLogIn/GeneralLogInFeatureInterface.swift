@@ -7,6 +7,8 @@
 
 import Foundation
 
+import DomainAuthInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -17,37 +19,40 @@ public struct GeneralLogInFeature {
     self.reducer = reducer
   }
   
+  @ObservableState
   public struct State: Equatable {
-    public init() {}
+    var isShowLoadingProgressView: Bool
+    
+    public init() {
+      self.isShowLoadingProgressView = true
+    }
   }
   
-  public enum Action {
+  public enum Action: BindableAction {
+    // View Life Cycle
     case onAppear
+    
+    case webViewLoadingDidCompleted
     case presentToastDidRequired(message: String)
-    case loginDidCompleted(accessToken: String, refreshToken: String)
+    case loginDidCompleted(
+      accessToken: String,
+      refreshToken: String,
+      isCompletedOnboardingIntroduction: Bool
+    )
+    case closeButtonDidTapped
+    
+    // ETC
+    case binding(BindingAction<State>)
+    
+    // Delegate
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case generalLogInDidSucess(UserInfo)
+    }
   }
   
   public var body: some ReducerOf<Self> {
     reducer
-  }
-}
-
-extension GeneralLogInFeature {
-  public init() {
-    let reducer = Reduce<State, Action> { state, action in
-      switch action {
-      case .onAppear:
-        return .none
-        
-      case let .presentToastDidRequired(message):
-        // TODO: present toast
-        return .none
-        
-      case let .loginDidCompleted(accessToken, refreshToken):
-        // TODO: Login Completed Handling
-        return .none
-      }
-    }
-    self.init(reducer: reducer)
   }
 }

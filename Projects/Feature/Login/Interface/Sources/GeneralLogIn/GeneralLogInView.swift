@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+import SharedDesignSystem
 import FeatureBaseWebViewInterface
 
 import ComposableArchitecture
@@ -23,17 +24,29 @@ public struct GeneralLogInView: View {
       type: .login,
       actionDidInputted: { action in
         switch action {
+        case .webViewLoadingDidCompleted:
+          store.send(.webViewLoadingDidCompleted)
+          
         case let .showTaost(message):
           store.send(.presentToastDidRequired(message: message))
-        case let .loginDidCompleted(accessToken, refreshToken):
+          
+        case let .loginDidCompleted(accessToken, refreshToken, isCompletedOnboardingIntroduction):
           store.send(.loginDidCompleted(
             accessToken: accessToken,
-            refreshToken: refreshToken
+            refreshToken: refreshToken,
+            isCompletedOnboardingIntroduction: true
           ))
+          
         default:
           break
         }
       }
     )
+    .ignoresSafeArea(.all, edges: .bottom)
+    .overlay {
+      if store.isShowLoadingProgressView {
+        LoadingIndicator()
+      }
+    }
   }
 }
