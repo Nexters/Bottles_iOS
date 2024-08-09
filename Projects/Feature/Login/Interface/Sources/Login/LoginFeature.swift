@@ -35,7 +35,7 @@ extension LoginFeature {
         let isCompletedOnboardingIntroduction = userInfo.isCompletedOnboardingIntroduction
         authClient.saveToken(token: token)
         if isSignUp && !isCompletedOnboardingIntroduction {
-          return moveToOboarding(state: &state)
+          return goToOboarding(state: &state)
         }
         return .send(.signUpCheckCompleted(isSignUp: isSignUp))
           
@@ -47,7 +47,7 @@ extension LoginFeature {
         if !isSignUp {
           return .send(.goToMainTab, animation: .default)
         } else {
-          return moveToOboarding(state: &state)
+          return goToOboarding(state: &state)
         }
         
       case .path(.element(id: _, action: .onBoarding(.delegate(.createOnboardingProfileDidCompleted)))):
@@ -57,7 +57,7 @@ extension LoginFeature {
         return .none
       }
       
-      func moveToOboarding(state: inout LoginFeature.State) -> Effect<Action> {
+      func goToOboarding(state: inout LoginFeature.State) -> Effect<Action> {
         state.path.append(.onBoarding(.init()))
         return .none
       }
