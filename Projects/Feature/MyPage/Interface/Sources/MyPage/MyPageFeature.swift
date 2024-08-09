@@ -39,7 +39,7 @@ extension MyPageFeature {
         
       case .logOutDidCompleted:
         KeyChainTokenStore.shared.deleteAll()
-        return .none
+        return .send(.delegate(.logoutDidCompleted))
         
       case .withdrawalButtonDidTapped:
         return .run { send in
@@ -50,9 +50,9 @@ extension MyPageFeature {
       case .withdrawalDidCompleted:
         KeyChainTokenStore.shared.deleteAll()
         // 화면이동
-        return .none
+        return .send(.delegate(.withdrawalDidCompleted))
         
-      case .binding:
+      case .binding, .delegate:
         return .none
       }
     }

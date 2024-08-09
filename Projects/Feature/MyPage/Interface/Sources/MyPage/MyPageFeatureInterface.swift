@@ -37,8 +37,16 @@ public struct MyPageFeature {
     case withdrawalButtonDidTapped
     case withdrawalDidCompleted
     
+    // Delegate
+    case delegate(Delegate)
+    
     // ETC
     case binding(BindingAction<State>)
+    
+    public enum Delegate {
+      case withdrawalDidCompleted
+      case logoutDidCompleted
+    }
   }
   
   public var body: some ReducerOf<Self> {
