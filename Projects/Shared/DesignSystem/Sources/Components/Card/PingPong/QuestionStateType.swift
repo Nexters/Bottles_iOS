@@ -8,10 +8,14 @@
 import Foundation
 
 public enum QuestionStateType: Equatable {
-  case peerAnswered(peer: String)                 /// 상대방 답변 O, 본인 답변 X
-  case bothAnswered(peer: String, mySelf: String) /// 상대방 답변 O, 본인 답변 O
-  case selfAnswered(mySelf: String)               /// 상대방 답변 X, 본인 답변 O
-  case noAnswer                                   /// 상대방 답변 X, 본인 답변 X
+  /// 상대방 답변 O, 본인 답변 X
+  case peerAnswered(peer: String)
+  /// 상대방 답변 O, 본인 답변 O
+  case bothAnswered(peer: String, mySelf: String)
+  /// 상대방 답변 X, 본인 답변 O
+  case selfAnswered(mySelf: String)
+  /// 상대방 답변 X, 본인 답변 X
+  case noAnswer
   case none
   
   var peerAnswer: String? {

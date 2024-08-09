@@ -15,6 +15,8 @@ public struct QuestionPingPongView: View {
   private let isActive: Bool
   private let questionContent: String
   private let questionState: QuestionStateType
+  private let doneButtonAction: (() -> Void)?
+  
   
   public init(
     pingpongTitle: String,
@@ -22,7 +24,8 @@ public struct QuestionPingPongView: View {
     textFieldState: Binding<TextFieldState> = Binding.constant(.enabled),
     isActive: Bool,
     questionContent: String = "",
-    questionState: QuestionStateType = .none
+    questionState: QuestionStateType = .none,
+    doneButtonAction: (() -> Void)? = nil
   ) {
     self.pingpongTitle = pingpongTitle
     self._textFieldContent = textFieldContent
@@ -30,6 +33,7 @@ public struct QuestionPingPongView: View {
     self.isActive = isActive
     self.questionContent = questionContent
     self.questionState = questionState
+    self.doneButtonAction = doneButtonAction
   }
   
   public var body: some View {
@@ -84,7 +88,7 @@ private extension QuestionPingPongView {
         placeHolder: "솔직하게 작성할수록 서로를 알아가는데 도움이 돼요",
         buttonTitle: "작성 완료",
         textLimit: 150,
-        action: { print("tapped") }
+        action: doneButtonAction
       )
   }
   
@@ -130,28 +134,3 @@ private extension QuestionPingPongView {
     makeLeftBubbleText(text: "답변을 작성하면 확인할 수 있어요!")
   }
 }
-
-// MARK: - Private Methods
-private extension QuestionPingPong {
-  func makeLeftBubbleText(text: String) -> some View {
-    HStack(spacing: 0) {
-      PingPongBubble(
-        content: text,
-        isRight: false
-      )
-      Spacer()
-    }
-  }
-  
-  func makeRightBubbleText(text: String) -> some View {
-    HStack(spacing: 0) {
-      Spacer()
-      PingPongBubble(
-        content: text,
-        isRight: true
-      )
-    }
-  }
-}
-
-
