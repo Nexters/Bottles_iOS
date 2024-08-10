@@ -10,6 +10,7 @@ import SwiftUI
 public extension Image.BottleImageSystem {
   enum Illustraition: Imageable {
     case logo
+    case whiteLogo
     case boy
     case girl
     case loginBackground
@@ -32,6 +33,8 @@ public extension Image.BottleImageSystem.Illustraition {
     switch self {
     case .logo:
       return SharedDesignSystemAsset.Images.illustraitionLogo.swiftUIImage
+    case .whiteLogo:
+      return SharedDesignSystemAsset.Images.illustraitionWhiteLogo.swiftUIImage
     case .boy:
       return SharedDesignSystemAsset.Images.illustraitionBoy.swiftUIImage
     case .girl:
