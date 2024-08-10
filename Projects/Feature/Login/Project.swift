@@ -11,7 +11,8 @@ let project = Project.makeModule(
                 dependencies: [
                     .domain,
                     .feature(interface: .BaseWebView),
-                    .feature(interface: .Onboarding)
+                    .feature(interface: .Onboarding),
+                    .feature(interface: .GeneralSignUp)
                 ]
             )
         ),

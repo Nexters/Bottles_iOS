@@ -23,20 +23,28 @@ public struct LoginView: View {
   public var body: some View {
     WithPerceptionTracking {
       NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-        VStack(spacing: 0) {
-          Spacer()
-          mainText
-          Spacer()
-            .frame(height: 52)
-          bottleImage
-          Spacer()
-          signInWithKakaoButton
-          Spacer()
-            .frame(height: 24.0)
-          generalAuthButtons
-          Spacer()
-            .frame(height: 21.0)
-        }
+          VStack(spacing: 0) {
+            Spacer()
+              .frame(height: 52)
+            whiteLogo
+              .padding(.top, 52)
+              .padding(.bottom, .xl)
+            
+            mainText
+              
+            Spacer()
+            signInWithKakaoButton
+              .padding(.bottom, 24)
+            generalAuthButtons
+              .padding(.bottom, 29)
+          }
+          .background {
+            BottleImageView(
+              type: .local(bottleImageSystem: .illustraition(.loginBackground))
+            )
+          }
+          .edgesIgnoringSafeArea([.top, .bottom])
+
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
@@ -60,8 +68,13 @@ public struct LoginView: View {
 }
 
 public extension LoginView {
+  var whiteLogo: some View {
+    BottleImageView(type: .local(bottleImageSystem: .illustraition(.whiteLogo)))
+      .frame(width: 117.1, height: 30)
+  }
+  
   var mainText: some View {
-    LaundryGothicStyleText("진심을 담은 보틀로\n서로를 밀도있게 알아가요", style: .title1, color: .primary)
+    WantedSansStyleText("진심을 담은 보틀로\n서로를 밀도있게 알아가요", style: .title2, color: .quaternary)
       .padding(.horizontal, .md)
       .multilineTextAlignment(.center)
   }
