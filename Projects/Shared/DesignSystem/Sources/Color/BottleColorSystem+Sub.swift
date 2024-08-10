@@ -13,6 +13,7 @@ extension Color.BottleColorSystem {
     case gradient
     case red
     case white
+    case kakao
   }
 }
 
@@ -27,6 +28,8 @@ extension Color.BottleColorSystem.Sub {
       return Color(asset: SharedDesignSystemAsset.Colors.red)
     case .white:
       return Color(asset: SharedDesignSystemAsset.Colors.white100)
+    case .kakao:
+      return Color(asset: SharedDesignSystemAsset.Colors.kakao)
     }
   }
 }
