@@ -59,8 +59,7 @@ public struct SandBeachView: View {
               }
               .disabled(store.isDisableIslandBottle)
               
-              Spacer()
-            }
+            Spacer()
           }
         }
       }
