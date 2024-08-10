@@ -21,8 +21,13 @@ public struct MyPageFeature {
   public struct State: Equatable {
     var isShowLoadingProgressView: Bool
     
+    var isPresentLogOutConfirmAlert: Bool
+    
+    @Presents var destination: Destination.State?
+    
     public init() {
       self.isShowLoadingProgressView = true
+      self.isPresentLogOutConfirmAlert = false
     }
   }
   
@@ -37,19 +42,32 @@ public struct MyPageFeature {
     case withdrawalButtonDidTapped
     case withdrawalDidCompleted
     
-    // Delegate
     case delegate(Delegate)
-    
-    // ETC
-    case binding(BindingAction<State>)
-    
     public enum Delegate {
       case withdrawalDidCompleted
       case logoutDidCompleted
     }
+      
+    case alert(Alert)
+    public enum Alert: Equatable {
+      case confirmLogOut
+      case confirmWithdrawal
+    }
+  
+    // ETC
+    case destination(PresentationAction<Destination.Action>)
+    case binding(BindingAction<State>)
   }
   
   public var body: some ReducerOf<Self> {
     reducer
+      .ifLet(\.$destination, action: \.destination)
+  }
+}
+
+extension MyPageFeature {
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case alert(AlertState<MyPageFeature.Action.Alert>)
   }
 }

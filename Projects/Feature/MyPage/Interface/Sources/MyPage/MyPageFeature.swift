@@ -32,27 +32,45 @@ extension MyPageFeature {
         return .none
         
       case .logOutButtonDidTapped:
-        return .run { send in
-          try await authClient.logout()
-          await send(.logOutDidCompleted)
-        }
+        state.destination = .alert(.init(
+          title: { TextState("로그아웃") },
+          actions: { ButtonState(role: .destructive, action: .confirmLogOut, label: { TextState("로그아웃") }) },
+          message: { TextState("정말 로그아웃 하시겠어요?") }
+        ))
+        return .none
         
       case .logOutDidCompleted:
         KeyChainTokenStore.shared.deleteAll()
         return .send(.delegate(.logoutDidCompleted))
         
       case .withdrawalButtonDidTapped:
-        return .run { send in
-          try await authClient.withdraw()
-          await send(.withdrawalDidCompleted)
-        }
+        state.destination = .alert(.init(
+          title: { TextState("탈퇴하기") },
+          actions: { ButtonState(role: .destructive, action: .confirmWithdrawal, label: { TextState("탈퇴히가") }) },
+          message: { TextState("탈퇴 시 계정 복구가 어려워요.\n정말 탈퇴하시겠어요?") }
+        ))
+        return .none
         
       case .withdrawalDidCompleted:
         KeyChainTokenStore.shared.deleteAll()
-        // 화면이동
         return .send(.delegate(.withdrawalDidCompleted))
         
-      case .binding, .delegate:
+      case let .destination(.presented(.alert(alert))):
+        switch alert {
+        case .confirmLogOut:
+          return .run { send in
+            try await authClient.logout()
+            await send(.logOutDidCompleted)
+          }
+          
+        case .confirmWithdrawal:
+          return .run { send in
+            try await authClient.withdraw()
+            await send(.withdrawalDidCompleted)
+          }
+        }
+        
+      case .binding, .delegate, .destination, .alert:
         return .none
       }
     }

@@ -13,7 +13,7 @@ import FeatureBaseWebViewInterface
 import ComposableArchitecture
 
 public struct MyPageView: View {
-  private let store: StoreOf<MyPageFeature>
+  @Perception.Bindable private var store: StoreOf<MyPageFeature>
   
   public init(store: StoreOf<MyPageFeature>) {
     self.store = store
@@ -43,12 +43,14 @@ public struct MyPageView: View {
           }
         }
       )
-      .ignoresSafeArea(.all, edges: .bottom)
       .overlay {
         if store.isShowLoadingProgressView {
-          LoadingIndicator()
+          WithPerceptionTracking {
+            LoadingIndicator()
+          }
         }
       }
+      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
   }
 }
