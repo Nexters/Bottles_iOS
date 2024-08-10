@@ -70,6 +70,11 @@ extension UITabBarController {
     tabFrame.size.height = 94.0
     tabFrame.origin.y = self.view.frame.size.height - 94.0
     tabBar.frame = tabFrame
+    let appearance = UITabBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = .white
+    tabBar.standardAppearance = appearance
+    tabBar.scrollEdgeAppearance = tabBar.standardAppearance
     
     if let shadowView = view.subviews.first(where: { $0.accessibilityIdentifier == "TabBarShadow" }) {
       shadowView.frame = tabBar.frame

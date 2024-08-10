@@ -50,7 +50,8 @@ public enum BottleWebViewAction: Equatable {
     type: String,
     message: String? = nil,
     accessToken: String? = nil,
-    refreshToken: String? = nil
+    refreshToken: String? = nil,
+    isCompletedOnboardingIntroduction: Bool? = nil
   ) {
     switch type {
       
@@ -94,10 +95,11 @@ public enum BottleWebViewAction: Equatable {
       
     case "onLogin":
       guard let accessToken,
-            let refreshToken
+            let refreshToken,
+            let isCompletedOnboardingIntroduction
       else {
         Log.assertion(
-          message: "accessToken: \(String(describing: accessToken)), refreshToken: \(String(describing: refreshToken))"
+          message: "accessToken: \(String(describing: accessToken)), refreshToken: \(String(describing: refreshToken)), isCompletedOnboardingIntroduction: \(String(describing: isCompletedOnboardingIntroduction))"
         )
         return nil
       }
@@ -105,7 +107,7 @@ public enum BottleWebViewAction: Equatable {
       self = .loginDidCompleted(
         accessToken: accessToken,
         refreshToken: refreshToken,
-        isCompletedOnboardingIntroduction: true
+        isCompletedOnboardingIntroduction: isCompletedOnboardingIntroduction
       )
             
     // MARK: - Onboarding(Create Profile)

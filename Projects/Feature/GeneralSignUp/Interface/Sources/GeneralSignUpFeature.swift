@@ -1,24 +1,23 @@
 //
-//  GeneralLoginFeature.swift
-//  FeatureLoginInterface
+//  GeneralSignUpFeature.swift
+//  FeatureGeneralSignUpInterface
 //
-//  Created by JongHoon on 8/10/24.
+//  Created by JongHoon on 8/4/24.
 //
 
 import Foundation
 
 import CoreToastInterface
-import DomainAuth
+import DomainAuthInterface
 
 import ComposableArchitecture
 
-extension GeneralLogInFeature {
+extension GeneralSignUpFeature {
   public init() {
+    @Dependency(\.dismiss) var dismiss
+    @Dependency(\.toastClient) var toastClient
+    
     let reducer = Reduce<State, Action> { state, action in
-      @Dependency(\.authClient) var authClient
-      @Dependency(\.dismiss) var dismiss
-      @Dependency(\.toastClient) var toastClient
-      
       switch action {
       case .onAppear:
         return .none
@@ -27,25 +26,25 @@ extension GeneralLogInFeature {
         state.isShowLoadingProgressView = false
         return .none
         
+      case .closeButtonDidTap:
+        return .run { _ in
+          await dismiss()
+        }
+        
       case let .presentToastDidRequired(message):
         toastClient.presentToast(message: message)
         return .none
         
-      case let .loginDidCompleted(accessToken, refreshToken, isCompletedOnboardingIntroduction):
-        return .send(.delegate(.generalLogInDidSucess(.init(
+      case let .signUpDidCompleted(accessToken, refreshToken):
+        return .send(.delegate(.signUpDidCompleted(.init(
           token: .init(
             accessToken: accessToken,
             refershToken: refreshToken
           ),
           isSignUp: true,
-          isCompletedOnboardingIntroduction: isCompletedOnboardingIntroduction
+          isCompletedOnboardingIntroduction: false
         ))))
-        
-      case .closeButtonDidTapped:
-        return .run { _ in
-          await dismiss()
-        }
-        
+      
       case .binding, .delegate:
         return .none
       }
@@ -53,4 +52,3 @@ extension GeneralLogInFeature {
     self.init(reducer: reducer)
   }
 }
-

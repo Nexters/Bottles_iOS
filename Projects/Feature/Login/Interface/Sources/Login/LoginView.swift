@@ -9,6 +9,7 @@ import SwiftUI
 
 import SharedDesignSystem
 import FeatureOnboardingInterface
+import FeatureGeneralSignUpInterface
 
 import ComposableArchitecture
 
@@ -31,7 +32,10 @@ public struct LoginView: View {
           Spacer()
           signInWithKakaoButton
           Spacer()
-            .frame(height: 21)
+            .frame(height: 24.0)
+          generalAuthButtons
+          Spacer()
+            .frame(height: 21.0)
         }
       } destination: { store in
         WithPerceptionTracking {
@@ -43,6 +47,10 @@ public struct LoginView: View {
           case .onBoarding:
             if let store = store.scope(state: \.onBoarding, action: \.onBoarding) {
               OnboardingView(store: store)
+            }
+          case .generalSignUp:
+            if let store = store.scope(state: \.generalSignUp, action: \.generalSignUp) {
+              GeneralSignUpView(store: store)
             }
           }
         }
@@ -75,5 +83,27 @@ public extension LoginView {
       action: { store.send(.signInKakaoButtonDidTapped) }
     )
     .padding(.horizontal, .md)
+  }
+  
+  var generalAuthButtons: some View {
+    HStack(spacing: .md) {
+      WantedSansStyleText(
+        "일반 로그인",
+        style: .subTitle2,
+        color: .enableSecondary
+      )
+      .asThrottleButton {
+        store.send(.generalLogInButtonDidTapped)
+      }
+      
+      WantedSansStyleText(
+        "회원 가입",
+        style: .subTitle2,
+        color: .enableSecondary
+      )
+      .asThrottleButton {
+        store.send(.generalSignUpButtonDidTapped)
+      }
+    }
   }
 }

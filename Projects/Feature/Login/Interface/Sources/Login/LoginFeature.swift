@@ -11,6 +11,7 @@ import DomainAuth
 import DomainAuthInterface
 import CoreLoggerInterface
 import FeatureOnboardingInterface
+import FeatureGeneralSignUpInterface
 
 import ComposableArchitecture
 
@@ -30,6 +31,14 @@ extension LoginFeature {
         } catch: { error, send in
           await send(.goToGeneralLogin)
         }
+        
+      case .generalLogInButtonDidTapped:
+        state.path.append(.generalLogin(.init()))
+        return .none
+        
+      case .generalSignUpButtonDidTapped:
+        state.path.append(.generalSignUp(.init()))
+        return .none
         
       case let .signInKakaoDidSuccess(userInfo):
         return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
@@ -54,9 +63,17 @@ extension LoginFeature {
           return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
         }
         
+      case let .path(.element(id: _, action: .generalSignUp(.delegate(delegate)))):
+        switch delegate {
+        case let .signUpDidCompleted(userInfo):
+          return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
+        }
+        
       default:
         return .none
       }
+      
+      // MARK: - Inner Methods
       
       func goToOboarding(state: inout LoginFeature.State) -> Effect<Action> {
         state.path.append(.onBoarding(.init()))
@@ -83,6 +100,7 @@ extension LoginFeature {
   @Reducer(state: .equatable)
   public enum Path {
     case generalLogin(GeneralLogInFeature)
+    case generalSignUp(GeneralSignUpFeature)
     case onBoarding(OnboardingFeature)
   }
 }

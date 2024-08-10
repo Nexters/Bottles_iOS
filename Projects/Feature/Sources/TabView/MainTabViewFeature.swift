@@ -51,6 +51,7 @@ public struct MainTabViewFeature {
   }
   
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     Scope(state: \.sandBeachRoot, action: \.sandBeachRoot) {
       SandBeachRootFeature()
     }
@@ -69,6 +70,7 @@ public struct MainTabViewFeature {
   ) -> EffectOf<Self> {
     switch action {
     case let .selectedTabChanged(tab):
+      state.selectedTab = tab
       return .none
       
     case .myPage(.delegate(.logoutDidCompleted)):
