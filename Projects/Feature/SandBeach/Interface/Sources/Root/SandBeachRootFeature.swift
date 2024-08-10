@@ -8,6 +8,8 @@
 import Foundation
 
 import FeatureProfileSetupInterface
+import FeatureBottleArrivalInterface
+
 import DomainProfile
 
 import ComposableArchitecture
@@ -26,6 +28,7 @@ public struct SandBeachRootFeature {
   public enum Path {
     case IntroductionSetup(IntroductionSetupFeature)
     case ProfileImageUpload(ProfileImageUploadFeature)
+    case BottleArrival(BottleArrivalFeature)
   }
   
   @ObservableState
@@ -34,31 +37,23 @@ public struct SandBeachRootFeature {
     var introduction: String
     var profileImageData: Data
     public var sandBeach: SandBeachFeature.State
-    public var introductionSetup: IntroductionSetupFeature.State
-    public var profileImageUpload: ProfileImageUploadFeature.State
     
     public init(
       path: StackState<Path.State> = StackState<Path.State>(),
       introduction: String = "",
       profileImageData: Data = .init(),
-      sandBeach: SandBeachFeature.State = .init(),
-      introductionSetup: IntroductionSetupFeature.State = .init(),
-      profileImageUpload: ProfileImageUploadFeature.State = .init()
+      sandBeach: SandBeachFeature.State = .init()
     ) {
       self.path = path
       self.introduction = introduction
       self.profileImageData = profileImageData
       self.sandBeach = sandBeach
-      self.introductionSetup = introductionSetup
-      self.profileImageUpload = profileImageUpload
     }
   }
   
   public enum Action {
     case path(StackAction<Path.State, Path.Action>)
     case sandBeach(SandBeachFeature.Action)
-    case introductionSetup(IntroductionSetupFeature.Action)
-    case profileImageUpload(ProfileImageUploadFeature.Action)
     case profileSetupDidCompleted
   }
   
@@ -80,12 +75,14 @@ extension SandBeachRootFeature {
       
       switch action {
         
+      // IntrodctionSetup Delegate
       case let .path(.element(id: _, action:
           .IntroductionSetup(.delegate(.nextButtonDidTapped(introductionText))))):
         state.introduction = introductionText
         state.path.append(.ProfileImageUpload(ProfileImageUploadFeature.State()))
         return .none
         
+      // ProfileImageUpload Delegate
       case let .path(.element(id: _, action:
           .ProfileImageUpload(.delegate(.doneButtonDidTapped(selectedImageData))))):
         state.profileImageData = selectedImageData
@@ -108,13 +105,25 @@ extension SandBeachRootFeature {
           // TODO: 자기소개 만들기 완료 실패 - 에러 핸들링
         }
         
+      // BottleArrival Delegate
+      case let .path(.element(id: _, action: .BottleArrival(.delegate(delegate)))):
+        switch delegate {
+        case .bottelDidAccepted:
+          // TODO: 보틀 보관함으로 이동
+          state.path.removeLast()
+          return .none
+        case .closeWebView:
+          state.path.removeLast()
+          return .none
+        }
       case let .sandBeach(.delegate(delegate)):
         switch delegate {
         case .bottleStorageIslandDidTapped:
           // TODO: 보틀 보관함으로 이동
           return .none
         case .newBottleIslandDidTapped:
-          // TODO: 도착한 보틀로 이동
+          state.path.append(.BottleArrival(BottleArrivalFeature.State()))
+
           return .none
         case .writeButtonDidTapped:
           state.path.append(.IntroductionSetup(IntroductionSetupFeature.State()))
