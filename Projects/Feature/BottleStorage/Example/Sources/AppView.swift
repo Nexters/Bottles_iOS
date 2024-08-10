@@ -8,6 +8,8 @@
 import SwiftUI
 
 import FeatureBottleStorageInterface
+import DomainAuth
+import DomainAuthInterface
 
 import ComposableArchitecture
 
@@ -19,6 +21,12 @@ struct AppView: App {
         initialState: BottleStorageFeature.State(),
         reducer: { BottleStorageFeature()._printChanges() }
       ))
+      .onAppear {
+        AuthClient.liveValue.saveToken(token: .init(
+          accessToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzIzMTE3ODk1LCJleHAiOjE3MjMxNTM4OTV9.HjjnS1onaAUA6nJGOV-f6FE55eAihUGTFNYGmmyETQc",
+          refershToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzIzMTE3ODk1LCJleHAiOjE3Mzc2MzMwOTV9.Af-L2h_5pBQWrZCc1OQI3tm1DGwowqCAId-rK5vAPaQ"
+        ))
+      }
     }
   }
 }

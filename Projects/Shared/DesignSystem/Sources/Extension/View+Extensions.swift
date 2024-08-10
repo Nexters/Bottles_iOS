@@ -49,3 +49,17 @@ extension View {
     }
   }
 }
+
+// MARK: - View Layout
+
+extension View {
+  public func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
+    background(
+      GeometryReader { geometry in
+        Color.clear
+          .preference(key: CGSizePreferenceKey.self, value: geometry.size)
+      }
+    )
+    .onPreferenceChange(CGSizePreferenceKey.self, perform: onChange)
+  }
+}

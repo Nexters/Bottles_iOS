@@ -9,7 +9,7 @@ import ComposableArchitecture
 struct AppView: App {
   private let rootStore = Store(
     initialState: SandBeachRootFeature.State(
-      sandBeach: .init(userState: .noIntroduction)),
+      sandBeach: .init(userState: .)),
     reducer: { SandBeachRootFeature() })
   
   var body: some Scene {
