@@ -7,13 +7,22 @@
 
 import SwiftUI
 
+public enum ButtonAppearanceType {
+  case solid
+  case kakao
+}
+
 struct SolidButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled: Bool
-  
   private let sizeType: SolidButton.SizeType
+  private let buttonApperance: ButtonAppearanceType
   
-  public init(sizeType: SolidButton.SizeType) {
+  public init(
+    sizeType: SolidButton.SizeType,
+    buttonApperance: ButtonAppearanceType = .solid
+  ) {
     self.sizeType = sizeType
+    self.buttonApperance = buttonApperance
   }
   
   func makeBody(configuration: Configuration) -> some View {
@@ -57,31 +66,42 @@ private extension SolidButtonStyle {
   var cornerRadius: BottleRadiusType {
     switch sizeType {
     case .extraSmall: return .xs
-    case .small:      return .xs
+    case .small:      return .sm
     case .medium:     return .md
     case .large:      return .md
     case .full:       return .md
     }
   }
-  
+
   func makeButtonState(_ configuration: Configuration) -> ButtonStateType {
     return !isEnabled ? .disabled : configuration.isPressed ? .selected : .enabled
   }
   
-  
   func backgroundColor(_ buttonState: ButtonStateType) -> Color {
-    switch buttonState {
-    case .enabled: return ColorToken.container(.enableSecondary).color
-    case .selected: return ColorToken.container(.pressed).color
-    case .disabled: return ColorToken.container(.disableSecondary).color
+    switch buttonApperance {
+    case .solid:
+      switch buttonState {
+      case .enabled: return ColorToken.container(.enableSecondary).color
+      case .selected: return ColorToken.container(.pressed).color
+      case .disabled: return ColorToken.container(.disableSecondary).color
+      }
+    case .kakao:
+      return ColorToken.container(.kakao).color
     }
   }
   
   func foregroundColor(_ buttonState: ButtonStateType) -> Color {
-    switch buttonState {
-    case .enabled: return ColorToken.text(.enablePrimary).color
-    case .selected: return ColorToken.text(.pressed).color
-    case .disabled: return ColorToken.text(.disablePrimary).color
+    
+    switch buttonApperance {
+    case .solid:
+      switch buttonState {
+      case .enabled: return ColorToken.text(.enablePrimary).color
+      case .selected: return ColorToken.text(.pressed).color
+      case .disabled: return ColorToken.text(.disablePrimary).color
+      }
+      
+    case .kakao:
+      return ColorToken.text(.primary).color
     }
   }
 }

@@ -93,6 +93,7 @@ public extension LoginView {
       title: "카카오 로그인",
       sizeType: .large,
       buttonType: .debounce,
+      buttonApperance: .kakao,
       action: { store.send(.signInKakaoButtonDidTapped) }
     )
     .padding(.horizontal, .md)
