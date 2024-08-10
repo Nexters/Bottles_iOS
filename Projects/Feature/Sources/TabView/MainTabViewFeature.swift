@@ -70,6 +70,7 @@ public struct MainTabViewFeature {
   ) -> EffectOf<Self> {
     switch action {
     case let .selectedTabChanged(tab):
+      state.selectedTab = tab
       return .none
       
     case .myPage(.delegate(.logoutDidCompleted)):
