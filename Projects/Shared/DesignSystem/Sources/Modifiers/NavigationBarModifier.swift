@@ -13,21 +13,14 @@ struct NavigationBarModifier<L, C, R>: ViewModifier where L: View, C: View, R: V
   private let centerView: (() -> C)?
   private let rightView: (() -> R)?
   
-  private let leftButtonAction: (() -> Void)?
-  private let rightButtonAction: (() -> Void)?
-  
   init(
     leftView: (() -> L)? = nil,
     centerView: (() -> C)? = nil,
-    rightView: (() -> R)? = nil,
-    leftButtonAction: (() -> Void)? = nil,
-    rightButtonAction: (() -> Void)? = nil
+    rightView: (() -> R)? = nil
   ) {
     self.leftView = leftView
     self.centerView = centerView
     self.rightView = rightView
-    self.leftButtonAction = leftButtonAction
-    self.rightButtonAction = rightButtonAction
   }
   
   func body(content: Content) -> some View {
@@ -36,7 +29,6 @@ struct NavigationBarModifier<L, C, R>: ViewModifier where L: View, C: View, R: V
       .toolbar {
         ToolbarItem(placement: .topBarLeading) {
           leftView?()
-            .asThrottleButton(action: leftButtonAction ?? {})
         }
       }
       .toolbar {
@@ -47,7 +39,6 @@ struct NavigationBarModifier<L, C, R>: ViewModifier where L: View, C: View, R: V
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) {
           rightView?()
-            .asThrottleButton(action: rightButtonAction ?? {})
         }
       }
   }
@@ -58,58 +49,44 @@ public extension View {
   func setNavigationBar<L, C, R>(
     leftView: @escaping (() -> L),
     centerView: @escaping (() -> C),
-    rightView: @escaping (() -> R),
-    leftButtonAction: (() -> Void)? = nil,
-    rightButtonAction: (() -> Void)? = nil
+    rightView: @escaping (() -> R)
   ) -> some View where L: View, C: View, R: View {
     modifier(NavigationBarModifier(
       leftView: leftView,
       centerView: centerView,
-      rightView: rightView,
-      leftButtonAction: leftButtonAction,
-      rightButtonAction: rightButtonAction)
+      rightView: rightView)
     )
   }
   
   func setNavigationBar<L, C>(
     leftView: @escaping (() -> L),
-    centerView: @escaping (() -> C),
-    leftButtonAction: (() -> Void)? = nil
+    centerView: @escaping (() -> C)
   ) -> some View where L: View, C: View {
     modifier(NavigationBarModifier(
       leftView: leftView,
       centerView: centerView,
-      rightView: { EmptyView() },
-      leftButtonAction: leftButtonAction,
-      rightButtonAction: nil)
+      rightView: { EmptyView() })
     )
   }
   
   func setNavigationBar<L, R>(
     leftView: @escaping (() -> L),
-    rightView: @escaping (() -> R),
-    leftButtonAction: (() -> Void)? = nil,
-    rightButtonAction: (() -> Void)? = nil
+    rightView: @escaping (() -> R)
   ) -> some View where L: View, R: View {
     modifier(NavigationBarModifier(
       leftView: leftView,
       centerView: { EmptyView() },
-      rightView: rightView,
-      leftButtonAction: leftButtonAction,
-      rightButtonAction: rightButtonAction)
+      rightView: rightView)
     )
   }
   
   func setNavigationBar<L>(
-    leftView: @escaping (() -> L),
-    leftButtonAction: (() -> Void)? = nil
+    leftView: @escaping (() -> L)
   ) -> some View where L: View {
     modifier(NavigationBarModifier(
       leftView: leftView,
       centerView: { EmptyView() },
-      rightView: { EmptyView() },
-      leftButtonAction: leftButtonAction,
-      rightButtonAction: nil)
+      rightView: { EmptyView() })
     )
   }
 }
@@ -117,13 +94,15 @@ public extension View {
 // MARK: - NavigationBar Item
 
 public extension View {
-  func makeNaivgationleftButton() -> some View {
+  func makeNaivgationleftButton(action: (() -> Void)? = nil) -> some View {
     BottleImageView(type: .local(bottleImageSystem: .icom(.leftArrow)))
       .foregroundStyle(to: ColorToken.icon(.primary))
+      .asThrottleButton(action: action ?? {})
   }
   
-  func makeNavigationReportButton() -> some View {
+  func makeNavigationReportButton(action: (() -> Void)? = nil) -> some View {
       BottleImageView(type: .local(bottleImageSystem: .icom(.siren)))
         .foregroundStyle(to: ColorToken.icon(.primary))
+        .asThrottleButton(action: action ?? {})
   }
 }

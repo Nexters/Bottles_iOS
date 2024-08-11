@@ -46,9 +46,9 @@ public struct ProfileImageUploadView: View {
       }
       .padding(.horizontal, .md)
       .setNavigationBar {
-        makeNaivgationleftButton()
-      } leftButtonAction: {
-        store.send(.backButtonDidTapped)
+        makeNaivgationleftButton {
+          store.send(.backButtonDidTapped)
+        }
       }
     }
   }

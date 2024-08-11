@@ -33,14 +33,16 @@ public struct IntroductionSetupView: View {
           nextButton
         }.onTapGesture {
           store.send(.onTapGesture)
+      	}.setNavigationBar {
+          makeNaivgationleftButton {
+            store.send(.backButtonDidTapped)
+          }
+		}.onLoad {
+          isVisibleTabBar.toggle()
+          store.send(.onLoad)
         }
-      }
-    }.onLoad {
-      isVisibleTabBar.toggle()
-      store.send(.onLoad)
-    }
-    .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
-    .animation(.easeInOut, value: isVisibleTabBar)
+        .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
+        .animation(.easeInOut, value: isVisibleTabBar)
   }
 }
 
