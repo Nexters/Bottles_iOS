@@ -15,6 +15,7 @@ public extension InfoPlist {
                 "UIImageName": "splashImage",
                 "UIColorName": "splashColor"
             ],
+            "CFBundleIconName": "AppIcon",
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
