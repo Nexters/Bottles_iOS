@@ -38,14 +38,14 @@ public struct IntroductionSetupView: View {
             store.send(.backButtonDidTapped)
           }
         }
-        .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
-        .animation(.easeInOut, value: isVisibleTabBar)
       }
     }
     .onLoad {
       store.send(.onLoad)
       isVisibleTabBar.toggle()
     }
+    .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
+    .animation(.easeInOut, value: isVisibleTabBar)
   }
 }
 
