@@ -22,6 +22,11 @@ public struct PingPongDetailFeature {
   @ObservableState
   public struct State: Equatable {
     let bottleID: Int
+    var pingPong: BottlePingPong?
+    var isStopped: Bool {
+      return pingPong?.isStopped == true || pingPong?.isStopped == nil
+    }
+    
     var introduction: IntroductionFeature.State
     var questionAndAnswer: QuestionAndAnswerFeature.State
     var matching: MatchingFeature.State
@@ -41,6 +46,7 @@ public struct PingPongDetailFeature {
     case onLoad
     
     case pingPongDetailViewTabDidTapped(_: PingPongDetailViewTabType)
+    case pingPongDidFetched(_: BottlePingPong)
     
     // ETC.
     case introduction(IntroductionFeature.Action)

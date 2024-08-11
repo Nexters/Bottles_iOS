@@ -51,6 +51,7 @@ private extension PingPongDetailView {
           isSelected: store.selectedTab == tab,
           action: { store.send(.pingPongDetailViewTabDidTapped(tab)) }
         )
+        .disabled(tab != .introduction && store.isStopped)
       })
       
       Spacer()

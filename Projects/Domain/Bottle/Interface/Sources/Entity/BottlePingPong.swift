@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct BottlePingPong {
+public struct BottlePingPong: Equatable {
   public let introduction: [QuestionAndAnswer]?
   public let isStopped: Bool
   public let letters: [Letter]
@@ -76,7 +76,7 @@ public struct Letter: Equatable {
   }
 }
 
-public struct MatchResult {
+public struct MatchResult: Equatable {
   public let isFirstSelect: Bool
   public let isMatched: Bool
   public let otherContact: String
@@ -95,7 +95,7 @@ public struct MatchResult {
   }
 }
 
-public struct Photo {
+public struct Photo: Equatable {
   public let isDone: Bool
   public let myAnswer: Bool?
   public let myImageURL: String?
@@ -198,7 +198,7 @@ public struct Interest: Equatable {
   }
 }
 
-public struct Region {
+public struct Region: Equatable {
   public let city: String
   public let state: String
   

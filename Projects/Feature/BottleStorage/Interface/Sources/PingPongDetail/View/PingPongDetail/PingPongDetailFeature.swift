@@ -32,6 +32,10 @@ extension PingPongDetailFeature {
         state.selectedTab = tab
         return .none
         
+      case let .pingPongDidFetched(pingPong):
+        state.pingPong = pingPong
+        return .none
+        
       case .binding, .introduction, .questionAndAnswer, .matching:
         return .none
       }
