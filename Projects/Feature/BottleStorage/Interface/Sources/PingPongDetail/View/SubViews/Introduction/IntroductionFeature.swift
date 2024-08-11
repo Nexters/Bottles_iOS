@@ -18,6 +18,14 @@ extension IntroductionFeature {
       case .onAppear:
         return .none
         
+      case let .profileFetched(userProfile):
+        state.userProfile = userProfile
+        return .none
+        
+      case let .introductionFetched(introductions):
+        state.introductions = introductions
+        return .none
+        
       case .binding:
         return .none
       }
