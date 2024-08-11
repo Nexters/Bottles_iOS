@@ -20,6 +20,9 @@ public extension Image.BottleImageSystem {
     case plus
     case verticalLine
     case kakaoLogo
+    case sandBeach
+    case bottleStorage
+    case myPage
   }
 }
 
@@ -49,6 +52,15 @@ public extension Image.BottleImageSystem.Icon {
       
     case .kakaoLogo:
       return SharedDesignSystemAsset.Images.iconKakaoLogo.swiftUIImage
+      
+    case .sandBeach:
+      return SharedDesignSystemAsset.Images.iconSandBeach.swiftUIImage
+      
+    case .bottleStorage:
+      return SharedDesignSystemAsset.Images.iconBottleStorage.swiftUIImage
+      
+    case .myPage:
+      return SharedDesignSystemAsset.Images.iconMyPage.swiftUIImage
     }
   }
 }
