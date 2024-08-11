@@ -28,6 +28,13 @@ extension BottleClient: DependencyKey {
           dto: BottleStorageListResponseDTO.self
         ).toDomain()
         return bottleStorageList
+      },
+      fetchBottlePingPong: { id in
+        let bottlePingPong = try await networkManager.reqeust(
+          api: .apiType(BottleAPI.fetchBottlePingPong(bottleID: id)),
+          dto: BottlePingPongResponseDTO.self
+        ).toDomain()
+        return bottlePingPong
       }
     )
   }
@@ -41,6 +48,14 @@ extension BottleClient {
         activeBottles: [],
         doneBottles: []
       )
+    },
+    fetchBottlePingPong: { id in
+      @Dependency(\.network) var networkManager
+      let bottlePingPong = try await networkManager.reqeust(
+        api: .apiType(BottleAPI.fetchBottlePingPong(bottleID: id)),
+        dto: BottlePingPongResponseDTO.self
+      ).toDomain()
+      return bottlePingPong
     }
   )
 }

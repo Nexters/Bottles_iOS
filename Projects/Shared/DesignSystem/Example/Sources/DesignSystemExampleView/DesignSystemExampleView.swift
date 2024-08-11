@@ -237,29 +237,29 @@ struct CardSection: View {
             Text("StopCardView")
           }
         )        
-        NavigationLink(
-          destination: 
-            QuestionPingPongTestView(),
-          label: {
-            Text("Question PingPong View")
-          }
-        )
+//        NavigationLink(
+//          destination: 
+//            QuestionPingPongTestView(),
+//          label: {
+//            Text("Question PingPong View")
+//          }
+//        )
         
-        NavigationLink(
-          destination: 
-            PhotoSharePingPongTestView(),
-          label: {
-            Text("PhotoShare PingPong View")
-          }
-        )
+//        NavigationLink(
+//          destination: 
+//            PhotoSharePingPongTestView(),
+//          label: {
+//            Text("PhotoShare PingPong View")
+//          }
+//        )
         
-        NavigationLink(
-          destination: 
-            FinalSelectPingPongTestView(),
-          label: {
-            Text("FinalSelectPingPongView")
-          }
-        )
+//        NavigationLink(
+//          destination: 
+//            FinalSelectPingPongTestView(),
+//          label: {
+//            Text("FinalSelectPingPongView")
+//          }
+//        )
         
         NavigationLink(
           destination: VStack(spacing: 30) {

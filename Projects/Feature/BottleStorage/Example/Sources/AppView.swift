@@ -19,7 +19,7 @@ struct AppView: App {
     WindowGroup {
       BottleStorageView(store: Store(
         initialState: BottleStorageFeature.State(),
-        reducer: { BottleStorageFeature()._printChanges() }
+        reducer: { BottleStorageFeature() }
       ))
       .onAppear {
         AuthClient.liveValue.saveToken(token: .init(
