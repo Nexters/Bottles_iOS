@@ -72,6 +72,9 @@ public struct IntroductionView: View {
             
           }
           .disabled(store.isStopped == true)
+          
+          Spacer()
+            .frame(height: 8.0)
         }
         .padding(.horizontal, 16.0)
         .padding(.top, 32.0)
