@@ -10,6 +10,7 @@ import SwiftUI
 import FeatureBottleStorageInterface
 import FeatureMyPageInterface
 import FeatureSandBeachInterface
+import SharedDesignSystem
 
 import ComposableArchitecture
 
@@ -27,9 +28,14 @@ public struct MainTabView: View {
           SandBeachRootView(store: store.scope(state: \.sandBeachRoot, action: \.sandBeachRoot))
             .tabItem {
               VStack(spacing: 8.0) {
-                Image(systemName: "house.fill")
+                BottleImageView(type: .local(bottleImageSystem: .icom(.sandBeach)))
+                .foregroundStyle(to: ColorToken.icon(.primary))
                 
-                Text("\(TabType.sandBeach.title)")
+                WantedSansStyleText(
+                  "\(TabType.sandBeach.title)",
+                  style: .caption,
+                  color: .enableTertiary
+                )
               }
             }
             .tag(TabType.sandBeach)
@@ -37,9 +43,14 @@ public struct MainTabView: View {
           BottleStorageView(store: store.scope(state: \.bottleStorage, action: \.bottleStorage))
             .tabItem {
               VStack(spacing: 8.0) {
-                Image(systemName: "house.fill")
+                BottleImageView(type: .local(bottleImageSystem: .icom(.bottleStorage)))
+                  .foregroundStyle(to: ColorToken.icon(.primary))
                 
-                Text("\(TabType.bottleStorage.title)")
+                WantedSansStyleText(
+                  "\(TabType.bottleStorage.title)",
+                  style: .caption,
+                  color: .enableTertiary
+                )
               }
             }
             .tag(TabType.bottleStorage)
@@ -47,13 +58,18 @@ public struct MainTabView: View {
           MyPageView(store: store.scope(state: \.myPage, action: \.myPage))
             .tabItem {
               VStack(spacing: 8.0) {
-                Image(systemName: "house.fill")
-                
-                Text("\(TabType.myPage.title)")
+                BottleImageView(type: .local(bottleImageSystem: .icom(.myPage)))
+                  .foregroundStyle(to: ColorToken.icon(.primary))
+                WantedSansStyleText(
+                  "\(TabType.myPage.title)",
+                  style: .caption,
+                  color: .enableTertiary
+                )
               }
             }
             .tag(TabType.myPage)
         }
+        .accentColor(ColorToken.text(.selectSecondary).color)
       }
     }
   }
