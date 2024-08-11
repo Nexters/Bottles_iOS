@@ -34,10 +34,16 @@ public struct ProfileImageUploadFeature {
   }
   
   public enum Action {
+    // View Life Cycle
     case onAppear
+    
+    // User Action
     case doneButtonDidTapped
     case imageDidSelected(selectedImageData: Data)
     case imageDeleteButtonDidTapped
+    case backButtonDidTapped
+    
+    // Delegate
     case delegate(Delegate)
     
     public enum Delegate {
@@ -53,7 +59,8 @@ public struct ProfileImageUploadFeature {
 extension ProfileImageUploadFeature {
   public init() {
     let reducer = Reduce<State, Action> { state, action in
-    
+      @Dependency(\.dismiss) var dismiss
+      
       switch action {
       case .onAppear:
         return .none
@@ -70,6 +77,11 @@ extension ProfileImageUploadFeature {
         state.selectedImageData = .empty
         state.isDisableDoneButton = true
         return .none
+        
+      case .backButtonDidTapped:
+        return .run { _ in
+          await dismiss()
+        }
       case .delegate:
         return .none
       }

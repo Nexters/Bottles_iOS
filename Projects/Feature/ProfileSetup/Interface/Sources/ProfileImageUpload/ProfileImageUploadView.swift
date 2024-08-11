@@ -46,7 +46,9 @@ public struct ProfileImageUploadView: View {
       }
       .padding(.horizontal, .md)
     }
-    .navigationBarTitleDisplayMode(.inline)
+    .setNavigationBarWithBackButton {
+      store.send(.backButtonDidTapped)
+    }
   }
 }
 
