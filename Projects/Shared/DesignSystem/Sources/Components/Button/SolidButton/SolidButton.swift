@@ -11,17 +11,20 @@ public struct SolidButton: View {
   private let title: String
   private let sizeType: SizeType
   private let buttonType: ButtonType
+  private let buttonApperance: ButtonAppearanceType
   private let action: () -> Void
   
   public init(
     title: String,
     sizeType: SizeType,
     buttonType: ButtonType,
+    buttonApperance: ButtonAppearanceType = .solid,
     action: @escaping () -> Void
   ) {
     self.title = title
     self.sizeType = sizeType
     self.buttonType = buttonType
+    self.buttonApperance = buttonApperance
     self.action = action
   }
   
@@ -29,9 +32,14 @@ public struct SolidButton: View {
     solidStyleButton
     .buttonStyle(
       SolidButtonStyle(
-        sizeType: sizeType
+        sizeType: sizeType,
+        buttonApperance: buttonApperance
       )
     )
+    .overlay(alignment: .leading) {
+      image
+        .padding(.leading, .md)
+    }
   }
 }
 
@@ -74,16 +82,15 @@ extension SolidButton {
       titleText.asDebounceButton(action: action)
     }
   }
-}
-
-
-#Preview {
-  SolidButton(
-    title: "SolidButton",
-    sizeType: .medium,
-    buttonType: .normal,
-    action: {
-      print("SolidButtonDidTapped")
+  
+  @ViewBuilder
+  var image: some View {
+    switch buttonApperance {
+    case .kakao:
+      BottleImageView(type: .local(bottleImageSystem: .icom(.kakaoLogo)))
+    case .solid:
+      EmptyView()
     }
-  )
+  }
+  
 }

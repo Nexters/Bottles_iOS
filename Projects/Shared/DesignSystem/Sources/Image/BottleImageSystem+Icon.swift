@@ -19,6 +19,7 @@ public extension Image.BottleImageSystem {
     case siren
     case plus
     case verticalLine
+    case kakaoLogo
   }
 }
 
@@ -45,6 +46,9 @@ public extension Image.BottleImageSystem.Icon {
       return SharedDesignSystemAsset.Images.iconPlus.swiftUIImage
     case .verticalLine:
       return SharedDesignSystemAsset.Images.iconVerticalLine.swiftUIImage
+      
+    case .kakaoLogo:
+      return SharedDesignSystemAsset.Images.iconKakaoLogo.swiftUIImage
     }
   }
 }

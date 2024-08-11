@@ -23,6 +23,7 @@ public extension ColorToken {
     case Active
     case erroPrimary
     case errorSecondary
+    case kakao
   }
 }
 
@@ -69,6 +70,9 @@ public extension ColorToken.Container {
 
     case .errorSecondary:
       return Color.BottleColorSystem.sub(.white).color
+      
+    case .kakao:
+      return Color.BottleColorSystem.sub(.kakao).color
     }
   }
 }
