@@ -22,19 +22,23 @@ public struct IntroductionView: View {
     WithPerceptionTracking {
       ScrollView {
         VStack(spacing: 0.0) {
-          UserProfileView(
-            imageURL: store.userImageURL,
-            userName: store.userName,
-            userAge: store.age
-          )
-          
-          Spacer()
-            .frame(height: 24.0)
-          
-          LettetCardView(
-            userName: store.userName,
-            letterContent: store.introduction
-          )
+          if store.isStopped == true {
+            StopCardView(userName: store.userName)
+          } else if store.isStopped == false {
+            UserProfileView(
+              imageURL: store.userImageURL,
+              userName: store.userName,
+              userAge: store.age
+            )
+            
+            Spacer()
+              .frame(height: 24.0)
+            
+            LettetCardView(
+              userName: store.userName,
+              letterContent: store.introduction
+            )
+          }
           
           Spacer()
             .frame(height: 12.0)
@@ -67,6 +71,7 @@ public struct IntroductionView: View {
           .asThrottleButton {
             
           }
+          .disabled(store.isStopped == true)
         }
         .padding(.horizontal, 16.0)
         .padding(.top, 32.0)

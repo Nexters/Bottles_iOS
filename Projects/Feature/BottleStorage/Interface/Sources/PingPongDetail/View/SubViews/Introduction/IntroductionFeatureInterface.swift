@@ -22,6 +22,7 @@ public struct IntroductionFeature {
   @ObservableState
   public struct State: Equatable {
     var userProfile: UserProfile?
+    var isStopped: Bool?
     
     // 프로필
     var userName: String {
@@ -75,6 +76,7 @@ public struct IntroductionFeature {
     case onAppear
     
     case profileFetched(UserProfile)
+    case isStoppedFetched(Bool)
     case introductionFetched([QuestionAndAnswer])
     
     // ETC.

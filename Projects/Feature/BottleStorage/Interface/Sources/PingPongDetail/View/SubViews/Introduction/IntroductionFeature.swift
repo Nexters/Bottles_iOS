@@ -22,6 +22,10 @@ extension IntroductionFeature {
         state.userProfile = userProfile
         return .none
         
+      case let .isStoppedFetched(isStopped):
+        state.isStopped = isStopped
+        return .none
+        
       case let .introductionFetched(introductions):
         state.introductions = introductions
         return .none
