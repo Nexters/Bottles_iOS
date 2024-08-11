@@ -37,6 +37,8 @@ public struct BottleStorageFeature {
     var activeBottleList: [BottleStorageItem]?
     var doneBottlsList: [BottleStorageItem]?
     
+    var path = StackState<Path.State>()
+    
     public init() {
       self.bottleActiveStateTabs = BottleActiveState.allCases
       self.selectedActiveStateTab = .active
@@ -52,13 +54,17 @@ public struct BottleStorageFeature {
     
     // 보틀 리스트
     case bottleStorageListFetched(BottleStorageList)
+    case bottleStorageItemDidTapped
     
     // ETC.
+    case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
   }
   
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     reducer
+      .forEach(\.path, action: \.path)
   }
 }
 

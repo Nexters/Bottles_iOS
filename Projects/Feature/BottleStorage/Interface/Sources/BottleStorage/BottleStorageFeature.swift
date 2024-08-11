@@ -30,11 +30,15 @@ extension BottleStorageFeature {
         state.doneBottlsList = bottleStorageList.doneBottles
         return .none
         
+      case .bottleStorageItemDidTapped:
+        state.path.append(.pingPongDetail(.init()))
+        return .none
+        
       case let .bottleActiveStateTabButtonTapped(activeState):
         state.selectedActiveStateTab = activeState
         return .none
         
-      case .binding:
+      case .binding, .path:
         return .none
       }
     }
@@ -42,3 +46,11 @@ extension BottleStorageFeature {
   }
 }
 
+extension BottleStorageFeature {
+  // MARK: - Path
+  
+  @Reducer(state: .equatable)
+  public enum Path {
+    case pingPongDetail(PingPongDetailFeature)
+  }
+}

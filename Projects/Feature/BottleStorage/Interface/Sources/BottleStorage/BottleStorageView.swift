@@ -20,7 +20,7 @@ public struct BottleStorageView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      NavigationStack {
+      NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
         VStack(spacing: 0.0) {
           bottleActiveStateSelectTab
           
@@ -30,6 +30,15 @@ public struct BottleStorageView: View {
             .padding(.bottom, 36.0)
         }
         .frame(maxHeight: .infinity, alignment: .top)
+      } destination: { store in
+        WithPerceptionTracking {
+          switch store.state {
+          case .pingPongDetail:
+            if let store = store.scope(state: \.pingPongDetail, action: \.pingPongDetail) {
+              PingPongDetailView(store: store)
+            }
+          }
+        }
       }
       .onAppear {
         store.send(.onAppear)
@@ -99,6 +108,9 @@ private extension BottleStorageView {
               imageURL: bottle.userImageUrl,
               isRead: bottle.isRead ?? false
             )
+            .asButton {
+              store.send(.bottleStorageItemDidTapped)
+            }
           }
         }
       }
