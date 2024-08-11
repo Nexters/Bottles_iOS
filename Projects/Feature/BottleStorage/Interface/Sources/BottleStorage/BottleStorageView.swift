@@ -75,7 +75,6 @@ private extension BottleStorageView {
       Spacer()
     }
     .padding(.md)
-    .padding(.top, 48.0)
   }
   
   @ViewBuilder
