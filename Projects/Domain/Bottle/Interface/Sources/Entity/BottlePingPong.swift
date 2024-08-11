@@ -8,7 +8,7 @@
 import Foundation
 
 public struct BottlePingPong {
-  public let introduction: [Introduction]?
+  public let introduction: [QuestionAndAnswer]?
   public let isStopped: Bool
   public let letters: [Letter]
   public let matchResult: MatchResult
@@ -17,7 +17,7 @@ public struct BottlePingPong {
   public let userProfile: UserProfile
   
   public init(
-    introduction: [Introduction]? = nil,
+    introduction: [QuestionAndAnswer]? = nil,
     isStopped: Bool,
     letters: [Letter],
     matchResult: MatchResult,
@@ -35,7 +35,7 @@ public struct BottlePingPong {
   }
 }
 
-public struct Introduction: Codable {
+public struct QuestionAndAnswer: Codable, Equatable {
   public let answer: String
   public let question: String
   
@@ -48,7 +48,7 @@ public struct Introduction: Codable {
   }
 }
 
-public struct Letter {
+public struct Letter: Equatable {
   public let canshow: Bool?
   public let isDone: Bool
   public let myAnswer: String?
@@ -120,7 +120,7 @@ public struct Photo {
   }
 }
 
-public struct UserProfile {
+public struct UserProfile: Equatable {
   public let age: Int
   public let profileSelect: ProfileSelect?
   public let userImageURL: String?
@@ -139,7 +139,12 @@ public struct UserProfile {
   }
 }
 
-public struct ProfileSelect {
+public struct ProfileSelect: Equatable {
+  public static func == (lhs: ProfileSelect, rhs: ProfileSelect) -> Bool {
+    return lhs.id == rhs.id
+  }
+  
+  public let id: UUID
   public let alcohol: String
   public let height: Int
   public let interest: Interest
@@ -161,6 +166,7 @@ public struct ProfileSelect {
     religion: String,
     smoking: String
   ) {
+    self.id = UUID()
     self.alcohol = alcohol
     self.height = height
     self.interest = interest
@@ -173,7 +179,7 @@ public struct ProfileSelect {
   }
 }
 
-public struct Interest {
+public struct Interest: Equatable {
   public let culture: [String]
   public let entertainment: [String]
   public let etc: [String]

@@ -43,7 +43,7 @@ public struct BottlePingPongResponseDTO: Decodable {
     let answer: String?
     let question: String?
     
-    public func toDomain() -> Introduction {
+    public func toDomain() -> QuestionAndAnswer {
       return .init(
         answer: answer ?? "",
         question: question ?? ""
