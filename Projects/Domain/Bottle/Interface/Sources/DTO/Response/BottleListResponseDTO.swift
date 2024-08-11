@@ -9,7 +9,8 @@ import Foundation
 
 // MARK: - BottleList
 public struct BottleListResponseDTO: Decodable {
-  public let bottles: [BottleItemDTO]?
+  public let randomBottles: [BottleItemDTO]?
+  public let sentBottles: [BottleItemDTO]?
   
   // MARK: - BottleItem
   public struct BottleItemDTO: Codable {
