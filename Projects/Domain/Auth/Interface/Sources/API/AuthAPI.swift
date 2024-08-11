@@ -23,7 +23,7 @@ extension AuthAPI: BaseTargetType {
     case .kakao:
       return "api/v1/auth/kakao"
     case .withdraw:
-      return "api​/v1​/auth​/delete"
+      return "api/v1/auth/delete"
     case .logout:
       return "api/v1/auth/logout"
     }
