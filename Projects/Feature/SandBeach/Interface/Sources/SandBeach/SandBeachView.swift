@@ -11,7 +11,8 @@ import SharedDesignSystem
 
 import ComposableArchitecture
 
-public struct SandBeachView: View {
+public struct SandBeachView: View {  
+  @State private var isVisibleTabBar: Bool = false
   private let store: StoreOf<SandBeachFeature>
   
   public init(store: StoreOf<SandBeachFeature>) {
@@ -22,7 +23,7 @@ public struct SandBeachView: View {
     WithPerceptionTracking {
       GeometryReader { geo in
         WithPerceptionTracking {
-          if store.isLoading {
+          if store.userState == .none && store.isLoading {
             LoadingIndicator()
           } else {
             VStack(spacing: 0) {
@@ -65,6 +66,7 @@ public struct SandBeachView: View {
         }
       }
       .onAppear {
+        isVisibleTabBar = true
         store.send(.onAppear)
       }
       .background {
@@ -73,6 +75,8 @@ public struct SandBeachView: View {
         )
       }
     }
+    .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
+    .animation(.easeInOut, value: isVisibleTabBar)
     .edgesIgnoringSafeArea([.top, .bottom])
   }
 }
