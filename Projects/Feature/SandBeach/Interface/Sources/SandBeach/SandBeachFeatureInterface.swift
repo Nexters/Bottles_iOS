@@ -72,9 +72,15 @@ extension SandBeachFeature {
               isDisableButton: true))
             return
           }
+          
           let newBottlesCount = try await bottleClient.fetchNewBottlesCount()
-
-          guard let count = newBottlesCount else {
+          // 새로 도착한 보틀이 있는 상태
+          if newBottlesCount > 0 {
+            await send(.userStateFetchCompleted(
+              userState: .hasNewBottle(bottleCount: newBottlesCount),
+              isDisableButton: false)
+            )
+          } else {
             let bottlesStorageList = try await bottleClient.fetchBottleStorageList()
             let activeBottlesCount = bottlesStorageList.activeBottles.count
             
@@ -91,14 +97,7 @@ extension SandBeachFeature {
                 isDisableButton: false)
               )
             }
-            return
           }
-          // 새로 도착한 보틀이 있는 상태
-          await send(.userStateFetchCompleted(
-            userState: .hasNewBottle(bottleCount: count),
-            isDisableButton: false)
-          )
-          
         } catch: { error, send in
           // TODO: 에러 핸들링
           Log.error(error)

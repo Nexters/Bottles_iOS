@@ -15,24 +15,32 @@ import ComposableArchitecture
 public struct IntroductionSetupView: View {
   @Perception.Bindable private var store: StoreOf<IntroductionSetupFeature>
   @FocusState private var isTextFieldFocused: Bool
-
+  @State private var isVisibleTabBar: Bool = true
+  
   public init(store: StoreOf<IntroductionSetupFeature>) {
     self.store = store
   }
   
   public var body: some View {
     WithPerceptionTracking {
-      ScrollView {
-        introductionTitle
-        introductionTextField
-        keywordList
-        nextButton
-      }.onLoad {
-        store.send(.onLoad)
-      }.onTapGesture {
-        store.send(.onTapGesture)
+      if store.isLoading {
+        LoadingIndicator()
+      } else {
+        ScrollView {
+          introductionTitle
+          introductionTextField
+          keywordList
+          nextButton
+        }.onTapGesture {
+          store.send(.onTapGesture)
+        }
       }
+    }.onLoad {
+      isVisibleTabBar.toggle()
+      store.send(.onLoad)
     }
+    .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
+    .animation(.easeInOut, value: isVisibleTabBar)
   }
 }
 

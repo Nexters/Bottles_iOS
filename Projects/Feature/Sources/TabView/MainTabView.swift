@@ -62,7 +62,13 @@ public struct MainTabView: View {
 extension UITabBarController {
   open override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
-    
+    let appearance = UITabBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = .white
+    appearance.backgroundColor = .white
+
+    tabBar.standardAppearance = appearance
+    tabBar.scrollEdgeAppearance = tabBar.standardAppearance
     tabBar.layer.masksToBounds = true
     tabBar.layer.cornerRadius = 24.0
     tabBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -70,28 +76,5 @@ extension UITabBarController {
     tabFrame.size.height = 94.0
     tabFrame.origin.y = self.view.frame.size.height - 94.0
     tabBar.frame = tabFrame
-    let appearance = UITabBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .white
-    tabBar.standardAppearance = appearance
-    tabBar.scrollEdgeAppearance = tabBar.standardAppearance
-    
-    if let shadowView = view.subviews.first(where: { $0.accessibilityIdentifier == "TabBarShadow" }) {
-      shadowView.frame = tabBar.frame
-    } else {
-      let shadowView = UIView(frame: .zero)
-      shadowView.frame = tabBar.frame
-      shadowView.accessibilityIdentifier = "TabBarShadow"
-      shadowView.backgroundColor = UIColor.white
-      shadowView.layer.cornerRadius = tabBar.layer.cornerRadius
-      shadowView.layer.maskedCorners = tabBar.layer.maskedCorners
-      shadowView.layer.masksToBounds = false
-      shadowView.layer.shadowColor = Color.black.cgColor
-      shadowView.layer.shadowOffset = CGSize(width: 0.0, height: -8.0)
-      shadowView.layer.shadowOpacity = 0.05
-      shadowView.layer.shadowRadius = 24.0
-      view.addSubview(shadowView)
-      view.bringSubviewToFront(tabBar)
-    }
   }
 }

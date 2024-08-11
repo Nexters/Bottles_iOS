@@ -8,6 +8,7 @@
 import SwiftUI
 
 import FeatureProfileSetupInterface
+import FeatureBottleArrivalInterface
 import CoreLoggerInterface
 
 import ComposableArchitecture
@@ -27,13 +28,24 @@ public struct SandBeachRootView: View {
         WithPerceptionTracking {
           switch store.state {
           case .IntroductionSetup:
-            if let store = store.scope(state: \.IntroductionSetup, action: \.IntroductionSetup) {
+            if let store = store.scope(
+              state: \.IntroductionSetup,
+              action: \.IntroductionSetup) {
               IntroductionSetupView(store: store)
             }
             
           case .ProfileImageUpload:
-            if let store = store.scope(state: \.ProfileImageUpload, action: \.ProfileImageUpload) {
+            if let store = store.scope(
+              state: \.ProfileImageUpload,
+              action: \.ProfileImageUpload) {
               ProfileImageUploadView(store: store)
+            }
+            
+          case .BottleArrival:
+            if let store = store.scope(
+              state: \.BottleArrival,
+              action: \.BottleArrival) {
+              BottleArrivalView(store: store)
             }
           }
         }

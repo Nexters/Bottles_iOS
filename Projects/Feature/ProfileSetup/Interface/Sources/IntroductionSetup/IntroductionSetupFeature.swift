@@ -29,19 +29,22 @@ public struct IntroductionSetupFeature {
     public var keywordItem: [ClipItem]
     public var isNextButtonDisable: Bool
     public var maxLength: Int
+    public var isLoading: Bool
     
     public init(
       introductionText: String = "",
       textFieldState: TextFieldState = .enabled,
       keywordItem: [ClipItem] = [],
       isNextButtonDisable: Bool = false,
-      maxLength: Int = 50
+      maxLength: Int = 50,
+      isLoading: Bool = false
     ) {
       self.introductionText = introductionText
       self.textFieldState = textFieldState
       self.keywordItem = keywordItem
       self.isNextButtonDisable = isNextButtonDisable
       self.maxLength = maxLength
+      self.isLoading = isLoading
     }
   }
   
@@ -72,6 +75,7 @@ extension IntroductionSetupFeature {
       
       switch action {
       case .onLoad:
+        state.isLoading = true
         return .run { send in
           let userProfile = try await profileClient.fetchUserProfile()
           await send(.userProfileDidFatched(userProfile))
@@ -101,6 +105,7 @@ extension IntroductionSetupFeature {
             + (userProfile.interset.etc ?? [])
           )
         ]
+        state.isLoading = false
         return .none
       case .binding(\.introductionText):
         // TODO: - 텍스트 붙여넣기로 300자 이상 텍스트 붙여넣었을 때 때 prefix처리.

@@ -73,11 +73,22 @@ public struct MainTabViewFeature {
       state.selectedTab = tab
       return .none
       
-    case .myPage(.delegate(.logoutDidCompleted)):
-      return .send(.delegate(.logoutDidCompleted))
+    // SandBeachRoot Delegate
+    case let .sandBeachRoot(.delegate(delegate)):
+      switch delegate {
+      case .goToBottleStorageRequest:
+        state.selectedTab = .bottleStorage
+        return .none
+      }
       
-    case .myPage(.delegate(.withdrawalDidCompleted)):
-      return .send(.delegate(.withdrawalDidCompleted))
+    // MyPage Delegate
+    case let .myPage(.delegate(delegate)):
+      switch delegate {
+      case .logoutDidCompleted:
+        return .send(.delegate(.logoutDidCompleted))
+      case .withdrawalDidCompleted:
+        return .send(.delegate(.withdrawalDidCompleted))
+      }
       
     default:
       return .none

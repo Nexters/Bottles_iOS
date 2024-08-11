@@ -11,41 +11,33 @@ import CoreWebViewInterface
 import CoreKeyChainStoreInterface
 import CoreKeyChainStore
 
-public enum BottleWebViewType {
+public enum BottleWebViewType: String {
   private var baseURL: String {
     (Bundle.main.infoDictionary?["WEB_VIEW_BASE_URL"] as? String) ?? ""
   }
   
-  case createProfile
-  case myPage
-  case signUp
+  case createProfile = "create-profile"
+  case myPage = "my"
+  case signUp = "signup"
   case login
-  // TODO: 도착한 보틀 추가
+  case bottles
   
   public var url: URL {
-    var components = URLComponents(string: baseURL)
     switch self {
     case .createProfile:
-      components?.path = "/create-profile"
-      components?.queryItems = [
-        URLQueryItem(name: "accessToken", value: KeyChainTokenStore.shared.load(property: .accessToken)),
-        URLQueryItem(name: "refreshToken", value: KeyChainTokenStore.shared.load(property: .refreshToken))
-      ]
-      return (components?.url)!
+      return makeUrlWithToken(rawValue)
       
     case .myPage:
-      components?.path = "/my"
-      components?.queryItems = [
-        URLQueryItem(name: "accessToken", value: KeyChainTokenStore.shared.load(property: .accessToken)),
-        URLQueryItem(name: "refreshToken", value: KeyChainTokenStore.shared.load(property: .refreshToken))
-      ]
-      return (components?.url)!
+      return makeUrlWithToken(rawValue)
       
     case .signUp:
-      return URL(string: baseURL + "/signup")!
+      return URL(string: baseURL + "/" + rawValue)!
       
     case .login:
-      return URL(string: baseURL + "/login")!
+      return URL(string: baseURL + "/" + rawValue)!
+      
+    case .bottles:
+      return makeUrlWithToken(rawValue)
     }
   }
   
@@ -54,5 +46,19 @@ public enum BottleWebViewType {
     default:
       return .default
     }
+  }
+}
+
+// MARK: - private methods
+private extension BottleWebViewType {
+  func makeUrlWithToken(_ path: String) -> URL {
+    var components = URLComponents(string: baseURL)
+    components?.path = "/\(path)"
+    components?.queryItems = [
+      URLQueryItem(name: "accessToken", value: KeyChainTokenStore.shared.load(property: .accessToken)),
+      URLQueryItem(name: "refreshToken", value: KeyChainTokenStore.shared.load(property: .refreshToken))
+    ]
+    
+    return (components?.url)!
   }
 }
