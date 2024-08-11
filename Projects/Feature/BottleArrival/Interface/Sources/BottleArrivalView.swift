@@ -32,6 +32,9 @@ public struct BottleArrivalView: View {
           store.send(.bottelDidAccepted)
         case .closeWebView:
           store.send(.closeWebView)
+        case let .showTaost(message):
+          store.send(.presentToastDidRequired(message: message))
+          
         default:
           break
         }

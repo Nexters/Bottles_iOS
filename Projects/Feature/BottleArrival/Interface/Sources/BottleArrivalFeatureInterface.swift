@@ -26,10 +26,13 @@ public struct BottleArrivalFeature {
   }
   
   public enum Action {
+    // View Life Cycle
     case onAppear
     case webViewLoadingDidCompleted
     case bottelDidAccepted
     case closeWebView
+    case presentToastDidRequired(message: String)
+    // Delegate
     case delegate(Delegate)
     
     public enum Delegate {

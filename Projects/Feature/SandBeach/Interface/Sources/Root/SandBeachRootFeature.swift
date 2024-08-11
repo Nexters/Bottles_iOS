@@ -55,6 +55,11 @@ public struct SandBeachRootFeature {
     case path(StackAction<Path.State, Path.Action>)
     case sandBeach(SandBeachFeature.Action)
     case profileSetupDidCompleted
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case goToBottleStorageRequest
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -109,22 +114,24 @@ extension SandBeachRootFeature {
       case let .path(.element(id: _, action: .BottleArrival(.delegate(delegate)))):
         switch delegate {
         case .bottelDidAccepted:
-          // TODO: 보틀 보관함으로 이동
           state.path.removeLast()
-          return .none
+          return .send(.delegate(.goToBottleStorageRequest))
+          
         case .closeWebView:
           state.path.removeLast()
           return .none
         }
+        
+      // SandBeach Delegate
       case let .sandBeach(.delegate(delegate)):
         switch delegate {
         case .bottleStorageIslandDidTapped:
-          // TODO: 보틀 보관함으로 이동
-          return .none
+          return .send(.delegate(.goToBottleStorageRequest))
+          
         case .newBottleIslandDidTapped:
           state.path.append(.BottleArrival(BottleArrivalFeature.State()))
-
           return .none
+          
         case .writeButtonDidTapped:
           state.path.append(.IntroductionSetup(IntroductionSetupFeature.State()))
           return .none

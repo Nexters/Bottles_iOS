@@ -15,6 +15,11 @@ import ComposableArchitecture
 @Reducer
 public struct AppFeature {
   @Dependency(\.authClient) var authClient
+
+  enum Root {
+    case Login
+    case MainTab
+  }
   
   @ObservableState
   public struct State: Equatable {
@@ -61,33 +66,39 @@ public struct AppFeature {
       return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
       
     case .login(.goToMainTab):
-      state.login = nil
-      state.mainTab = MainTabViewFeature.State()
-      return .none
+      return changeRoot(.MainTab, state: &state)
       
     case let .loginCheckCompleted(isLoggedIn):
       if isLoggedIn {
-        state.mainTab = MainTabViewFeature.State()
+        return changeRoot(.MainTab, state: &state)
       } else {
-        state.login = LoginFeature.State()
+        return changeRoot(.Login, state: &state)
       }
-      return .none
       
     case .login(.delegate(.createOnboardingProfileDidCompleted)):
-      state.login = nil
-      state.mainTab = MainTabViewFeature.State()
-      return .none
+      return changeRoot(.MainTab, state: &state)
       
     case let .mainTab(.delegate(delegate)):
       switch delegate {
       case .logoutDidCompleted, .withdrawalDidCompleted:
-        state.login = .init()
-        state.mainTab = nil
-        return .none
+        return changeRoot(.Login, state: &state)
       }
       
     default:
       return .none
     }
+  }
+  
+  private func changeRoot(_ root: Root, state: inout State) -> Effect<Action> {
+    switch root {
+    case .Login:
+      state.login = LoginFeature.State()
+      state.mainTab = nil
+    case .MainTab:
+      state.login = nil
+      state.mainTab = MainTabViewFeature.State()
+    }
+    
+    return .none
   }
 }
