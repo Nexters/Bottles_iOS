@@ -49,13 +49,21 @@ public struct IntroductionSetupFeature {
   }
   
   public enum Action: BindableAction {
+    // View Life Cycle
     case onLoad
+    
+    // User Action
     case texFieldDidFocused(isFocused: Bool)
-    case binding(BindingAction<State>)
     case userProfileDidFatched(UserProfile)
     case nextButtonDidTapped
     case onTapGesture
+    case backButtonDidTapped
+    
+    // Delegate
     case delegate(Delegate)
+    
+    // ETC
+    case binding(BindingAction<State>)
     
     public enum Delegate {
       case nextButtonDidTapped(introductionText: String)
@@ -70,6 +78,8 @@ public struct IntroductionSetupFeature {
 
 extension IntroductionSetupFeature {
   public init() {
+    @Dependency(\.dismiss) var dismiss
+    
     let reducer = Reduce<State, Action> { state, action in
       @Dependency(\.profileClient) var profileClient
       
@@ -108,9 +118,6 @@ extension IntroductionSetupFeature {
         state.isLoading = false
         return .none
       case .binding(\.introductionText):
-        // TODO: - 텍스트 붙여넣기로 300자 이상 텍스트 붙여넣었을 때 때 prefix처리.
-        // TODO: - 300자 이상 입력못하게 막기. -> Feature에서 처리? View에서 처리?
-
         if state.introductionText.count >= state.maxLength {
           state.textFieldState = .focused
           state.isNextButtonDisable = false
@@ -129,6 +136,12 @@ extension IntroductionSetupFeature {
       case .onTapGesture:
         state.textFieldState = .active
         return .none
+        
+      case .backButtonDidTapped:
+        return .run { _ in
+            await dismiss()
+        }
+        
       case .binding(_):
         return .none
       case .delegate:

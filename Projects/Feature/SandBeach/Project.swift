@@ -10,7 +10,8 @@ let project = Project.makeModule(
             factory: .init(
                 dependencies: [
                     .domain,
-                    .feature(interface: .ProfileSetup)
+                    .feature(interface: .ProfileSetup),
+                    .feature(interface: .BottleArrival)
                 ]
             )
         ),
