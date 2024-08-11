@@ -23,7 +23,6 @@ public struct MyPageView: View {
     WithPerceptionTracking {
       BaseWebView(
         type: .myPage,
-        isScrollEnabled: true,
         actionDidInputted: { action in
           switch action {
           case .webViewLoadingDidCompleted:
