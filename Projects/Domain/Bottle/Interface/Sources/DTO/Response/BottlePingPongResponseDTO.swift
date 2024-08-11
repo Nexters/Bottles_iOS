@@ -16,45 +16,38 @@ struct BottlePingPongResponseDTO: Decodable {
   let stopUserName: String?
   let userProfile: UserProfileDTO?
   
-  struct IntroductionDTO: Codable {
+  struct IntroductionDTO: Decodable {
     let answer: String?
     let question: String?
   }
   
-  struct LetterDTO: Codable {
-    let canshow, isDone: Bool?
+  struct LetterDTO: Decodable {
+    let canshow: Bool?
+    let isDone: Bool?
     let myAnswer: String?
     let order: Int?
-    let otherAnswer, question: String?
+    let otherAnswer: String?
+    let question: String?
     let shouldAnswer: Bool?
   }
     
-  struct MatchResultDTO: Codable {
+  struct MatchResultDTO: Decodable {
     let isFirstSelect: Bool?
     let isMatched: Bool?
     let otherContact: String?
     let shouldAnswer: Bool?
   }
   
-  struct PhotoDTO: Codable {
+  struct PhotoDTO: Decodable {
     let isDone: Bool?
     let myAnswer: Bool?
-    let myImageURL: String?
+    let myImageUrl: String?
     let otherAnswer: Bool?
-    let otherImageURL: String?
+    let otherImageUrl: String?
     let shouldAnswer: Bool?
-    
-    enum CodingKeys: String, CodingKey {
-      case isDone
-      case myAnswer
-      case myImageURL = "myImageUrl"
-      case otherAnswer
-      case otherImageURL = "otherImageUrl"
-      case shouldAnswer
-    }
   }
   
-  struct UserProfileDTO: Codable {
+  struct UserProfileDTO: Decodable {
     let age: Int?
     let profileSelect: ProfileSelectDTO?
     let userImageURL: String?
@@ -67,7 +60,7 @@ struct BottlePingPongResponseDTO: Decodable {
       case userName
     }
     
-    struct ProfileSelectDTO: Codable {
+    struct ProfileSelectDTO: Decodable {
       let alcohol: String?
       let height: Int?
       let interest: InterestDTO?
@@ -78,14 +71,14 @@ struct BottlePingPongResponseDTO: Decodable {
       let religion: String?
       let smoking: String?
       
-      struct InterestDTO: Codable {
+      struct InterestDTO: Decodable {
         let culture: [String]?
         let entertainment: [String]?
         let etc: [String]?
         let sports: [String]?
       }
       
-      struct RegionDTO: Codable {
+      struct RegionDTO: Decodable {
         let city: String?
         let state: String?
       }
