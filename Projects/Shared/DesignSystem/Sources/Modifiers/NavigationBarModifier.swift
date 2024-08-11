@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct NavigationBarModifier<L, C, R>: ViewModifier where L: View, C: View, R: View {
+private struct NavigationBarModifier<L, C, R>: ViewModifier where L: View, C: View, R: View {
   private let leftView: (() -> L)?
   private let centerView: (() -> C)?
   private let rightView: (() -> R)?
@@ -51,10 +51,12 @@ public extension View {
     centerView: @escaping (() -> C),
     rightView: @escaping (() -> R)
   ) -> some View where L: View, C: View, R: View {
-    modifier(NavigationBarModifier(
-      leftView: leftView,
-      centerView: centerView,
-      rightView: rightView)
+    modifier(
+      NavigationBarModifier(
+        leftView: leftView,
+        centerView: centerView,
+        rightView: rightView
+      )
     )
   }
   
@@ -62,10 +64,12 @@ public extension View {
     leftView: @escaping (() -> L),
     centerView: @escaping (() -> C)
   ) -> some View where L: View, C: View {
-    modifier(NavigationBarModifier(
-      leftView: leftView,
-      centerView: centerView,
-      rightView: { EmptyView() })
+    modifier(
+      NavigationBarModifier(
+        leftView: leftView,
+        centerView: centerView,
+        rightView: {EmptyView()}
+      )
     )
   }
   
@@ -73,20 +77,24 @@ public extension View {
     leftView: @escaping (() -> L),
     rightView: @escaping (() -> R)
   ) -> some View where L: View, R: View {
-    modifier(NavigationBarModifier(
-      leftView: leftView,
-      centerView: { EmptyView() },
-      rightView: rightView)
+    modifier(
+      NavigationBarModifier(
+        leftView: leftView,
+        centerView: { EmptyView() },
+        rightView: rightView
+      )
     )
   }
   
   func setNavigationBar<L>(
     leftView: @escaping (() -> L)
   ) -> some View where L: View {
-    modifier(NavigationBarModifier(
-      leftView: leftView,
-      centerView: { EmptyView() },
-      rightView: { EmptyView() })
+    modifier(
+      NavigationBarModifier(
+        leftView: leftView,
+        centerView: { EmptyView() },
+        rightView: { EmptyView() }
+      )
     )
   }
 }
@@ -101,8 +109,8 @@ public extension View {
   }
   
   func makeNavigationReportButton(action: (() -> Void)? = nil) -> some View {
-      BottleImageView(type: .local(bottleImageSystem: .icom(.siren)))
-        .foregroundStyle(to: ColorToken.icon(.primary))
-        .asThrottleButton(action: action ?? {})
+    BottleImageView(type: .local(bottleImageSystem: .icom(.siren)))
+      .foregroundStyle(to: ColorToken.icon(.primary))
+      .asThrottleButton(action: action ?? {})
   }
 }
