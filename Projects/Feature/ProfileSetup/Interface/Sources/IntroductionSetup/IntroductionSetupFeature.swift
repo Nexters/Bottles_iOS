@@ -118,9 +118,6 @@ extension IntroductionSetupFeature {
         state.isLoading = false
         return .none
       case .binding(\.introductionText):
-        // TODO: - 텍스트 붙여넣기로 300자 이상 텍스트 붙여넣었을 때 때 prefix처리.
-        // TODO: - 300자 이상 입력못하게 막기. -> Feature에서 처리? View에서 처리?
-
         if state.introductionText.count >= state.maxLength {
           state.textFieldState = .focused
           state.isNextButtonDisable = false

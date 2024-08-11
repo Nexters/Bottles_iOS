@@ -37,13 +37,14 @@ public struct IntroductionSetupView: View {
           makeNaivgationleftButton {
             store.send(.backButtonDidTapped)
           }
-        }.onLoad {
-          isVisibleTabBar.toggle()
-          store.send(.onLoad)
         }
         .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
         .animation(.easeInOut, value: isVisibleTabBar)
       }
+    }
+    .onLoad {
+      store.send(.onLoad)
+      isVisibleTabBar.toggle()
     }
   }
 }
@@ -55,6 +56,7 @@ private extension IntroductionSetupView {
       title: "보틀에 담을\n소개를 작성해 주세요",
       caption: "수정이 어려우니 신중하게 작성해주세요"
     )
+    .padding(.top, .xl)
     .padding(.bottom, 32)
     .padding(.horizontal, .md)
   }
