@@ -11,7 +11,10 @@ public extension InfoPlist {
     static var app: InfoPlist {
         return .extendingDefault(with: [
             "UIUserInterfaceStyle": "Light",
-            "UILaunchScreen": [:],
+            "UILaunchScreen": [
+                "UIImageName": "splashImage",
+                "UIColorName": "splashColor"
+            ],
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
