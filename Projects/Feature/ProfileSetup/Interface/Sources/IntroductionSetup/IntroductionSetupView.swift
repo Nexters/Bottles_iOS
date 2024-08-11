@@ -78,7 +78,7 @@ private extension IntroductionSetupView {
     }
     .onChange(of: store.textFieldState) { textFieldState in
       Log.error(textFieldState)
-      isTextFieldFocused = textFieldState == .active ? false : true
+      isTextFieldFocused = textFieldState == .active || textFieldState == .enabled ? false : true
     }
   }
   
@@ -100,5 +100,11 @@ private extension IntroductionSetupView {
     .padding(.horizontal, .md)
     .padding(.bottom, .xl)
     .disabled(store.isNextButtonDisable)
+  }
+}
+
+extension View {
+  func endTextEditing() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
   }
 }
