@@ -105,6 +105,11 @@ private extension LinesTextField {
         .overlay(alignment: .bottomTrailing) {
           textCounter
         }
+        .onReceive(Just(text)) { newValue in
+          if newValue.count >= textLimit {
+            text = String(text.prefix(textLimit))
+          }
+        }
     }
   }
   

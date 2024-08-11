@@ -35,7 +35,7 @@ public struct IntroductionSetupFeature {
       introductionText: String = "",
       textFieldState: TextFieldState = .enabled,
       keywordItem: [ClipItem] = [],
-      isNextButtonDisable: Bool = false,
+      isNextButtonDisable: Bool = true,
       maxLength: Int = 50,
       isLoading: Bool = false
     ) {
@@ -61,8 +61,6 @@ public struct IntroductionSetupFeature {
     
     // Delegate
     case delegate(Delegate)
-    
-    // ETC
     case binding(BindingAction<State>)
     
     public enum Delegate {
@@ -79,7 +77,6 @@ public struct IntroductionSetupFeature {
 extension IntroductionSetupFeature {
   public init() {
     @Dependency(\.dismiss) var dismiss
-    
     let reducer = Reduce<State, Action> { state, action in
       @Dependency(\.profileClient) var profileClient
       
@@ -111,7 +108,7 @@ extension IntroductionSetupFeature {
             title: "내가 푹 빠진 취미는",
             list: (userProfile.interset.culture ?? [])
             + (userProfile.interset.entertainment ?? [])
-            + (userProfile.interset.etc ?? [])
+            + (userProfile.interset.sports ?? [])
             + (userProfile.interset.etc ?? [])
           )
         ]
@@ -132,9 +129,12 @@ extension IntroductionSetupFeature {
           Log.debug("nextButtonDidTapped")
           await send(.delegate(.nextButtonDidTapped(introductionText: introductionText)))
         }
-        
       case .onTapGesture:
-        state.textFieldState = .active
+        if state.introductionText.count == 0 {
+          state.textFieldState = .enabled
+        } else {
+          state.textFieldState = .active
+        }
         return .none
         
       case .backButtonDidTapped:
@@ -144,6 +144,7 @@ extension IntroductionSetupFeature {
         
       case .binding(_):
         return .none
+
       case .delegate:
         return .none
       }
