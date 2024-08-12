@@ -36,12 +36,12 @@ extension QuestionAndAnswerFeature {
             order: order,
             answer: answer
           )
-          await send(.registerLetterAnswerDidCompleted)
+          await send(.refreshPingPongDidRequired)
         } catch: { error, send in
           Log.error(error)
         }
         
-      case .registerLetterAnswerDidCompleted:
+      case .refreshPingPongDidRequired:
         return .run { [bottleId = state.bottleID] send in
           let pingPong = try await bottleClient.fetchBottlePingPong(bottleID: bottleId)
           await send(.pingPongDidFetched(pingPong))
@@ -51,6 +51,16 @@ extension QuestionAndAnswerFeature {
       case let .configureShowLoadingIndicatorRequired(isShow):
         state.isShowLoadingIndicator = isShow
         return .none
+        
+      case let .sharePhotoSelectButtonDidTapped(willShare):
+        state.isShowLoadingIndicator = true
+        return .run { [bottleID = state.bottleID] send in
+          try await bottleClient.shareImage(
+            bottleID: bottleID,
+            willShare: willShare
+          )
+          await send(.refreshPingPongDidRequired)
+        }
         
       case .binding(\.firstLetterTextFieldContent):
         if state.firstLetterTextFieldContent.count >= 50 {

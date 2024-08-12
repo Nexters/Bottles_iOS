@@ -24,6 +24,7 @@ public struct QuestionAndAnswerView: View {
     WithPerceptionTracking {
       ScrollView {
         VStack(alignment: .leading, spacing: .sm) {
+          // 질문
           QuestionPingPongView(
             pingpongTitle: "첫 번째 질문",
             textFieldContent: $store.firstLetterTextFieldContent,
@@ -71,6 +72,17 @@ public struct QuestionAndAnswerView: View {
             }
           )
           .focused($isTextFieldFocused)
+          
+          PhotoSharePingPongView(
+            isActive: store.photoShareIsActive,
+            pingPongTitle: "사진 공개",
+            photoShareState: store.photoShareStateType,
+            isSelctedYesButton: $store.photoIsSelctedYesButton,
+            isSelctedNoButton: $store.photoIsSelctedNoButton,
+            doneButtonAction: {
+              store.send(.sharePhotoSelectButtonDidTapped(willShare: store.photoIsSelctedYesButton))
+            }
+          )
         }
         .padding(.md)
         .frame(maxWidth: .infinity)

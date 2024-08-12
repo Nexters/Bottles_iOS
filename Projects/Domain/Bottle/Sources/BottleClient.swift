@@ -41,36 +41,15 @@ extension BottleClient: DependencyKey {
           bottleID: bottleID,
           registerLetterAnswerRequestDTO: .init(answer: answer, order: order)
         )))
+      }, 
+      shareImage: { bottleID, willShare in
+        try await networkManager.reqeust(api: .apiType(BottleAPI.imageShare(
+          bottleID: bottleID,
+          imageShareRequestDTO: .init(willShare: willShare)
+        )))
       }
     )
   }
-}
-
-extension BottleClient {
-  static public var previewValue = Self(
-    fetchNewBottlesCount: { 5 }, 
-    fetchBottleStorageList: {
-      return BottleStorageList(
-        activeBottles: [],
-        doneBottles: []
-      )
-    },
-    fetchBottlePingPong: { id in
-      @Dependency(\.network) var networkManager
-      let bottlePingPong = try await networkManager.reqeust(
-        api: .apiType(BottleAPI.fetchBottlePingPong(bottleID: id)),
-        dto: BottlePingPongResponseDTO.self
-      ).toDomain()
-      return bottlePingPong
-    }, 
-    registerLetterAnswer: { bottleID, order, answer in
-      @Dependency(\.network) var networkManager
-      try await networkManager.reqeust(api: .apiType(BottleAPI.registerLetterAnswer(
-        bottleID: bottleID,
-        registerLetterAnswerRequestDTO: .init(answer: answer, order: order)
-      )))      
-    }
-  )
 }
 
 extension DependencyValues {

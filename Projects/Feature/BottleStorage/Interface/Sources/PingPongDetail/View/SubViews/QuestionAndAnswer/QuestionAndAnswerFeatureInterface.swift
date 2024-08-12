@@ -77,6 +77,36 @@ public struct QuestionAndAnswerFeature {
     
     var textFieldState: TextFieldState
     
+    var photoShareIsActive: Bool {
+      return thirdLetter?.isDone == true
+    }
+    var photoShareStateType: PhotoShareStateType {
+      guard let photo = pingPong?.photo,
+            let myAnswer = photo.myAnswer,
+            let otherAnswer = photo.otherAnswer
+      else {
+        return .notSelected
+      }
+      switch (myAnswer, otherAnswer) {
+      case (true, true):
+        return .bothPublic(
+          peerProfileImageURL: photo.otherImageURL ?? "",
+          myProfileImageURL: photo.myImageURL ?? ""
+        )
+        
+      case (false, false):
+        return .eitherPrivate
+        
+      case (false, true):
+        return .waitingForPeer
+        
+      default:
+        return .notSelected
+      }
+    }
+    var photoIsSelctedYesButton: Bool
+    var photoIsSelctedNoButton: Bool
+    
     public init(bottleID: Int) {
       self.bottleID = bottleID
       self.isShowLoadingIndicator = false
@@ -84,6 +114,8 @@ public struct QuestionAndAnswerFeature {
       self.secondLetterTextFieldContent = ""
       self.thirdLetterTextFieldContent = ""
       self.textFieldState = .enabled
+      self.photoIsSelctedYesButton = false
+      self.photoIsSelctedNoButton = false
     }
     
     mutating func configurePingPong(_ pingPong: BottlePingPong) {
@@ -128,7 +160,8 @@ public struct QuestionAndAnswerFeature {
       order: Int,
       answer: String
     )
-    case registerLetterAnswerDidCompleted
+    case sharePhotoSelectButtonDidTapped(willShare: Bool)
+    case refreshPingPongDidRequired
     case configureShowLoadingIndicatorRequired(isShow: Bool)
     
     // ETC.

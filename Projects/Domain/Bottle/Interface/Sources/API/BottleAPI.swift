@@ -17,6 +17,10 @@ public enum BottleAPI {
     bottleID: Int,
     registerLetterAnswerRequestDTO: RegisterLetterAnswerRequestDTO
   )
+  case imageShare(
+    bottleID: Int,
+    imageShareRequestDTO: BottleImageShareRequestDTO
+  )
 }
 
 extension BottleAPI: BaseTargetType {
@@ -30,6 +34,8 @@ extension BottleAPI: BaseTargetType {
       return "api/v1/bottles/ping-pong/\(bottleID)"
     case let .registerLetterAnswer(bottleID, _):
       return "api/v1/bottles/ping-pong/\(bottleID)/letters"
+    case let .imageShare(bottleID, _):
+      return "api/v1/bottles/ping-pong/\(bottleID)/image"
     }
   }
   
@@ -42,6 +48,8 @@ extension BottleAPI: BaseTargetType {
     case .fetchBottlePingPong:
       return .get
     case .registerLetterAnswer:
+      return .post
+    case .imageShare:
       return .post
     }
   }
@@ -56,6 +64,8 @@ extension BottleAPI: BaseTargetType {
       return .requestPlain
     case let .registerLetterAnswer(_, registerLetterAnswerRequestDTO):
       return .requestJSONEncodable(registerLetterAnswerRequestDTO)
+    case let .imageShare(_, imageShareRequestDTO):
+      return .requestJSONEncodable(imageShareRequestDTO)
     }
   }
 }
