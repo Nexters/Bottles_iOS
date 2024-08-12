@@ -62,6 +62,16 @@ extension QuestionAndAnswerFeature {
           await send(.refreshPingPongDidRequired)
         }
         
+      case let .finalSelectButtonDidTapped(willMatch: willMatch):
+        state.isShowLoadingIndicator = true
+        return .run { [bottleID = state.bottleID] send in
+          try await bottleClient.finalSelect(
+            bottleID: bottleID,
+            willMatch: willMatch
+          )
+          await send(.refreshPingPongDidRequired)
+        }
+        
       case .binding(\.firstLetterTextFieldContent):
         if state.firstLetterTextFieldContent.count >= 50 {
           state.textFieldState = .focused

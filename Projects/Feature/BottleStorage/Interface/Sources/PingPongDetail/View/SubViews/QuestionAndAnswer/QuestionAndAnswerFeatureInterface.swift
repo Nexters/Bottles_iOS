@@ -77,35 +77,63 @@ public struct QuestionAndAnswerFeature {
     
     var textFieldState: TextFieldState
     
+    // 사진 선택
     var photoShareIsActive: Bool {
       return thirdLetter?.isDone == true
     }
+    
     var photoShareStateType: PhotoShareStateType {
-      guard let photo = pingPong?.photo,
-            let myAnswer = photo.myAnswer,
+      guard let photo = pingPong?.photo
+      else {
+        return .notSelected
+      }
+      
+      guard photo.shouldAnswer == false
+      else {
+        return .notSelected
+      }
+      
+      guard photo.otherAnswer == true
+      else {
+        return .waitingForPeer
+      }
+      
+      guard let myAnswer = photo.myAnswer,
             let otherAnswer = photo.otherAnswer
       else {
         return .notSelected
       }
-      switch (myAnswer, otherAnswer) {
-      case (true, true):
+      
+      if myAnswer && otherAnswer {
         return .bothPublic(
           peerProfileImageURL: photo.otherImageURL ?? "",
           myProfileImageURL: photo.myImageURL ?? ""
         )
-        
-      case (false, false):
-        return .eitherPrivate
-        
-      case (false, true):
-        return .waitingForPeer
-        
-      default:
-        return .notSelected
       }
+      
+      return .eitherPrivate
     }
+
     var photoIsSelctedYesButton: Bool
     var photoIsSelctedNoButton: Bool
+    
+    // 최종 선택
+    var finalSelectIsActive: Bool {
+      return pingPong?.photo.isDone == true
+    }
+    var finalSelectStateType: FinalSelectStateType {
+      if pingPong?.matchResult.shouldAnswer == true && pingPong?.matchResult.isMatched == false {
+        return .waitingForPeer
+      }
+      
+      if pingPong?.matchResult.shouldAnswer == true && pingPong?.matchResult.isMatched == true {
+        return .bothSelected
+      }
+      
+      return .notSelected
+    }
+    var finalSelectIsSelctedYesButton: Bool
+    var finalSelectIsSelctedNoButton: Bool
     
     public init(bottleID: Int) {
       self.bottleID = bottleID
@@ -116,6 +144,8 @@ public struct QuestionAndAnswerFeature {
       self.textFieldState = .enabled
       self.photoIsSelctedYesButton = false
       self.photoIsSelctedNoButton = false
+      self.finalSelectIsSelctedYesButton = false
+      self.finalSelectIsSelctedNoButton = false
     }
     
     mutating func configurePingPong(_ pingPong: BottlePingPong) {
@@ -161,6 +191,7 @@ public struct QuestionAndAnswerFeature {
       answer: String
     )
     case sharePhotoSelectButtonDidTapped(willShare: Bool)
+    case finalSelectButtonDidTapped(willMatch: Bool)
     case refreshPingPongDidRequired
     case configureShowLoadingIndicatorRequired(isShow: Bool)
     

@@ -83,6 +83,17 @@ public struct QuestionAndAnswerView: View {
               store.send(.sharePhotoSelectButtonDidTapped(willShare: store.photoIsSelctedYesButton))
             }
           )
+          
+          FinalSelectPingPongView(
+            isActive: store.finalSelectIsActive,
+            pingPongTitle: "최종 선택",
+            finalSelectState: .notSelected,
+            isSelctedYesButton: $store.finalSelectIsSelctedYesButton,
+            isSelctedNoButton: $store.finalSelectIsSelctedNoButton,
+            doneButtonAction: {
+              store.send(.finalSelectButtonDidTapped(willMatch: store.finalSelectIsSelctedYesButton))
+            }
+          )
         }
         .padding(.md)
         .frame(maxWidth: .infinity)
