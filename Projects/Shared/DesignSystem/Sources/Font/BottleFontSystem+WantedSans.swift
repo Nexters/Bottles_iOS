@@ -32,7 +32,7 @@ public extension Font.BottleFontSystem.WantedSans {
     case .body:
       return SharedDesignSystemFontFamily.WantedSans.medium.swiftUIFont(size: 14)
     case .caption:
-      return SharedDesignSystemFontFamily.WantedSans.bold.swiftUIFont(size: 12)
+      return SharedDesignSystemFontFamily.WantedSans.medium.swiftUIFont(size: 12)
     }
   }
 }

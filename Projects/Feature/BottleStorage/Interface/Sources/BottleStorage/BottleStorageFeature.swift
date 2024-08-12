@@ -30,8 +30,8 @@ extension BottleStorageFeature {
         state.doneBottlsList = bottleStorageList.doneBottles
         return .none
         
-      case .bottleStorageItemDidTapped:
-        state.path.append(.pingPongDetail(.init()))
+      case let .bottleStorageItemDidTapped(bottleID):
+        state.path.append(.pingPongDetail(.init(bottleID: bottleID)))
         return .none
         
       case let .bottleActiveStateTabButtonTapped(activeState):

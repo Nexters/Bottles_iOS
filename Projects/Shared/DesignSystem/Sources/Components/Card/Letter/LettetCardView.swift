@@ -49,12 +49,16 @@ private extension LettetCardView {
   }
   
   var letterText: some View {
-    WantedSansStyleText(
-      letterContent,
-      style: .body,
-      color: .secondary
-    )
-    .multilineTextAlignment(.leading)
+    HStack(spacing: 0) {
+      WantedSansStyleText(
+        letterContent,
+        style: .body,
+        color: .secondary
+      )
+      .multilineTextAlignment(.leading)
+      
+      Spacer()
+    }
     .padding(.md)
     .lineSpacing(5)
     .background {

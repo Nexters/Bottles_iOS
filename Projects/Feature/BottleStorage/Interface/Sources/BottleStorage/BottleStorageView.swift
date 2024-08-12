@@ -75,7 +75,6 @@ private extension BottleStorageView {
       Spacer()
     }
     .padding(.md)
-    .padding(.top, 48.0)
   }
   
   @ViewBuilder
@@ -109,7 +108,7 @@ private extension BottleStorageView {
               isRead: bottle.isRead ?? false
             )
             .asButton {
-              store.send(.bottleStorageItemDidTapped)
+              store.send(.bottleStorageItemDidTapped(bottleID: bottle.id))
             }
           }
         }

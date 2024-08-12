@@ -18,11 +18,22 @@ extension PingPongDetailFeature {
     
     let reducer = Reduce<State, Action> { state, action in
       switch action {
-      case .onAppear:
-        return .none
+      case .onLoad:
+        return .run { [bottleID = state.bottleID] send in
+          let pingPong = try await bottleClient.fetchBottlePingPong(bottleID: bottleID)
+          await send(.introduction(.profileFetched(pingPong.userProfile)))
+          await send(.introduction(.isStoppedFetched(pingPong.isStopped)))
+          await send(.introduction(.introductionFetched(pingPong.introduction ?? [])))
+        } catch: { error, send in
+          Log.error(error)
+        }
         
       case let .pingPongDetailViewTabDidTapped(tab):
         state.selectedTab = tab
+        return .none
+        
+      case let .pingPongDidFetched(pingPong):
+        state.pingPong = pingPong
         return .none
         
       case .binding, .introduction, .questionAndAnswer, .matching:

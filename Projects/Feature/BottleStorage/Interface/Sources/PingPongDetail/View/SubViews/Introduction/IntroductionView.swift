@@ -21,34 +21,65 @@ public struct IntroductionView: View {
   public var body: some View {
     WithPerceptionTracking {
       ScrollView {
-        VStack(alignment: .leading, spacing: 0.0) {
+        VStack(spacing: 0.0) {
+          if store.isStopped == true {
+            StopCardView(userName: store.userName)
+          } else if store.isStopped == false {
+            UserProfileView(
+              imageURL: store.userImageURL,
+              userName: store.userName,
+              userAge: store.age
+            )
             
+            Spacer()
+              .frame(height: 24.0)
+            
+            LettetCardView(
+              userName: store.userName,
+              letterContent: store.introduction
+            )
+          }
           
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
-          Text("Introduction")
-            .frame(height: 200.0)
+          Spacer()
+            .frame(height: 12.0)
+          
+          ClipListContainerView(
+            clipItemList: [
+              .init(
+                title: "기본 정보",
+                list: store.basicInfos
+              ),
+              .init(
+                title: "나의 성격은",
+                list: store.characterInfos
+              ),
+              .init(
+                title: "내가 푹 빠진 취미는",
+                list: store.hobyInfos
+              )
+            ]
+          )
+          
+          Spacer()
+            .frame(height: 24.0)
+          
+          WantedSansStyleText(
+            "대화 중단하기",
+            style: .subTitle2,
+            color: .enableSecondary
+          )
+          .asThrottleButton {
+            
+          }
+          .disabled(store.isStopped == true)
+          
+          Spacer()
+            .frame(height: 8.0)
         }
-        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 16.0)
+        .padding(.top, 32.0)
       }
+      .scrollIndicators(.hidden)
     }
   }
 }

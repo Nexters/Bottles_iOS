@@ -54,7 +54,7 @@ public struct BottleStorageFeature {
     
     // 보틀 리스트
     case bottleStorageListFetched(BottleStorageList)
-    case bottleStorageItemDidTapped
+    case bottleStorageItemDidTapped(bottleID: Int)
     
     // ETC.
     case path(StackAction<Path.State, Path.Action>)

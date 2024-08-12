@@ -21,24 +21,32 @@ public struct PingPongDetailFeature {
   
   @ObservableState
   public struct State: Equatable {
+    let bottleID: Int
+    var pingPong: BottlePingPong?
+    var isStopped: Bool {
+      return pingPong?.isStopped == true || pingPong?.isStopped == nil
+    }
+    
     var introduction: IntroductionFeature.State
     var questionAndAnswer: QuestionAndAnswerFeature.State
     var matching: MatchingFeature.State
     var selectedTab: PingPongDetailViewTabType
     
-    public init() {
+    public init(bottleID: Int) {
       self.introduction = .init()
       self.questionAndAnswer = .init()
       self.matching = .init()
       self.selectedTab = .introduction
+      self.bottleID = bottleID
     }
   }
   
   public enum Action: BindableAction {
     // View Life Cycle
-    case onAppear
+    case onLoad
     
     case pingPongDetailViewTabDidTapped(_: PingPongDetailViewTabType)
+    case pingPongDidFetched(_: BottlePingPong)
     
     // ETC.
     case introduction(IntroductionFeature.Action)

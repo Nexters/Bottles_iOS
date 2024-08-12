@@ -22,16 +22,19 @@ public struct PingPongDetailView: View {
     WithPerceptionTracking {
       VStack(alignment: .leading, spacing: 0.0) {
         tabButtons
-          switch store.selectedTab {
-          case .introduction:
-            IntroductionView(store: store.scope(state: \.introduction, action: \.introduction))
-            
-          case .questionAndAnswer:
-            QuestionAndAnswerView(store: store.scope(state: \.questionAndAnswer, action: \.questionAndAnswer))
-            
-          case .matching:
-            MatchingView(store: store.scope(state: \.matching, action: \.matching))
+        switch store.selectedTab {
+        case .introduction:
+          IntroductionView(store: store.scope(state: \.introduction, action: \.introduction))
+          
+        case .questionAndAnswer:
+          QuestionAndAnswerView(store: store.scope(state: \.questionAndAnswer, action: \.questionAndAnswer))
+          
+        case .matching:
+          MatchingView(store: store.scope(state: \.matching, action: \.matching))
         }
+      }
+      .onLoad {
+        store.send(.onLoad)
       }
     }
   }
@@ -48,6 +51,7 @@ private extension PingPongDetailView {
           isSelected: store.selectedTab == tab,
           action: { store.send(.pingPongDetailViewTabDidTapped(tab)) }
         )
+        .disabled(tab != .introduction && store.isStopped)
       })
       
       Spacer()
