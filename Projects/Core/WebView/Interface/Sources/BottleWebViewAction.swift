@@ -23,6 +23,8 @@ public enum BottleWebViewAction: Equatable {
   
   /// 회원가입 성공 콜백
   case signUpDidComplted(accessToken: String, refreshToken: String)
+  /// 외부 링크 이동
+  case openLink(href: String)
   
   // MARK: - LogIn
   
@@ -51,6 +53,7 @@ public enum BottleWebViewAction: Equatable {
     message: String? = nil,
     accessToken: String? = nil,
     refreshToken: String? = nil,
+    href: String? = nil,
     isCompletedOnboardingIntroduction: Bool? = nil
   ) {
     switch type {
@@ -90,6 +93,17 @@ public enum BottleWebViewAction: Equatable {
         accessToken: accessToken,
         refreshToken: refreshToken
       )
+    case "openLink":
+      guard let href
+      else {
+        Log.assertion(
+          message: "openLink: \(String(describing: href))"
+        )
+        return nil
+      }
+      self = .openLink(href: href)
+      
+      
       
     // MARK: - LogIn
       

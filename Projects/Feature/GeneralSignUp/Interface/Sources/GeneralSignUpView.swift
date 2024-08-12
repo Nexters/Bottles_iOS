@@ -13,7 +13,7 @@ import FeatureBaseWebViewInterface
 import ComposableArchitecture
 
 public struct GeneralSignUpView: View {
-  private let store: StoreOf<GeneralSignUpFeature>
+  @Perception.Bindable private var store: StoreOf<GeneralSignUpFeature>
   
   public init(store: StoreOf<GeneralSignUpFeature>) {
     self.store = store
@@ -40,6 +40,9 @@ public struct GeneralSignUpView: View {
               refreshToken: refreshToken
             ))
             
+          case let .openLink(href):
+            store.send(.openURLDidRequired(url: href))
+            
           default:
             break
           }
@@ -52,6 +55,9 @@ public struct GeneralSignUpView: View {
       }
       .toolbar(.hidden, for: .navigationBar)
       .ignoresSafeArea(.all, edges: .bottom)
+      .sheet(isPresented: $store.isPresentTerms) {
+        TermsWebView(url: store.termsURL ?? "")
+      }
     }
   }
 }
