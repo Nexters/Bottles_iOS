@@ -8,7 +8,8 @@ let project = Project.makeModule(
         .feature(
             interface: .BottleArrival,
             factory: .init(dependencies: [
-                .domain
+                .domain,
+                .feature(interface: .BaseWebView)
             ])
         ),
         .feature(

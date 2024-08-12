@@ -9,7 +9,8 @@ let project = Project.makeModule(
             interface: .BottleStorage,
             factory: .init(
                 dependencies: [
-                    .domain
+                    .domain,
+                    .feature(interface: .Report)
                 ]
             )
         ),
