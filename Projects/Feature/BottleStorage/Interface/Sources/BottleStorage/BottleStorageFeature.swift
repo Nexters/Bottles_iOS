@@ -54,10 +54,14 @@ extension BottleStorageFeature {
         switch delegate {
         case .reportDidCompleted:
           state.path.removeAll()
+          return .run { send in
+            let bottleStorageList = try await bottleClient.fetchBottleStorageList()
+            await send(.bottleStorageListFetched(bottleStorageList))
+          }
         case .backButtonDidTapped:
           state.path.removeLast()
+          return .none
         }
-        return .none
       case .binding, .path:
         return .none
       }

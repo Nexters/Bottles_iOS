@@ -64,11 +64,7 @@ public struct AppFeature {
       
     case .onAppear:
       let isLoggedIn = authClient.checkTokenIsExist()
-      AuthClient.liveValue.saveToken(token: .init(
-        accessToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzIzMTE3ODk1LCJleHAiOjE3MjMxNTM4OTV9.HjjnS1onaAUA6nJGOV-f6FE55eAihUGTFNYGmmyETQc",
-        refershToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzIzMTE3ODk1LCJleHAiOjE3Mzc2MzMwOTV9.Af-L2h_5pBQWrZCc1OQI3tm1DGwowqCAId-rK5vAPaQ"
-      ))
-      return .send(.loginCheckCompleted(isLoggedIn: true))
+      return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
       
     case .login(.goToMainTab):
       return changeRoot(.MainTab, state: &state)
