@@ -8,6 +8,7 @@
 import SwiftUI
 
 import SharedDesignSystem
+import FeatureReportInterface
 
 import ComposableArchitecture
 
@@ -35,8 +36,16 @@ public struct BottleStorageView: View {
         WithPerceptionTracking {
           switch store.state {
           case .pingPongDetail:
-            if let store = store.scope(state: \.pingPongDetail, action: \.pingPongDetail) {
+            if let store = store.scope(
+              state: \.pingPongDetail,
+              action: \.pingPongDetail) {
               PingPongDetailView(store: store)
+            }
+          case .report:
+            if let store = store.scope(
+              state: \.report,
+              action: \.report) {
+              ReportUserView(store: store)
             }
           }
         }

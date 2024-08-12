@@ -53,7 +53,9 @@ public struct PingPongDetailView: View {
                   color: .secondary
                 )
       }, rightView: {
-        makeNavigationReportButton()
+        makeNavigationReportButton {
+          store.send(.reportButtonDidTapped)
+        }
       }
     )
   }
