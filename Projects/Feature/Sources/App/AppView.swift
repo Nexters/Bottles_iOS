@@ -27,8 +27,7 @@ public struct AppView: View {
         } else if let loginStore = store.scope(state: \.login, action: \.login) {
           LoginView(store: loginStore)
         } else {
-          // TODO: - Splash Image로 수정
-          Text("로딩 중...")
+          SplashView()
         }
       }
       .onAppear {
