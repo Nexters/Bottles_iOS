@@ -92,8 +92,9 @@ private extension ProfileImageUploadView {
           if let data = data, let newImage = UIImage(data: data) {
             DispatchQueue.main.async {
               selectedImage = [newImage]
-              // TODO: 이미지 다운 샘플링
-              store.send(.imageDidSelected(selectedImageData: data))
+              let compressData = newImage.compressImageData()
+              print(data, compressData)
+              store.send(.imageDidSelected(selectedImageData: compressData ?? .init()))
             }
           }
           
@@ -105,3 +106,4 @@ private extension ProfileImageUploadView {
     }
   }
 }
+
