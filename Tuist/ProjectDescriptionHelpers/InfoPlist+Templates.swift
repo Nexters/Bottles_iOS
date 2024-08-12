@@ -26,11 +26,6 @@ public extension InfoPlist {
             "CFBundleURLTypes": [
                 [
                     "CFBundleTypeRole": "Editor",
-                    "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)://oauth"]
-                ],
-                
-                [
-                    "CFBundleTypeRole": "Editor",
                     "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)"]
                 ]
             ],
@@ -50,11 +45,6 @@ public extension InfoPlist {
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
             "LSApplicationQueriesSchemes": ["kakaokompassauth"],
             "CFBundleURLTypes": [
-                [
-                    "CFBundleTypeRole": "Editor",
-                    "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)://oauth"]
-                ],
-                
                 [
                     "CFBundleTypeRole": "Editor",
                     "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)"]
