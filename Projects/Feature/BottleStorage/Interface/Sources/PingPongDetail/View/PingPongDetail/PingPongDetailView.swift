@@ -33,10 +33,26 @@ public struct PingPongDetailView: View {
           MatchingView(store: store.scope(state: \.matching, action: \.matching))
         }
       }
+
       .onLoad {
         store.send(.onLoad)
       }
     }
+    .setNavigationBar(
+      leftView: {
+        makeNaivgationleftButton {
+          store.send(.backButtonDidTapped)
+        }
+      }, centerView: {
+        WantedSansStyleText(
+                  store.userName,
+                  style: .body,
+                  color: .secondary
+                )
+      }, rightView: {
+        makeNavigationReportButton()
+      }
+    )
   }
 }
 

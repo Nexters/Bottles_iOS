@@ -108,7 +108,7 @@ private extension BottleStorageView {
               isRead: bottle.isRead ?? false
             )
             .asButton {
-              store.send(.bottleStorageItemDidTapped(bottleID: bottle.id))
+              store.send(.bottleStorageItemDidTapped(bottleID: bottle.id, userName: bottle.userName ?? ""))
             }
           }
         }

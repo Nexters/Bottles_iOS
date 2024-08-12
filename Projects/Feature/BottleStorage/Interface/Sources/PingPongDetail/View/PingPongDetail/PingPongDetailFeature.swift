@@ -8,6 +8,7 @@
 import Foundation
 
 import CoreLoggerInterface
+import FeatureReportInterface
 import DomainBottle
 
 import ComposableArchitecture
@@ -19,11 +20,12 @@ extension PingPongDetailFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onLoad:
-        return .run { [bottleID = state.bottleID] send in
+        return .run { [bottleID = state.bottleID, userName = state.userName] send in
           let pingPong = try await bottleClient.fetchBottlePingPong(bottleID: bottleID)
           await send(.introduction(.profileFetched(pingPong.userProfile)))
           await send(.introduction(.isStoppedFetched(pingPong.isStopped)))
           await send(.introduction(.introductionFetched(pingPong.introduction ?? [])))
+          await send(.matching(.matchingStateDidFetched(matchResult: pingPong.matchResult, userName: userName)))
         } catch: { error, send in
           Log.error(error)
         }
@@ -36,7 +38,13 @@ extension PingPongDetailFeature {
         state.pingPong = pingPong
         return .none
         
-      case .binding, .introduction, .questionAndAnswer, .matching:
+      case .backButtonDidTapped:
+        return .send(.delegate(.backButtonDidTapped))
+        
+      case .reportButtonDidTapped:
+        return .send(.delegate(.reportButtonDidTapped))
+        
+      default:
         return .none
       }
     }

@@ -7,6 +7,7 @@
 
 import CoreLoggerInterface
 import DomainBottle
+import FeatureReportInterface
 
 import ComposableArchitecture
 
@@ -30,13 +31,23 @@ extension BottleStorageFeature {
         state.doneBottlsList = bottleStorageList.doneBottles
         return .none
         
-      case let .bottleStorageItemDidTapped(bottleID):
-        state.path.append(.pingPongDetail(.init(bottleID: bottleID)))
+      case let .bottleStorageItemDidTapped(bottleID, userName):
+        state.path.append(.pingPongDetail(.init(bottleID: bottleID, userName: userName)))
         return .none
         
       case let .bottleActiveStateTabButtonTapped(activeState):
         state.selectedActiveStateTab = activeState
         return .none
+        
+      case let .path(.element(id: _, action: .pingPongDetail(.delegate(delegate)))):
+        
+        switch delegate {
+        case .backButtonDidTapped:
+          state.path.removeLast()
+          return .none
+        case .reportButtonDidTapped:
+          return .none
+        }
         
       case .binding, .path:
         return .none

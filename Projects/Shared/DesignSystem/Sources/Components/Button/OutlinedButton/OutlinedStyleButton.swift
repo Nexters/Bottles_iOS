@@ -80,7 +80,6 @@ private extension OutlinedStyleButton {
         HStack(spacing: .xs) {
           imageView(imageType: imageType)
             .frame(width: 16.0, height: 16.0)
-            .background(Color.BottleColorSystem.neutral(.neutral400).color)
           
           titleText
         }
