@@ -33,6 +33,7 @@ public struct BottlePingPongResponseDTO: Decodable {
       ),
       stopUserName: stopUserName,
       userProfile: userProfile?.toDomain() ?? UserProfile(
+        userId: -1,
         age: -1,
         userName: ""
       )
@@ -110,12 +111,14 @@ public struct BottlePingPongResponseDTO: Decodable {
   }
   
   public struct UserProfileDTO: Decodable {
+    let userId: Int?
     let age: Int?
     let profileSelect: ProfileSelectDTO?
     let userImageURL: String?
     let userName: String?
     
     enum CodingKeys: String, CodingKey {
+      case userId
       case age
       case profileSelect
       case userImageURL = "userImageUrl"
@@ -124,6 +127,7 @@ public struct BottlePingPongResponseDTO: Decodable {
     
     public func toDomain() -> UserProfile {
       return .init(
+        userId: userId ?? -1,
         age: age ?? -1,
         profileSelect: profileSelect?.toDomain(),
         userImageURL: userImageURL,

@@ -121,17 +121,20 @@ public struct Photo: Equatable {
 }
 
 public struct UserProfile: Equatable {
+  public let userId: Int
   public let age: Int
   public let profileSelect: ProfileSelect?
   public let userImageURL: String?
   public let userName: String
   
   public init(
+    userId: Int,
     age: Int,
     profileSelect: ProfileSelect? = nil,
     userImageURL: String? = nil,
     userName: String
   ) {
+    self.userId = userId
     self.age = age
     self.profileSelect = profileSelect
     self.userImageURL = userImageURL
