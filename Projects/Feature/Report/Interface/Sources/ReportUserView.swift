@@ -22,26 +22,13 @@ public struct ReportUserView: View {
   public var body: some View {
     WithPerceptionTracking {
       VStack(spacing: .xl) {
-        TitleView(title: "신고 사유를 간단하게\n작성해주세요")
-        UserProfileView(imageURL: store.userProfile.imageURL, userName: store.userProfile.userName, userAge: store.userProfile.userAge)
-        
-        LineTextField(textFieldState: $store.textFieldState, text: $store.reportText, placeHolder: "예) 욕설을 사용했습니다.")
-          .focused($isTextFieldFocused)
-          .onChange(of: isTextFieldFocused) { isFocused in
-            store.send(.texFieldDidFocused(isFocused: isFocused))
-          }
-          .onChange(of: store.textFieldState) { textFieldState in
-            isTextFieldFocused = textFieldState == .active || textFieldState == .enabled ? false : true
-          }
-        
+        title
+        userProfile
+        reasoneTextField
         Spacer()
-        
-        SolidButton(title: "완료", sizeType: .large, buttonType: .throttle) {
-          store.send(.doneButtonDidTapped)
-        }
-        .disabled(store.isDisableDoneButton)
-        .padding(.bottom, .lg)
-      }.onTapEndEditing()
+        doneButton
+      }
+      .onTapEndEditing()
       .setNavigationBar {
         makeNaivgationleftButton() {
           store.send(.backButtonDidTapped)
@@ -49,6 +36,47 @@ public struct ReportUserView: View {
       }
       .padding(.horizontal, .md)
       .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+    }
+  }
+}
+
+// MARK: - Views
+private extension ReportUserView {
+  var title: some View {
+    TitleView(title: "신고 사유를 간단하게\n작성해주세요")
+  }
+  
+  var userProfile: some View {
+    UserProfileView(
+      imageURL: store.userProfile.imageURL,
+      userName: store.userProfile.userName,
+      userAge: store.userProfile.userAge
+    )
+  }
+  var doneButton: some View {
+    SolidButton(
+      title: "완료",
+      sizeType: .large,
+      buttonType: .throttle
+    ) {
+      store.send(.doneButtonDidTapped)
+    }
+    .disabled(store.isDisableDoneButton)
+    .padding(.bottom, .lg)
+  }
+  
+  var reasoneTextField: some View {
+    LineTextField(
+      textFieldState: $store.textFieldState,
+      text: $store.reportText,
+      placeHolder: "예) 욕설을 사용했습니다."
+    )
+    .focused($isTextFieldFocused)
+    .onChange(of: isTextFieldFocused) { isFocused in
+      store.send(.texFieldDidFocused(isFocused: isFocused))
+    }
+    .onChange(of: store.textFieldState) { textFieldState in
+      isTextFieldFocused = textFieldState == .active || textFieldState == .enabled ? false : true
     }
   }
 }
