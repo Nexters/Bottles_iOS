@@ -21,13 +21,10 @@ public struct MyPageFeature {
   public struct State: Equatable {
     var isShowLoadingProgressView: Bool
     
-    var isPresentLogOutConfirmAlert: Bool
-    
     @Presents var destination: Destination.State?
     
     public init() {
       self.isShowLoadingProgressView = true
-      self.isPresentLogOutConfirmAlert = false
     }
   }
   

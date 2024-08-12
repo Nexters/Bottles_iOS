@@ -36,8 +36,8 @@ public struct PingPongDetailFeature {
     var selectedTab: PingPongDetailViewTabType
     
     public init(bottleID: Int, userName: String) {
-      self.introduction = .init()
-      self.questionAndAnswer = .init()
+      self.introduction = .init(bottleID: bottleID)
+      self.questionAndAnswer = .init(bottleID: bottleID)
       self.matching = .init()
       self.selectedTab = .introduction
       self.bottleID = bottleID

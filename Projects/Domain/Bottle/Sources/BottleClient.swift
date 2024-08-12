@@ -35,29 +35,30 @@ extension BottleClient: DependencyKey {
           dto: BottlePingPongResponseDTO.self
         ).toDomain()
         return bottlePingPong
+      }, 
+      registerLetterAnswer: { bottleID, order, answer in
+        try await networkManager.reqeust(api: .apiType(BottleAPI.registerLetterAnswer(
+          bottleID: bottleID,
+          registerLetterAnswerRequestDTO: .init(answer: answer, order: order)
+        )))
+      }, 
+      shareImage: { bottleID, willShare in
+        try await networkManager.reqeust(api: .apiType(BottleAPI.imageShare(
+          bottleID: bottleID,
+          imageShareRequestDTO: .init(willShare: willShare)
+        )))
+      },
+      finalSelect: { bottleID, willMatch in
+        try await networkManager.reqeust(api: .apiType(BottleAPI.finalSelect(
+          bottleID: bottleID,
+          finalSelectRequestDTO: .init(wilMatch: willMatch)
+        )))
+      },
+      stopTalk: { bottleID in
+        try await networkManager.reqeust(api: .apiType(BottleAPI.stopTalk(bottleID: bottleID)))
       }
     )
   }
-}
-
-extension BottleClient {
-  static public var previewValue = Self(
-    fetchNewBottlesCount: { 5 }, 
-    fetchBottleStorageList: {
-      return BottleStorageList(
-        activeBottles: [],
-        doneBottles: []
-      )
-    },
-    fetchBottlePingPong: { id in
-      @Dependency(\.network) var networkManager
-      let bottlePingPong = try await networkManager.reqeust(
-        api: .apiType(BottleAPI.fetchBottlePingPong(bottleID: id)),
-        dto: BottlePingPongResponseDTO.self
-      ).toDomain()
-      return bottlePingPong
-    }
-  )
 }
 
 extension DependencyValues {

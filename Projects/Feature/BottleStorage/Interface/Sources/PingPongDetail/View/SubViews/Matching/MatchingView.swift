@@ -41,6 +41,7 @@ public struct MatchingView: View {
         }
         .padding(.horizontal, .md)
         .frame(maxHeight: .infinity)
+        .background(to: ColorToken.background(.primary))
       }
     }
   }

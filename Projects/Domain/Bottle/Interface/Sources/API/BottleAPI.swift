@@ -13,6 +13,19 @@ public enum BottleAPI {
   case fetchBottles
   case fetchBottleStorageList
   case fetchBottlePingPong(bottleID: Int)
+  case registerLetterAnswer(
+    bottleID: Int,
+    registerLetterAnswerRequestDTO: RegisterLetterAnswerRequestDTO
+  )
+  case imageShare(
+    bottleID: Int,
+    imageShareRequestDTO: BottleImageShareRequestDTO
+  )
+  case finalSelect(
+    bottleID: Int,
+    finalSelectRequestDTO: FinalSelectRequestDTO
+  )
+  case stopTalk(bottleID: Int)
 }
 
 extension BottleAPI: BaseTargetType {
@@ -24,6 +37,14 @@ extension BottleAPI: BaseTargetType {
       return "api/v1/bottles/ping-pong"
     case let .fetchBottlePingPong(bottleID):
       return "api/v1/bottles/ping-pong/\(bottleID)"
+    case let .registerLetterAnswer(bottleID, _):
+      return "api/v1/bottles/ping-pong/\(bottleID)/letters"
+    case let .imageShare(bottleID, _):
+      return "api/v1/bottles/ping-pong/\(bottleID)/image"
+    case let .finalSelect(bottleID, _):
+      return "api/v1/bottles/ping-pong/\(bottleID)/match"
+    case let .stopTalk(bottleID):
+      return "api/v1/bottles/ping-pong/\(bottleID)/stop"
     }
   }
   
@@ -35,6 +56,14 @@ extension BottleAPI: BaseTargetType {
       return .get
     case .fetchBottlePingPong:
       return .get
+    case .registerLetterAnswer:
+      return .post
+    case .imageShare:
+      return .post
+    case .finalSelect:
+      return .post
+    case .stopTalk:
+      return .post
     }
   }
   
@@ -45,6 +74,14 @@ extension BottleAPI: BaseTargetType {
     case .fetchBottleStorageList:
       return .requestPlain
     case .fetchBottlePingPong:
+      return .requestPlain
+    case let .registerLetterAnswer(_, registerLetterAnswerRequestDTO):
+      return .requestJSONEncodable(registerLetterAnswerRequestDTO)
+    case let .imageShare(_, imageShareRequestDTO):
+      return .requestJSONEncodable(imageShareRequestDTO)
+    case let .finalSelect(_, finalSelectRequestDTO):
+      return .requestJSONEncodable(finalSelectRequestDTO)
+    case .stopTalk:
       return .requestPlain
     }
   }

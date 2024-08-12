@@ -12,6 +12,7 @@ import SharedDesignSystem
 import ComposableArchitecture
 
 public struct PingPongDetailView: View {
+  @State private var isVisibleTabBar: Bool = true
   @Perception.Bindable private var store: StoreOf<PingPongDetailFeature>
   
   public init(store: StoreOf<PingPongDetailFeature>) {
@@ -33,10 +34,12 @@ public struct PingPongDetailView: View {
           MatchingView(store: store.scope(state: \.matching, action: \.matching))
         }
       }
-
       .onLoad {
         store.send(.onLoad)
+        isVisibleTabBar = false
       }
+      .toolbar(.visible, for: .tabBar)
+      .animation(.easeInOut, value: UUID())
     }
     .setNavigationBar(
       leftView: {
@@ -67,12 +70,13 @@ private extension PingPongDetailView {
           isSelected: store.selectedTab == tab,
           action: { store.send(.pingPongDetailViewTabDidTapped(tab)) }
         )
-        .disabled(tab != .introduction && store.isStopped)
+        .disabled(tab == .matching && store.pingPong?.matchResult.isMatched != true)
       })
       
       Spacer()
     }
     .padding(.sm)
     .frame(maxWidth: .infinity)
+    .background(to: ColorToken.background(.primary))
   }
 }
