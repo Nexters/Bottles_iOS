@@ -53,6 +53,7 @@ private extension UserProfileView {
   
   var verticalLine: some View {
     LocalImageView(.icom(.verticalLine))
+      .foregroundStyle(to: ColorToken.border(.secondary))
   }
   
   var userAgeText: some View {
