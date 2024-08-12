@@ -63,6 +63,7 @@ public struct ReportUserFeature {
     case delegate(Delegate)
     public enum Delegate {
       case reportDidCompleted
+      case backButtonDidTapped
     }
     
     // Alert

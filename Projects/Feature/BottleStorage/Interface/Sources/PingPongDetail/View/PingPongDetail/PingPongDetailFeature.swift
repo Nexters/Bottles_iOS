@@ -31,6 +31,7 @@ extension PingPongDetailFeature {
           
           await send(.questionAndAnswer(.pingPongDidFetched(pingPong)))
           await send(.matching(.matchingStateDidFetched(matchResult: pingPong.matchResult, userName: userName)))
+          await send(.pingPongDidFetched(pingPong))
         } catch: { error, send in
           Log.error(error)
         }
@@ -47,8 +48,14 @@ extension PingPongDetailFeature {
         return .send(.delegate(.backButtonDidTapped))
         
       case .reportButtonDidTapped:
-        return .send(.delegate(.reportButtonDidTapped))
-        
+        let userId = state.pingPong?.userProfile.userId
+        let imageURL = state.pingPong?.userProfile.userImageURL
+        let userName = state.userName
+        let userAge = state.pingPong?.userProfile.age
+        let userReportProfile = UserReportProfile(
+          imageURL: imageURL ?? "", userID: userId ?? -1, userName: userName, userAge: userAge ?? -1)
+        return .send(.delegate(.reportButtonDidTapped(userReportProfile)))
+                     
       default:
         return .none
       }

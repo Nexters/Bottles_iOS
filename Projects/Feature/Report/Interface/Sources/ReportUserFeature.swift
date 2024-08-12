@@ -52,6 +52,10 @@ extension ReportUserFeature {
       case .binding(\.reportText):
         state.isDisableDoneButton = state.reportText.isEmpty
         return .none
+        
+      case .backButtonDidTapped:
+        return .send(.delegate(.backButtonDidTapped))
+        
       default:
         return .none
       }

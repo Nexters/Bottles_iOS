@@ -55,11 +55,12 @@ public struct PingPongDetailFeature {
     case backButtonDidTapped
     case reportButtonDidTapped
     
+    
     // Delegate
     case delegate(Delegate)
     public enum Delegate {
       case backButtonDidTapped
-      case reportButtonDidTapped
+      case reportButtonDidTapped(UserReportProfile)
     }
     
     // ETC.

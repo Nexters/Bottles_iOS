@@ -45,10 +45,19 @@ extension BottleStorageFeature {
         case .backButtonDidTapped:
           state.path.removeLast()
           return .none
-        case .reportButtonDidTapped:
+        case .reportButtonDidTapped(let userReportProfile):
+          state.path.append(.report(ReportUserFeature.State(userProfile: userReportProfile)))
           return .none
         }
         
+      case let .path(.element(id: _, action: .report(.delegate(delegate)))):
+        switch delegate {
+        case .reportDidCompleted:
+          state.path.removeAll()
+        case .backButtonDidTapped:
+          state.path.removeLast()
+        }
+        return .none
       case .binding, .path:
         return .none
       }
@@ -63,5 +72,6 @@ extension BottleStorageFeature {
   @Reducer(state: .equatable)
   public enum Path {
     case pingPongDetail(PingPongDetailFeature)
+    case report(ReportUserFeature)
   }
 }
