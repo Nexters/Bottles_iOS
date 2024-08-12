@@ -35,6 +35,11 @@ extension GeneralSignUpFeature {
         toastClient.presentToast(message: message)
         return .none
         
+      case let .openURLDidRequired(url):
+        state.termsURL = url
+        state.isPresentTerms = true
+        return .none
+        
       case let .signUpDidCompleted(accessToken, refreshToken):
         return .send(.delegate(.signUpDidCompleted(.init(
           token: .init(

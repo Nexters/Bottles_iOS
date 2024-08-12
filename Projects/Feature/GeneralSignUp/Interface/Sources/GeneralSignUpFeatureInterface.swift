@@ -22,9 +22,12 @@ public struct GeneralSignUpFeature {
   @ObservableState
   public struct State: Equatable {
     var isShowLoadingProgressView: Bool
+    var termsURL: String?
+    var isPresentTerms: Bool
     
     public init() {
       isShowLoadingProgressView = true
+      self.isPresentTerms = false
     }
   }
   
@@ -35,6 +38,7 @@ public struct GeneralSignUpFeature {
     case webViewLoadingDidCompleted
     case closeButtonDidTap
     case presentToastDidRequired(message: String)
+    case openURLDidRequired(url: String)
     case signUpDidCompleted(accessToken: String, refreshToken: String)
     
     // ETC
