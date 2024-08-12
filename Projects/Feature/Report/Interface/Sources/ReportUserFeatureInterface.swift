@@ -11,26 +11,6 @@ import SharedDesignSystem
 
 import ComposableArchitecture
 
-public struct UserReportProfile: Equatable {
-  var imageURL: String
-  var userID: String
-  var userName: String
-  var userAge: Int
-  
-  public init(
-    imageURL: String,
-    userID: String,
-    userName: String,
-    userAge: Int
-  ) {
-    self.imageURL = imageURL
-    self.userID = userID
-    self.userName = userName
-    self.userAge = userAge
-  }
-}
-
-
 @Reducer
 public struct ReportUserFeature {
   private let reducer: Reduce<State, Action>
