@@ -73,11 +73,13 @@ private extension QuestionPingPongView {
         }
       }
     }
+    .onTapEndEditing()
     .padding(.horizontal, .md)
     .padding(.vertical, .xl)
     .transition(.move(edge: .top))
     .zIndex(1)
   }
+
   
   @ViewBuilder
   var textField: some View {
