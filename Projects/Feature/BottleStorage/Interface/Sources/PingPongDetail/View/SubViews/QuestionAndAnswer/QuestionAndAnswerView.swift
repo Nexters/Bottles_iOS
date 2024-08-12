@@ -126,6 +126,7 @@ public struct QuestionAndAnswerView: View {
         }
       }
       .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+      .background(to: ColorToken.background(.primary))
     }
   }
 }

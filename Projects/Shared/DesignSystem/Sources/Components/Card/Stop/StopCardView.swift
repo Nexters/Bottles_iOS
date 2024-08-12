@@ -62,12 +62,8 @@ private extension StopCardView {
   
   // TODO: - 아직 디자인 안나옴 나오면 수정
   var image: some View {
-    RemoteImageView(
-      imageURL: "",
-      downsamplingWidth: 120,
-      downsamplingHeight: 120
-    )
-    .frame(width: 120)
-    .frame(height: 120)
+    LocalImageView(.illustraition(.loudspeark))
+      .frame(width: 120)
+      .frame(height: 120)
   }
 }

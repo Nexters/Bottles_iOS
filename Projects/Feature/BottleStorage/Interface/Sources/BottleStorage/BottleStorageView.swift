@@ -30,6 +30,7 @@ public struct BottleStorageView: View {
             .padding(.bottom, 36.0)
         }
         .frame(maxHeight: .infinity, alignment: .top)
+        .background(to: ColorToken.background(.primary))
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
@@ -91,9 +92,11 @@ private extension BottleStorageView {
           Spacer()
         }
         
-        Image(systemName: "photo")
-          .resizable()
-          .frame(width: 180.0, height: 180.0)
+        GeometryReader { geometry in
+          BottleImageView(type: .local(bottleImageSystem: .illustraition(.basket)))
+            .frame(height: geometry.size.width)
+        }
+        .aspectRatio(1.0, contentMode: .fit)
       }
     } else {
       ScrollView {
