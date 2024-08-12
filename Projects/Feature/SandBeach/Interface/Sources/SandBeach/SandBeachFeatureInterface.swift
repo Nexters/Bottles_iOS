@@ -66,7 +66,7 @@ extension SandBeachFeature {
         return .run { send in
           let isExsit = try await profileClient.checkExistIntroduction()
           // 자기소개 없는 상태
-          if isExsit {
+          if !isExsit {
             await send(.userStateFetchCompleted(
               userState: .noIntroduction,
               isDisableButton: true))
