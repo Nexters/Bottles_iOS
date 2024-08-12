@@ -25,6 +25,7 @@ public enum BottleAPI {
     bottleID: Int,
     finalSelectRequestDTO: FinalSelectRequestDTO
   )
+  case stopTalk(bottleID: Int)
 }
 
 extension BottleAPI: BaseTargetType {
@@ -42,6 +43,8 @@ extension BottleAPI: BaseTargetType {
       return "api/v1/bottles/ping-pong/\(bottleID)/image"
     case let .finalSelect(bottleID, _):
       return "api/v1/bottles/ping-pong/\(bottleID)/match"
+    case let .stopTalk(bottleID):
+      return "api/v1/bottles/ping-pong/\(bottleID)/stop"
     }
   }
   
@@ -58,6 +61,8 @@ extension BottleAPI: BaseTargetType {
     case .imageShare:
       return .post
     case .finalSelect:
+      return .post
+    case .stopTalk:
       return .post
     }
   }
@@ -76,6 +81,8 @@ extension BottleAPI: BaseTargetType {
       return .requestJSONEncodable(imageShareRequestDTO)
     case let .finalSelect(_, finalSelectRequestDTO):
       return .requestJSONEncodable(finalSelectRequestDTO)
+    case .stopTalk:
+      return .requestPlain
     }
   }
 }

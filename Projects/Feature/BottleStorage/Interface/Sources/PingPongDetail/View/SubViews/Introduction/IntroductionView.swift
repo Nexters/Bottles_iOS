@@ -69,7 +69,7 @@ public struct IntroductionView: View {
             color: .enableSecondary
           )
           .asThrottleButton {
-            
+            store.send(.stopTaskButtonTapped)
           }
           .disabled(store.isStopped == true)
           
@@ -80,6 +80,7 @@ public struct IntroductionView: View {
         .padding(.top, 32.0)
       }
       .scrollIndicators(.hidden)
+      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
   }
 }

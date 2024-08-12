@@ -24,6 +24,9 @@ public struct QuestionAndAnswerFeature {
   public struct State: Equatable {
     let bottleID: Int
     private var pingPong: BottlePingPong?
+    var isStopped: Bool {
+      return pingPong?.isStopped == true
+    }
     
     var isShowLoadingIndicator: Bool
       
@@ -135,6 +138,8 @@ public struct QuestionAndAnswerFeature {
     var finalSelectIsSelctedYesButton: Bool
     var finalSelectIsSelctedNoButton: Bool
     
+    @Presents var destination: Destination.State?
+    
     public init(bottleID: Int) {
       self.bottleID = bottleID
       self.isShowLoadingIndicator = false
@@ -194,13 +199,30 @@ public struct QuestionAndAnswerFeature {
     case finalSelectButtonDidTapped(willMatch: Bool)
     case refreshPingPongDidRequired
     case configureShowLoadingIndicatorRequired(isShow: Bool)
+    case stopTaskButtonTapped
     
     // ETC.
     case binding(BindingAction<State>)
+    case destination(PresentationAction<Destination.Action>)
+    
+    case alert(Alert)
+    public enum Alert: Equatable {
+      case confirmStopTalk
+    }
   }
   
   public var body: some ReducerOf<Self> {
     BindingReducer()
     reducer
+      .ifLet(\.$destination, action: \.destination)
+  }
+}
+
+// MARK: - Destination
+
+extension QuestionAndAnswerFeature {
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case alert(AlertState<QuestionAndAnswerFeature.Action.Alert>)
   }
 }

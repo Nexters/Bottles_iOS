@@ -15,6 +15,7 @@ public struct BottleClient {
   private let registerLetterAnswer: (_ bottleID: Int, _ order: Int, _ answer: String) async throws -> Void
   private let shareImage: (_ bottleID: Int, _ willShare: Bool) async throws -> Void
   private let finalSelect: (_ bottleID: Int, _ willMatch: Bool) async throws -> Void
+  private let stopTalk: (_ bottleID: Int) async throws -> Void
   
   public init(
     fetchNewBottlesCount: @escaping () async throws -> Int,
@@ -22,7 +23,8 @@ public struct BottleClient {
     fetchBottlePingPong: @escaping (_ bottleID: Int) async throws -> BottlePingPong,
     registerLetterAnswer: @escaping (_ bottleID: Int, _ order: Int, _ answer: String) async throws -> Void,
     shareImage: @escaping (_ bottleID: Int, _ willShare: Bool) async throws -> Void,
-    finalSelect: @escaping (_ bottleID: Int, _ willMatch: Bool) async throws -> Void
+    finalSelect: @escaping (_ bottleID: Int, _ willMatch: Bool) async throws -> Void,
+    stopTalk: @escaping (_ bottleID: Int) async throws -> Void
   ) {
     self.fetchNewBottlesCount = fetchNewBottlesCount
     self.fetchBottleStorageList = fetchBottleStorageList
@@ -30,6 +32,7 @@ public struct BottleClient {
     self.registerLetterAnswer = registerLetterAnswer
     self.shareImage = shareImage
     self.finalSelect = finalSelect
+    self.stopTalk = stopTalk
   }
   
   public func fetchNewBottlesCount() async throws -> Int {
@@ -54,5 +57,9 @@ public struct BottleClient {
   
   public func finalSelect(bottleID: Int, willMatch: Bool) async throws {
     try await finalSelect(bottleID, willMatch)
+  }
+  
+  public func stopTalk(bottleID: Int) async throws {
+    try await stopTalk(bottleID)
   }
 }

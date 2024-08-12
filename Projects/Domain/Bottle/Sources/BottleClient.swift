@@ -53,6 +53,9 @@ extension BottleClient: DependencyKey {
           bottleID: bottleID,
           finalSelectRequestDTO: .init(wilMatch: willMatch)
         )))
+      },
+      stopTalk: { bottleID in
+        try await networkManager.reqeust(api: .apiType(BottleAPI.stopTalk(bottleID: bottleID)))
       }
     )
   }

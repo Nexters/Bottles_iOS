@@ -94,6 +94,21 @@ public struct QuestionAndAnswerView: View {
               store.send(.finalSelectButtonDidTapped(willMatch: store.finalSelectIsSelctedYesButton))
             }
           )
+          
+          HStack(spacing: 0.0) {
+            Spacer()
+            WantedSansStyleText(
+              "대화 중단하기",
+              style: .subTitle2,
+              color: .enableSecondary
+            )
+            .asThrottleButton {
+              store.send(.stopTaskButtonTapped)
+            }
+            .padding(.top, 12.0)
+            .disabled(store.isStopped == true)
+            Spacer()
+          }
         }
         .padding(.md)
         .frame(maxWidth: .infinity)
@@ -110,6 +125,7 @@ public struct QuestionAndAnswerView: View {
           LoadingIndicator()
         }
       }
+      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
   }
 }

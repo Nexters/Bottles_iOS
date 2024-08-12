@@ -13,6 +13,8 @@ import ComposableArchitecture
 
 extension IntroductionFeature {
   public init() {
+    @Dependency(\.bottleClient) var bottleClient
+    
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
@@ -30,7 +32,40 @@ extension IntroductionFeature {
         state.introductions = introductions
         return .none
         
-      case .binding:
+      case .stopTaskButtonTapped:
+        state.destination = .alert(.init(
+          title: { TextState("중단하기") },
+          actions: {
+            ButtonState(
+              role: .destructive,
+              action: .confirmStopTalk,
+              label: { TextState("중단하기") })
+          },
+          message: { TextState("중단 시 모든 핑퐁 내용이 사라져요. 정말 중단하시겠어요?") }
+        ))
+        return .none
+        
+      case let .destination(.presented(.alert(alert))):
+        switch alert {
+        case .confirmStopTalk:
+          return .run { [bottleID = state.bottleID] send in
+            try await bottleClient.stopTalk(bottleID: bottleID)
+            await send(.refreshPingPongDidRequired)
+          }
+        }
+        
+      case .refreshPingPongDidRequired:
+        return .run { [bottleID = state.bottleID] send in
+          let pingPong = try await bottleClient.fetchBottlePingPong(bottleID: bottleID)
+          await send(.profileFetched(pingPong.userProfile))
+          await send(.isStoppedFetched(pingPong.isStopped))
+          await send(.introductionFetched(pingPong.introduction ?? []))
+        }
+        
+      case .binding, .alert:
+        return .none
+        
+      default:
         return .none
       }
     }

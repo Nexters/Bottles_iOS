@@ -72,6 +72,29 @@ extension QuestionAndAnswerFeature {
           await send(.refreshPingPongDidRequired)
         }
         
+//      case .stopTaskButtonTapped:
+//        state.destination = .alert(.init(
+//          title: { TextState("중단하기") },
+//          actions: {
+//            ButtonState(
+//              role: .destructive,
+//              action: .confirmStopTalk,
+//              label: { TextState("중단하기") })
+//          },
+//          message: { TextState("중단 시 모든 핑퐁 내용이 사라져요. 정말 중단하시겠어요?") }
+//        ))
+//        return .none
+//        
+//      case let .destination(.presented(.alert(alert))):
+//        switch alert {
+//        case .confirmStopTalk:
+//          state.isShowLoadingIndicator = true
+//          return .run { [bottleID = state.bottleID] send in
+//            try await bottleClient.stopTalk(bottleID: bottleID)
+//            await send(.refreshPingPongDidRequired)
+//          }
+//        }
+        
       case .binding(\.firstLetterTextFieldContent):
         if state.firstLetterTextFieldContent.count >= 50 {
           state.textFieldState = .focused
@@ -96,7 +119,10 @@ extension QuestionAndAnswerFeature {
         }
         return .none
         
-      case .binding:
+      case .binding, .destination, .alert:
+        return .none
+        
+      default:
         return .none
       }
     }

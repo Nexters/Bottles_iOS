@@ -21,6 +21,7 @@ public struct IntroductionFeature {
   
   @ObservableState
   public struct State: Equatable {
+    let bottleID: Int
     var userProfile: UserProfile?
     var isStopped: Bool?
     
@@ -68,7 +69,11 @@ public struct IntroductionFeature {
         + (interest?.sports ?? [])
     }
     
-    public init () { }
+    @Presents var destination: Destination.State?
+    
+    public init (bottleID: Int) { 
+      self.bottleID = bottleID
+    }
   }
   
   public enum Action: BindableAction {
@@ -78,13 +83,31 @@ public struct IntroductionFeature {
     case profileFetched(UserProfile)
     case isStoppedFetched(Bool)
     case introductionFetched([QuestionAndAnswer])
+    case stopTaskButtonTapped
+    case refreshPingPongDidRequired
     
     // ETC.
     case binding(BindingAction<State>)
+    case destination(PresentationAction<Destination.Action>)
+    
+    case alert(Alert)
+    public enum Alert: Equatable {
+      case confirmStopTalk
+    }
   }
   
   public var body: some ReducerOf<Self> {
     reducer
+      .ifLet(\.$destination, action: \.destination)
+  }
+}
+
+// MARK: - Destination
+
+extension IntroductionFeature {
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case alert(AlertState<IntroductionFeature.Action.Alert>)
   }
 }
 
