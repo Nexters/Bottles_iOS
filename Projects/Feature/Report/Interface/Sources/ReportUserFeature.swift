@@ -7,12 +7,16 @@
 
 import Foundation
 
+import DomainReport
 import SharedDesignSystem
+
 import ComposableArchitecture
 
 extension ReportUserFeature {
   public init() {
     let reducer = Reduce<State, Action> { state, action in
+      @Dependency(\.reportClient) var reportClient
+      
       switch action {
       case .onAppear:
         return .none
@@ -40,13 +44,13 @@ extension ReportUserFeature {
         return .none
         
       case .destination(.presented(.alert(.confirmReport))):
-        return .run { send in
-          // TODO: - 신고하기 구현
+        return .run { [userProfile = state.userProfile, reportText = state.reportText] send in
+          try await reportClient.reportUser(userReportInfo: .init(reason: reportText, userId: userProfile.userID))
           await send(.delegate(.reportDidCompleted))
         }
         
       case .binding(\.reportText):
-        state.isDisableDoneButton = state.isDisableDoneButton.description.isEmpty
+        state.isDisableDoneButton = state.reportText.isEmpty
         return .none
       default:
         return .none
