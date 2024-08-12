@@ -13,6 +13,10 @@ public enum BottleAPI {
   case fetchBottles
   case fetchBottleStorageList
   case fetchBottlePingPong(bottleID: Int)
+  case registerLetterAnswer(
+    bottleID: Int,
+    registerLetterAnswerRequestDTO: RegisterLetterAnswerRequestDTO
+  )
 }
 
 extension BottleAPI: BaseTargetType {
@@ -24,6 +28,8 @@ extension BottleAPI: BaseTargetType {
       return "api/v1/bottles/ping-pong"
     case let .fetchBottlePingPong(bottleID):
       return "api/v1/bottles/ping-pong/\(bottleID)"
+    case let .registerLetterAnswer(bottleID, _):
+      return "api/v1/bottles/ping-pong/\(bottleID)/letters"
     }
   }
   
@@ -35,6 +41,8 @@ extension BottleAPI: BaseTargetType {
       return .get
     case .fetchBottlePingPong:
       return .get
+    case .registerLetterAnswer:
+      return .post
     }
   }
   
@@ -46,6 +54,8 @@ extension BottleAPI: BaseTargetType {
       return .requestPlain
     case .fetchBottlePingPong:
       return .requestPlain
+    case let .registerLetterAnswer(_, registerLetterAnswerRequestDTO):
+      return .requestJSONEncodable(registerLetterAnswerRequestDTO)
     }
   }
 }

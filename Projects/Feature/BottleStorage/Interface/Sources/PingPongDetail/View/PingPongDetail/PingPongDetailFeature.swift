@@ -22,9 +22,14 @@ extension PingPongDetailFeature {
       case .onLoad:
         return .run { [bottleID = state.bottleID, userName = state.userName] send in
           let pingPong = try await bottleClient.fetchBottlePingPong(bottleID: bottleID)
+          
+          await send(.pingPongDidFetched(pingPong))
+          
           await send(.introduction(.profileFetched(pingPong.userProfile)))
           await send(.introduction(.isStoppedFetched(pingPong.isStopped)))
           await send(.introduction(.introductionFetched(pingPong.introduction ?? [])))
+          
+          await send(.questionAndAnswer(.pingPongDidFetched(pingPong)))
           await send(.matching(.matchingStateDidFetched(matchResult: pingPong.matchResult, userName: userName)))
         } catch: { error, send in
           Log.error(error)

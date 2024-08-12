@@ -9,6 +9,7 @@ import Foundation
 
 import FeatureLoginInterface
 import DomainAuth
+import DomainAuthInterface
 
 import ComposableArchitecture
 
@@ -63,7 +64,11 @@ public struct AppFeature {
       
     case .onAppear:
       let isLoggedIn = authClient.checkTokenIsExist()
-      return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
+      AuthClient.liveValue.saveToken(token: .init(
+        accessToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzIzMTE3ODk1LCJleHAiOjE3MjMxNTM4OTV9.HjjnS1onaAUA6nJGOV-f6FE55eAihUGTFNYGmmyETQc",
+        refershToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzIzMTE3ODk1LCJleHAiOjE3Mzc2MzMwOTV9.Af-L2h_5pBQWrZCc1OQI3tm1DGwowqCAId-rK5vAPaQ"
+      ))
+      return .send(.loginCheckCompleted(isLoggedIn: true))
       
     case .login(.goToMainTab):
       return changeRoot(.MainTab, state: &state)

@@ -37,7 +37,7 @@ public struct PingPongDetailFeature {
     
     public init(bottleID: Int, userName: String) {
       self.introduction = .init()
-      self.questionAndAnswer = .init()
+      self.questionAndAnswer = .init(bottleID: bottleID)
       self.matching = .init()
       self.selectedTab = .introduction
       self.bottleID = bottleID

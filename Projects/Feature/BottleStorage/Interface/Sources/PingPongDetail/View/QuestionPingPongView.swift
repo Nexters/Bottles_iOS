@@ -18,7 +18,6 @@ public struct QuestionPingPongView: View {
   private let questionState: QuestionStateType
   private let doneButtonAction: (() -> Void)?
   
-  
   public init(
     pingpongTitle: String,
     textFieldContent: Binding<String> = Binding.constant(""),

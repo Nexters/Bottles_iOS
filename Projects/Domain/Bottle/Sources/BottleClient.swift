@@ -35,6 +35,12 @@ extension BottleClient: DependencyKey {
           dto: BottlePingPongResponseDTO.self
         ).toDomain()
         return bottlePingPong
+      }, 
+      registerLetterAnswer: { bottleID, order, answer in
+        try await networkManager.reqeust(api: .apiType(BottleAPI.registerLetterAnswer(
+          bottleID: bottleID,
+          registerLetterAnswerRequestDTO: .init(answer: answer, order: order)
+        )))
       }
     )
   }
@@ -56,6 +62,13 @@ extension BottleClient {
         dto: BottlePingPongResponseDTO.self
       ).toDomain()
       return bottlePingPong
+    }, 
+    registerLetterAnswer: { bottleID, order, answer in
+      @Dependency(\.network) var networkManager
+      try await networkManager.reqeust(api: .apiType(BottleAPI.registerLetterAnswer(
+        bottleID: bottleID,
+        registerLetterAnswerRequestDTO: .init(answer: answer, order: order)
+      )))      
     }
   )
 }

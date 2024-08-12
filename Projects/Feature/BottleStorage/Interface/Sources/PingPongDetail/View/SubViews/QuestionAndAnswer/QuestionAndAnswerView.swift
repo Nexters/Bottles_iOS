@@ -8,12 +8,14 @@
 import SwiftUI
 
 import SharedDesignSystem
+import CoreLoggerInterface
 
 import ComposableArchitecture
 
 public struct QuestionAndAnswerView: View {
   @Perception.Bindable private var store: StoreOf<QuestionAndAnswerFeature>
-  
+  @FocusState private var isTextFieldFocused: Bool
+          
   public init(store: StoreOf<QuestionAndAnswerFeature>) {
     self.store = store
   }
@@ -21,10 +23,69 @@ public struct QuestionAndAnswerView: View {
   public var body: some View {
     WithPerceptionTracking {
       ScrollView {
-        VStack(alignment: .leading, spacing: 0.0) {
-          Text("가치관 문답")
+        VStack(alignment: .leading, spacing: .sm) {
+          QuestionPingPongView(
+            pingpongTitle: "첫 번째 질문",
+            textFieldContent: $store.firstLetterTextFieldContent,
+            textFieldState: $store.textFieldState,
+            isActive: store.isFirstLetterActive,
+            questionContent: store.firstLetter?.question ?? "",
+            questionState: store.firstLetterQuestionState,
+            doneButtonAction: {
+              store.send(.letterDoneButtonDidTapped(
+                order: 1,
+                answer: store.firstLetterTextFieldContent
+              ))
+            }
+          )
+          .focused($isTextFieldFocused)
+          
+          QuestionPingPongView(
+            pingpongTitle: "두 번째 질문",
+            textFieldContent: $store.secondLetterTextFieldContent,
+            textFieldState: $store.textFieldState,
+            isActive: store.isSecondLetterActive,
+            questionContent: store.firstLetter?.question ?? "",
+            questionState: store.secondLetterQuestionState,
+            doneButtonAction: {
+              store.send(.letterDoneButtonDidTapped(
+                order: 2,
+                answer: store.secondLetterTextFieldContent
+              ))
+            }
+          )
+          .focused($isTextFieldFocused)
+          
+          QuestionPingPongView(
+            pingpongTitle: "세 번째 질문",
+            textFieldContent: $store.thirdLetterTextFieldContent,
+            textFieldState: $store.textFieldState,
+            isActive: store.isThirdLetterActive,
+            questionContent: store.firstLetter?.question ?? "",
+            questionState: store.thirdLetterQuestionState,
+            doneButtonAction: {
+              store.send(.letterDoneButtonDidTapped(
+                order: 3,
+                answer: store.thirdLetterTextFieldContent
+              ))
+            }
+          )
+          .focused($isTextFieldFocused)
         }
+        .padding(.md)
         .frame(maxWidth: .infinity)
+        .onChange(of: isTextFieldFocused) { isFocused in
+          store.send(.texFieldDidFocused(isFocused: isFocused))
+        }
+        .onChange(of: store.textFieldState) { textFieldState in
+          isTextFieldFocused = textFieldState == .active || textFieldState == .enabled ? false : true
+        }
+      }
+      .scrollIndicators(.hidden)
+      .overlay {
+        if store.isShowLoadingIndicator {
+          LoadingIndicator()
+        }
       }
     }
   }
