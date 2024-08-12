@@ -79,7 +79,7 @@ private extension BottleStorageView {
   
   @ViewBuilder
   var bottlsList: some View {
-    if store.currentSelectedBottles.isEmpty {
+    if store.currentSelectedBottles.isEmpty && store.activeBottleList != nil {
       VStack(spacing: .xxl) {
         HStack(spacing: 0.0) {
           WantedSansStyleText(
