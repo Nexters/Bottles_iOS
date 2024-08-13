@@ -11,6 +11,7 @@ import SharedDesignSystem
 import CoreLoggerInterface
 import DomainProfile
 import DomainBottle
+import SharedUtilInterface
 
 import ComposableArchitecture
 
@@ -88,7 +89,7 @@ extension SandBeachFeature {
             if activeBottlesCount <= 0 {
               // TODO: time 설정
               await send(.userStateFetchCompleted(
-                userState: .noBottle(time: 3),
+                userState: .noBottle(time: Date().newBottleArrivaleTime()),
                 isDisableButton: true)
               )
             } else { // 대화 중인 보틀이 있는 상태
