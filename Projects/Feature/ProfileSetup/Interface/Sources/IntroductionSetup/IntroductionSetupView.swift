@@ -39,6 +39,10 @@ public struct IntroductionSetupView: View {
         }
       }
     }
+    .onLoad {
+      store.send(.onLoad)
+    }
+    .ignoresSafeArea(.all, edges: .bottom)
     .toolbar(.hidden, for: .bottomBar)
   }
 }

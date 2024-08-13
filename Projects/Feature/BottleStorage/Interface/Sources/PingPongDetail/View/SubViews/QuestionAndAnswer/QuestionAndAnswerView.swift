@@ -109,6 +109,9 @@ public struct QuestionAndAnswerView: View {
             .disabled(store.isStopped == true)
             Spacer()
           }
+          
+          Spacer()
+            .frame(height: 14)
         }
         .padding(.md)
         .frame(maxWidth: .infinity)
@@ -127,6 +130,8 @@ public struct QuestionAndAnswerView: View {
       }
       .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
       .background(to: ColorToken.background(.primary))
+      .toolbar(.hidden, for: .bottomBar)
+
     }
   }
 }

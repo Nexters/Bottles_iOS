@@ -40,6 +40,9 @@ public struct MatchingView: View {
           
           Spacer()
           bottomButton
+          
+          Spacer()
+            .frame(height: 30)
         }
         .padding(.horizontal, .md)
         .frame(maxHeight: .infinity)
