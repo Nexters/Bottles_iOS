@@ -22,7 +22,7 @@ extension MyPageFeature {
     @Dependency(\.profileClient) var profileClient
     let reducer = Reduce<State, Action> { state, action in
       switch action {
-      case .onAppear:
+      case .onLoad:
         state.isShowLoadingProgressView = true
         return .run { send in
           let userProfile = try await profileClient.fetchUserProfile()
@@ -102,7 +102,13 @@ extension MyPageFeature {
         return .none
       case let .selectedTabDidChanged(selectedTap):
         return .send(.delegate(.selectedTabDidChanged(selectedTap)))
-      case .binding, .delegate, .destination, .alert:
+        
+      case .userProfileUpdateDidRequest:
+        return .run { send in
+          let userProfile = try await profileClient.fetchUserProfile()
+          await send(.userProfileDidFetched(userProfile))
+        }
+      default:
         return .none
       }
     }

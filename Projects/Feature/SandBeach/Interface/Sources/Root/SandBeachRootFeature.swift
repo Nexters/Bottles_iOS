@@ -61,6 +61,7 @@ public struct SandBeachRootFeature {
     public enum Delegate {
       case goToBottleStorageRequest
       case selectedTabDidChanged(selectedTab: TabType)
+      case profileSetUpDidCompleted
     }
   }
   
@@ -142,7 +143,7 @@ extension SandBeachRootFeature {
         
       case .profileSetupDidCompleted:
         state.path.removeAll()
-        return .none
+        return .send(.delegate(.profileSetUpDidCompleted))
 
       case let .selectedTabDidChanged(selectedTab):
         return .send(.delegate(.selectedTabDidChanged(selectedTab: selectedTab)))

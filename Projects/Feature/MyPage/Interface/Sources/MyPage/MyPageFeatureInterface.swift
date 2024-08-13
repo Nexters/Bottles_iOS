@@ -42,9 +42,9 @@ public struct MyPageFeature {
   
   public enum Action: BindableAction {
     // View Life Cycle
-    case onAppear
+    case onLoad
     case userProfileDidFetched(UserProfile)
-
+    case userProfileUpdateDidRequest
     case logOutButtonDidTapped
     case logOutDidCompleted
     case withdrawalButtonDidTapped

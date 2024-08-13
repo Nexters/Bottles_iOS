@@ -108,7 +108,7 @@ extension SandBeachFeature {
         }
         
       case let .userStateFetchCompleted(userState, isDisableButton):
-        state.userState = .noIntroduction
+        state.userState = userState
         state.isDisableIslandBottle = isDisableButton
         state.isLoading = false
         return .none
