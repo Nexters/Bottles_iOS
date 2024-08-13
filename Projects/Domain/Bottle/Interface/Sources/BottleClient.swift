@@ -9,7 +9,7 @@ import Foundation
 import ComposableArchitecture
 
 public struct BottleClient {
-  private let fetchNewBottlesCount: () async throws -> Int
+  private let fetchUserBottleInfo: () async throws -> UserBottleInfo
   private let fetchBottleStorageList: () async throws -> BottleStorageList
   private let fetchBottlePingPong: (_ bottleID: Int) async throws -> BottlePingPong
   private let registerLetterAnswer: (_ bottleID: Int, _ order: Int, _ answer: String) async throws -> Void
@@ -18,7 +18,7 @@ public struct BottleClient {
   private let stopTalk: (_ bottleID: Int) async throws -> Void
   
   public init(
-    fetchNewBottlesCount: @escaping () async throws -> Int,
+    fetchUserBottleInfo: @escaping () async throws -> UserBottleInfo,
     fetchBottleStorageList: @escaping () async throws -> BottleStorageList,
     fetchBottlePingPong: @escaping (_ bottleID: Int) async throws -> BottlePingPong,
     registerLetterAnswer: @escaping (_ bottleID: Int, _ order: Int, _ answer: String) async throws -> Void,
@@ -26,7 +26,7 @@ public struct BottleClient {
     finalSelect: @escaping (_ bottleID: Int, _ willMatch: Bool) async throws -> Void,
     stopTalk: @escaping (_ bottleID: Int) async throws -> Void
   ) {
-    self.fetchNewBottlesCount = fetchNewBottlesCount
+    self.fetchUserBottleInfo = fetchUserBottleInfo
     self.fetchBottleStorageList = fetchBottleStorageList
     self.fetchBottlePingPong = fetchBottlePingPong
     self.registerLetterAnswer = registerLetterAnswer
@@ -35,8 +35,8 @@ public struct BottleClient {
     self.stopTalk = stopTalk
   }
   
-  public func fetchNewBottlesCount() async throws -> Int {
-    try await fetchNewBottlesCount()
+  public func fetchUserBottleInfo() async throws -> UserBottleInfo {
+    try await fetchUserBottleInfo()
   }
   
   public func fetchBottleStorageList() async throws -> BottleStorageList {
