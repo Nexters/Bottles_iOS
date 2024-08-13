@@ -8,11 +8,11 @@
 import SwiftUI
 
 public struct LettetCardView: View {
-  private let userName: String
+  private let title: String
   private let letterContent: String
   
-  public init(userName: String, letterContent: String) {
-    self.userName = userName
+  public init(title: String, letterContent: String) {
+    self.title = title
     self.letterContent = letterContent
   }
   
@@ -40,7 +40,7 @@ private extension LettetCardView {
   var titleText: some View {
     HStack(spacing: 0) {
       WantedSansStyleText(
-        "\(userName)님이 보내는 편지",
+        "\(title)",
         style: .subTitle1,
         color: .primary
       )

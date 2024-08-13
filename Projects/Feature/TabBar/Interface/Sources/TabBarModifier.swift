@@ -51,7 +51,6 @@ private struct TabBarModifier: ViewModifier {
         }
         // TODO: - DesignSystem -> 디자인들 Contants 관리
         .frame(height: 106)
-        .border(.blue)
         .background {
           RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
             .fill(ColorToken.background(.secondary).color)
