@@ -17,7 +17,7 @@ public struct BottleStorageView: View {
   @Perception.Bindable private var store: StoreOf<BottleStorageFeature>
   
   public init(store: StoreOf<BottleStorageFeature>) {
-    self.store = store
+    self.store = store 
   }
   
   public var body: some View {
@@ -118,17 +118,17 @@ private extension BottleStorageView {
       ScrollView {
         VStack(spacing: .md) {
           ForEach(store.currentSelectedBottles, id: \.id) { bottle in
-//            BottleStorageItem(
-//              userName: bottle.userName ?? "(없음)",
-//              age: bottle.age ?? 0,
-//              mbti: bottle.mbti,
-//              keywords: bottle.keyword,
-//              imageURL: bottle.userImageUrl,
-//              isRead: bottle.isRead ?? false
-//            )
-//            .asButton {
-//              store.send(.bottleStorageItemDidTapped(bottleID: bottle.id, userName: bottle.userName ?? ""))
-//            }
+            BottleStorageItem(
+              userName: bottle.userName ?? "(없음)",
+              age: bottle.age ?? 0,
+              mbti: bottle.mbti,
+              keywords: bottle.keyword,
+              imageURL: bottle.userImageUrl,
+              isRead: bottle.isRead ?? false
+            )
+            .asButton {
+              store.send(.bottleStorageItemDidTapped(bottleID: bottle.id, userName: bottle.userName ?? ""))
+            }
           }
         }
       }

@@ -24,6 +24,8 @@ public struct MyPageView: View {
     WithPerceptionTracking {
       ScrollView {
         VStack(spacing: 0) {
+          Spacer()
+            .frame(height: 52.0)
           userProfile
           myIntroduction
           myKeywords

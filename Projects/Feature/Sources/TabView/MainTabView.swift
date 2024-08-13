@@ -43,3 +43,19 @@ public struct MainTabView: View {
     }
   }
 }
+
+extension UITabBarController { 
+  open override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+    var tabFrame = self.tabBar.frame
+    tabFrame.size.height = 0.0
+    tabFrame.origin.y = self.view.frame.size.height - 0.0
+    tabBar.frame = tabFrame
+    
+    if let shadowView = view.subviews.first(where: { $0.accessibilityIdentifier == "TabBarShadow" }) {
+      shadowView.frame = tabBar.frame
+    } else {
+      view.bringSubviewToFront(tabBar)
+    }
+  }
+}

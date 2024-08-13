@@ -12,7 +12,6 @@ import SharedDesignSystem
 import ComposableArchitecture
 
 public struct PingPongDetailView: View {
-  @State private var isVisibleTabBar: Bool = true
   @Perception.Bindable private var store: StoreOf<PingPongDetailFeature>
   
   public init(store: StoreOf<PingPongDetailFeature>) {
@@ -36,10 +35,7 @@ public struct PingPongDetailView: View {
       }
       .onLoad {
         store.send(.onLoad)
-        isVisibleTabBar = false
       }
-      .toolbar(.visible, for: .tabBar)
-      .animation(.easeInOut, value: UUID())
     }
     .setNavigationBar(
       leftView: {
@@ -58,6 +54,7 @@ public struct PingPongDetailView: View {
         }
       }
     )
+    .toolbar(.hidden, for: .bottomBar)
   }
 }
 

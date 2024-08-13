@@ -15,7 +15,6 @@ import ComposableArchitecture
 public struct IntroductionSetupView: View {
   @Perception.Bindable private var store: StoreOf<IntroductionSetupFeature>
   @FocusState private var isTextFieldFocused: Bool
-  @State private var isVisibleTabBar: Bool = true
   
   public init(store: StoreOf<IntroductionSetupFeature>) {
     self.store = store
@@ -40,13 +39,7 @@ public struct IntroductionSetupView: View {
         }
       }
     }
-    .toolbar(.hidden, for: .tabBar)
-    .onLoad {
-      store.send(.onLoad)
-      isVisibleTabBar.toggle()
-    }
-    .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
-    .animation(.easeInOut, value: isVisibleTabBar)
+    .toolbar(.hidden, for: .bottomBar)
   }
 }
 

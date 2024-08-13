@@ -26,7 +26,7 @@ public struct BottleListResponseDTO: Decodable {
   public func toUserBottleInfoDomain() -> UserBottleInfo {
     return .init(
       randomBottleCount: randomBottles?.count ?? 0,
-      sendBottleCount: randomBottles?.count ?? 0,
+      sendBottleCount: sentBottles?.count ?? 0,
       nextBottlLeftHours: nextBottleLeftHours)
   }
 }

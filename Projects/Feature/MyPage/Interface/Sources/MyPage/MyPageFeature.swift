@@ -44,7 +44,7 @@ extension MyPageFeature {
       case .withdrawalButtonDidTapped:
         state.destination = .alert(.init(
           title: { TextState("탈퇴하기") },
-          actions: { ButtonState(role: .destructive, action: .confirmWithdrawal, label: { TextState("탈퇴히가") }) },
+          actions: { ButtonState(role: .destructive, action: .confirmWithdrawal, label: { TextState("탈퇴하기") }) },
           message: { TextState("탈퇴 시 계정 복구가 어려워요.\n정말 탈퇴하시겠어요?") }
         ))
         return .none

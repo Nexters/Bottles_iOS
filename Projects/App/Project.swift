@@ -6,7 +6,8 @@ let targets: [Target] = [
         product: .staticFramework,
         dependencies: [
             .feature
-    ]))
+        ]
+    ))
 ]
 
 let project = Project.makeModule(

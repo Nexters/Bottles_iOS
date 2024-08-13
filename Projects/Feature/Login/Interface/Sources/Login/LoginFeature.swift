@@ -49,7 +49,7 @@ extension LoginFeature {
         
       case let .signUpCheckCompleted(isSignUp):
         if isSignUp {
-          return .send(.goToMainTab, animation: .default)
+          return .send(.goToMainTab)
         } else {
           return goToOboarding(state: &state)
         }

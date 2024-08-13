@@ -14,7 +14,6 @@ import ComposableArchitecture
 
 public struct BottleArrivalView: View {
   private let store: StoreOf<BottleArrivalFeature>
-  @State private var isVisibleTabBar: Bool = true
 
   public init(store: StoreOf<BottleArrivalFeature>) {
     self.store = store
@@ -44,14 +43,9 @@ public struct BottleArrivalView: View {
           LoadingIndicator()
         }
       }
-      .onLoad {
-        isVisibleTabBar.toggle()
-      }
       .ignoresSafeArea(.all, edges: .bottom)
       .toolbar(.hidden, for: .navigationBar)
-      .toolbar(isVisibleTabBar ? .visible : .hidden, for: .tabBar)
-      .animation(.easeInOut, value: isVisibleTabBar)
-
+      .toolbar(.hidden, for: .bottomBar)
     }
   }
 }

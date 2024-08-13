@@ -50,6 +50,7 @@ public struct ProfileImageUploadView: View {
           store.send(.backButtonDidTapped)
         }
       }
+      .toolbar(.hidden, for: .bottomBar)
     }
   }
 }

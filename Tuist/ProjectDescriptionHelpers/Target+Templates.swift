@@ -131,6 +131,7 @@ public extension Target {
             newFactory.sources = ["Sources/**"]
             newFactory.productName = "Bottle"
             newFactory.infoPlist = .app
+            newFactory.destinations = [.iPhone]
             return make(factory: newFactory)
         }
     }
