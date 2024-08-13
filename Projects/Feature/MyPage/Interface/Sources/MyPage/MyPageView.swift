@@ -45,8 +45,8 @@ public struct MyPageView: View {
       .setTabBar(selectedTab: .myPage) { selectedTab in
         store.send(.selectedTabDidChanged(selectedTab))
       }
-      .onAppear {
-        store.send(.onAppear)
+      .onLoad {
+        store.send(.onLoad)
       }
       .overlay {
         if store.isShowLoadingProgressView {

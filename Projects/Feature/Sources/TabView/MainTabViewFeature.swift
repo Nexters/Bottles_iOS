@@ -81,6 +81,8 @@ public struct MainTabViewFeature {
         state.selectedTab = .bottleStorage
       case let .selectedTabDidChanged(selectedTab):
         state.selectedTab = selectedTab
+      case .profileSetUpDidCompleted:
+        return .send(.myPage(.userProfileUpdateDidRequest))
       }
       return .none
       
