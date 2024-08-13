@@ -29,13 +29,19 @@ extension ProfileClient: DependencyKey {
           api: .apiType(ProfileAPI.registerIntroduction(requestData: requestData))
         )
       },
-      fetchUserProfile: {
+      fetchProfileSelect: {
         let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
         let userProfile = responseData.toProfileDomain()
-        return userProfile
+        return userProfile.profileSelect
       },
       uploadProfileImage: { imageData in
         try await networkManager.reqeust(api: .apiType(ProfileAPI.uploadProfileImage(data: imageData)))
+      },
+      fetchUserProfile: {
+        let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
+        let userProfile = responseData.toProfileDomain()
+        print(userProfile)
+        return userProfile
       }
     )
   }
