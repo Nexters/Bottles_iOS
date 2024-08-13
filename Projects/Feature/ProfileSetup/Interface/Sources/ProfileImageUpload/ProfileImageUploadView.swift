@@ -61,6 +61,7 @@ private extension ProfileImageUploadView {
       title: "보틀에 담을 나의\n사진을 골라주세요",
       caption: "가치관 문답을 마친 후 동의 하에 공개돼요"
     )
+    .padding(.top, .xl)
     .padding(.horizontal, .md)
     .padding(.bottom, 32)
   }
@@ -93,7 +94,6 @@ private extension ProfileImageUploadView {
             DispatchQueue.main.async {
               selectedImage = [newImage]
               let compressData = newImage.compressImageData()
-              print(data, compressData)
               store.send(.imageDidSelected(selectedImageData: compressData ?? .init()))
             }
           }

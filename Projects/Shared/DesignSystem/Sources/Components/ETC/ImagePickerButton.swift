@@ -41,14 +41,23 @@ public struct ImagePickerButton: View {
 private extension ImagePickerButton {
   @ViewBuilder
   var image: some View {
-    if let selectedImage = selectedImage.first {
-      Image(uiImage: selectedImage)
-        .resizable()
-        .overlay(alignment: .topTrailing) {
-          deleteButton
-        }
-    } else {
-      LocalImageView(.icom(.plus))
+    GeometryReader { geomtry in
+      let width = geomtry.size.width
+
+      if let selectedImage = selectedImage.first {
+        let size = selectedImage.size
+        let aspect = size.width / size.height
+        Image(uiImage: selectedImage)
+          .resizable()
+          .aspectRatio(aspect, contentMode: .fill)
+          .frame(width: width, height: width, alignment: .center)
+          .overlay(alignment: .topTrailing) {
+            deleteButton
+          }
+      } else {
+        LocalImageView(.icom(.plus))
+          .frame(width: width, height: width, alignment: .center)
+      }
     }
   }
   

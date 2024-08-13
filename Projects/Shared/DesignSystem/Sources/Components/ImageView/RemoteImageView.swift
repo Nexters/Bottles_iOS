@@ -36,5 +36,6 @@ public struct RemoteImageView: View {
       .cacheOriginalImage()
       .retry(maxCount: 3, interval: .seconds(2))
       .resizable()
+      .scaledToFill()
   }
 }
