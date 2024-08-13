@@ -10,7 +10,9 @@ let project = Project.makeModule(
             factory: .init(
                 dependencies: [
                     .domain,
-                    .feature(interface: .Report)
+                    .feature(interface: .Report),
+                    .feature(interface: .TabBar)
+
                 ]
             )
         ),

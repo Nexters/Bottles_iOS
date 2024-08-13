@@ -11,7 +11,8 @@ let project = Project.makeModule(
                 dependencies: [
                     .domain,
                     .feature(interface: .ProfileSetup),
-                    .feature(interface: .BottleArrival)
+                    .feature(interface: .BottleArrival),
+                    .feature(interface: .TabBar)
                 ]
             )
         ),

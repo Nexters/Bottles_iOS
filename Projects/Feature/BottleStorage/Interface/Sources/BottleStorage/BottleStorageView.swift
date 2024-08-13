@@ -9,6 +9,7 @@ import SwiftUI
 
 import SharedDesignSystem
 import FeatureReportInterface
+import FeatureTabBarInterface
 
 import ComposableArchitecture
 
@@ -29,7 +30,13 @@ public struct BottleStorageView: View {
             .padding(.horizontal, .md)
             .padding(.top, 32.0)
             .padding(.bottom, 36.0)
+  
+          Spacer()
         }
+        .setTabBar(selectedTab: .bottleStorage) { selectedTab in
+          store.send(.selectedTabDidChanged(selectedTab: selectedTab))
+        }
+        
         .frame(maxHeight: .infinity, alignment: .top)
         .background(to: ColorToken.background(.primary))
       } destination: { store in
@@ -111,17 +118,17 @@ private extension BottleStorageView {
       ScrollView {
         VStack(spacing: .md) {
           ForEach(store.currentSelectedBottles, id: \.id) { bottle in
-            BottleStorageItem(
-              userName: bottle.userName ?? "(없음)",
-              age: bottle.age ?? 0,
-              mbti: bottle.mbti,
-              keywords: bottle.keyword,
-              imageURL: bottle.userImageUrl,
-              isRead: bottle.isRead ?? false
-            )
-            .asButton {
-              store.send(.bottleStorageItemDidTapped(bottleID: bottle.id, userName: bottle.userName ?? ""))
-            }
+//            BottleStorageItem(
+//              userName: bottle.userName ?? "(없음)",
+//              age: bottle.age ?? 0,
+//              mbti: bottle.mbti,
+//              keywords: bottle.keyword,
+//              imageURL: bottle.userImageUrl,
+//              isRead: bottle.isRead ?? false
+//            )
+//            .asButton {
+//              store.send(.bottleStorageItemDidTapped(bottleID: bottle.id, userName: bottle.userName ?? ""))
+//            }
           }
         }
       }

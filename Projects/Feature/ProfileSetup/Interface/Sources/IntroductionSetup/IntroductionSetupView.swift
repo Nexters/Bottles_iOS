@@ -40,6 +40,7 @@ public struct IntroductionSetupView: View {
         }
       }
     }
+    .toolbar(.hidden, for: .tabBar)
     .onLoad {
       store.send(.onLoad)
       isVisibleTabBar.toggle()

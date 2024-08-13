@@ -9,7 +9,7 @@ import Foundation
 
 import FeatureProfileSetupInterface
 import FeatureBottleArrivalInterface
-
+import FeatureTabBarInterface
 import DomainProfile
 
 import ComposableArchitecture
@@ -56,9 +56,11 @@ public struct SandBeachRootFeature {
     case sandBeach(SandBeachFeature.Action)
     case profileSetupDidCompleted
     case delegate(Delegate)
+    case selectedTabDidChanged(selectedTab: TabType)
     
     public enum Delegate {
       case goToBottleStorageRequest
+      case selectedTabDidChanged(selectedTab: TabType)
     }
   }
   
@@ -141,6 +143,8 @@ extension SandBeachRootFeature {
         state.path.removeAll()
         return .none
 
+      case let .selectedTabDidChanged(selectedTab):
+        return .send(.delegate(.selectedTabDidChanged(selectedTab: selectedTab)))
       default:
         // TODO: 네트워크 에러 처리.
         return .none

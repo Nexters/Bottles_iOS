@@ -10,6 +10,7 @@ import SwiftUI
 import FeatureProfileSetupInterface
 import FeatureBottleArrivalInterface
 import CoreLoggerInterface
+import FeatureTabBarInterface
 
 import ComposableArchitecture
 
@@ -23,7 +24,11 @@ public struct SandBeachRootView: View {
   public var body: some View {
     WithPerceptionTracking {
       NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-        SandBeachView(store: store.scope(state: \.sandBeach, action: \.sandBeach))
+          SandBeachView(store: store.scope(state: \.sandBeach, action: \.sandBeach))
+          .setTabBar(selectedTab: .sandBeach) { selectedTab in
+            store.send(.selectedTabDidChanged(selectedTab: selectedTab))
+          }
+
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
@@ -53,4 +58,3 @@ public struct SandBeachRootView: View {
     }
   }
 }
-

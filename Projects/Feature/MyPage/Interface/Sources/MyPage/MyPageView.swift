@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-import SharedDesignSystem
+import FeatureTabBarInterface
 import FeatureBaseWebViewInterface
+import SharedDesignSystem
 
 import ComposableArchitecture
 
@@ -42,6 +43,9 @@ public struct MyPageView: View {
           }
         }
       )
+      .setTabBar(selectedTab: .myPage) { tabType in
+        print(tabType)
+      }
       .overlay {
         if store.isShowLoadingProgressView {
           WithPerceptionTracking {

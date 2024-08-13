@@ -62,7 +62,10 @@ extension BottleStorageFeature {
           state.path.removeLast()
           return .none
         }
-      case .binding, .path:
+        
+      case let .selectedTabDidChanged(selectedTab):
+        return .send(.delegate(.selectedTabDidChanged(selectedTab: selectedTab)))
+      default:
         return .none
       }
     }
