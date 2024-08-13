@@ -6,9 +6,9 @@
 //
 
 public struct FinalSelectRequestDTO: Encodable {
-  public let wilMatch: Bool
+  public let willMatch: Bool
   
-  public init(wilMatch: Bool) {
-    self.wilMatch = wilMatch
+  public init(willMatch: Bool) {
+    self.willMatch = willMatch
   }
 }

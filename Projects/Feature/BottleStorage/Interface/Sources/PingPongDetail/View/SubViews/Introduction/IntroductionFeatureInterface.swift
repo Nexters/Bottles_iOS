@@ -51,7 +51,7 @@ public struct IntroductionFeature {
     var basicInfos: [String] {
       return [
         userProfile?.profileSelect?.job ?? "",
-        userProfile?.profileSelect?.job ?? "",
+        userProfile?.profileSelect?.mbti ?? "",
         userProfile?.profileSelect?.region.city ?? "",
         String(userProfile?.profileSelect?.height ?? 0),
         userProfile?.profileSelect?.smoking ?? "",

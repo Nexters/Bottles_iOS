@@ -26,10 +26,7 @@ extension MatchingFeature {
       case let .matchingStateDidFetched(matchResult, userName):
         // 사용자 최종 선택 X
         state.peerUserName = userName
-        if !matchResult.isFirstSelect {
-          state.matchingState = .none
-          return .none
-        }
+        
         // 매칭 성공
         if matchResult.isMatched {
           state.matchingState = .success
