@@ -95,17 +95,18 @@ extension SandBeachRootFeature {
         state.profileImageData = selectedImageData
         
         return .run { [introduction = state.introduction, imageData = state.profileImageData] send in
-          try await withThrowingTaskGroup(of: Void.self) { group in
-            group.addTask {
-              try await profileClient.registerIntroduction(answer: introduction)
-            }
-            
-            group.addTask {
-              try await profileClient.uploadProfileImage(imageData: imageData)
-            }
-            for try await _ in group {}
-          }
-          
+          // TODO: - 병렬처리 임시 중단 추후 처리
+//          try await withThrowingTaskGroup(of: Void.self) { group in
+//            group.addTask {
+//              try await profileClient.registerIntroduction(answer: introduction)
+//            }
+//
+//            group.addTask {
+//              try await profileClient.uploadProfileImage(imageData: imageData)
+//            }
+//            for try await _ in group {}
+          try await profileClient.registerIntroduction(answer: introduction)
+          try await profileClient.uploadProfileImage(imageData: imageData)
           await send(.profileSetupDidCompleted)
 
         } catch: { error, send in
