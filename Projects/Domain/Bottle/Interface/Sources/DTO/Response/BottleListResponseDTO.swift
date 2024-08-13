@@ -11,6 +11,7 @@ import Foundation
 public struct BottleListResponseDTO: Decodable {
   public let randomBottles: [BottleItemDTO]?
   public let sentBottles: [BottleItemDTO]?
+  public let nextBottleLeftHours: Int?
   
   // MARK: - BottleItem
   public struct BottleItemDTO: Codable {
@@ -20,5 +21,12 @@ public struct BottleListResponseDTO: Decodable {
     let keyword: [String]?
     let mbti: String?
     let userName: String?
+  }
+  
+  public func toUserBottleInfoDomain() -> UserBottleInfo {
+    return .init(
+      randomBottleCount: randomBottles?.count ?? 0,
+      sendBottleCount: randomBottles?.count ?? 0,
+      nextBottlLeftHours: nextBottleLeftHours)
   }
 }
