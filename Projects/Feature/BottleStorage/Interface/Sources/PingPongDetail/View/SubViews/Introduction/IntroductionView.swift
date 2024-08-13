@@ -35,7 +35,7 @@ public struct IntroductionView: View {
               .frame(height: 24.0)
             
             LettetCardView(
-              userName: store.userName,
+              title: "\(store.userName)님이 보내는 편지",
               letterContent: store.introduction
             )
           }

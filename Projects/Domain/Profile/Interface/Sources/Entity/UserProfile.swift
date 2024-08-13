@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserProfile {
+public struct ProfileSelect {
   public let mbti: String
   public let keyword: [String]
   public let interset: UserInterest

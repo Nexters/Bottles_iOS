@@ -9,7 +9,6 @@ import Foundation
 
 import FeatureTabBarInterface
 import DomainBottleInterface
-import SharedDesignSystem
 
 import ComposableArchitecture
 

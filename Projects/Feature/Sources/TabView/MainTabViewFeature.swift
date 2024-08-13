@@ -91,6 +91,7 @@ public struct MainTabViewFeature {
         state.selectedTab = selectedTab
       }
       return .none
+      
     // MyPage Delegate
     case let .myPage(.delegate(delegate)):
       switch delegate {
@@ -98,8 +99,9 @@ public struct MainTabViewFeature {
         return .send(.delegate(.logoutDidCompleted))
       case .withdrawalDidCompleted:
         return .send(.delegate(.withdrawalDidCompleted))
-//      case let .selectedTabDidChanged(selectedTab):
-//        state.selectedTab = selectedTab
+      case let .selectedTabDidChanged(selectedTab):
+        state.selectedTab = selectedTab
+        return .none
       }
       
     default:

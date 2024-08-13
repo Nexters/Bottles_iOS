@@ -22,29 +22,31 @@ public struct MyPageView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      BaseWebView(
-        type: .myPage,
-        actionDidInputted: { action in
-          switch action {
-          case .webViewLoadingDidCompleted:
-            store.send(.webViewLoadingDidCompleted)
-            
-          case let .showTaost(message):
-            store.send(.presentToastDidRequired(message: message))
-            
-          case .logOutButtonDidTapped:
-            store.send(.logOutButtonDidTapped)
-            
-          case .withdrawalButtonDidTap:
-            store.send(.withdrawalButtonDidTapped)
-            
-          default:
-            break
+      ScrollView {
+        VStack(spacing: 0) {
+          userProfile
+          myIntroduction
+          myKeywords
+          
+          HStack(spacing: 0) {
+            Spacer()
+            logoutButton
+            Spacer()
+            withdrawalButton
+            Spacer()
           }
+          .padding(.bottom, .xl)
         }
-      )
-      .setTabBar(selectedTab: .myPage) { tabType in
-        print(tabType)
+        .padding(.horizontal, .md)
+      }
+      .background(to: ColorToken.container(.primary))
+      .padding(.bottom, 106)
+      .padding(.top, 1)
+      .setTabBar(selectedTab: .myPage) { selectedTab in
+        store.send(.selectedTabDidChanged(selectedTab))
+      }
+      .onAppear {
+        store.send(.onAppear)
       }
       .overlay {
         if store.isShowLoadingProgressView {
@@ -54,6 +56,55 @@ public struct MyPageView: View {
         }
       }
       .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+    }
+  }
+}
+
+// MARK: - Views
+private extension MyPageView {
+  var userProfile: some View {
+    UserProfileView(
+      imageURL: store.userInfo.userImageURL,
+      userName: store.userInfo.userName,
+      userAge: store.userInfo.userAge
+    )
+    .padding(.bottom, .xl)
+  }
+  
+  @ViewBuilder
+  var myIntroduction: some View {
+    if store.introduction.answer == "" {
+      EmptyView()
+    } else {
+      LettetCardView(title: "내가 쓴 편지" , letterContent: store.introduction.answer)
+        .padding(.bottom, .sm)
+    }
+  }
+  
+  var myKeywords: some View {
+    ClipListContainerView(clipItemList: store.keywordItem)
+      .padding(.bottom, .md)
+  }
+  
+  var logoutButton: some View {
+    WantedSansStyleText(
+      "로그아웃",
+      style: .subTitle2,
+      color: .enableSecondary
+    )
+    .asThrottleButton {
+      store.send(.logOutButtonDidTapped)
+    }
+  }
+  
+  var withdrawalButton: some View {
+    WantedSansStyleText(
+      "탈퇴하기",
+      style: .subTitle2,
+      color: .enableSecondary
+    )
+    .asThrottleButton {
+      store.send(.withdrawalButtonDidTapped)
     }
   }
 }

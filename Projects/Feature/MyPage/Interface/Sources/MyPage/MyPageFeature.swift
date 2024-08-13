@@ -8,28 +8,26 @@
 import Foundation
 
 import DomainAuth
+import DomainProfile
 import CoreKeyChainStore
 import CoreToastInterface
-
+import CoreLoggerInterface
+import SharedDesignSystem
 import ComposableArchitecture
 
 extension MyPageFeature {
   public init() {
     @Dependency(\.authClient) var authClient
     @Dependency(\.toastClient) var toastClient
-    
+    @Dependency(\.profileClient) var profileClient
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
-        return .none
-        
-      case .webViewLoadingDidCompleted:
-        state.isShowLoadingProgressView = false
-        return .none
-        
-      case let .presentToastDidRequired(message):
-        toastClient.presentToast(message: message)
-        return .none
+        state.isShowLoadingProgressView = true
+        return .run { send in
+          let userProfile = try await profileClient.fetchUserProfile()
+          await send(.userProfileDidFetched(userProfile))
+        }
         
       case .logOutButtonDidTapped:
         state.destination = .alert(.init(
@@ -70,6 +68,40 @@ extension MyPageFeature {
           }
         }
         
+      case .userProfileDidFetched(let userProfile):
+        let profileSelect = userProfile.profileSelect
+        let userInfo = userProfile.userInfo
+        let introduction = userProfile.introduction
+        
+        Log.debug(userProfile)
+        
+        state.keywordItem = [
+          ClipItem(
+            title: "기본 정보",
+            list: [profileSelect.job, profileSelect.mbti, "\(profileSelect.region.city) \(profileSelect.region.state)", "\(profileSelect.height)", profileSelect.smoke, profileSelect.alcohol]
+          ),
+          
+          ClipItem(
+            title: "나의 성격은",
+            list: profileSelect.keyword
+          ),
+          
+          ClipItem(
+            title: "내가 푹 빠진 취미는",
+            list: (profileSelect.interset.culture ?? [])
+            + (profileSelect.interset.entertainment ?? [])
+            + (profileSelect.interset.sports ?? [])
+            + (profileSelect.interset.etc ?? [])
+          )
+        ]
+        
+        state.userInfo = userInfo
+        state.introduction = introduction
+        state.isShowLoadingProgressView = false
+
+        return .none
+      case let .selectedTabDidChanged(selectedTap):
+        return .send(.delegate(.selectedTabDidChanged(selectedTap)))
       case .binding, .delegate, .destination, .alert:
         return .none
       }

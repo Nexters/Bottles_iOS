@@ -7,6 +7,10 @@
 
 import Foundation
 
+import SharedDesignSystem
+import DomainProfileInterface
+import FeatureTabBarInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -20,29 +24,39 @@ public struct MyPageFeature {
   @ObservableState
   public struct State: Equatable {
     var isShowLoadingProgressView: Bool
+    public var keywordItem: [ClipItem]
+    public var userInfo: UserInfo
+    public var introduction: Introduction
     
     @Presents var destination: Destination.State?
     
-    public init() {
+    public init(
+      keywordItem: [ClipItem] = []
+    ) {
       self.isShowLoadingProgressView = true
+      self.keywordItem = keywordItem
+      self.userInfo = .init(userAge: -1, userImageURL: "", userName: "")
+      self.introduction = .init(answer: "", question: "")
     }
   }
   
   public enum Action: BindableAction {
     // View Life Cycle
     case onAppear
-    
-    case webViewLoadingDidCompleted
-    case presentToastDidRequired(message: String)
+    case userProfileDidFetched(UserProfile)
+
     case logOutButtonDidTapped
     case logOutDidCompleted
     case withdrawalButtonDidTapped
     case withdrawalDidCompleted
+    case selectedTabDidChanged(TabType)
     
     case delegate(Delegate)
+    
     public enum Delegate {
       case withdrawalDidCompleted
       case logoutDidCompleted
+      case selectedTabDidChanged(TabType)
     }
       
     case alert(Alert)

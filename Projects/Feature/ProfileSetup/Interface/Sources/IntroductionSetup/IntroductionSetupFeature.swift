@@ -54,7 +54,7 @@ public struct IntroductionSetupFeature {
     
     // User Action
     case texFieldDidFocused(isFocused: Bool)
-    case userProfileDidFatched(UserProfile)
+    case profileSelectDidFatched(ProfileSelect)
     case nextButtonDidTapped
     case onTapGesture
     case backButtonDidTapped
@@ -84,32 +84,32 @@ extension IntroductionSetupFeature {
       case .onLoad:
         state.isLoading = true
         return .run { send in
-          let userProfile = try await profileClient.fetchUserProfile()
-          await send(.userProfileDidFatched(userProfile))
+          let profileSelect = try await profileClient.fetchProfileSelect()
+          await send(.profileSelectDidFatched(profileSelect))
         }
       case let .texFieldDidFocused(isFocused):
         state.textFieldState = isFocused ? .focused : .active
         return .none
-      case .userProfileDidFatched(let userProfile):
+      case .profileSelectDidFatched(let profileSelect):
         // TODO: 코드 개선
         // TODO: 없으면 ClipItem nil로
         state.keywordItem = [
           ClipItem(
             title: "내 키워드를 참고해보세요",
-            list: [userProfile.job, userProfile.mbti, "\(userProfile.region.city) \(userProfile.region.state)", "\(userProfile.height)", userProfile.smoke, userProfile.alcohol]
+            list: [profileSelect.job, profileSelect.mbti, "\(profileSelect.region.city) \(profileSelect.region.state)", "\(profileSelect.height)", profileSelect.smoke, profileSelect.alcohol]
           ),
           
           ClipItem(
             title: "나의 성격은",
-            list: userProfile.keyword
+            list: profileSelect.keyword
           ),
           
           ClipItem(
             title: "내가 푹 빠진 취미는",
-            list: (userProfile.interset.culture ?? [])
-            + (userProfile.interset.entertainment ?? [])
-            + (userProfile.interset.sports ?? [])
-            + (userProfile.interset.etc ?? [])
+            list: (profileSelect.interset.culture ?? [])
+            + (profileSelect.interset.entertainment ?? [])
+            + (profileSelect.interset.sports ?? [])
+            + (profileSelect.interset.etc ?? [])
           )
         ]
         state.isLoading = false
