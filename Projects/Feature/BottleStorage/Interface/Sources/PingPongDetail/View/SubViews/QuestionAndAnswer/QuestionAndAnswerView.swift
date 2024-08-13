@@ -46,7 +46,7 @@ public struct QuestionAndAnswerView: View {
             textFieldContent: $store.secondLetterTextFieldContent,
             textFieldState: $store.textFieldState,
             isActive: store.isSecondLetterActive,
-            questionContent: store.firstLetter?.question ?? "",
+            questionContent: store.secondLetter?.question ?? "",
             questionState: store.secondLetterQuestionState,
             doneButtonAction: {
               store.send(.letterDoneButtonDidTapped(
@@ -62,7 +62,7 @@ public struct QuestionAndAnswerView: View {
             textFieldContent: $store.thirdLetterTextFieldContent,
             textFieldState: $store.textFieldState,
             isActive: store.isThirdLetterActive,
-            questionContent: store.firstLetter?.question ?? "",
+            questionContent: store.thirdLetter?.question ?? "",
             questionState: store.thirdLetterQuestionState,
             doneButtonAction: {
               store.send(.letterDoneButtonDidTapped(
@@ -87,7 +87,7 @@ public struct QuestionAndAnswerView: View {
           FinalSelectPingPongView(
             isActive: store.finalSelectIsActive,
             pingPongTitle: "최종 선택",
-            finalSelectState: .notSelected,
+            finalSelectState: store.finalSelectStateType,
             isSelctedYesButton: $store.finalSelectIsSelctedYesButton,
             isSelctedNoButton: $store.finalSelectIsSelctedNoButton,
             doneButtonAction: {
@@ -103,7 +103,7 @@ public struct QuestionAndAnswerView: View {
               color: .enableSecondary
             )
             .asThrottleButton {
-              store.send(.stopTaskButtonTapped)
+              store.send(.stopTalkButtonTapped)
             }
             .padding(.top, 12.0)
             .disabled(store.isStopped == true)

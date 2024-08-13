@@ -51,7 +51,7 @@ extension BottleClient: DependencyKey {
       finalSelect: { bottleID, willMatch in
         try await networkManager.reqeust(api: .apiType(BottleAPI.finalSelect(
           bottleID: bottleID,
-          finalSelectRequestDTO: .init(wilMatch: willMatch)
+          finalSelectRequestDTO: .init(willMatch: willMatch)
         )))
       },
       stopTalk: { bottleID in

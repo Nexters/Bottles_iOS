@@ -67,7 +67,7 @@ private extension PhotoSharePingPongView {
     VStack(spacing: .sm) {
       HStack(spacing: .sm) {
         OutlinedStyleButton(
-          .medium(contentType: .image(type: .local(bottleImageSystem: .icom(.siren)))),
+          .medium(contentType: .image(type: .local(bottleImageSystem: .illustraition(.yes)))),
           title: "네! 좋아요",
           buttonType: .normal,
           isSelected: isSelctedYesButton,
@@ -79,7 +79,7 @@ private extension PhotoSharePingPongView {
         )
         
         OutlinedStyleButton(
-          .medium(contentType: .image(type: .local(bottleImageSystem: .icom(.share)))),
+          .medium(contentType: .image(type: .local(bottleImageSystem: .illustraition(.no)))),
           title: "아니요",
           buttonType: .normal,
           isSelected: isSelctedNoButton,

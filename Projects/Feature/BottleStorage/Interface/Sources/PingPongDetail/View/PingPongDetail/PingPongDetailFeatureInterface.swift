@@ -61,6 +61,8 @@ public struct PingPongDetailFeature {
     public enum Delegate {
       case backButtonDidTapped
       case reportButtonDidTapped(UserReportProfile)
+      case otherBottleButtonDidTapped
+      case popToRootDidRequired
     }
     
     // ETC.

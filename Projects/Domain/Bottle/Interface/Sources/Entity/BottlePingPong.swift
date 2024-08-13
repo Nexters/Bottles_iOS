@@ -78,21 +78,27 @@ public struct Letter: Equatable {
 
 public struct MatchResult: Equatable {
   public let isFirstSelect: Bool
-  public let isMatched: Bool
+  public let matchStatus: BottleMatchStatus
   public let otherContact: String
   public let shouldAnswer: Bool
   
   init(
     isFirstSelect: Bool,
-    isMatched: Bool,
+    matchStatus: BottleMatchStatus,
     otherContact: String,
     shouldAnswer: Bool
   ) {
     self.isFirstSelect = isFirstSelect
-    self.isMatched = isMatched
+    self.matchStatus = matchStatus
     self.otherContact = otherContact
     self.shouldAnswer = shouldAnswer
   }
+}
+
+public enum BottleMatchStatus {
+  case inConversation
+  case matchFailed
+  case matchSucceeded
 }
 
 public struct Photo: Equatable {

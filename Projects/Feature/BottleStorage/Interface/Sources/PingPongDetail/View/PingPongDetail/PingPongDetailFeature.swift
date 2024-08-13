@@ -20,21 +20,7 @@ extension PingPongDetailFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onLoad:
-        return .run { [bottleID = state.bottleID, userName = state.userName] send in
-          let pingPong = try await bottleClient.fetchBottlePingPong(bottleID: bottleID)
-          
-          await send(.pingPongDidFetched(pingPong))
-          
-          await send(.introduction(.profileFetched(pingPong.userProfile)))
-          await send(.introduction(.isStoppedFetched(pingPong.isStopped)))
-          await send(.introduction(.introductionFetched(pingPong.introduction ?? [])))
-          
-          await send(.questionAndAnswer(.pingPongDidFetched(pingPong)))
-          await send(.matching(.matchingStateDidFetched(matchResult: pingPong.matchResult, userName: userName)))
-          await send(.pingPongDidFetched(pingPong))
-        } catch: { error, send in
-          Log.error(error)
-        }
+        return fetchPingPong(state: &state)
         
       case let .pingPongDetailViewTabDidTapped(tab):
         state.selectedTab = tab
@@ -55,6 +41,26 @@ extension PingPongDetailFeature {
         let userReportProfile = UserReportProfile(
           imageURL: imageURL ?? "", userID: userId ?? -1, userName: userName, userAge: userAge ?? -1)
         return .send(.delegate(.reportButtonDidTapped(userReportProfile)))
+          
+      case let .introduction(.delegate(delegate)):
+        switch delegate {
+        case .popToRootDidRequired:
+          return .send(.delegate(.popToRootDidRequired))
+        }
+        
+      case let .questionAndAnswer(.delegate(delegate)):
+        switch delegate {
+        case .reloadPingPongRequired:
+          return fetchPingPong(state: &state)
+        case .popToRootDidRequired:
+          return .send(.delegate(.popToRootDidRequired))
+        }
+        
+      case let .matching(.delegate(delegate)):
+        switch delegate {
+        case .otherBottleButtonDidTapped:
+          return .send(.delegate(.otherBottleButtonDidTapped))
+        }
                      
       default:
         return .none
@@ -62,6 +68,24 @@ extension PingPongDetailFeature {
     }
     
     self.init(reducer: reducer)
+    
+    func fetchPingPong(state: inout State) -> Effect<Action> {
+      return .run { [bottleID = state.bottleID, userName = state.userName] send in
+        let pingPong = try await bottleClient.fetchBottlePingPong(bottleID: bottleID)
+        
+        await send(.pingPongDidFetched(pingPong))
+        
+        await send(.introduction(.profileFetched(pingPong.userProfile)))
+        await send(.introduction(.isStoppedFetched(pingPong.isStopped)))
+        await send(.introduction(.introductionFetched(pingPong.introduction ?? [])))
+        
+        await send(.questionAndAnswer(.pingPongDidFetched(pingPong)))
+        await send(.matching(.matchingStateDidFetched(matchResult: pingPong.matchResult, userName: userName)))
+        await send(.pingPongDidFetched(pingPong))
+      } catch: { error, send in
+        Log.error(error)
+      }
+    }
   }
 }
 
@@ -83,4 +107,3 @@ public enum PingPongDetailViewTabType: CaseIterable {
     }
   }
 }
-

@@ -23,7 +23,7 @@ public struct BottlePingPongResponseDTO: Decodable {
       letters: (letters?.map { $0.toDomain() }) ?? [],
       matchResult: matchResult?.toDomain() ?? MatchResult(
         isFirstSelect: false,
-        isMatched: false,
+        matchStatus: .inConversation,
         otherContact: "",
         shouldAnswer: false
       ),
@@ -76,14 +76,21 @@ public struct BottlePingPongResponseDTO: Decodable {
     
   public struct MatchResultDTO: Decodable {
     let isFirstSelect: Bool?
-    let isMatched: Bool?
+    let matchStatus: String?
     let otherContact: String?
     let shouldAnswer: Bool?
     
     public func toDomain() -> MatchResult {
+      let matchStatus: BottleMatchStatus = switch matchStatus {
+      case "IN_CONVERSATION": .inConversation
+      case "MATCH_SUCCEEDED": .matchSucceeded
+      case "MATCH_FAILED": .matchFailed
+      default: .matchFailed
+      }
+      
       return .init(
         isFirstSelect: isFirstSelect ?? false,
-        isMatched: isMatched ?? false,
+        matchStatus: matchStatus,
         otherContact: otherContact ?? "",
         shouldAnswer: shouldAnswer ?? false
       )

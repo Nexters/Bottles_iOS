@@ -26,12 +26,14 @@ public struct MatchingView: View {
             .padding(.vertical, 32)
           
           GeometryReader { geo in
-            let width = geo.size.width - 50
-            HStack(spacing: 0 ) {
-              Spacer()
-              matchingInfo
-                .frame(width: width, height: width)
-              Spacer()
+            WithPerceptionTracking {
+              let width = geo.size.width - 50
+              HStack(spacing: 0 ) {
+                Spacer()
+                matchingInfo
+                  .frame(width: width, height: width)
+                Spacer()
+              }
             }
           }
           .aspectRatio(1, contentMode: .fit)

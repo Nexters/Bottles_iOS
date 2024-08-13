@@ -26,22 +26,22 @@ extension MatchingFeature {
       case let .matchingStateDidFetched(matchResult, userName):
         // 사용자 최종 선택 X
         state.peerUserName = userName
-        if !matchResult.isFirstSelect {
-          state.matchingState = .none
-          return .none
-        }
+        
         // 매칭 성공
-        if matchResult.isMatched {
+        if matchResult.matchStatus == .matchSucceeded {
           state.matchingState = .success
           state.kakaoTalkId = matchResult.otherContact
-        } else {
-          // 매칭 실패
-          if matchResult.shouldAnswer {
-            state.matchingState = .failure
-          } else { // 상대방 답변 X
-            state.matchingState = .waiting
-          }
+          return .none
         }
+        
+        // 매칭 실패
+        if matchResult.matchStatus == .matchFailed {
+          state.matchingState = .failure
+          return .none
+        }
+        
+        // 상대방 답변 X
+        state.matchingState = .waiting
         return .none
       case .copyButtonDidTapped:
         toastClient.presentToast(message: "카카오톡 아이디를 복사했어요")

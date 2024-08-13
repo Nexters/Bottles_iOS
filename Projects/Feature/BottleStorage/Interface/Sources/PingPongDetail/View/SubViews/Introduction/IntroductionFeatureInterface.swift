@@ -51,7 +51,7 @@ public struct IntroductionFeature {
     var basicInfos: [String] {
       return [
         userProfile?.profileSelect?.job ?? "",
-        userProfile?.profileSelect?.job ?? "",
+        userProfile?.profileSelect?.mbti ?? "",
         userProfile?.profileSelect?.region.city ?? "",
         String(userProfile?.profileSelect?.height ?? 0),
         userProfile?.profileSelect?.smoking ?? "",
@@ -93,6 +93,12 @@ public struct IntroductionFeature {
     case alert(Alert)
     public enum Alert: Equatable {
       case confirmStopTalk
+    }
+    
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case popToRootDidRequired
     }
   }
   

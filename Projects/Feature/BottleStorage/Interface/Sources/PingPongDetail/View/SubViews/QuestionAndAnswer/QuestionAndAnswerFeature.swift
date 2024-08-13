@@ -59,7 +59,12 @@ extension QuestionAndAnswerFeature {
             bottleID: bottleID,
             willShare: willShare
           )
-          await send(.refreshPingPongDidRequired)
+          switch willShare {
+          case true:
+            await send(.refreshPingPongDidRequired)
+          case false:
+            await send(.delegate(.popToRootDidRequired))
+          }
         }
         
       case let .finalSelectButtonDidTapped(willMatch: willMatch):
@@ -69,31 +74,36 @@ extension QuestionAndAnswerFeature {
             bottleID: bottleID,
             willMatch: willMatch
           )
-          await send(.refreshPingPongDidRequired)
+          switch willMatch {
+          case true:
+            await send(.refreshPingPongDidRequired)
+          case false:
+            await send(.delegate(.popToRootDidRequired))
+          }
         }
         
-//      case .stopTaskButtonTapped:
-//        state.destination = .alert(.init(
-//          title: { TextState("중단하기") },
-//          actions: {
-//            ButtonState(
-//              role: .destructive,
-//              action: .confirmStopTalk,
-//              label: { TextState("중단하기") })
-//          },
-//          message: { TextState("중단 시 모든 핑퐁 내용이 사라져요. 정말 중단하시겠어요?") }
-//        ))
-//        return .none
-//        
-//      case let .destination(.presented(.alert(alert))):
-//        switch alert {
-//        case .confirmStopTalk:
-//          state.isShowLoadingIndicator = true
-//          return .run { [bottleID = state.bottleID] send in
-//            try await bottleClient.stopTalk(bottleID: bottleID)
-//            await send(.refreshPingPongDidRequired)
-//          }
-//        }
+      case .stopTalkButtonTapped:
+        state.destination = .alert(.init(
+          title: { TextState("중단하기") },
+          actions: {
+            ButtonState(
+              role: .destructive,
+              action: .confirmStopTalk,
+              label: { TextState("중단하기") })
+          },
+          message: { TextState("중단 시 모든 핑퐁 내용이 사라져요. 정말 중단하시겠어요?") }
+        ))
+        return .none
+
+      case let .destination(.presented(.alert(alert))):
+        switch alert {
+        case .confirmStopTalk:
+          state.isShowLoadingIndicator = true
+          return .run { [bottleID = state.bottleID] send in
+            try await bottleClient.stopTalk(bottleID: bottleID)
+            await send(.delegate(.popToRootDidRequired))
+          }
+        }
         
       case .binding(\.firstLetterTextFieldContent):
         if state.firstLetterTextFieldContent.count >= 50 {
