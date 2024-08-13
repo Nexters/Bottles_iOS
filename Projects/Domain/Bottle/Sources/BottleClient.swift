@@ -18,9 +18,9 @@ extension BottleClient: DependencyKey {
     @Dependency(\.network) var networkManager
     
     return .init(
-      fetchNewBottlesCount: {
-        let bottleList = try await networkManager.reqeust(api: .apiType(BottleAPI.fetchBottles), dto: BottleListResponseDTO.self)
-        return (bottleList.randomBottles?.count ?? 0) + (bottleList.sentBottles?.count ?? 0)
+      fetchUserBottleInfo: {
+        let userBottleInfo = try await networkManager.reqeust(api: .apiType(BottleAPI.fetchBottles), dto: BottleListResponseDTO.self).toUserBottleInfoDomain()
+        return userBottleInfo
       },
       fetchBottleStorageList: {
         let bottleStorageList = try await networkManager.reqeust(

@@ -11,6 +11,7 @@ import SharedDesignSystem
 import CoreLoggerInterface
 import DomainProfile
 import DomainBottle
+import SharedUtilInterface
 
 import ComposableArchitecture
 
@@ -73,8 +74,10 @@ extension SandBeachFeature {
             return
           }
           
-          let newBottlesCount = try await bottleClient.fetchNewBottlesCount()
+          let userBottleInfo = try await bottleClient.fetchUserBottleInfo()
+          let newBottlesCount = userBottleInfo.randomBottleCount + userBottleInfo.sendBottleCount
           // 새로 도착한 보틀이 있는 상태
+          
           if newBottlesCount > 0 {
             await send(.userStateFetchCompleted(
               userState: .hasNewBottle(bottleCount: newBottlesCount),
@@ -87,8 +90,9 @@ extension SandBeachFeature {
             // 자기소개만 작성한 상태
             if activeBottlesCount <= 0 {
               // TODO: time 설정
+              let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
               await send(.userStateFetchCompleted(
-                userState: .noBottle(time: 3),
+                userState: .noBottle(time: nextBottleLeftHours ?? 0),
                 isDisableButton: true)
               )
             } else { // 대화 중인 보틀이 있는 상태

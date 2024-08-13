@@ -32,7 +32,7 @@ public extension SandBeachFeature {
     var popUpText: String {
       switch self {
       case .noIntroduction:     return "자기소개 작성 후 매칭을 받을 수 있어요"
-      case .noBottle(let time): return "\(time)시간 후 새로운 보틀이 도착해요"
+      case .noBottle(let time): return time == 0 ? "보틀이 곧 도착해요": "\(time)시간 후 새로운 보틀이 도착해요"
       case .hasNewBottle:       return "보틀을 클릭해보세요"
       case .hasActiveBottle:    return "보틀을 클릭해보세요"
       case .none:               return ""
