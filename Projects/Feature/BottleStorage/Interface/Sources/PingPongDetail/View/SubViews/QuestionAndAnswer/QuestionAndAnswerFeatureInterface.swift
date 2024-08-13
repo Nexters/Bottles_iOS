@@ -125,11 +125,16 @@ public struct QuestionAndAnswerFeature {
       return pingPong?.photo.isDone == true
     }
     var finalSelectStateType: FinalSelectStateType {
-      if pingPong?.matchResult.shouldAnswer == true && pingPong?.matchResult.isMatched == false {
+      if pingPong?.matchResult.matchStatus == .inConversation
+          && pingPong?.matchResult.shouldAnswer == true {
+        return .notSelected
+      }
+      
+      if pingPong?.matchResult.matchStatus == .inConversation && pingPong?.matchResult.shouldAnswer == false {
         return .waitingForPeer
       }
       
-      if pingPong?.matchResult.shouldAnswer == true && pingPong?.matchResult.isMatched == true {
+      if pingPong?.matchResult.matchStatus != .inConversation {
         return .bothSelected
       }
       
@@ -208,6 +213,13 @@ public struct QuestionAndAnswerFeature {
     case alert(Alert)
     public enum Alert: Equatable {
       case confirmStopTalk
+    }
+    
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case reloadPingPongRequired
+      case popToRootDidRequired
     }
   }
   

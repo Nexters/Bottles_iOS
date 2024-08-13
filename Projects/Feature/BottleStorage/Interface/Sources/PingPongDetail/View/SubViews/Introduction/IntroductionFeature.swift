@@ -50,7 +50,7 @@ extension IntroductionFeature {
         case .confirmStopTalk:
           return .run { [bottleID = state.bottleID] send in
             try await bottleClient.stopTalk(bottleID: bottleID)
-            await send(.refreshPingPongDidRequired)
+            await send(.delegate(.popToRootDidRequired))
           }
         }
         

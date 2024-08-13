@@ -87,7 +87,7 @@ public struct QuestionAndAnswerView: View {
           FinalSelectPingPongView(
             isActive: store.finalSelectIsActive,
             pingPongTitle: "최종 선택",
-            finalSelectState: .notSelected,
+            finalSelectState: store.finalSelectStateType,
             isSelctedYesButton: $store.finalSelectIsSelctedYesButton,
             isSelctedNoButton: $store.finalSelectIsSelctedNoButton,
             doneButtonAction: {

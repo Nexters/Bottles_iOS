@@ -18,13 +18,7 @@ extension BottleStorageFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
-        return .run { send in
-          let bottleStorageList = try await bottleClient.fetchBottleStorageList()
-          await send(.bottleStorageListFetched(bottleStorageList))
-        } catch: { error,send in
-          // TODO: Error Handling
-          Log.error(error)
-        }
+        return popToRootAndReload(state: &state)
         
       case let .bottleStorageListFetched(bottleStorageList):
         state.activeBottleList = bottleStorageList.activeBottles
@@ -48,6 +42,10 @@ extension BottleStorageFeature {
         case .reportButtonDidTapped(let userReportProfile):
           state.path.append(.report(ReportUserFeature.State(userProfile: userReportProfile)))
           return .none
+        case .otherBottleButtonDidTapped:
+          return popToRootAndReload(state: &state)
+        case .popToRootDidRequired:
+          return popToRootAndReload(state: &state)
         }
         
       case let .path(.element(id: _, action: .report(.delegate(delegate)))):
@@ -70,6 +68,18 @@ extension BottleStorageFeature {
       }
     }
     self.init(reducer: reducer)
+    
+    func popToRootAndReload(state: inout State) -> Effect<Action> {
+      state.selectedActiveStateTab = .active
+      state.path.removeAll()
+      return .run { send in
+        let bottleStorageList = try await bottleClient.fetchBottleStorageList()
+        await send(.bottleStorageListFetched(bottleStorageList))
+      } catch: { error,send in
+        // TODO: Error Handling
+        Log.error(error)
+      }
+    }
   }
 }
 

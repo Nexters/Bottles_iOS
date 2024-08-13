@@ -94,6 +94,12 @@ public struct IntroductionFeature {
     public enum Alert: Equatable {
       case confirmStopTalk
     }
+    
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case popToRootDidRequired
+    }
   }
   
   public var body: some ReducerOf<Self> {

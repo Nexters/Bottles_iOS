@@ -59,7 +59,12 @@ extension QuestionAndAnswerFeature {
             bottleID: bottleID,
             willShare: willShare
           )
-          await send(.refreshPingPongDidRequired)
+          switch willShare {
+          case true:
+            await send(.refreshPingPongDidRequired)
+          case false:
+            await send(.delegate(.popToRootDidRequired))
+          }
         }
         
       case let .finalSelectButtonDidTapped(willMatch: willMatch):
@@ -69,7 +74,12 @@ extension QuestionAndAnswerFeature {
             bottleID: bottleID,
             willMatch: willMatch
           )
-          await send(.refreshPingPongDidRequired)
+          switch willMatch {
+          case true:
+            await send(.refreshPingPongDidRequired)
+          case false:
+            await send(.delegate(.popToRootDidRequired))
+          }
         }
         
       case .stopTalkButtonTapped:
@@ -91,7 +101,7 @@ extension QuestionAndAnswerFeature {
           state.isShowLoadingIndicator = true
           return .run { [bottleID = state.bottleID] send in
             try await bottleClient.stopTalk(bottleID: bottleID)
-            await send(.refreshPingPongDidRequired)
+            await send(.delegate(.popToRootDidRequired))
           }
         }
         
