@@ -7,7 +7,9 @@
 
 import Foundation
 
+import FeatureTabBarInterface
 import DomainBottleInterface
+import SharedDesignSystem
 
 import ComposableArchitecture
 
@@ -55,10 +57,15 @@ public struct BottleStorageFeature {
     // 보틀 리스트
     case bottleStorageListFetched(BottleStorageList)
     case bottleStorageItemDidTapped(bottleID: Int, userName: String)
-    
+    case selectedTabDidChanged(selectedTab: TabType)
+    case delegate(Delegate)
     // ETC.
     case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
+    
+    public enum Delegate {
+      case selectedTabDidChanged(selectedTab: TabType)
+    }
   }
   
   public var body: some ReducerOf<Self> {

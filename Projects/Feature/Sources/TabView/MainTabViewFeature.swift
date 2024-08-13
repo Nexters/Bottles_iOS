@@ -13,6 +13,7 @@ import FeatureMyPage
 import FeatureMyPageInterface
 import FeatureSandBeach
 import FeatureSandBeachInterface
+import FeatureTabBarInterface
 
 import ComposableArchitecture
 
@@ -78,9 +79,18 @@ public struct MainTabViewFeature {
       switch delegate {
       case .goToBottleStorageRequest:
         state.selectedTab = .bottleStorage
-        return .none
+      case let .selectedTabDidChanged(selectedTab):
+        state.selectedTab = selectedTab
       }
+      return .none
       
+    // BottleStorage Delegate
+    case let .bottleStorage(.delegate(delegate)):
+      switch delegate {
+      case let .selectedTabDidChanged(selectedTab):
+        state.selectedTab = selectedTab
+      }
+      return .none
     // MyPage Delegate
     case let .myPage(.delegate(delegate)):
       switch delegate {
@@ -88,6 +98,8 @@ public struct MainTabViewFeature {
         return .send(.delegate(.logoutDidCompleted))
       case .withdrawalDidCompleted:
         return .send(.delegate(.withdrawalDidCompleted))
+//      case let .selectedTabDidChanged(selectedTab):
+//        state.selectedTab = selectedTab
       }
       
     default:

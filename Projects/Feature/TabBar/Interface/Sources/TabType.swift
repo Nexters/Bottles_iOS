@@ -5,12 +5,15 @@
 //  Created by JongHoon on 7/27/24.
 //
 
-public enum TabType: Hashable {
+import SwiftUI
+import SharedDesignSystem
+
+public enum TabType: Hashable, CaseIterable {
   case sandBeach
   case bottleStorage
   case myPage
   
-  var title: String {
+  public var title: String {
     switch self {
     case .sandBeach:
       return "모래사장"
@@ -20,6 +23,19 @@ public enum TabType: Hashable {
       
     case .myPage:
       return "마이페이지"
+    }
+  }
+  
+  var image: Image.BottleImageSystem {
+    switch self {
+    case .sandBeach:
+      return .icom(.sandBeach)
+      
+    case .bottleStorage:
+      return .icom(.bottleStorage)
+      
+    case .myPage:
+      return .icom(.myPage)
     }
   }
 }
