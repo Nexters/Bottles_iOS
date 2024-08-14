@@ -54,7 +54,7 @@ public struct PingPongDetailView: View {
         }
       }
     )
-    .toolbar(.hidden, for: .bottomBar)
+    .ignoresSafeArea(.all, edges: .bottom)
   }
 }
 
