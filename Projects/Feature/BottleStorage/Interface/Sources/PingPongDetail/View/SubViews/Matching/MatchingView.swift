@@ -25,20 +25,20 @@ public struct MatchingView: View {
           title
             .padding(.vertical, 32)
           
-          GeometryReader { geo in
-            WithPerceptionTracking {
-              let width = geo.size.width - 50
-              HStack(spacing: 0 ) {
-                Spacer()
-                matchingInfo
-                  .frame(width: width, height: width)
-                Spacer()
-              }
-            }
+          matchingInfo
+          
+          if store.matchingState == .success,
+             let placeName = store.matchingPlace,
+             let placeImageURL = store.matchingPlaceImageURL {
+            Spacer().frame(height: 12.0)
+            placeRecommendView(
+              placeName: placeName,
+              placeImageURL: placeImageURL
+            )
           }
-          .aspectRatio(1, contentMode: .fit)
           
           Spacer()
+          
           bottomButton
           
           Spacer()
@@ -48,6 +48,8 @@ public struct MatchingView: View {
         .frame(maxHeight: .infinity)
         .background(to: ColorToken.background(.primary))
       }
+      .background(to: ColorToken.background(.primary))
+      .scrollIndicators(.hidden)
     }
   }
 }
@@ -82,60 +84,89 @@ private extension MatchingView {
   var matchingInfo: some View {
     switch store.matchingState {
     case .waiting:
-      BottleImageView(
-        type: .local(
-          bottleImageSystem: .illustraition(.phone)
-        )
-      )
+      GeometryReader { geometryProxy in
+        WithPerceptionTracking {
+          let width = geometryProxy.size.width - 50
+          HStack(spacing: 0 ) {
+            Spacer()
+            BottleImageView(
+              type: .local(
+                bottleImageSystem: .illustraition(.phone)
+              )
+            )
+            .frame(width: width, height: width)
+            Spacer()
+          }
+        }
+      }
+      .aspectRatio(1, contentMode: .fit)
+      
     case .success:
       kakaoTalkIdShareView
+      
     case .failure:
-      BottleImageView(
-        type: .local(
-          bottleImageSystem: .illustraition(.bottle1)
-        )
-      )
+      GeometryReader { geometryProxy in
+        WithPerceptionTracking {
+          let width = geometryProxy.size.width - 50
+          HStack(spacing: 0 ) {
+            Spacer()
+            BottleImageView(
+              type: .local(
+                bottleImageSystem: .illustraition(.bottle1)
+              )
+            )
+            .frame(width: width, height: width)
+            Spacer()
+          }
+        }
+      }
+      .aspectRatio(1, contentMode: .fit)
+      
     default:
       EmptyView()
     }
   }
   
   var kakaoTalkIdShareView: some View {
-    RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
-      .strokeBorder(ColorToken.border(.primary).color, lineWidth: 1)
-      .frame(maxWidth: .infinity)
-      .frame(height: 179)
-      .overlay {
-        VStack(spacing: .xl) {
-          WantedSansStyleText(
-            "카카오톡 아이디",
-            style: .body,
-            color: .quinary
-          )
-          .padding(.vertical, 2)
-          .padding(.horizontal, .xs)
-          .background {
-            RoundedRectangle(cornerRadius: BottleRadiusType.xs.value)
-              .fill(ColorToken.container(.secondary).color)
-          }
-          
-          WantedSansStyleText(
-            store.kakaoTalkId ?? "hello",
-            style: .subTitle1,
-            color: .primary
-          )
-          
-          OutlinedStyleButton(
-            .small(contentType: .image(type: .local(bottleImageSystem: .icom(.share)))),
-            title: "복사하기",
-            buttonType: .throttle
-          ) {
-            let clipboard = UIPasteboard.general
-            clipboard.setValue(store.kakaoTalkId ?? "", forPasteboardType: UTType.plainText.identifier)
-            store.send(.copyButtonDidTapped)
-          }
-        }
+    VStack(spacing: .xl) {
+      WantedSansStyleText(
+        "카카오톡 아이디",
+        style: .body,
+        color: .quinary
+      )
+      .padding(.vertical, 2)
+      .padding(.horizontal, .xs)
+      .background {
+        RoundedRectangle(cornerRadius: BottleRadiusType.xs.value)
+          .fill(ColorToken.container(.secondary).color)
       }
+      
+      WantedSansStyleText(
+        store.kakaoTalkId ?? "hello",
+        style: .subTitle1,
+        color: .primary
+      )
+      
+      OutlinedStyleButton(
+        .small(contentType: .image(type: .local(bottleImageSystem: .icom(.share)))),
+        title: "복사하기",
+        buttonType: .throttle
+      ) {
+        let clipboard = UIPasteboard.general
+        clipboard.setValue(store.kakaoTalkId ?? "", forPasteboardType: UTType.plainText.identifier)
+        store.send(.copyButtonDidTapped)
+      }
+    }
+    .padding(.horizontal, .md)
+    .padding(.vertical, .xl)
+    .frame(maxWidth: .infinity)
+    .overlay(
+      RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
+        .strokeBorder(
+          ColorToken.border(.primary).color,
+          lineWidth: 1.0
+        )
+    )
   }
   
   @ViewBuilder
@@ -155,5 +186,59 @@ private extension MatchingView {
     default:
       EmptyView()
     }
+  }
+  
+  func placeRecommendView(placeName: String, placeImageURL: String) -> some View {
+    VStack(alignment: .leading, spacing: .xl) {
+      VStack(spacing: .xs) {
+        VStack(alignment: .leading, spacing: 0.0) {
+          WantedSansStyleText(
+            "두근두근 첫만남, 이런장소는 어때요?",
+            style: .subTitle1,
+            color: .primary
+          )
+          
+          WantedSansStyleText(
+            "보틀 AI가 취향에 맞는 장소를 추천 드려요!",
+            style: .subTitle1,
+            color: .tertiary
+          )
+        }
+        
+        HStack(spacing: 0.0) {
+          Spacer()
+          WantedSansStyleText(
+            placeName,
+            style: .subTitle1,
+            color: .primary
+          )
+          Spacer()
+        }
+        
+        HStack(spacing: 0.0) {
+          Spacer()
+          
+          BottleImageView(type: .remote(
+            url: placeImageURL,
+            downsamplingWidth: 300.0,
+            downsamplingHeight: 300.0
+          ))
+          .frame(width: 200.0, height: 200.0)
+          .clipShape(RoundedRectangle(cornerRadius: BottleRadiusType.md.value))
+          
+          Spacer()
+        }
+      }
+    }
+    .padding(.horizontal, .md)
+    .padding(.vertical, .xl)
+    .overlay(
+      RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
+        .strokeBorder(
+          ColorToken.border(.primary).color,
+          lineWidth: 1.0
+        )
+    )
+    .padding(.bottom, 32.0)
   }
 }

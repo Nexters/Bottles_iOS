@@ -41,6 +41,7 @@ public struct MyPageView: View {
         }
         .padding(.horizontal, .md)
       }
+      .scrollIndicators(.hidden)
       .background(to: ColorToken.container(.primary))
       .padding(.bottom, 106)
       .padding(.top, 1)
