@@ -23,7 +23,10 @@ extension MatchingFeature {
       case .onAppear:
         return .none
         
-      case let .matchingStateDidFetched(matchResult, userName):
+      case let .matchingStateDidFetched(matchResult, userName, matchingPlace, matchingPlaceImageURL):
+        state.matchingPlace = matchingPlace
+        state.matchingPlaceImageURL = matchingPlaceImageURL
+        
         // 사용자 최종 선택 X
         state.peerUserName = userName
         
@@ -42,6 +45,7 @@ extension MatchingFeature {
         
         // 상대방 답변 X
         state.matchingState = .waiting
+        
         return .none
       case .copyButtonDidTapped:
         toastClient.presentToast(message: "카카오톡 아이디를 복사했어요")

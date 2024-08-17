@@ -25,7 +25,9 @@ public struct BottlePingPongResponseDTO: Decodable {
         isFirstSelect: false,
         matchStatus: .inConversation,
         otherContact: "",
-        shouldAnswer: false
+        shouldAnswer: false,
+        meetingPlace: nil,
+        meetingPlaceImageUrl: nil
       ),
       photo: photo?.toDomain() ?? Photo(
         isDone: false,
@@ -79,12 +81,17 @@ public struct BottlePingPongResponseDTO: Decodable {
     let matchStatus: String?
     let otherContact: String?
     let shouldAnswer: Bool?
+    let meetingPlace: String?
+    let meetingPlaceImageUrl: String?
     
     public func toDomain() -> MatchResult {
       let matchStatus: BottleMatchStatus = switch matchStatus {
       case "IN_CONVERSATION": .inConversation
       case "MATCH_SUCCEEDED": .matchSucceeded
       case "MATCH_FAILED": .matchFailed
+      case "NONE": .inConversation
+      case "REQUIRE_SELECT": .inConversation
+      case "WAITING_OTHER_ANSWER": .inConversation
       default: .matchFailed
       }
       
@@ -92,7 +99,9 @@ public struct BottlePingPongResponseDTO: Decodable {
         isFirstSelect: isFirstSelect ?? false,
         matchStatus: matchStatus,
         otherContact: otherContact ?? "",
-        shouldAnswer: shouldAnswer ?? false
+        shouldAnswer: shouldAnswer ?? false,
+        meetingPlace: meetingPlace,
+        meetingPlaceImageUrl: meetingPlaceImageUrl
       )
     }
   }

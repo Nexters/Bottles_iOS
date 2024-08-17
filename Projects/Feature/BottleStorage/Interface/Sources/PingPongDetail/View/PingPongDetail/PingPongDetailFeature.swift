@@ -80,7 +80,12 @@ extension PingPongDetailFeature {
         await send(.introduction(.introductionFetched(pingPong.introduction ?? [])))
         
         await send(.questionAndAnswer(.pingPongDidFetched(pingPong)))
-        await send(.matching(.matchingStateDidFetched(matchResult: pingPong.matchResult, userName: userName)))
+        await send(.matching(.matchingStateDidFetched(
+          matchResult: pingPong.matchResult,
+          userName: userName,
+          matchingPlace: pingPong.matchResult.meetingPlace,
+          matchingPlaceImageURL: pingPong.matchResult.meetingPlaceImageURL
+        )))
         await send(.pingPongDidFetched(pingPong))
       } catch: { error, send in
         Log.error(error)
