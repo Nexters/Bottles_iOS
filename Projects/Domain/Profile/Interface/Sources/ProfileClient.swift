@@ -9,29 +9,31 @@ import Foundation
 import ComposableArchitecture
 
 public struct ProfileClient {
-  private var checkExistIntroduction: () async throws -> Bool
+  private var checkIsExistIntroduction: () async throws -> Bool
   private var registerIntroduction: (String) async throws -> Void
   private var fetchProfileSelect: () async throws -> ProfileSelect
   private var uploadProfileImage: (Data) async throws -> Void
   private var fetchUserProfile: () async throws -> UserProfile
-
+  private var checkIsExistProfileSelect: () async throws -> Bool
   
   public init(
-    checkExistIntroduction: @escaping () async throws -> Bool,
+    checkIsExistIntroduction: @escaping () async throws -> Bool,
     registerIntroduction: @escaping (String) async throws -> Void,
     fetchProfileSelect: @escaping () async throws -> ProfileSelect,
     uploadProfileImage: @escaping (Data) async throws -> Void,
-    fetchUserProfile: @escaping () async throws -> UserProfile
+    fetchUserProfile: @escaping () async throws -> UserProfile,
+    checkIsExistProfileSelect: @escaping () async throws -> Bool
   ) {
-    self.checkExistIntroduction = checkExistIntroduction
+    self.checkIsExistIntroduction = checkIsExistIntroduction
     self.registerIntroduction = registerIntroduction
     self.fetchProfileSelect = fetchProfileSelect
     self.uploadProfileImage = uploadProfileImage
     self.fetchUserProfile = fetchUserProfile
+    self.checkIsExistProfileSelect = checkIsExistProfileSelect
   }
   
-  public func checkExistIntroduction() async throws -> Bool {
-    try await checkExistIntroduction()
+  public func checkIsExistIntroduction() async throws -> Bool {
+    try await checkIsExistIntroduction()
   }
   
   public func registerIntroduction(answer: String) async throws -> Void {
@@ -48,6 +50,10 @@ public struct ProfileClient {
   
   public func fetchUserProfile() async throws -> UserProfile {
     try await fetchUserProfile()
+  }
+  
+  public func checkIsExistProfileSelect() async throws -> Bool {
+    try await checkIsExistProfileSelect()
   }
 }
  

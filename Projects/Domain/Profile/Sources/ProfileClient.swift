@@ -40,8 +40,12 @@ extension ProfileClient: DependencyKey {
       fetchUserProfile: {
         let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchProfile), dto: ProfileResponseDTO.self)
         let userProfile = responseData.toProfileDomain()
-        print(userProfile)
         return userProfile
+      },
+      checkIsExistProfileSelect: {
+        let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchUserProfileStatus), dto: ProfileStatusResponseDTO.self)
+        let userStatus = responseData.toDomain()
+        return userStatus == .empty ? false : true
       }
     )
   }
