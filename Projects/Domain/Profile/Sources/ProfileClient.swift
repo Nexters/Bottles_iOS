@@ -42,10 +42,10 @@ extension ProfileClient: DependencyKey {
         let userProfile = responseData.toProfileDomain()
         return userProfile
       },
-      checkIsExistProfileSelect: {
+      fetchUserProfileSelect: {
         let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchUserProfileStatus), dto: ProfileStatusResponseDTO.self)
         let userStatus = responseData.toDomain()
-        return userStatus == .empty ? false : true
+        return userStatus
       }
     )
   }

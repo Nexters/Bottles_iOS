@@ -8,18 +8,22 @@
 import Foundation
 
 import FeatureLoginInterface
+import FeatureOnboardingInterface
+
 import DomainAuth
-import DomainAuthInterface
+import DomainProfile
 
 import ComposableArchitecture
 
 @Reducer
 public struct AppFeature {
   @Dependency(\.authClient) var authClient
-
+  @Dependency(\.profileClient) var profileClient
+  
   enum Root {
     case Login
     case MainTab
+    case Onboarding
   }
   
   @ObservableState
@@ -27,6 +31,7 @@ public struct AppFeature {
     public var appDelegate: AppDelegateFeature.State
     var mainTab: MainTabViewFeature.State?
     var login: LoginFeature.State?
+    var onboarding: OnboardingFeature.State?
     
     public init() {
       self.appDelegate = .init()
@@ -38,7 +43,10 @@ public struct AppFeature {
     case appDelegate(AppDelegateFeature.Action)
     case mainTab(MainTabViewFeature.Action)
     case login(LoginFeature.Action)
+    case onboarding(OnboardingFeature.Action)
+    
     case loginCheckCompleted(isLoggedIn: Bool)
+    case profileSelectExistCheckCompleted(isExist: Bool)
   }
   
   public init() {}
@@ -53,6 +61,9 @@ public struct AppFeature {
       }
       .ifLet(\.login, action: \.login) {
         LoginFeature()
+      }
+      .ifLet(\.onboarding, action: \.onboarding) {
+        OnboardingFeature()
       }
   }
   
@@ -71,18 +82,43 @@ public struct AppFeature {
       
     case let .loginCheckCompleted(isLoggedIn):
       if isLoggedIn {
-        return changeRoot(.MainTab, state: &state)
+        return .run { send in
+          let userProfileStatus = try await profileClient.fetchUserProfileSelect()
+          let isExistProfileSelect = userProfileStatus == .empty ? false : true
+          return await send(.profileSelectExistCheckCompleted(isExist: isExistProfileSelect))
+        } catch: { error, send in
+          // TODO: - 네트워킹 에러 처리
+        }
       } else {
         return changeRoot(.Login, state: &state)
       }
       
-    case .login(.delegate(.createOnboardingProfileDidCompleted)):
-      return changeRoot(.MainTab, state: &state)
+    case let .profileSelectExistCheckCompleted(isExistProfileSelect):
+      if isExistProfileSelect {
+        return changeRoot(.MainTab, state: &state)
+      } else {
+        return changeRoot(.Onboarding, state: &state)
+      }
+    
+    // Login Delegate
+    case let .login(.delegate(delegate)):
+      switch delegate {
+      case .createOnboardingProfileDidCompleted:
+        return changeRoot(.MainTab, state: &state)
+      }
       
+    // MainTab Delegate
     case let .mainTab(.delegate(delegate)):
       switch delegate {
       case .logoutDidCompleted, .withdrawalDidCompleted:
         return changeRoot(.Login, state: &state)
+      }
+    
+    // Onboarding Delegate
+    case let .onboarding(.delegate(delegate)):
+      switch delegate {
+      case .createOnboardingProfileDidCompleted:
+        return changeRoot(.MainTab, state: &state)
       }
       
     default:
@@ -93,11 +129,17 @@ public struct AppFeature {
   private func changeRoot(_ root: Root, state: inout State) -> Effect<Action> {
     switch root {
     case .Login:
-      state.login = LoginFeature.State()
       state.mainTab = nil
+      state.onboarding = nil
+      state.login = LoginFeature.State()
     case .MainTab:
       state.login = nil
+      state.onboarding = nil
       state.mainTab = MainTabViewFeature.State()
+    case .Onboarding:
+      state.login = nil
+      state.mainTab = nil
+      state.onboarding = OnboardingFeature.State()
     }
     
     return .none
