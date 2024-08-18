@@ -16,6 +16,7 @@ public enum ProfileAPI {
   case registerIntroduction(requestData: RegisterIntroductionRequestDTO)
   case checkIntroduction
   case uploadProfileImage(data: Data)
+  case fetchUserProfileStatus
 }
 
 extension ProfileAPI: BaseTargetType {
@@ -29,6 +30,8 @@ extension ProfileAPI: BaseTargetType {
       return "api/v1/profile/introduction/exist"
     case .uploadProfileImage:
       return "api/v1/profile/images"
+    case .fetchUserProfileStatus:
+      return "api/v1/profile/status"
     }
   }
   
@@ -42,6 +45,8 @@ extension ProfileAPI: BaseTargetType {
       return .get
     case .uploadProfileImage:
       return .post
+    case .fetchUserProfileStatus:
+      return .get
     }
   }
   
@@ -62,6 +67,8 @@ extension ProfileAPI: BaseTargetType {
       )
       
       return .uploadMultipart([imageData])
+    case .fetchUserProfileStatus:
+      return .requestPlain
     }
   }
 }
