@@ -33,10 +33,14 @@ public struct LoginView: View {
             mainText
               
             Spacer()
-            signInWithKakaoButton
-              .padding(.bottom, 24)
-            generalAuthButtons
-              .padding(.bottom, 29)
+            VStack(spacing: 12.0) {
+              signInWithKakaoButton
+              
+              signInWithGeneralButton
+              
+              termsGuides
+            }
+            .padding(.bottom, 30.0)
           }
           .background {
             BottleImageView(
@@ -44,6 +48,12 @@ public struct LoginView: View {
             )
           }
           .edgesIgnoringSafeArea([.top, .bottom])
+          .sheet(
+            isPresented: $store.isPresentTermView,
+            content: {
+              TermsWebView(url: store.termURL)
+            }
+          )
 
       } destination: { store in
         WithPerceptionTracking {
@@ -92,31 +102,60 @@ public extension LoginView {
     SolidButton(
       title: "카카오 로그인",
       sizeType: .large,
-      buttonType: .debounce,
+      buttonType: .throttle,
       buttonApperance: .kakao,
       action: { store.send(.signInKakaoButtonDidTapped) }
     )
     .padding(.horizontal, .md)
   }
   
-  var generalAuthButtons: some View {
-    HStack(spacing: .md) {
-      WantedSansStyleText(
-        "일반 로그인",
-        style: .subTitle2,
-        color: .enableSecondary
-      )
-      .asThrottleButton {
-        store.send(.generalLogInButtonDidTapped)
+  var signInWithGeneralButton: some View {
+    SolidButton(
+      title: "일반 로그인",
+      sizeType: .large,
+      buttonType: .throttle,
+      buttonApperance: .generalSignIn,
+      action: { store.send(.signInGeneralButtonDidTapped) }
+    )
+    .padding(.horizontal, .md)
+  }
+  
+  var termsGuides: some View {
+    VStack(alignment: .center, spacing: .xxs) {
+      HStack(spacing: 0.0) {
+        WantedSansStyleText(
+          "로그인 버튼을 누르면 ",
+          style: .caption,
+          color: .secondary
+        )
+        
+        WantedSansStyleText(
+          "개인정보처리방침",
+          style: .caption,
+          color: .secondary
+        )
+        .underline(color: ColorToken.text(.secondary).color)
+        .asThrottleButton {
+          store.send(.personalInformationTermButtonDidTapped)
+        }
       }
       
-      WantedSansStyleText(
-        "회원 가입",
-        style: .subTitle2,
-        color: .enableSecondary
-      )
-      .asThrottleButton {
-        store.send(.generalSignUpButtonDidTapped)
+      HStack(spacing: 0.0) {
+        WantedSansStyleText(
+          "보틀이용약관",
+          style: .caption,
+          color: .secondary
+        )
+        .underline(color: ColorToken.text(.secondary).color)
+        .asThrottleButton {
+          store.send(.utilizationTermButtonDidTapped)
+        }
+        
+        WantedSansStyleText(
+          "에 동의한 것으로 간주합니다.",
+          style: .caption,
+          color: .secondary
+        )
       }
     }
   }

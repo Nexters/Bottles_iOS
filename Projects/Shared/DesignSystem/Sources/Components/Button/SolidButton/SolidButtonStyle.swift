@@ -10,6 +10,7 @@ import SwiftUI
 public enum ButtonAppearanceType {
   case solid
   case kakao
+  case generalSignIn
 }
 
 struct SolidButtonStyle: ButtonStyle {
@@ -87,6 +88,8 @@ private extension SolidButtonStyle {
       }
     case .kakao:
       return ColorToken.container(.kakao).color
+    case .generalSignIn:
+      return Color.white
     }
   }
   
@@ -101,6 +104,9 @@ private extension SolidButtonStyle {
       }
       
     case .kakao:
+      return ColorToken.text(.primary).color
+      
+    case .generalSignIn:
       return ColorToken.text(.primary).color
     }
   }
