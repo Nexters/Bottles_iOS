@@ -24,8 +24,14 @@ public struct LoginFeature {
   
   @ObservableState
   public struct State: Equatable {
+    var isPresentTermView: Bool
+    var termURL: String
+    
     var path = StackState<Path.State>()
-    public init() {}
+    public init() {
+      self.isPresentTermView = false
+      self.termURL = ""
+    }
   }
   
   public enum Action: BindableAction {
@@ -33,8 +39,10 @@ public struct LoginFeature {
     case onAppear
     
     case signInKakaoButtonDidTapped
-    case generalLogInButtonDidTapped
-    case generalSignUpButtonDidTapped
+    case signInGeneralButtonDidTapped
+    
+    case personalInformationTermButtonDidTapped
+    case utilizationTermButtonDidTapped
     
     case signInKakaoDidSuccess(UserInfo)
     case signUpCheckCompleted(isSignUp: Bool)

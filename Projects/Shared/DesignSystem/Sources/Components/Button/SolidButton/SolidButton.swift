@@ -90,6 +90,8 @@ extension SolidButton {
       BottleImageView(type: .local(bottleImageSystem: .icom(.kakaoLogo)))
     case .solid:
       EmptyView()
+    case .generalSignIn:
+      EmptyView()
     }
   }
   
