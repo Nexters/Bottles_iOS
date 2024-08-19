@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-import FeatureLogin
 import FeatureLoginInterface
+import FeatureOnboardingInterface
 
 import ComposableArchitecture
 
@@ -26,6 +26,8 @@ public struct AppView: View {
           MainTabView(store: tabViewStore)
         } else if let loginStore = store.scope(state: \.login, action: \.login) {
           LoginView(store: loginStore)
+        } else if let onboardingStore = store.scope(state: \.onboarding, action: \.onboarding) {
+          OnboardingView(store: onboardingStore)
         } else {
           SplashView()
         }

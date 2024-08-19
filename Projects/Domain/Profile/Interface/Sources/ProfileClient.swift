@@ -14,20 +14,22 @@ public struct ProfileClient {
   private var fetchProfileSelect: () async throws -> ProfileSelect
   private var uploadProfileImage: (Data) async throws -> Void
   private var fetchUserProfile: () async throws -> UserProfile
-
+  private var fetchUserProfileSelect: () async throws -> UserProfileStatus
   
   public init(
     checkExistIntroduction: @escaping () async throws -> Bool,
     registerIntroduction: @escaping (String) async throws -> Void,
     fetchProfileSelect: @escaping () async throws -> ProfileSelect,
     uploadProfileImage: @escaping (Data) async throws -> Void,
-    fetchUserProfile: @escaping () async throws -> UserProfile
+    fetchUserProfile: @escaping () async throws -> UserProfile,
+    fetchUserProfileSelect: @escaping () async throws -> UserProfileStatus
   ) {
     self.checkExistIntroduction = checkExistIntroduction
     self.registerIntroduction = registerIntroduction
     self.fetchProfileSelect = fetchProfileSelect
     self.uploadProfileImage = uploadProfileImage
     self.fetchUserProfile = fetchUserProfile
+    self.fetchUserProfileSelect = fetchUserProfileSelect
   }
   
   public func checkExistIntroduction() async throws -> Bool {
@@ -48,6 +50,10 @@ public struct ProfileClient {
   
   public func fetchUserProfile() async throws -> UserProfile {
     try await fetchUserProfile()
+  }
+  
+  public func fetchUserProfileSelect() async throws -> UserProfileStatus {
+    try await fetchUserProfileSelect()
   }
 }
  
