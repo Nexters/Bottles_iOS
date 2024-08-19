@@ -32,12 +32,18 @@ extension LoginFeature {
           await send(.goToGeneralLogin)
         }
         
-      case .generalLogInButtonDidTapped:
+      case .signInGeneralButtonDidTapped:
         state.path.append(.generalLogin(.init()))
         return .none
         
-      case .generalSignUpButtonDidTapped:
-        state.path.append(.generalSignUp(.init()))
+      case .personalInformationTermButtonDidTapped:
+        state.termURL = "https://spiral-ogre-a4d.notion.site/abb2fd284516408e8c2fc267d07c6421"
+        state.isPresentTermView = true
+        return .none
+        
+      case .utilizationTermButtonDidTapped:
+        state.termURL = "https://spiral-ogre-a4d.notion.site/240724-e3676639ea864147bb293cfcda40d99f"
+        state.isPresentTermView = true
         return .none
         
       case let .signInKakaoDidSuccess(userInfo):
@@ -102,5 +108,12 @@ extension LoginFeature {
     case generalLogin(GeneralLogInFeature)
     case generalSignUp(GeneralSignUpFeature)
     case onBoarding(OnboardingFeature)
+  }
+  
+  // MARK: - Destination
+  
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case termsView
   }
 }
