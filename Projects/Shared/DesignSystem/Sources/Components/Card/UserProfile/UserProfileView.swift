@@ -36,7 +36,7 @@ public struct UserProfileView: View {
 
 private extension UserProfileView {
   var profileImage: some View {
-    RemoteImageView(
+    BlurImageView(
       imageURL: imageURL,
       downsamplingWidth: 80,
       downsamplingHeight: 80)
