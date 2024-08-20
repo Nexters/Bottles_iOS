@@ -13,6 +13,7 @@ import Moya
 
 public enum AuthAPI {
   case kakao(_ requestDTO: SignInRequestDTO)
+  case apple(_ requestDTO: SignInRequestDTO)
   case withdraw
   case logout
 }
@@ -22,6 +23,8 @@ extension AuthAPI: BaseTargetType {
     switch self {
     case .kakao:
       return "api/v1/auth/kakao"
+    case .apple:
+      return "api/v1/auth/apple"
     case .withdraw:
       return "api/v1/auth/delete"
     case .logout:
@@ -33,6 +36,8 @@ extension AuthAPI: BaseTargetType {
     switch self {
     case .kakao:
       return .post
+    case .apple:
+      return .post
     case .withdraw:
       return .post
     case .logout:
@@ -43,6 +48,8 @@ extension AuthAPI: BaseTargetType {
   public var task: Moya.Task {
     switch self {
     case .kakao(let requestDTO):
+      return .requestJSONEncodable(requestDTO)
+    case .apple(let requestDTO):
       return .requestJSONEncodable(requestDTO)
     case .withdraw:
       return .requestPlain
