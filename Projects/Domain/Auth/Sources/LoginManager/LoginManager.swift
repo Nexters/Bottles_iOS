@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AuthenticationServices
 
 import DomainAuthInterface
 import CoreLoggerInterface
@@ -22,6 +23,8 @@ extension LoginManager: DependencyKey {
         switch loginType {
         case .kakao:
           return try await signInWithKakao()
+        case .apple:
+          return try await signInWithApple()
         case .sms:
           return ""
         }
@@ -85,6 +88,15 @@ extension LoginManager {
         }
       }
     }
+  }
+}
+
+// MARK: - Apple Login Methods
+private extension LoginManager {
+  static func signInWithApple() async throws -> String {
+    let appleLoginManager = AppleLoginManager()
+    let identityToken = try await appleLoginManager.signInWithApple()
+    return identityToken
   }
 }
 
