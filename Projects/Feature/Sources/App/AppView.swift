@@ -13,8 +13,10 @@ import FeatureOnboardingInterface
 import ComposableArchitecture
 
 public struct AppView: View {
-  private let store: StoreOf<AppFeature>
+  @Environment(\.scenePhase) private var scenePhase
   
+  private let store: StoreOf<AppFeature>
+
   public init(store: StoreOf<AppFeature>) {
     self.store = store
   }
@@ -34,6 +36,11 @@ public struct AppView: View {
       }
       .onAppear {
         store.send(.onAppear)
+      }
+      .onChange(of: scenePhase) { newValue in
+        if newValue == .active {
+          store.send(.sceneDidActive)
+        }
       }
     }
   }
