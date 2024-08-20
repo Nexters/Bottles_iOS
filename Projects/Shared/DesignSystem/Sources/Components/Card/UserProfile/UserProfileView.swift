@@ -36,10 +36,11 @@ public struct UserProfileView: View {
 
 private extension UserProfileView {
   var profileImage: some View {
-    BlurImageView(
+    RemoteImageView(
       imageURL: imageURL,
-      downsamplingWidth: 80,
-      downsamplingHeight: 80)
+      downsamplingWidth: 80.0,
+      downsamplingHeight: 80.0
+    )
     .clipShape(Circle())
     .frame(width: 80, height: 80)
   }
