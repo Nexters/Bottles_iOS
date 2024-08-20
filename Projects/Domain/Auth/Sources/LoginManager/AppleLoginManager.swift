@@ -8,6 +8,8 @@
 import Foundation
 import AuthenticationServices
 
+import CoreKeyChainStore
+
 final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
   typealias IdentityToken = String
   
@@ -16,7 +18,7 @@ final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
   func signInWithApple() async throws -> IdentityToken {
     try await withCheckedThrowingContinuation { continuation in
       let request = ASAuthorizationAppleIDProvider().createRequest()
-      request.requestedScopes = [.fullName, .email]
+      request.requestedScopes = [.fullName]
       let controller = ASAuthorizationController(authorizationRequests: [request])
       controller.performRequests()
       controller.delegate = self
@@ -48,6 +50,8 @@ final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
       return
     }
     
+    let user = credential.user
+    KeyChainTokenStore.shared.save(property: .AppleUserID, value: user)
     continuation?.resume(returning: decodedIdentityToken)
     continuation = nil
   }

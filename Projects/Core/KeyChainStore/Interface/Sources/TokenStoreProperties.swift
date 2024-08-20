@@ -10,4 +10,5 @@ import Foundation
 public enum TokenStoreProperties: String, CaseIterable {
   case accessToken = "ACCESS-TOKEN"
   case refreshToken = "REFRESH-TOKEN"
+  case AppleUserID = "APPLE-USER-ID"
 }
