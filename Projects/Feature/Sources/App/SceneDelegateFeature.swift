@@ -46,6 +46,9 @@ public struct SceneDelegateFeature {
       
       let appleIDProvider = ASAuthorizationAppleIDProvider()
       let userID = KeyChainTokenStore.shared.load(property: .AppleUserID)
+      
+      if userID.isEmpty { return .none }
+      
       return .run { send in
         let credentialState = try await appleIDProvider.credentialState(forUserID: userID)
         
