@@ -11,4 +11,7 @@ public enum TokenStoreProperties: String, CaseIterable {
   case accessToken = "ACCESS-TOKEN"
   case refreshToken = "REFRESH-TOKEN"
   case AppleUserID = "APPLE-USER-ID"
+  case AppleRefreshToken = "APPLE-REFRESH-TOKEN"
+  case AppleClientSecret = "APPLE-CLIENT-SECRET"
+  case AppleAuthCode = "APPLE-AUTH-CODE"
 }

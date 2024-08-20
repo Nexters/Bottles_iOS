@@ -60,6 +60,7 @@ final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
     
     let user = credential.user
     KeyChainTokenStore.shared.save(property: .AppleUserID, value: user)
+    KeyChainTokenStore.shared.save(property: .AppleAuthCode, value: authorizationCodeString)
     continuation?.resume(returning: decodedIdentityToken)
     continuation = nil
   }

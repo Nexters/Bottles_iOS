@@ -45,6 +45,18 @@ extension AuthClient: DependencyKey {
       },
       withdraw: {
         try await networkManager.reqeust(api: .apiType(AuthAPI.withdraw))
+      },
+      refreshAppleToken: {
+        let appleToken = try await networkManager.reqeust(api: .apiType(AppleAuthAPI.refreshToken), dto: AppleTokenResponseDTO.self).toDomain()
+        return appleToken
+      },
+      revokeAppleLogin: {
+        try await networkManager.reqeust(api: .apiType(AppleAuthAPI.revoke))
+      },
+      fetchAppleClientSecret: {
+        let responseData = try await networkManager.reqeust(api: .apiType(AuthAPI.revoke), dto: ClientSecretResponseDTO.self)
+        let clientSecret = responseData.clientSecret
+        return clientSecret
       }
     )
   }

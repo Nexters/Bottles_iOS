@@ -10,6 +10,7 @@ import Foundation
 import DomainAuth
 import DomainAuthInterface
 import CoreLoggerInterface
+import CoreKeyChainStore
 import FeatureOnboardingInterface
 import FeatureGeneralSignUpInterface
 
@@ -40,6 +41,14 @@ extension LoginFeature {
         return .run { send in
           let userInfo = try await authClient.signInWithApple().toDomain()
           await send(.socialLoginDidSuccess(userInfo))
+          // clientSceret 받아오기
+          let clientSceret = try await authClient.fetchAppleClientSecret()
+          KeyChainTokenStore.shared.save(property: .AppleClientSecret, value: clientSceret)
+          
+          // refresh 토큰 받아오기
+          let appleToken = try await authClient.refreshAppleToken()
+          let appleRefreshToken = appleToken.refreshToken
+          KeyChainTokenStore.shared.save(property: .AppleRefreshToken, value: appleRefreshToken)
         } catch: { error, send in
           // TODO: apple Login error
           Log.error(error.localizedDescription)
@@ -100,6 +109,8 @@ extension LoginFeature {
         let token = userInfo.token, isSignUp = userInfo.isSignUp
         let isCompletedOnboardingIntroduction = userInfo.isCompletedOnboardingIntroduction
         authClient.saveToken(token: token)
+        Log.error(token)
+        
         if isSignUp && !isCompletedOnboardingIntroduction {
           return goToOboarding(state: &state)
         }

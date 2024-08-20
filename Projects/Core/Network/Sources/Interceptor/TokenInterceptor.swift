@@ -30,6 +30,7 @@ public class TokenInterceptor: RequestInterceptor {
       urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
     }
     
+    print(urlRequest.headers)
     completion(.success(urlRequest))
   }
   

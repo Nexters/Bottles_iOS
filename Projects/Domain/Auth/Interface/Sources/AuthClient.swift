@@ -14,6 +14,9 @@ public struct AuthClient {
   private let _checkTokenIsExist: () -> Bool
   private let withdraw: () async throws -> Void
   private let logout: () async throws -> Void
+  private let refreshAppleToken: () async throws -> AppleToken
+  private let _revokeAppleLogin: () async throws -> Void
+  private let fetchAppleClientSecret: () async throws -> String
   
   public init(
     signInWithKakao: @escaping () async throws -> SignInResponseDTO,
@@ -21,7 +24,10 @@ public struct AuthClient {
     saveToken: @escaping (Token) -> Void,
     checkTokenIsExist: @escaping () -> Bool,
     logout: @escaping () async throws -> Void,
-    withdraw: @escaping () async throws -> Void
+    withdraw: @escaping () async throws -> Void,
+    refreshAppleToken: @escaping () async throws -> AppleToken,
+    revokeAppleLogin: @escaping () async throws -> Void,
+    fetchAppleClientSecret: @escaping () async throws -> String
   ) {
     self.signInWithKakao = signInWithKakao
     self.signInWithApple = signInWithApple
@@ -29,6 +35,9 @@ public struct AuthClient {
     self._checkTokenIsExist = checkTokenIsExist
     self.logout = logout
     self.withdraw = withdraw
+    self.refreshAppleToken = refreshAppleToken
+    self._revokeAppleLogin = revokeAppleLogin
+    self.fetchAppleClientSecret = fetchAppleClientSecret
   }
   
   public func signInWithKakao() async throws -> SignInResponseDTO {
@@ -52,6 +61,18 @@ public struct AuthClient {
   
   public func logout() async throws {
     try await logout()
+  }
+  
+  public func refreshAppleToken() async throws -> AppleToken {
+    return try await refreshAppleToken()
+  }
+  
+  public func revokeAppleLogin() async throws {
+    try await _revokeAppleLogin()
+  }
+  
+  public func fetchAppleClientSecret() async throws -> String {
+    try await fetchAppleClientSecret()
   }
 }
 
