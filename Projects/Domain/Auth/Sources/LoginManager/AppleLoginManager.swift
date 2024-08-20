@@ -11,11 +11,11 @@ import AuthenticationServices
 import CoreKeyChainStore
 
 final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
-  typealias IdentityToken = String
+  typealias AuthorizationCode = String
   
-  private var continuation: CheckedContinuation<IdentityToken, Error>?
+  private var continuation: CheckedContinuation<AuthorizationCode, Error>?
   
-  func signInWithApple() async throws -> IdentityToken {
+  func signInWithApple() async throws -> AuthorizationCode {
     try await withCheckedThrowingContinuation { continuation in
       let request = ASAuthorizationAppleIDProvider().createRequest()
       request.requestedScopes = [.fullName]
@@ -50,9 +50,17 @@ final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
       return
     }
     
+    guard let authorizationCodeData = credential.authorizationCode,
+          let authorizationCodeString = String(data: authorizationCodeData, encoding: .utf8) else {
+      let error = NSError(domain: "invalidAuthorizationCode", code: 0)
+      continuation?.resume(throwing: error)
+      continuation = nil
+      return
+    }
+    
     let user = credential.user
     KeyChainTokenStore.shared.save(property: .AppleUserID, value: user)
-    continuation?.resume(returning: decodedIdentityToken)
+    continuation?.resume(returning: authorizationCodeString)
     continuation = nil
   }
   
