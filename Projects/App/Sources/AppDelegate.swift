@@ -10,6 +10,7 @@ import SwiftUI
 import Feature
 
 import ComposableArchitecture
+import FirebaseCore
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
   var store = Store(
@@ -21,6 +22,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    FirebaseApp.configure()
     store.send(.appDelegate(.didFinishLunching))
     return true
   }

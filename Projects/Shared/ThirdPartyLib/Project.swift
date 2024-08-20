@@ -12,7 +12,11 @@ let project = Project.makeModule(
                     .SPM.ComposableArchitecture,
                     .SPM.Moya,
                     .SPM.KakaoSDKAuth,
-                    .SPM.KakaoSDKUser
+                    .SPM.KakaoSDKUser,
+                    .SPM.Alamofire,
+                    .SPM.FirebaseAnalytics,
+                    .SPM.FirebaseCrashlytics,
+                    .SPM.FirebaseMessaging
                 ]
             )
         ),

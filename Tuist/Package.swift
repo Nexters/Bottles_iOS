@@ -13,7 +13,10 @@ import PackageDescription
             "Alamofire": .framework,
             "Moya": .framework,
             "KakaoSDK": .framework,
-            "Lottie": .framework
+            "Lottie": .framework,
+            "FirebaseAnalytics": .staticLibrary,
+            "FirebaseMessaging": .staticLibrary,
+            "FirebaseCrashlytics": .staticLibrary,
         ],
         baseSettings: .packageSettings
     )
@@ -27,6 +30,7 @@ let package = Package(
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
         .package(url: "https://github.com/Moya/Moya.git", exact: "15.0.3"),
         .package(url: "https://github.com/kakao/kakao-ios-sdk.git", exact: "2.22.5"),
-        .package(url: "https://github.com/airbnb/lottie-ios", from: "4.5.0")
+        .package(url: "https://github.com/airbnb/lottie-ios", from: "4.5.0"),
+        .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "11.1.0")
     ]
 )
