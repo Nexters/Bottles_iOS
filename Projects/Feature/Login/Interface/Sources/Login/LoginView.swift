@@ -11,6 +11,7 @@ import AuthenticationServices
 import SharedDesignSystem
 import FeatureOnboardingInterface
 import FeatureGeneralSignUpInterface
+import CoreLoggerInterface
 
 import ComposableArchitecture
 
@@ -116,7 +117,7 @@ public extension LoginView {
       sizeType: .large,
       buttonType: .throttle,
       buttonApperance: .apple,
-      action: { }
+      action: { store.send(.signInAppleButtonDidTapped) }
     )
     .padding(.horizontal, .md)
   }

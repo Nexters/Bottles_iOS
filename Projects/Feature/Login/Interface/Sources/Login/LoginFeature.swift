@@ -27,7 +27,7 @@ extension LoginFeature {
       case .signInKakaoButtonDidTapped:
         return .run { send in
           let userInfo = try await authClient.signInWithKakao().toDomain()
-          await send(.signInKakaoDidSuccess(userInfo))
+          await send(.socialLoginDidSuccess(userInfo))
         } catch: { error, send in
           await send(.goToGeneralLogin)
         }
@@ -35,6 +35,15 @@ extension LoginFeature {
       case .signInGeneralButtonDidTapped:
         state.path.append(.generalLogin(.init()))
         return .none
+        
+      case .signInAppleButtonDidTapped:
+        return .run { send in
+          let userInfo = try await authClient.signInWithApple().toDomain()
+          await send(.socialLoginDidSuccess(userInfo))
+        } catch: { error, send in
+          // TODO: apple Login error
+          await send(.goToGeneralLogin)
+        }
         
       case .personalInformationTermButtonDidTapped:
         state.termURL = "https://spiral-ogre-a4d.notion.site/abb2fd284516408e8c2fc267d07c6421"
@@ -46,7 +55,7 @@ extension LoginFeature {
         state.isPresentTermView = true
         return .none
         
-      case let .signInKakaoDidSuccess(userInfo):
+      case let .socialLoginDidSuccess(userInfo):
         return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
           
       case .goToGeneralLogin:
