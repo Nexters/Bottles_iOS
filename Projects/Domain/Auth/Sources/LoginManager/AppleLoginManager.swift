@@ -16,7 +16,8 @@ final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
   private var continuation: CheckedContinuation<IdentityCode, Error>?
   
   func signInWithApple() async throws -> IdentityCode {
-    try await withCheckedThrowingContinuation { continuation in
+    try await withCheckedThrowingContinuation { [weak self] continuation in
+      guard let self = self else { return }
       let request = ASAuthorizationAppleIDProvider().createRequest()
       request.requestedScopes = [.fullName, .email]
       let controller = ASAuthorizationController(authorizationRequests: [request])
