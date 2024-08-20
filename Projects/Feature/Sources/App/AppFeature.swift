@@ -12,6 +12,7 @@ import FeatureOnboardingInterface
 
 import DomainAuth
 import DomainProfile
+import CoreKeyChainStore
 
 import ComposableArchitecture
 
@@ -81,6 +82,15 @@ public struct AppFeature {
     action: Action
   ) -> EffectOf<Self> {
     switch action {
+    
+      
+    // SceneDelegate
+    case let .sceneDelegate(.delegate(delegate)):
+      switch delegate {
+      case .logOutRequired:
+        KeyChainTokenStore.shared.deleteAll()
+        return changeRoot(.Login, state: &state)
+      }
       
     case .onAppear:
       let isLoggedIn = authClient.checkTokenIsExist()

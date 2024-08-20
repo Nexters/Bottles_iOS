@@ -20,7 +20,17 @@ public struct SceneDelegateFeature {
   }
   
   public enum Action {
+    // Life cycle
     case didBecomeActive
+    
+    case logoutRequired
+    
+    // Delegate
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case logOutRequired
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -36,19 +46,25 @@ public struct SceneDelegateFeature {
       
       let appleIDProvider = ASAuthorizationAppleIDProvider()
       let userID = KeyChainTokenStore.shared.load(property: .AppleUserID)
-      
-      appleIDProvider.getCredentialState(forUserID: userID) { credentialState, error in
+      return .run { send in
+        let credentialState = try await appleIDProvider.credentialState(forUserID: userID)
+        
         switch credentialState {
         case .authorized:
           Log.debug("애플 로그인 인증 성공")
         case .revoked:
           Log.error("애플 로그인 인증 만료")
+          return await send(.delegate(.logOutRequired))
         case .notFound:
           Log.error("애플 Credential을 찾을 수 없음")
         default:
           break
         }
+      } catch: { error, send in
+        Log.error(error)
       }
+      
+    default:
       return .none
     }
   }
