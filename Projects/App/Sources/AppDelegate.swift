@@ -12,7 +12,7 @@ import Feature
 import ComposableArchitecture
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-  let store = Store(
+  var store = Store(
     initialState: AppFeature.State(),
     reducer: { AppFeature() }
   )
@@ -23,5 +23,22 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   ) -> Bool {
     store.send(.appDelegate(.didFinishLunching))
     return true
+  }
+  
+  func application(
+    _ application: UIApplication,
+    configurationForConnecting connectingSceneSession: UISceneSession,
+    options: UIScene.ConnectionOptions
+  ) -> UISceneConfiguration {
+    let configuration = UISceneConfiguration(
+      name: nil,
+      sessionRole: connectingSceneSession.role
+    )
+    
+    if connectingSceneSession.role == .windowApplication {
+      configuration.delegateClass = SceneDelegate.self
+    }
+    
+    return configuration
   }
 }

@@ -42,6 +42,7 @@ extension LoginFeature {
           await send(.socialLoginDidSuccess(userInfo))
         } catch: { error, send in
           // TODO: apple Login error
+          Log.error(error.localizedDescription)
           await send(.goToGeneralLogin)
         }
         
