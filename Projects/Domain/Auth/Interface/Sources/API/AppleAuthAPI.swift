@@ -52,7 +52,8 @@ extension AppleAuthAPI: BaseTargetType {
             let parameters: [String: Any] = [
                 "client_id": "asia.bottles",
                 "client_secret": clientSecret,
-                "token": appleRefreshToken
+                "token": appleRefreshToken,
+                "token_type_hint": "refresh_token"
             ]
         
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
