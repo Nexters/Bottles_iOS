@@ -26,6 +26,14 @@ extension AuthClient: DependencyKey {
         let responseData = try await networkManager.reqeust(api: .apiType(AuthAPI.kakao(data)), dto: SignInResponseDTO.self)
         return responseData
       },
+      
+      signInWithApple: {
+        // TODO: apple Login API로 수정
+        let accessToken = try await loginManager.signIn(loginType: .apple)
+        let data = SignInRequestDTO(code: accessToken)
+        let responseData = try await networkManager.reqeust(api: .apiType(AuthAPI.kakao(data)), dto: SignInResponseDTO.self)
+        return responseData
+      },
       saveToken: { token in
         LocalAuthDataSourceImpl.saveToken(token: token)
       },

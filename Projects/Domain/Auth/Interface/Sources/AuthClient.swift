@@ -9,6 +9,7 @@ import Foundation
 
 public struct AuthClient {
   private let signInWithKakao: () async throws -> SignInResponseDTO
+  private let signInWithApple: () async throws -> SignInResponseDTO
   private let saveToken: (Token) -> Void
   private let _checkTokenIsExist: () -> Bool
   private let withdraw: () async throws -> Void
@@ -16,12 +17,14 @@ public struct AuthClient {
   
   public init(
     signInWithKakao: @escaping () async throws -> SignInResponseDTO,
+    signInWithApple: @escaping () async throws -> SignInResponseDTO,
     saveToken: @escaping (Token) -> Void,
     checkTokenIsExist: @escaping () -> Bool,
     logout: @escaping () async throws -> Void,
     withdraw: @escaping () async throws -> Void
   ) {
     self.signInWithKakao = signInWithKakao
+    self.signInWithApple = signInWithApple
     self.saveToken = saveToken
     self._checkTokenIsExist = checkTokenIsExist
     self.logout = logout
@@ -32,6 +35,9 @@ public struct AuthClient {
     try await signInWithKakao()
   }
   
+  public func signInWithApple() async throws -> SignInResponseDTO {
+    try await signInWithApple()
+  }
   public func saveToken(token: Token) {
     saveToken(token)
   }
