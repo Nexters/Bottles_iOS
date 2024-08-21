@@ -8,14 +8,14 @@
 import Foundation
 import AuthenticationServices
 
+import DomainAuthInterface
 import CoreKeyChainStore
 
 final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
-  typealias IdentityCode = String
   
-  private var continuation: CheckedContinuation<IdentityCode, Error>?
+  private var continuation: CheckedContinuation<SignInResult, Error>?
   
-  func signInWithApple() async throws -> IdentityCode {
+  func signInWithApple() async throws -> SignInResult {
     try await withCheckedThrowingContinuation { [weak self] continuation in
       guard let self = self else { return }
       let request = ASAuthorizationAppleIDProvider().createRequest()
@@ -59,10 +59,16 @@ final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
       return
     }
     
+    
     let user = credential.user
+    let fullName = credential.fullName
+    let name = (fullName?.familyName ?? "") + (fullName?.givenName ?? "")
+    
     KeyChainTokenStore.shared.save(property: .AppleUserID, value: user)
     KeyChainTokenStore.shared.save(property: .AppleAuthCode, value: authorizationCodeString)
-    continuation?.resume(returning: decodedIdentityToken)
+    
+    let signInResult = SignInResult(accessToken: decodedIdentityToken, userName: name)
+    continuation?.resume(returning: signInResult)
     continuation = nil
   }
   
