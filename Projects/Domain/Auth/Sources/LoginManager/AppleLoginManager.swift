@@ -62,12 +62,12 @@ final class AppleLoginManager: NSObject, ASAuthorizationControllerDelegate {
     
     let user = credential.user
     let fullName = credential.fullName
-    let name = (fullName?.familyName ?? "") + (fullName?.givenName ?? "")
+    let name = ((fullName?.familyName ?? "") + (fullName?.givenName ?? ""))
     
     KeyChainTokenStore.shared.save(property: .AppleUserID, value: user)
     KeyChainTokenStore.shared.save(property: .AppleAuthCode, value: authorizationCodeString)
     
-    let signInResult = SignInResult(accessToken: decodedIdentityToken, userName: name)
+    let signInResult = SignInResult(accessToken: decodedIdentityToken, userName: name == "" ? nil : name)
     continuation?.resume(returning: signInResult)
     continuation = nil
   }

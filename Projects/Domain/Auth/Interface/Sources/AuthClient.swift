@@ -8,8 +8,8 @@
 import Foundation
 
 public struct AuthClient {
-  private let signInWithKakao: () async throws -> SignInResponseDTO
-  private let signInWithApple: () async throws -> SignInResponseDTO
+  private let signInWithKakao: () async throws -> UserInfo
+  private let signInWithApple: () async throws -> UserInfo
   private let saveToken: (Token) -> Void
   private let _checkTokenIsExist: () -> Bool
   private let withdraw: () async throws -> Void
@@ -17,17 +17,19 @@ public struct AuthClient {
   private let refreshAppleToken: () async throws -> AppleToken
   private let _revokeAppleLogin: () async throws -> Void
   private let fetchAppleClientSecret: () async throws -> String
+  private let registerUserProfile: (String) async throws -> Void
   
   public init(
-    signInWithKakao: @escaping () async throws -> SignInResponseDTO,
-    signInWithApple: @escaping () async throws -> SignInResponseDTO,
+    signInWithKakao: @escaping () async throws -> UserInfo,
+    signInWithApple: @escaping () async throws -> UserInfo,
     saveToken: @escaping (Token) -> Void,
     checkTokenIsExist: @escaping () -> Bool,
     withdraw: @escaping () async throws -> Void,
     logout: @escaping () async throws -> Void,
     refreshAppleToken: @escaping () async throws -> AppleToken,
     revokeAppleLogin: @escaping () async throws -> Void,
-    fetchAppleClientSecret: @escaping () async throws -> String
+    fetchAppleClientSecret: @escaping () async throws -> String,
+    registerUserProfile: @escaping (String) async throws -> Void
   ) {
     self.signInWithKakao = signInWithKakao
     self.signInWithApple = signInWithApple
@@ -38,13 +40,14 @@ public struct AuthClient {
     self.refreshAppleToken = refreshAppleToken
     self._revokeAppleLogin = revokeAppleLogin
     self.fetchAppleClientSecret = fetchAppleClientSecret
+    self.registerUserProfile = registerUserProfile
   }
   
-  public func signInWithKakao() async throws -> SignInResponseDTO {
+  public func signInWithKakao() async throws -> UserInfo {
     try await signInWithKakao()
   }
   
-  public func signInWithApple() async throws -> SignInResponseDTO {
+  public func signInWithApple() async throws -> UserInfo {
     try await signInWithApple()
   }
   public func saveToken(token: Token) {
@@ -73,6 +76,10 @@ public struct AuthClient {
   
   public func fetchAppleClientSecret() async throws -> String {
     try await fetchAppleClientSecret()
+  }
+  
+  public func registerUserProfile(userName: String) async throws {
+    try await registerUserProfile(userName)
   }
 }
 

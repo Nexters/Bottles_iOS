@@ -26,11 +26,13 @@ public struct LoginFeature {
   public struct State: Equatable {
     var isPresentTermView: Bool
     var termURL: String
+    var isLoading: Bool
     
     var path = StackState<Path.State>()
     public init() {
       self.isPresentTermView = false
       self.termURL = ""
+      self.isLoading = false
     }
   }
   
@@ -45,11 +47,13 @@ public struct LoginFeature {
     case personalInformationTermButtonDidTapped
     case utilizationTermButtonDidTapped
     
+    case indicatorStateChanged(isLoading: Bool)
     case socialLoginDidSuccess(UserInfo)
     case signUpCheckCompleted(isSignUp: Bool)
     case goToMainTab
     case goToGeneralLogin
-    
+    case userProfileFetchRequired(userName: String)
+    case userProfileFetchDiduccess
     case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
     
