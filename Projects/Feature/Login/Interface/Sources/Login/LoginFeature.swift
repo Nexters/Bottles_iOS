@@ -126,7 +126,8 @@ extension LoginFeature {
         let isCompletedOnboardingIntroduction = userInfo.isCompletedOnboardingIntroduction
         authClient.saveToken(token: token)
         Log.error(token)
-        if let userName = userInfo.userName {
+        
+        if let userName = userInfo.userName, !isSignUp {
           return .send(.userProfileFetchRequired(userName: userName))
         }
         
