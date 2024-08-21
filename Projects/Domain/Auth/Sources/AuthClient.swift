@@ -24,8 +24,6 @@ extension AuthClient: DependencyKey {
       signInWithKakao: {
         let signInResult = try await loginManager.signIn(loginType: .kakao)
         let accessToken = signInResult.accessToken
-        let data = SignInRequestDTO(code: accessToken)
-        let accessToken = try await loginManager.signIn(loginType: .kakao)
         guard let fcmToken = UserDefaults.standard.string(forKey: "fcmToken")
         else {
           Log.fault("no fcm token")
@@ -42,9 +40,7 @@ extension AuthClient: DependencyKey {
         let signInResult = try await loginManager.signIn(loginType: .apple)
         let accessToken = signInResult.accessToken
         let userName = signInResult.userName
-        let data = SignInRequestDTO(code: accessToken)
         
-        let accessToken = try await loginManager.signIn(loginType: .apple)
         guard let fcmToken = UserDefaults.standard.string(forKey: "fcmToken")
         else {
           Log.fault("no fcm token")
