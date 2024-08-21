@@ -17,6 +17,7 @@ public enum AuthAPI {
   case withdraw
   case logout(_ logOutRequestDTO: LogOutRequestDTO)
   case revoke
+  case profile(_ requestDTO: ProfileRequestDTO)
 }
 
 extension AuthAPI: BaseTargetType {
@@ -32,6 +33,8 @@ extension AuthAPI: BaseTargetType {
       return "api/v1/auth/logout"
     case .revoke:
       return "api/v1/auth/apple/revoke"
+    case .profile:
+      return "api/v2/auth/profile"
     }
   }
   
@@ -47,6 +50,8 @@ extension AuthAPI: BaseTargetType {
       return .post
     case .revoke:
       return .get
+    case .profile:
+      return .post
     }
   }
   
@@ -62,6 +67,8 @@ extension AuthAPI: BaseTargetType {
       return .requestJSONEncodable(logOutRequestDTO)
     case .revoke:
       return .requestPlain
+    case .profile(let requestDTO):
+      return .requestJSONEncodable(requestDTO)
     }
   }
 }
