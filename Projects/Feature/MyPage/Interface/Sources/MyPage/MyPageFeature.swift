@@ -65,6 +65,9 @@ extension MyPageFeature {
           return .run { send in
             try await authClient.withdraw()
             if !KeyChainTokenStore.shared.load(property: .AppleUserID).isEmpty {
+              // clientSceret 받아오기
+              let clientSceret = try await authClient.fetchAppleClientSecret()
+              KeyChainTokenStore.shared.save(property: .AppleClientSecret, value: clientSceret)
               try await authClient.revokeAppleLogin()
             }
             await send(.withdrawalDidCompleted)
