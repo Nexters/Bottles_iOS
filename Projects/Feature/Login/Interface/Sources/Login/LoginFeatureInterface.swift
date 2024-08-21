@@ -40,11 +40,12 @@ public struct LoginFeature {
     
     case signInKakaoButtonDidTapped
     case signInGeneralButtonDidTapped
+    case signInAppleButtonDidTapped
     
     case personalInformationTermButtonDidTapped
     case utilizationTermButtonDidTapped
     
-    case signInKakaoDidSuccess(UserInfo)
+    case socialLoginDidSuccess(UserInfo)
     case signUpCheckCompleted(isSignUp: Bool)
     case goToMainTab
     case goToGeneralLogin

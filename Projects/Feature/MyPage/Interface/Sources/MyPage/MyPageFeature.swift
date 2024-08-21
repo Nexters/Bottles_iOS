@@ -64,6 +64,9 @@ extension MyPageFeature {
         case .confirmWithdrawal:
           return .run { send in
             try await authClient.withdraw()
+            if !KeyChainTokenStore.shared.load(property: .AppleUserID).isEmpty {
+              try await authClient.revokeAppleLogin()
+            }
             await send(.withdrawalDidCompleted)
           }
         }

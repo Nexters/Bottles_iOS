@@ -14,6 +14,7 @@ import ComposableArchitecture
 public struct LoginManager {
   public enum LoginType {
     case kakao
+    case apple
     case sms
   }
   

@@ -12,6 +12,7 @@ import FeatureOnboardingInterface
 
 import DomainAuth
 import DomainProfile
+import CoreKeyChainStore
 
 import ComposableArchitecture
 
@@ -29,18 +30,22 @@ public struct AppFeature {
   @ObservableState
   public struct State: Equatable {
     public var appDelegate: AppDelegateFeature.State
+    public var sceneDelegate: SceneDelegateFeature.State
+    
     var mainTab: MainTabViewFeature.State?
     var login: LoginFeature.State?
     var onboarding: OnboardingFeature.State?
     
     public init() {
       self.appDelegate = .init()
+      self.sceneDelegate = .init()
     }
   }
   
   public enum Action {
     case onAppear
     case appDelegate(AppDelegateFeature.Action)
+    case sceneDelegate(SceneDelegateFeature.Action)
     case mainTab(MainTabViewFeature.Action)
     case login(LoginFeature.Action)
     case onboarding(OnboardingFeature.Action)
@@ -55,6 +60,11 @@ public struct AppFeature {
     Scope(state: \.appDelegate, action: \.appDelegate) {
       AppDelegateFeature()
     }
+    
+    Scope(state: \.sceneDelegate, action: \.sceneDelegate) {
+      SceneDelegateFeature()
+    }
+    
     Reduce(feature)
       .ifLet(\.mainTab, action: \.mainTab) {
         MainTabViewFeature()
@@ -72,6 +82,15 @@ public struct AppFeature {
     action: Action
   ) -> EffectOf<Self> {
     switch action {
+    
+      
+    // SceneDelegate
+    case let .sceneDelegate(.delegate(delegate)):
+      switch delegate {
+      case .logOutRequired:
+        KeyChainTokenStore.shared.deleteAll()
+        return changeRoot(.Login, state: &state)
+      }
       
     case .onAppear:
       let isLoggedIn = authClient.checkTokenIsExist()

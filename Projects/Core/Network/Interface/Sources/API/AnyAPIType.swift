@@ -5,6 +5,8 @@
 //  Created by 임현규 on 7/22/24.
 //
 
+import Foundation
+
 import Moya
 
 public enum AnyAPIType: BaseTargetType {
@@ -21,9 +23,13 @@ public enum AnyAPIType: BaseTargetType {
     }
   }
   
+  public var baseURL: URL { apiType.baseURL }
+  
   public var path: String { apiType.path }
   
   public var method: Moya.Method { apiType.method }
   
   public var task: Moya.Task { apiType.task }
+  
+  public var headers: [String : String]? { apiType.headers }
 }

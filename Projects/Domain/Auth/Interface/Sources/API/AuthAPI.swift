@@ -13,8 +13,10 @@ import Moya
 
 public enum AuthAPI {
   case kakao(_ requestDTO: SignInRequestDTO)
+  case apple(_ requestDTO: SignInRequestDTO)
   case withdraw
   case logout
+  case revoke
 }
 
 extension AuthAPI: BaseTargetType {
@@ -22,10 +24,14 @@ extension AuthAPI: BaseTargetType {
     switch self {
     case .kakao:
       return "api/v1/auth/kakao"
+    case .apple:
+      return "api/v1/auth/apple"
     case .withdraw:
       return "api/v1/auth/delete"
     case .logout:
       return "api/v1/auth/logout"
+    case .revoke:
+      return "api/v1/auth/apple/revoke"
     }
   }
   
@@ -33,10 +39,14 @@ extension AuthAPI: BaseTargetType {
     switch self {
     case .kakao:
       return .post
+    case .apple:
+      return .post
     case .withdraw:
       return .post
     case .logout:
       return .post
+    case .revoke:
+      return .get
     }
   }
   
@@ -44,9 +54,13 @@ extension AuthAPI: BaseTargetType {
     switch self {
     case .kakao(let requestDTO):
       return .requestJSONEncodable(requestDTO)
+    case .apple(let requestDTO):
+      return .requestJSONEncodable(requestDTO)
     case .withdraw:
       return .requestPlain
     case .logout:
+      return .requestPlain
+    case .revoke:
       return .requestPlain
     }
   }
