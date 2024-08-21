@@ -8,15 +8,15 @@ import PackageDescription
     
     let packageSettings = PackageSettings(
         productTypes: [
-            "ComposableArchitecture": .framework,
+            "ComposableArchitecture": .staticFramework,
             "Kingfisher": .framework,
             "Alamofire": .framework,
             "Moya": .framework,
             "KakaoSDK": .framework,
             "Lottie": .framework,
-            "FirebaseAnalytics": .staticLibrary,
-            "FirebaseMessaging": .staticLibrary,
-            "FirebaseCrashlytics": .staticLibrary,
+            "FirebaseAnalytics": .staticFramework,
+            "FirebaseMessaging": .staticFramework,
+            "FirebaseCrashlytics": .staticFramework,
         ],
         baseSettings: .packageSettings
     )
