@@ -25,6 +25,7 @@ public extension Image.BottleImageSystem {
     case loudspeark
     case phone
     case basket
+    case splash
   }
 }
 
@@ -63,6 +64,8 @@ public extension Image.BottleImageSystem.Illustraition {
       return SharedDesignSystemAsset.Images.illustraitionPhone.swiftUIImage
     case .basket:
       return SharedDesignSystemAsset.Images.illustraitionBasket.swiftUIImage
+    case .splash:
+      return SharedDesignSystemAsset.Images.imageSplash.swiftUIImage
     }
   }
 }

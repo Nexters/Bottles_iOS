@@ -31,7 +31,8 @@ public extension InfoPlist {
                     "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)"]
                 ]
             ],
-            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)"
+            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)",
+            "UIBackgroundModes": ["remote-notification"]
         ])
     }
     
@@ -54,7 +55,8 @@ public extension InfoPlist {
                     "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)"]
                 ]
             ],
-            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)"
+            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)",
+            "UIBackgroundModes": ["remote-notification"]
         ])
     }
 }

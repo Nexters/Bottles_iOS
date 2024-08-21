@@ -10,6 +10,7 @@ import ProjectDescription
 public extension ProjectDescription.Settings {
     static var projectSettings: Self {
         return .settings(
+            base: ["OTHER_LDFLAGS":["-all_load -Objc"]],
             configurations: [
                 .debug(name: .dev, xcconfig: .relativeToRoot("XCConfig/App/DEV.xcconfig")),
                 .debug(name: .test, xcconfig: .relativeToRoot("XCConfig/App/TEST.xcconfig")),

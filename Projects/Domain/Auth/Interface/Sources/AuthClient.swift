@@ -23,8 +23,8 @@ public struct AuthClient {
     signInWithApple: @escaping () async throws -> SignInResponseDTO,
     saveToken: @escaping (Token) -> Void,
     checkTokenIsExist: @escaping () -> Bool,
-    logout: @escaping () async throws -> Void,
     withdraw: @escaping () async throws -> Void,
+    logout: @escaping () async throws -> Void,
     refreshAppleToken: @escaping () async throws -> AppleToken,
     revokeAppleLogin: @escaping () async throws -> Void,
     fetchAppleClientSecret: @escaping () async throws -> String

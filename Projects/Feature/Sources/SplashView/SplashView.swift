@@ -13,7 +13,10 @@ public struct SplashView: View {
   public var body: some View {
     ZStack {
       ColorToken.container(.pressed).color
-        .ignoresSafeArea()      
+        .ignoresSafeArea()
+      
+      Image.BottleImageSystem.illustraition(.splash).image
     }
+    .ignoresSafeArea()
   }
 }

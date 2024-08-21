@@ -15,7 +15,7 @@ public enum AuthAPI {
   case kakao(_ requestDTO: SignInRequestDTO)
   case apple(_ requestDTO: SignInRequestDTO)
   case withdraw
-  case logout
+  case logout(_ logOutRequestDTO: LogOutRequestDTO)
   case revoke
 }
 
@@ -58,8 +58,8 @@ extension AuthAPI: BaseTargetType {
       return .requestJSONEncodable(requestDTO)
     case .withdraw:
       return .requestPlain
-    case .logout:
-      return .requestPlain
+    case let .logout(logOutRequestDTO):
+      return .requestJSONEncodable(logOutRequestDTO)
     case .revoke:
       return .requestPlain
     }

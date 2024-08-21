@@ -14,6 +14,7 @@ import DomainBottle
 import SharedUtilInterface
 
 import ComposableArchitecture
+import FirebaseMessaging
 
 @Reducer
 public struct SandBeachFeature {
@@ -63,6 +64,18 @@ extension SandBeachFeature {
       switch action {
       case .onAppear:
         state.isLoading = true
+        let authOptions: UNAuthorizationOptions = [
+            .alert,
+            .badge,
+            .sound
+        ]
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { _, error in
+                if let error = error {
+                    Log.error(error)
+                }
+        })
 
         return .run { send in
           let isExsit = try await profileClient.checkExistIntroduction()
