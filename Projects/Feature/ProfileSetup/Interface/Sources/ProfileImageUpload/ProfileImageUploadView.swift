@@ -24,34 +24,34 @@ public struct ProfileImageUploadView: View {
   
   public var body: some View {
     ScrollView {
-      titleView
-      GeometryReader { geometry in
-        WithPerceptionTracking {
-          VStack(spacing: 0) {
-            PhotosPicker(
-              selection: $selectedItems,
-              maxSelectionCount: 1,
-              matching: .images
-            ) {
-              imagePickerButton
-                .frame(height: geometry.size.width)
-                .padding(.bottom, .md)
-            }
-            .onChange(of: selectedItems) { item in
-              handleSelectedPhotos(item)
-            }
-            doneButton
-          }
+      VStack(spacing: 0.0) {
+        titleView
+        
+        PhotosPicker(
+          selection: $selectedItems,
+          maxSelectionCount: 1,
+          matching: .images
+        ) {
+          imagePickerButton
+            .frame(height: UIScreen.main.bounds.width - 16.0 * 2)
+            .padding(.bottom, .md)
         }
-      }
-      .padding(.horizontal, .md)
-      .setNavigationBar {
-        makeNaivgationleftButton {
-          store.send(.backButtonDidTapped)
+        .onChange(of: selectedItems) { item in
+          handleSelectedPhotos(item)
         }
+        
+        doneButton
       }
-      .toolbar(.hidden, for: .bottomBar)
+      .padding(.bottom, .xl)
     }
+    .padding(.horizontal, .md)
+    .setNavigationBar {
+      makeNaivgationleftButton {
+        store.send(.backButtonDidTapped)
+      }
+    }
+    .scrollIndicators(.hidden)
+    .toolbar(.hidden, for: .bottomBar)
   }
 }
 
@@ -63,7 +63,6 @@ private extension ProfileImageUploadView {
       caption: "가치관 문답을 마친 후 동의 하에 공개돼요"
     )
     .padding(.top, .xl)
-    .padding(.horizontal, .md)
     .padding(.bottom, 32)
   }
   
