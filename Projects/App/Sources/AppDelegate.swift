@@ -29,18 +29,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     UNUserNotificationCenter.current().delegate = self
     Messaging.messaging().delegate = self
     
-    let authOptions: UNAuthorizationOptions = [
-        .alert,
-        .badge,
-        .sound
-    ]
-    UNUserNotificationCenter.current().requestAuthorization(
-        options: authOptions,
-        completionHandler: { _, error in
-            if let error = error {
-                Log.error(error)
-            }
-    })
     application.registerForRemoteNotifications()
     
     store.send(.appDelegate(.didFinishLunching))
