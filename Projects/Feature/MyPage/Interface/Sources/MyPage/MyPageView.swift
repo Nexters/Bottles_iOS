@@ -66,11 +66,20 @@ public struct MyPageView: View {
 // MARK: - Views
 private extension MyPageView {
   var userProfile: some View {
-    UserProfileView(
-      imageURL: store.userInfo.userImageURL,
-      userName: store.userInfo.userName,
-      userAge: store.userInfo.userAge
-    )
+    VStack(spacing: .sm) {
+      RemoteImageView(
+        imageURL: store.userInfo.userImageURL,
+        downsamplingWidth: 80.0,
+        downsamplingHeight: 80.0
+      )
+      .clipShape(Circle())
+      .frame(width: 80, height: 80)
+      
+      WantedSansStyleText(
+        store.userInfo.userName,
+        style: .subTitle1,
+        color: .secondary)
+    }
     .padding(.bottom, .xl)
   }
   
