@@ -26,12 +26,13 @@ public struct MainTabViewFeature {
     var bottleStorage: BottleStorageFeature.State
     var myPage: MyPageFeature.State
     var selectedTab: TabType
-    
+    var isLoading: Bool
     public init() {
       self.sandBeachRoot = .init()
       self.bottleStorage = .init()
       self.myPage = .init()
       self.selectedTab = .sandBeach
+      self.isLoading = false
     }
   }
   
@@ -99,7 +100,11 @@ public struct MainTabViewFeature {
       switch delegate {
       case .logoutDidCompleted:
         return .send(.delegate(.logoutDidCompleted))
+      case .withdrawalButtonDidTapped:
+        state.isLoading = true
+        return .none
       case .withdrawalDidCompleted:
+        state.isLoading = false
         return .send(.delegate(.withdrawalDidCompleted))
       case let .selectedTabDidChanged(selectedTab):
         state.selectedTab = selectedTab

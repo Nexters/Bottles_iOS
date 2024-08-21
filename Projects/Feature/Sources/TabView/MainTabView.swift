@@ -38,6 +38,11 @@ public struct MainTabView: View {
             .tag(TabType.myPage)
             .toolbar(.hidden, for: .tabBar)
         }
+        .overlay {
+          if store.isLoading {
+            LoadingIndicator()
+          }
+        }
         .accentColor(ColorToken.text(.selectSecondary).color)
       }
     }
