@@ -47,7 +47,7 @@ extension MyPageFeature {
           actions: { ButtonState(role: .destructive, action: .confirmWithdrawal, label: { TextState("탈퇴하기") }) },
           message: { TextState("탈퇴 시 계정 복구가 어려워요.\n정말 탈퇴하시겠어요?") }
         ))
-        return .send(.delegate(.withdrawalButtonDidTapped))
+        return .none
         
       case .withdrawalDidCompleted:
         KeyChainTokenStore.shared.deleteAll()
@@ -63,6 +63,7 @@ extension MyPageFeature {
           
         case .confirmWithdrawal:
           return .run { send in
+            await send(.delegate(.withdrawalButtonDidTapped))
             try await authClient.withdraw()
             if !KeyChainTokenStore.shared.load(property: .AppleUserID).isEmpty {
               // clientSceret 받아오기
