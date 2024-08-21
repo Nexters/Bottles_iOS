@@ -27,7 +27,7 @@ extension LoginFeature {
         
       case .signInKakaoButtonDidTapped:
         return .run { send in
-          let userInfo = try await authClient.signInWithKakao().toDomain()
+          let userInfo = try await authClient.signInWithKakao()
           await send(.socialLoginDidSuccess(userInfo))
         } catch: { error, send in
           await send(.goToGeneralLogin)
@@ -39,9 +39,11 @@ extension LoginFeature {
         
       case .signInAppleButtonDidTapped:
         return .run { send in
-          let userInfo = try await authClient.signInWithApple().toDomain()
+          await send(.indicatorStateChanged(isLoading: true))
+          let userInfo = try await authClient.signInWithApple()
           await send(.socialLoginDidSuccess(userInfo))
           // clientSceret 받아오기
+
           let clientSceret = try await authClient.fetchAppleClientSecret()
           KeyChainTokenStore.shared.save(property: .AppleClientSecret, value: clientSceret)
           
@@ -49,10 +51,11 @@ extension LoginFeature {
           let appleToken = try await authClient.refreshAppleToken()
           let appleRefreshToken = appleToken.refreshToken
           KeyChainTokenStore.shared.save(property: .AppleRefreshToken, value: appleRefreshToken)
+          await send(.indicatorStateChanged(isLoading: false))
         } catch: { error, send in
           // TODO: apple Login error
           Log.error(error.localizedDescription)
-          await send(.goToGeneralLogin)
+          await send(.indicatorStateChanged(isLoading: false))
         }
         
       case .personalInformationTermButtonDidTapped:
@@ -67,7 +70,20 @@ extension LoginFeature {
         
       case let .socialLoginDidSuccess(userInfo):
         return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
-          
+        
+      case let .indicatorStateChanged(isLoading):
+        state.isLoading = isLoading
+        return .none
+        
+      case let .userProfileFetchRequired(userName):
+        return .run { send in
+          try await authClient.registerUserProfile(userName: userName)
+          await send(.userProfileFetchDiduccess)
+        }
+        
+      case .userProfileFetchDiduccess:
+        return goToOboarding(state: &state)
+        
       case .goToGeneralLogin:
         // TODO: - 일반 로그인 화면으로 이동.
         return .none
@@ -110,6 +126,10 @@ extension LoginFeature {
         let isCompletedOnboardingIntroduction = userInfo.isCompletedOnboardingIntroduction
         authClient.saveToken(token: token)
         Log.error(token)
+        
+        if let userName = userInfo.userName, !isSignUp {
+          return .send(.userProfileFetchRequired(userName: userName))
+        }
         
         if isSignUp && !isCompletedOnboardingIntroduction {
           return goToOboarding(state: &state)

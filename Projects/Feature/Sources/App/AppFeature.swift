@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AuthenticationServices
 
 import FeatureLoginInterface
 import FeatureOnboardingInterface
@@ -13,6 +14,7 @@ import FeatureOnboardingInterface
 import DomainAuth
 import DomainProfile
 import CoreKeyChainStore
+import CoreLoggerInterface
 
 import ComposableArchitecture
 
@@ -30,7 +32,6 @@ public struct AppFeature {
   @ObservableState
   public struct State: Equatable {
     public var appDelegate: AppDelegateFeature.State
-    public var sceneDelegate: SceneDelegateFeature.State
     
     var mainTab: MainTabViewFeature.State?
     var login: LoginFeature.State?
@@ -38,18 +39,18 @@ public struct AppFeature {
     
     public init() {
       self.appDelegate = .init()
-      self.sceneDelegate = .init()
     }
   }
   
   public enum Action {
     case onAppear
     case appDelegate(AppDelegateFeature.Action)
-    case sceneDelegate(SceneDelegateFeature.Action)
     case mainTab(MainTabViewFeature.Action)
     case login(LoginFeature.Action)
     case onboarding(OnboardingFeature.Action)
     
+    case sceneDidActive
+    case appleUserIdDidRevoked
     case loginCheckCompleted(isLoggedIn: Bool)
     case profileSelectExistCheckCompleted(isExist: Bool)
   }
@@ -59,10 +60,6 @@ public struct AppFeature {
   public var body: some ReducerOf<Self> {
     Scope(state: \.appDelegate, action: \.appDelegate) {
       AppDelegateFeature()
-    }
-    
-    Scope(state: \.sceneDelegate, action: \.sceneDelegate) {
-      SceneDelegateFeature()
     }
     
     Reduce(feature)
@@ -82,16 +79,6 @@ public struct AppFeature {
     action: Action
   ) -> EffectOf<Self> {
     switch action {
-    
-      
-    // SceneDelegate
-    case let .sceneDelegate(.delegate(delegate)):
-      switch delegate {
-      case .logOutRequired:
-        KeyChainTokenStore.shared.deleteAll()
-        return changeRoot(.Login, state: &state)
-      }
-      
     case .onAppear:
       let isLoggedIn = authClient.checkTokenIsExist()
       return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
@@ -139,6 +126,35 @@ public struct AppFeature {
       case .createOnboardingProfileDidCompleted:
         return changeRoot(.MainTab, state: &state)
       }
+      
+    case .sceneDidActive:
+      let appleIDProvider = ASAuthorizationAppleIDProvider()
+      let userID = KeyChainTokenStore.shared.load(property: .AppleUserID)
+      
+      if userID.isEmpty { return .none }
+      
+      return .run { send in
+        let credentialState = try await appleIDProvider.credentialState(forUserID: userID)
+        
+        Log.debug(credentialState)
+        switch credentialState {
+        case .authorized:
+          Log.debug("애플 로그인 인증 성공")
+        case .revoked:
+          Log.error("애플 로그인 인증 만료")
+          return await send(.appleUserIdDidRevoked)
+        case .notFound:
+          Log.error("애플 Credential을 찾을 수 없음")
+        default:
+          break
+        }
+      } catch: { error, send in
+        Log.error(error)
+      }
+      
+    case .appleUserIdDidRevoked:
+      KeyChainTokenStore.shared.deleteAll()
+      return changeRoot(.Login, state: &state)
       
     default:
       return .none

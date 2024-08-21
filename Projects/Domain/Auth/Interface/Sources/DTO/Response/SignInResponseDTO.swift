@@ -11,15 +11,18 @@ public struct UserInfo {
   public let token: Token
   public let isSignUp: Bool
   public let isCompletedOnboardingIntroduction: Bool
+  public var userName: String?
   
   public init(
     token: Token,
     isSignUp: Bool,
-    isCompletedOnboardingIntroduction: Bool
+    isCompletedOnboardingIntroduction: Bool,
+    userName: String? = nil
   ) {
     self.token = token
     self.isSignUp = isSignUp
     self.isCompletedOnboardingIntroduction = isCompletedOnboardingIntroduction
+    self.userName = userName
   }
 }
 

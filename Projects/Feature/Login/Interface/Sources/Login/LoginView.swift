@@ -56,6 +56,11 @@ public struct LoginView: View {
               TermsWebView(url: store.termURL)
             }
           )
+          .overlay {
+            if store.isLoading {
+              LoadingIndicator()
+            }
+          }
 
       } destination: { store in
         WithPerceptionTracking {
