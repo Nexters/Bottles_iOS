@@ -13,6 +13,7 @@ public extension InfoPlist {
             "CFBundleShortVersionString": "1.0.0",
             "CFBundleVersion": "17",
             "UIUserInterfaceStyle": "Light",
+            "CFBundleName": "보틀",
             "UILaunchScreen": [
                 "UIImageName": "splashImage",
                 "UIColorName": "splashColor"
