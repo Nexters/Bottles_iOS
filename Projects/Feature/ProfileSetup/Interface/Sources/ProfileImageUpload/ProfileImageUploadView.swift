@@ -104,6 +104,8 @@ private extension ProfileImageUploadView {
         }
       }
     }
+    
+    selectedItems.removeAll()
   }
 }
 
