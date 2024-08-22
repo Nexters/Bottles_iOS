@@ -15,6 +15,7 @@ public struct UserProfileTestView: View {
       VStack(spacing: .xl) {
         UserProfileView(
           imageURL: "https://static.wikia.nocookie.net/wallaceandgromit/images/3/38/Gromit-3.png/revision/latest/scale-to-width/360?cb=20191228190308",
+          isBlurred: true,
           userName: "임현규",
           userAge: 26
         )
@@ -22,6 +23,7 @@ public struct UserProfileTestView: View {
         
         UserProfileView(
           imageURL: "",
+          isBlurred: false,
           userName: "임현규",
           userAge: 26
         )

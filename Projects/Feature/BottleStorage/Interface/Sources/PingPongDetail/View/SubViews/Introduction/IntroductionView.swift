@@ -27,6 +27,7 @@ public struct IntroductionView: View {
           } else if store.isStopped == false {
             UserProfileView(
               imageURL: store.userImageURL,
+              isBlurred: true,
               userName: store.userName,
               userAge: store.age
             )
