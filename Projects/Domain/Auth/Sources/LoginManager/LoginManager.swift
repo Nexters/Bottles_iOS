@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AuthenticationServices
 
 import DomainAuthInterface
 import CoreLoggerInterface
@@ -22,8 +23,10 @@ extension LoginManager: DependencyKey {
         switch loginType {
         case .kakao:
           return try await signInWithKakao()
+        case .apple:
+          return try await signInWithApple()
         case .sms:
-          return ""
+          return .init(accessToken: "")
         }
       }
     )
@@ -40,7 +43,7 @@ extension DependencyValues {
 // MARK: - Kakao SignIn Methods
 extension LoginManager {
   @MainActor
-  private static func signInWithKakao() async throws -> String {
+  private static func signInWithKakao() async throws -> SignInResult {
     var accessToken = ""
     if UserApi.isKakaoTalkLoginAvailable() {
       accessToken = try await loginWithKakaoTalk()
@@ -48,7 +51,7 @@ extension LoginManager {
       accessToken = try await loginWithKakaoAccount()
     }
     
-    return accessToken
+    return .init(accessToken: accessToken)
   }
   
   @MainActor
@@ -85,6 +88,15 @@ extension LoginManager {
         }
       }
     }
+  }
+}
+
+// MARK: - Apple Login Methods
+private extension LoginManager {
+  static func signInWithApple() async throws -> SignInResult {
+    let appleLoginManager = AppleLoginManager()
+    let signInResult = try await appleLoginManager.signInWithApple()
+    return signInResult
   }
 }
 

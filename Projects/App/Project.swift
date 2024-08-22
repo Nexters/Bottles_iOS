@@ -4,6 +4,7 @@ import ProjectDescriptionHelpers
 let targets: [Target] = [
     .app(implements: .iOS, factory: .init(
         product: .staticFramework,
+        entitlements: "Bottle.entitlements",
         dependencies: [
             .feature
         ]

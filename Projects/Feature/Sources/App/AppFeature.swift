@@ -6,12 +6,15 @@
 //
 
 import Foundation
+import AuthenticationServices
 
 import FeatureLoginInterface
 import FeatureOnboardingInterface
 
 import DomainAuth
 import DomainProfile
+import CoreKeyChainStore
+import CoreLoggerInterface
 
 import ComposableArchitecture
 
@@ -29,6 +32,7 @@ public struct AppFeature {
   @ObservableState
   public struct State: Equatable {
     public var appDelegate: AppDelegateFeature.State
+    
     var mainTab: MainTabViewFeature.State?
     var login: LoginFeature.State?
     var onboarding: OnboardingFeature.State?
@@ -45,6 +49,8 @@ public struct AppFeature {
     case login(LoginFeature.Action)
     case onboarding(OnboardingFeature.Action)
     
+    case sceneDidActive
+    case appleUserIdDidRevoked
     case loginCheckCompleted(isLoggedIn: Bool)
     case profileSelectExistCheckCompleted(isExist: Bool)
   }
@@ -55,6 +61,7 @@ public struct AppFeature {
     Scope(state: \.appDelegate, action: \.appDelegate) {
       AppDelegateFeature()
     }
+    
     Reduce(feature)
       .ifLet(\.mainTab, action: \.mainTab) {
         MainTabViewFeature()
@@ -72,7 +79,6 @@ public struct AppFeature {
     action: Action
   ) -> EffectOf<Self> {
     switch action {
-      
     case .onAppear:
       let isLoggedIn = authClient.checkTokenIsExist()
       return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
@@ -120,6 +126,35 @@ public struct AppFeature {
       case .createOnboardingProfileDidCompleted:
         return changeRoot(.MainTab, state: &state)
       }
+      
+    case .sceneDidActive:
+      let appleIDProvider = ASAuthorizationAppleIDProvider()
+      let userID = KeyChainTokenStore.shared.load(property: .AppleUserID)
+      
+      if userID.isEmpty { return .none }
+      
+      return .run { send in
+        let credentialState = try await appleIDProvider.credentialState(forUserID: userID)
+        
+        Log.debug(credentialState)
+        switch credentialState {
+        case .authorized:
+          Log.debug("애플 로그인 인증 성공")
+        case .revoked:
+          Log.error("애플 로그인 인증 만료")
+          return await send(.appleUserIdDidRevoked)
+        case .notFound:
+          Log.error("애플 Credential을 찾을 수 없음")
+        default:
+          break
+        }
+      } catch: { error, send in
+        Log.error(error)
+      }
+      
+    case .appleUserIdDidRevoked:
+      KeyChainTokenStore.shared.deleteAll()
+      return changeRoot(.Login, state: &state)
       
     default:
       return .none

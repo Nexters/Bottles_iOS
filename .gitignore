@@ -68,3 +68,5 @@ Tuist/.build
 
 ## XCConfig ##
 *.xcconfig
+
+*.plist

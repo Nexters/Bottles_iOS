@@ -11,8 +11,9 @@ public extension InfoPlist {
     static var app: InfoPlist {
         return .extendingDefault(with: [
             "CFBundleShortVersionString": "1.0.0",
-            "CFBundleVersion": "15",
+            "CFBundleVersion": "17",
             "UIUserInterfaceStyle": "Light",
+            "CFBundleName": "보틀",
             "UILaunchScreen": [
                 "UIImageName": "splashImage",
                 "UIColorName": "splashColor"
@@ -31,14 +32,15 @@ public extension InfoPlist {
                     "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)"]
                 ]
             ],
-            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)"
+            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)",
+            "UIBackgroundModes": ["remote-notification"]
         ])
     }
     
     static var example: InfoPlist {
         return .extendingDefault(with: [
             "CFBundleShortVersionString": "1.0.0",
-            "CFBundleVersion": "15",
+            "CFBundleVersion": "17",
             "UIUserInterfaceStyle": "Light",
             "UILaunchScreen": [:],
             "UISupportedInterfaceOrientations": [
@@ -54,7 +56,8 @@ public extension InfoPlist {
                     "CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)"]
                 ]
             ],
-            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)"
+            "KAKAO_APP_KEY": "$(KAKAO_APP_KEY)",
+            "UIBackgroundModes": ["remote-notification"]
         ])
     }
 }

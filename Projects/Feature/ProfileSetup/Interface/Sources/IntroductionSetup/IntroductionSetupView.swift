@@ -42,6 +42,7 @@ public struct IntroductionSetupView: View {
     .onLoad {
       store.send(.onLoad)
     }
+    .scrollIndicators(.hidden)
     .ignoresSafeArea(.all, edges: .bottom)
     .toolbar(.hidden, for: .bottomBar)
   }

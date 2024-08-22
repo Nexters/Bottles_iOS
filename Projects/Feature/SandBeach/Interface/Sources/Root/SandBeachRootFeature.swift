@@ -36,18 +36,21 @@ public struct SandBeachRootFeature {
     var path = StackState<Path.State>()
     var introduction: String
     var profileImageData: Data
+    var isLoading: Bool
     public var sandBeach: SandBeachFeature.State
     
     public init(
       path: StackState<Path.State> = StackState<Path.State>(),
       introduction: String = "",
       profileImageData: Data = .init(),
-      sandBeach: SandBeachFeature.State = .init()
+      sandBeach: SandBeachFeature.State = .init(),
+      isLoading: Bool = false
     ) {
       self.path = path
       self.introduction = introduction
       self.profileImageData = profileImageData
       self.sandBeach = sandBeach
+      self.isLoading = isLoading
     }
   }
   
@@ -94,7 +97,7 @@ extension SandBeachRootFeature {
       case let .path(.element(id: _, action:
           .ProfileImageUpload(.delegate(.doneButtonDidTapped(selectedImageData))))):
         state.profileImageData = selectedImageData
-        
+        state.isLoading = true
         return .run { [introduction = state.introduction, imageData = state.profileImageData] send in
           // TODO: - 병렬처리 임시 중단 추후 처리
 //          try await withThrowingTaskGroup(of: Void.self) { group in
@@ -142,6 +145,7 @@ extension SandBeachRootFeature {
         }
         
       case .profileSetupDidCompleted:
+        state.isLoading = false
         state.path.removeAll()
         return .send(.delegate(.profileSetUpDidCompleted))
 

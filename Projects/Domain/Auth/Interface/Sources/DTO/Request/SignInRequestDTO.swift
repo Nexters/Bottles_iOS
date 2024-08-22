@@ -9,8 +9,13 @@ import Foundation
 
 public struct SignInRequestDTO: Encodable {
   public let code: String
+  public let fcmDeviceToken: String
   
-  public init(code: String) {
+  public init(
+    code: String,
+    fcmDeviceToken: String
+  ) {
     self.code = code
+    self.fcmDeviceToken = fcmDeviceToken
   }
 }

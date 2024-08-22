@@ -11,6 +11,7 @@ import FeatureProfileSetupInterface
 import FeatureBottleArrivalInterface
 import CoreLoggerInterface
 import FeatureTabBarInterface
+import SharedDesignSystem
 
 import ComposableArchitecture
 
@@ -28,7 +29,6 @@ public struct SandBeachRootView: View {
           .setTabBar(selectedTab: .sandBeach) { selectedTab in
             store.send(.selectedTabDidChanged(selectedTab: selectedTab))
           }
-
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
@@ -54,6 +54,11 @@ public struct SandBeachRootView: View {
             }
           }
         }
+      }
+    }
+    .overlay {
+      if store.isLoading {
+        LoadingIndicator()
       }
     }
   }

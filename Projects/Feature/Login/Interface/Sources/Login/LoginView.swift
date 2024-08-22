@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 import SharedDesignSystem
 import FeatureOnboardingInterface
 import FeatureGeneralSignUpInterface
+import CoreLoggerInterface
 
 import ComposableArchitecture
 
@@ -36,7 +38,7 @@ public struct LoginView: View {
             VStack(spacing: 12.0) {
               signInWithKakaoButton
               
-              signInWithGeneralButton
+              signInWithAppleButton
               
               termsGuides
             }
@@ -54,6 +56,11 @@ public struct LoginView: View {
               TermsWebView(url: store.termURL)
             }
           )
+          .overlay {
+            if store.isLoading {
+              LoadingIndicator()
+            }
+          }
 
       } destination: { store in
         WithPerceptionTracking {
@@ -105,6 +112,17 @@ public extension LoginView {
       buttonType: .throttle,
       buttonApperance: .kakao,
       action: { store.send(.signInKakaoButtonDidTapped) }
+    )
+    .padding(.horizontal, .md)
+  }
+  
+  var signInWithAppleButton: some View {
+    SolidButton(
+      title: "Apple로 로그인",
+      sizeType: .large,
+      buttonType: .throttle,
+      buttonApperance: .apple,
+      action: { store.send(.signInAppleButtonDidTapped) }
     )
     .padding(.horizontal, .md)
   }
