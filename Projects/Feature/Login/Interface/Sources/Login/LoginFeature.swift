@@ -7,18 +7,22 @@
 
 import Foundation
 
-import DomainAuth
-import DomainAuthInterface
-import CoreLoggerInterface
-import CoreKeyChainStore
 import FeatureOnboardingInterface
 import FeatureGeneralSignUpInterface
+
+import DomainAuth
+import DomainAuthInterface
+import DomainUser
+
+import CoreLoggerInterface
+import CoreKeyChainStore
 
 import ComposableArchitecture
 
 extension LoginFeature {
   public init() {
     @Dependency(\.authClient) var authClient
+    @Dependency(\.userClient) var userClient
     
     let reducer = Reduce<State, Action> { state, action in
       switch action {
@@ -125,6 +129,8 @@ extension LoginFeature {
         let token = userInfo.token, isSignUp = userInfo.isSignUp
         let isCompletedOnboardingIntroduction = userInfo.isCompletedOnboardingIntroduction
         authClient.saveToken(token: token)
+        userClient.updateLoginState(isLoggedIn: true)
+        
         Log.error(token)
         
         if let userName = userInfo.userName, !isSignUp {

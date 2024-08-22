@@ -22,6 +22,7 @@ import ComposableArchitecture
 public struct AppFeature {
   @Dependency(\.authClient) var authClient
   @Dependency(\.profileClient) var profileClient
+  @Dependency(\.userClient) var userClient
   
   enum Root {
     case Login
@@ -80,8 +81,15 @@ public struct AppFeature {
   ) -> EffectOf<Self> {
     switch action {
     case .onAppear:
+      let isAppDeleted = userClient.isAppDeleted()
       let isLoggedIn = authClient.checkTokenIsExist()
-      return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
+      
+      if isAppDeleted {
+        userClient.updateDeleteState(isDelete: false)
+        return .send(.loginCheckCompleted(isLoggedIn: false))
+      } else {
+        return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
+      }
       
     case .login(.goToMainTab):
       return changeRoot(.MainTab, state: &state)
@@ -96,6 +104,7 @@ public struct AppFeature {
           // TODO: - 네트워킹 에러 처리
         }
       } else {
+        authClient.removeAllToken()
         return changeRoot(.Login, state: &state)
       }
       
@@ -153,7 +162,7 @@ public struct AppFeature {
       }
       
     case .appleUserIdDidRevoked:
-      KeyChainTokenStore.shared.deleteAll()
+      authClient.removeAllToken()
       return changeRoot(.Login, state: &state)
       
     default:
@@ -167,6 +176,7 @@ public struct AppFeature {
       state.mainTab = nil
       state.onboarding = nil
       state.login = LoginFeature.State()
+      userClient.updateLoginState(isLoggedIn: false)
     case .MainTab:
       state.login = nil
       state.onboarding = nil
