@@ -12,6 +12,8 @@ import FeatureLoginInterface
 import FeatureOnboardingInterface
 
 import DomainAuth
+import DomainAuthInterface
+
 import DomainProfile
 import CoreKeyChainStore
 import CoreLoggerInterface
@@ -54,6 +56,9 @@ public struct AppFeature {
     case appleUserIdDidRevoked
     case loginCheckCompleted(isLoggedIn: Bool)
     case profileSelectExistCheckCompleted(isExist: Bool)
+
+    // Error
+    case requiredInvalidToken
   }
   
   public init() {}
@@ -101,10 +106,10 @@ public struct AppFeature {
           let isExistProfileSelect = userProfileStatus == .empty ? false : true
           return await send(.profileSelectExistCheckCompleted(isExist: isExistProfileSelect))
         } catch: { error, send in
-          // TODO: - 네트워킹 에러 처리
+          // TODO: - Domain Error 처리.
+          await send(.requiredInvalidToken)
         }
       } else {
-        authClient.removeAllToken()
         return changeRoot(.Login, state: &state)
       }
       
@@ -162,9 +167,10 @@ public struct AppFeature {
       }
       
     case .appleUserIdDidRevoked:
-      authClient.removeAllToken()
       return changeRoot(.Login, state: &state)
       
+    case .requiredInvalidToken:
+      return changeRoot(.Login, state: &state)
     default:
       return .none
     }
@@ -177,6 +183,7 @@ public struct AppFeature {
       state.onboarding = nil
       state.login = LoginFeature.State()
       userClient.updateLoginState(isLoggedIn: false)
+      authClient.removeAllToken()
     case .MainTab:
       state.login = nil
       state.onboarding = nil
