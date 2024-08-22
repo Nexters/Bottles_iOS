@@ -26,6 +26,10 @@ public extension Image.BottleImageSystem {
     case phone
     case basket
     case splash
+    case firstPingPong
+    case secondPingPong
+    case photoShare
+    case bottleArrivalPhone
   }
 }
 
@@ -66,6 +70,14 @@ public extension Image.BottleImageSystem.Illustraition {
       return SharedDesignSystemAsset.Images.illustraitionBasket.swiftUIImage
     case .splash:
       return SharedDesignSystemAsset.Images.imageSplash.swiftUIImage
+    case .firstPingPong:
+      return SharedDesignSystemAsset.Images.illustrationFirstPingPong.swiftUIImage
+    case .secondPingPong:
+      return SharedDesignSystemAsset.Images.illustrationSecondPingPong.swiftUIImage
+    case .photoShare:
+      return SharedDesignSystemAsset.Images.illustraitionPhotoShare.swiftUIImage
+    case .bottleArrivalPhone:
+      return SharedDesignSystemAsset.Images.illustraitionBottleArrivalPhone.swiftUIImage
     }
   }
 }
