@@ -22,6 +22,7 @@ import ComposableArchitecture
 public struct AppFeature {
   @Dependency(\.authClient) var authClient
   @Dependency(\.profileClient) var profileClient
+  @Dependency(\.userClient) var userClient
   
   enum Root {
     case Login
@@ -167,6 +168,7 @@ public struct AppFeature {
       state.mainTab = nil
       state.onboarding = nil
       state.login = LoginFeature.State()
+      userClient.updateLoginState(isLoggedIn: false)
     case .MainTab:
       state.login = nil
       state.onboarding = nil
