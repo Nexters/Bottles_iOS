@@ -47,7 +47,7 @@ public extension Image.BottleImageSystem.Illustraition {
     case .loginBackground:
       return SharedDesignSystemAsset.Images.illustraitionLoginBackground.swiftUIImage
     case .sandBeachBackground:
-      return SharedDesignSystemAsset.Images.illustrationSandBeachBackground.swiftUIImage
+      return SharedDesignSystemAsset.Images.illustraitionSandBeachBackground.swiftUIImage
     case .telescope:
       return SharedDesignSystemAsset.Images.illustraitionTelescope.swiftUIImage
     case .bottle1:
@@ -71,9 +71,9 @@ public extension Image.BottleImageSystem.Illustraition {
     case .splash:
       return SharedDesignSystemAsset.Images.imageSplash.swiftUIImage
     case .firstPingPong:
-      return SharedDesignSystemAsset.Images.illustrationFirstPingPong.swiftUIImage
+      return SharedDesignSystemAsset.Images.illustraitionFirstPingPong.swiftUIImage
     case .secondPingPong:
-      return SharedDesignSystemAsset.Images.illustrationSecondPingPong.swiftUIImage
+      return SharedDesignSystemAsset.Images.illustraitionSecondPingPong.swiftUIImage
     case .photoShare:
       return SharedDesignSystemAsset.Images.illustraitionPhotoShare.swiftUIImage
     case .bottleArrivalPhone:

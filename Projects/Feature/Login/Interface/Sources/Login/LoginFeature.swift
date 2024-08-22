@@ -9,6 +9,7 @@ import Foundation
 
 import FeatureOnboardingInterface
 import FeatureGeneralSignUpInterface
+import FeatureGuideInterface
 
 import DomainAuth
 import DomainAuthInterface
@@ -155,6 +156,7 @@ extension LoginFeature {
     case generalLogin(GeneralLogInFeature)
     case generalSignUp(GeneralSignUpFeature)
     case onBoarding(OnboardingFeature)
+    case mainGuide(MainGuideFeature)
   }
   
   // MARK: - Destination

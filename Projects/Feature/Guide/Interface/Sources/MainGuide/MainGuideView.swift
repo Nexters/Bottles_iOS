@@ -21,8 +21,11 @@ public struct MainGuideView: View {
   public var body: some View {
     VStack(spacing: 0) {
       title
+      Spacer()
       bottleArrivalImage
       nextButton
+      
+      
     }
     .padding(.top, .xl)
     .padding(.horizontal, .md)
@@ -37,7 +40,7 @@ public struct MainGuideView: View {
 private extension MainGuideView {
   var title: some View {
     TitleView(
-      pageInfo: PageInfo(nowPage: 1, totalCount: 5),
+      pageInfo: PageInfo(nowPage: 1, totalCount: 4),
       title: "천천히 서로를 알아가는 소개팅\n보틀에 오신 것을 환영해요"
     )
   }
@@ -46,18 +49,29 @@ private extension MainGuideView {
     BottleImageView(type:
         .local(bottleImageSystem: .illustraition(.bottleArrivalPhone))
     )
-    .clipped()
+    .clipShape(RoundedRectangle(cornerRadius: BottleRadiusType.xl.value))
+    .overlay(
+      RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
+        .strokeBorder(
+          ColorToken.text(.primary).color,
+          lineWidth: 10
+        )
+    )
+    .frame(maxWidth: .infinity)
+    .ignoresSafeArea(.all, edges: .bottom)
+    .padding(.horizontal, 62 - 20)
+    .aspectRatio(contentMode: .fit)
     .padding(.top, 48)
   }
   
   var nextButton: some View {
-      SolidButton(
-        title: "다음",
-        sizeType: .large,
-        buttonType: .throttle,
-        action: { store.send(.nextButtonDidTapped) }
-      )
-      .shadow(color: .white, radius: 30, y: -30)
+    SolidButton(
+      title: "다음",
+      sizeType: .large,
+      buttonType: .throttle,
+      action: { store.send(.nextButtonDidTapped) }
+    )
+    .shadow(color: .white, radius: 15, y: -30)
     
   }
 }

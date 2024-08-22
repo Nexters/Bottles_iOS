@@ -8,10 +8,13 @@
 import SwiftUI
 import AuthenticationServices
 
-import SharedDesignSystem
 import FeatureOnboardingInterface
 import FeatureGeneralSignUpInterface
+import FeatureGuideInterface
+
 import CoreLoggerInterface
+
+import SharedDesignSystem
 
 import ComposableArchitecture
 
@@ -76,6 +79,11 @@ public struct LoginView: View {
           case .generalSignUp:
             if let store = store.scope(state: \.generalSignUp, action: \.generalSignUp) {
               GeneralSignUpView(store: store)
+            }
+            
+          case .mainGuide:
+            if let store = store.scope(state: \.mainGuide, action: \.mainGuide) {
+              MainGuideView(store: store)
             }
           }
         }
