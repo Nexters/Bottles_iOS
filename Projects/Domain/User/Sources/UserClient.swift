@@ -31,7 +31,7 @@ extension UserClient: DependencyKey {
       },
       
       updateDeleteState: { isDelete in
-        UserDefaults.standard.set(isDelete, forKey: "deleteState")
+        UserDefaults.standard.set(!isDelete, forKey: "deleteState")
       }
     )
   }
