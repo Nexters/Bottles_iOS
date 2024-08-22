@@ -124,10 +124,14 @@ private extension BottleStorageView {
               mbti: bottle.mbti,
               keywords: bottle.keyword,
               imageURL: bottle.userImageUrl,
-              isRead: bottle.isRead ?? false
+              isRead: bottle.isRead
             )
             .asButton {
-              store.send(.bottleStorageItemDidTapped(bottleID: bottle.id, userName: bottle.userName ?? ""))
+              store.send(.bottleStorageItemDidTapped(
+                bottleID: bottle.id,
+                isRead: bottle.isRead,
+                userName: bottle.userName ?? ""
+              ))
             }
           }
         }

@@ -36,6 +36,9 @@ extension BottleClient: DependencyKey {
         ).toDomain()
         return bottlePingPong
       }, 
+      readBottle: { id in
+        try await networkManager.reqeust(api: .apiType(BottleAPI.readBottle(bottleID: id)))
+      },
       registerLetterAnswer: { bottleID, order, answer in
         try await networkManager.reqeust(api: .apiType(BottleAPI.registerLetterAnswer(
           bottleID: bottleID,

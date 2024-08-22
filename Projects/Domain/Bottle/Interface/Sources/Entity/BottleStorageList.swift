@@ -22,7 +22,7 @@ public struct BottleStorageList: Decodable {
 public struct BottleStorageItem: Decodable, Equatable {
   public let age: Int?
   public let id: Int
-  public let isRead: Bool?
+  public let isRead: Bool
   public let keyword: [String]
   public let mbti: String
   public let userImageUrl: String
@@ -31,7 +31,7 @@ public struct BottleStorageItem: Decodable, Equatable {
   public init(
     age: Int?,
     id: Int,
-    isRead: Bool?,
+    isRead: Bool,
     keyword: [String],
     mbti: String,
     userImageUrl: String,
