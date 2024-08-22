@@ -25,11 +25,11 @@ public struct UserClient {
     self.updateDeleteState = updateDeleteState
   }
   
-  public func fetchLoginState() -> Bool {
+  public func isLoggedIn() -> Bool {
     _isLoggedIn()
   }
   
-  public func fetchIsDeleteApp() -> Bool {
+  public func isAppDeleted() -> Bool {
     _isAppDeleted()
   }
   
