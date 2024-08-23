@@ -103,7 +103,7 @@ public struct QuestionAndAnswerView: View {
               color: .enableSecondary
             )
             .asThrottleButton {
-              store.send(.stopTalkButtonTapped)
+              store.send(.stopTalkButtonDidTapped)
             }
             .padding(.top, 12.0)
             .disabled(store.isStopped == true)
@@ -121,6 +121,9 @@ public struct QuestionAndAnswerView: View {
         .onChange(of: store.textFieldState) { textFieldState in
           isTextFieldFocused = textFieldState == .active || textFieldState == .enabled ? false : true
         }
+      }
+      .refreshable {
+        
       }
       .scrollIndicators(.hidden)
       .overlay {

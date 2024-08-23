@@ -82,7 +82,7 @@ extension QuestionAndAnswerFeature {
           }
         }
         
-      case .stopTalkButtonTapped:
+      case .stopTalkButtonDidTapped:
         state.destination = .alert(.init(
           title: { TextState("중단하기") },
           actions: {

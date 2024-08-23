@@ -204,7 +204,7 @@ public struct QuestionAndAnswerFeature {
     case finalSelectButtonDidTapped(willMatch: Bool)
     case refreshPingPongDidRequired
     case configureShowLoadingIndicatorRequired(isShow: Bool)
-    case stopTalkButtonTapped
+    case stopTalkButtonDidTapped
     
     // ETC.
     case binding(BindingAction<State>)
