@@ -87,7 +87,7 @@ extension LoginFeature {
         }
         
       case .userProfileFetchDiduccess:
-        return goToOboarding(state: &state)
+        return .send(.signUpCheckCompleted(isSignUp: false))
         
       case .goToGeneralLogin:
         // TODO: - 일반 로그인 화면으로 이동.
