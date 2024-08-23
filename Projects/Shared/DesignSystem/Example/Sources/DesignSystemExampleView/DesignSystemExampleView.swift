@@ -196,6 +196,16 @@ struct EtcSection: View {
           )
           .frame(width: 300.0, height: 300.0)
         }
+        
+        NavigationLink("Capture Prevent View") {
+          RemoteImageView(
+            imageURL: "https://static.wikia.nocookie.net/wallaceandgromit/images/3/38/Gromit-3.png/revision/latest/scale-to-width/360?cb=20191228190308",
+            downsamplingWidth: 300.0,
+            downsamplingHeight: 300.0
+          )
+          .frame(width: 300.0, height: 300.0)
+          .preventScreenshot()
+        }
       },
       header: {
         Text("ETC")

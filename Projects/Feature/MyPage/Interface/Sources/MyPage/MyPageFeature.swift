@@ -38,7 +38,6 @@ extension MyPageFeature {
         return .none
         
       case .logOutDidCompleted:
-        KeyChainTokenStore.shared.deleteAll()
         return .send(.delegate(.logoutDidCompleted))
         
       case .withdrawalButtonDidTapped:
@@ -50,7 +49,6 @@ extension MyPageFeature {
         return .none
         
       case .withdrawalDidCompleted:
-        KeyChainTokenStore.shared.deleteAll()
         return .send(.delegate(.withdrawalDidCompleted))
         
       case let .destination(.presented(.alert(alert))):

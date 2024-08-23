@@ -12,6 +12,8 @@ import FeatureLoginInterface
 import FeatureOnboardingInterface
 
 import DomainAuth
+import DomainAuthInterface
+
 import DomainProfile
 import CoreKeyChainStore
 import CoreLoggerInterface
@@ -22,6 +24,7 @@ import ComposableArchitecture
 public struct AppFeature {
   @Dependency(\.authClient) var authClient
   @Dependency(\.profileClient) var profileClient
+  @Dependency(\.userClient) var userClient
   
   enum Root {
     case Login
@@ -53,6 +56,9 @@ public struct AppFeature {
     case appleUserIdDidRevoked
     case loginCheckCompleted(isLoggedIn: Bool)
     case profileSelectExistCheckCompleted(isExist: Bool)
+
+    // Error
+    case requiredInvalidToken
   }
   
   public init() {}
@@ -80,8 +86,15 @@ public struct AppFeature {
   ) -> EffectOf<Self> {
     switch action {
     case .onAppear:
+      let isAppDeleted = userClient.isAppDeleted()
       let isLoggedIn = authClient.checkTokenIsExist()
-      return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
+      
+      if isAppDeleted {
+        userClient.updateDeleteState(isDelete: false)
+        return .send(.loginCheckCompleted(isLoggedIn: false))
+      } else {
+        return .send(.loginCheckCompleted(isLoggedIn: isLoggedIn))
+      }
       
     case .login(.goToMainTab):
       return changeRoot(.MainTab, state: &state)
@@ -93,7 +106,8 @@ public struct AppFeature {
           let isExistProfileSelect = userProfileStatus == .empty ? false : true
           return await send(.profileSelectExistCheckCompleted(isExist: isExistProfileSelect))
         } catch: { error, send in
-          // TODO: - 네트워킹 에러 처리
+          // TODO: - Domain Error 처리.
+          await send(.requiredInvalidToken)
         }
       } else {
         return changeRoot(.Login, state: &state)
@@ -153,9 +167,10 @@ public struct AppFeature {
       }
       
     case .appleUserIdDidRevoked:
-      KeyChainTokenStore.shared.deleteAll()
       return changeRoot(.Login, state: &state)
       
+    case .requiredInvalidToken:
+      return changeRoot(.Login, state: &state)
     default:
       return .none
     }
@@ -167,6 +182,8 @@ public struct AppFeature {
       state.mainTab = nil
       state.onboarding = nil
       state.login = LoginFeature.State()
+      userClient.updateLoginState(isLoggedIn: false)
+      authClient.removeAllToken()
     case .MainTab:
       state.login = nil
       state.onboarding = nil

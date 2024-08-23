@@ -55,7 +55,11 @@ public struct BottleStorageFeature {
     
     // 보틀 리스트
     case bottleStorageListFetched(BottleStorageList)
-    case bottleStorageItemDidTapped(bottleID: Int, userName: String)
+    case bottleStorageItemDidTapped(
+      bottleID: Int,
+      isRead: Bool,
+      userName: String
+    )
     case selectedTabDidChanged(selectedTab: TabType)
     case delegate(Delegate)
     // ETC.

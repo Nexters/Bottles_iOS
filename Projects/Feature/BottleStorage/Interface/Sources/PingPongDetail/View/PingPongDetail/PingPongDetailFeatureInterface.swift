@@ -23,6 +23,7 @@ public struct PingPongDetailFeature {
   @ObservableState
   public struct State: Equatable {
     let bottleID: Int
+    let isRead: Bool
     var userName: String
     var pingPong: BottlePingPong?
     var isStopped: Bool {
@@ -35,8 +36,13 @@ public struct PingPongDetailFeature {
     var matching: MatchingFeature.State
     var selectedTab: PingPongDetailViewTabType
     
-    public init(bottleID: Int, userName: String) {
+    public init(
+      bottleID: Int,
+      isRead: Bool,
+      userName: String
+    ) {
       self.introduction = .init(bottleID: bottleID)
+      self.isRead = isRead
       self.questionAndAnswer = .init(bottleID: bottleID)
       self.matching = .init()
       self.selectedTab = .introduction

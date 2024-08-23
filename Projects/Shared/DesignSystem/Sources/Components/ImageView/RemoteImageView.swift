@@ -10,11 +10,11 @@ import SwiftUI
 import Kingfisher
 
 public struct RemoteImageView: View {
-  private let imageURL: String
+  private let imageURL: String?
   private let downsamplingSize: CGSize
   
   public init(
-    imageURL: String,
+    imageURL: String?,
     downsamplingWidth: Double,
     downsamplingHeight: Double
   ) {
@@ -26,7 +26,7 @@ public struct RemoteImageView: View {
   }
   
   public var body: some View {
-    KFImage(URL(string: imageURL))
+    KFImage(URL(string: imageURL ?? ""))
       .cancelOnDisappear(true)
       .placeholder {
         ColorToken.icon(.secondary).color

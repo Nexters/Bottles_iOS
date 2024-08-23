@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 import SharedDesignSystem
 
 public struct PhotoSharePingPongView: View {
@@ -139,20 +140,17 @@ private extension PhotoSharePingPongView {
   
   @ViewBuilder
   var peerProfileImage: some View {
-    if let peerProfileImageURL = photoShareState.peerProfileImageURL {
-      GeometryReader { geo in
-        RemoteImageView(
-          imageURL: peerProfileImageURL,
-          downsamplingWidth: 150,
-          downsamplingHeight: 150
-        )
-        .cornerRadius(.md, corenrs: [.topRight, .bottomLeft, .bottomRight])
-        .frame(height: geo.size.width)
-      }
-      .aspectRatio(1, contentMode: .fit)
-    } else {
-      EmptyView()
+    GeometryReader { geo in
+      RemoteImageView(
+        imageURL: photoShareState.peerProfileImageURL,
+        downsamplingWidth: 150,
+        downsamplingHeight: 150
+      )
+      .cornerRadius(.md, corenrs: [.topRight, .bottomLeft, .bottomRight])
+      .frame(height: geo.size.width)
     }
+    .aspectRatio(1, contentMode: .fit)
+    .preventScreenshot()
   }
   
   @ViewBuilder
@@ -167,6 +165,7 @@ private extension PhotoSharePingPongView {
         )
         .cornerRadius(.md, corenrs: [.topRight, .topLeft, .bottomLeft])
         .frame(height: geo.size.width)
+        .preventScreenshot()
       }
       .aspectRatio(1, contentMode: .fit)
     } else {

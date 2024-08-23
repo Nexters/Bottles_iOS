@@ -25,4 +25,8 @@ struct LocalAuthDataSourceImpl: LocalAuthDataSource {
   static func checkTokeinIsExist() -> Bool {
     return !KeyChainTokenStore.shared.load(property: .accessToken).isEmpty
   }
+  
+  static func removeAllToken() {
+    KeyChainTokenStore.shared.deleteAll()
+  }
 }

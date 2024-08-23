@@ -70,23 +70,26 @@ extension PingPongDetailFeature {
     self.init(reducer: reducer)
     
     func fetchPingPong(state: inout State) -> Effect<Action> {
-      return .run { [bottleID = state.bottleID, userName = state.userName] send in
-        let pingPong = try await bottleClient.fetchBottlePingPong(bottleID: bottleID)
+      return .run { [bottleID = state.bottleID, isRead = state.isRead , userName = state.userName] send in
+        async let pingPong = await bottleClient.fetchBottlePingPong(bottleID: bottleID)
+        if !isRead { 
+          async let _ = await bottleClient.readBottle(bottleID: bottleID)          
+        }
         
-        await send(.pingPongDidFetched(pingPong))
+        try await send(.pingPongDidFetched(pingPong))
         
-        await send(.introduction(.profileFetched(pingPong.userProfile)))
-        await send(.introduction(.isStoppedFetched(pingPong.isStopped)))
-        await send(.introduction(.introductionFetched(pingPong.introduction ?? [])))
+        try await send(.introduction(.profileFetched(pingPong.userProfile)))
+        try await send(.introduction(.isStoppedFetched(pingPong.isStopped)))
+        try await send(.introduction(.introductionFetched(pingPong.introduction ?? [])))
         
-        await send(.questionAndAnswer(.pingPongDidFetched(pingPong)))
-        await send(.matching(.matchingStateDidFetched(
+        try await send(.questionAndAnswer(.pingPongDidFetched(pingPong)))
+        try await send(.matching(.matchingStateDidFetched(
           matchResult: pingPong.matchResult,
           userName: userName,
           matchingPlace: pingPong.matchResult.meetingPlace,
           matchingPlaceImageURL: pingPong.matchResult.meetingPlaceImageURL
         )))
-        await send(.pingPongDidFetched(pingPong))
+        try await send(.pingPongDidFetched(pingPong))
       } catch: { error, send in
         Log.error(error)
       }

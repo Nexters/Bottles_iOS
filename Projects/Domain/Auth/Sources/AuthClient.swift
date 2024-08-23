@@ -84,6 +84,9 @@ extension AuthClient: DependencyKey {
       registerUserProfile: { userName in
         let requestDTO = ProfileRequestDTO(name: userName)
         try await networkManager.reqeust(api: .apiType(AuthAPI.profile(requestDTO)))
+      },
+      removeAllToken: {
+        LocalAuthDataSourceImpl.removeAllToken()
       }
     )
   }
