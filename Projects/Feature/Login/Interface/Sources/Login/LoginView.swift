@@ -35,12 +35,10 @@ public struct LoginView: View {
             mainText
               
             Spacer()
-            VStack(spacing: 12.0) {
+            
+            VStack(spacing: 30.0) {
               signInWithKakaoButton
-              
-              signInWithAppleButton
-              
-              termsGuides
+              snsLoginButton
             }
             .padding(.bottom, 30.0)
           }
@@ -76,6 +74,11 @@ public struct LoginView: View {
           case .generalSignUp:
             if let store = store.scope(state: \.generalSignUp, action: \.generalSignUp) {
               GeneralSignUpView(store: store)
+            }
+            
+          case .appleLogin:
+            if let store = store.scope(state: \.appleLogin, action: \.appleLogin) {
+              AppleLoginView(store: store)
             }
           }
         }
@@ -127,54 +130,14 @@ public extension LoginView {
     .padding(.horizontal, .md)
   }
   
-  var signInWithGeneralButton: some View {
-    SolidButton(
-      title: "일반 로그인",
-      sizeType: .large,
-      buttonType: .throttle,
-      buttonApperance: .generalSignIn,
-      action: { store.send(.signInGeneralButtonDidTapped) }
+  var snsLoginButton: some View {
+    WantedSansStyleText(
+      "한국 전화번호가 없나요? SNS로 로그인하기",
+      style: .caption,
+      color: .enableQuaternary
     )
-    .padding(.horizontal, .md)
-  }
-  
-  var termsGuides: some View {
-    VStack(alignment: .center, spacing: .xxs) {
-      HStack(spacing: 0.0) {
-        WantedSansStyleText(
-          "로그인 버튼을 누르면 ",
-          style: .caption,
-          color: .secondary
-        )
-        
-        WantedSansStyleText(
-          "개인정보처리방침",
-          style: .caption,
-          color: .secondary
-        )
-        .underline(color: ColorToken.text(.secondary).color)
-        .asThrottleButton {
-          store.send(.personalInformationTermButtonDidTapped)
-        }
-      }
-      
-      HStack(spacing: 0.0) {
-        WantedSansStyleText(
-          "보틀이용약관",
-          style: .caption,
-          color: .secondary
-        )
-        .underline(color: ColorToken.text(.secondary).color)
-        .asThrottleButton {
-          store.send(.utilizationTermButtonDidTapped)
-        }
-        
-        WantedSansStyleText(
-          "에 동의한 것으로 간주합니다.",
-          style: .caption,
-          color: .secondary
-        )
-      }
+    .asThrottleButton {
+      store.send(.snsLoginButtonDidTapped)
     }
   }
 }
