@@ -205,6 +205,7 @@ public struct QuestionAndAnswerFeature {
     case refreshPingPongDidRequired
     case configureShowLoadingIndicatorRequired(isShow: Bool)
     case stopTalkButtonDidTapped
+    case refreshDidPulled
     
     // ETC.
     case binding(BindingAction<State>)
@@ -220,6 +221,7 @@ public struct QuestionAndAnswerFeature {
     public enum Delegate {
       case reloadPingPongRequired
       case popToRootDidRequired
+      case refreshPingPong
     }
   }
   

@@ -123,7 +123,8 @@ public struct QuestionAndAnswerView: View {
         }
       }
       .refreshable {
-        
+          try? await Task.sleep(nanoseconds: 300_000_000)
+          await store.send(.refreshDidPulled).finish()
       }
       .scrollIndicators(.hidden)
       .overlay {

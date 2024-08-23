@@ -94,6 +94,9 @@ extension QuestionAndAnswerFeature {
           message: { TextState("중단 시 모든 핑퐁 내용이 사라져요. 정말 중단하시겠어요?") }
         ))
         return .none
+        
+      case .refreshDidPulled:
+        return .send(.delegate(.refreshPingPong))
 
       case let .destination(.presented(.alert(alert))):
         switch alert {
