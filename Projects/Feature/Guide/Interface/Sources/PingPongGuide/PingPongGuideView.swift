@@ -24,17 +24,19 @@ public struct PingPongGuideView: View {
       title
       ZStack(alignment: .bottom) {
         GeometryReader { geometry in
-          
+          let width = geometry.size.width
+          let firstPingPongWidth = max(width - 70, 0)
+          let secondPingPongWidth = max(width - 55, 0)
           HStack(spacing: 0) {
             Spacer()
             VStack(spacing: 10) {
               firstPingPongImage
                 .aspectRatio(contentMode: .fit)
-                .frame(width: geometry.size.width - 70 > 0 ? geometry.size.width - 70 : 0)
+                .frame(width: firstPingPongWidth)
                 .clipped()
               secondPingPongImage
                 .aspectRatio(contentMode: .fit)
-                .frame(width: geometry.size.width - 55 > 0 ? geometry.size.width - 55 : 0)
+                .frame(width: secondPingPongWidth)
                 .clipped()
             }
             Spacer()

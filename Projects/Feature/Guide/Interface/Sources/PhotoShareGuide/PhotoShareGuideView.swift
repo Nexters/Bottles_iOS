@@ -24,7 +24,8 @@ public struct PhotoShareGuideView: View {
         .padding(.horizontal, .md)
       ZStack(alignment: .bottom) {
         GeometryReader { geometry in
-          
+          let width = geometry.size.width
+          let photoShareImageWidth = max(width - 100, 0)
           VStack(spacing: 0) {
             HStack(spacing: 0) {
               girlImage
@@ -40,7 +41,7 @@ public struct PhotoShareGuideView: View {
             
             photoShareImage
               .aspectRatio(contentMode: .fit)
-              .frame(width: geometry.size.width - 100 > 0 ? geometry.size.width - 100 : 0)
+              .frame(width: photoShareImageWidth)
               .clipped()
               .offset(y: -85)
           }
