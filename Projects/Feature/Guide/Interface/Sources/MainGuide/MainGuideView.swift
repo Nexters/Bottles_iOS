@@ -25,14 +25,16 @@ public struct MainGuideView: View {
       ZStack(alignment: .bottom) {
         GeometryReader { geometry in
           let width = geometry.size.width
-          let bottleArrivalImageWidth = max(width - 72, 0)
+          let horizontalPadding: CGFloat = 36
+          let imageTopPadding: CGFloat = 48
+          let bottleArrivalImageWidth = max(width - horizontalPadding * 2, 0)
           HStack(spacing: 0) {
             Spacer()
             bottleArrivalImage
               .aspectRatio(contentMode: .fill)
               .frame(width: bottleArrivalImageWidth)
               .clipped()
-              .offset(y: 48)
+              .offset(y: imageTopPadding)
             Spacer()
           }          
         }

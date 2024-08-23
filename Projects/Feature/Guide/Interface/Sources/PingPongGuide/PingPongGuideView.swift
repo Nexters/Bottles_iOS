@@ -25,8 +25,12 @@ public struct PingPongGuideView: View {
       ZStack(alignment: .bottom) {
         GeometryReader { geometry in
           let width = geometry.size.width
-          let firstPingPongWidth = max(width - 70, 0)
-          let secondPingPongWidth = max(width - 55, 0)
+          let firstHorizontalPadding: CGFloat = 35
+          let firstPingPongWidth = max(width - firstHorizontalPadding * 2, 0)
+          let secondHorizontalPadding: CGFloat = 27.5
+          let secondPingPongWidth = max(width - secondHorizontalPadding * 2, 0)
+          let imageSetTopPadding: CGFloat = 48
+
           HStack(spacing: 0) {
             Spacer()
             VStack(spacing: 10) {
@@ -41,7 +45,7 @@ public struct PingPongGuideView: View {
             }
             Spacer()
           }
-          .offset(y: 48)
+          .offset(y: imageSetTopPadding)
         }
         nextButton
           .padding(.bottom, .lg)

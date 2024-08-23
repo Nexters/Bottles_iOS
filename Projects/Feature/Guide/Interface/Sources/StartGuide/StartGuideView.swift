@@ -24,14 +24,14 @@ public struct StartGuideView: View {
       title
       ZStack(alignment: .bottom) {
         GeometryReader { geometry in
-          
+          let bottleImageTopPadding: CGFloat = 48
           HStack(spacing: 0) {
             Spacer()
             bottleImage
               .scaledToFit()
             Spacer()
           }
-          .offset(y: 48)
+          .offset(y: bottleImageTopPadding)
         }
         doneButton
           .padding(.bottom, .lg)
