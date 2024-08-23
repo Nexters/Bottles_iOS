@@ -13,6 +13,7 @@ import ComposableArchitecture
 
 public struct MatchingView: View {
   @Perception.Bindable private var store: StoreOf<MatchingFeature>
+  @Environment(\.openURL) var openURL
   
   public init(store: StoreOf<MatchingFeature>) {
     self.store = store
@@ -253,7 +254,7 @@ private extension MatchingView {
   // TODO: 추후 구조 변경 필요
   func openKakaoTalk() {
     let kakaoTalk = "kakaotalk://"
-    guard let kakaoTalkURL = NSURL(string: kakaoTalk) as? URL, UIApplication.shared.canOpenURL(kakaoTalkURL) else { return }
-    UIApplication.shared.open(kakaoTalkURL)
+    guard let kakaoTalkURL = NSURL(string: kakaoTalk) as? URL else { return }
+    openURL(kakaoTalkURL)
   }
 }
