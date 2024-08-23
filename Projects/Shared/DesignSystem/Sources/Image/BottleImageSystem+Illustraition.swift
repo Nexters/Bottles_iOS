@@ -71,9 +71,9 @@ public extension Image.BottleImageSystem.Illustraition {
     case .splash:
       return SharedDesignSystemAsset.Images.imageSplash.swiftUIImage
     case .firstPingPong:
-      return SharedDesignSystemAsset.Images.illustrationFirstPingPong.swiftUIImage
+      return SharedDesignSystemAsset.Images.illustraitionFirstPingPong.swiftUIImage
     case .secondPingPong:
-      return SharedDesignSystemAsset.Images.illustrationSecondPingPong.swiftUIImage
+      return SharedDesignSystemAsset.Images.illustraitionSecondPingPong.swiftUIImage
     case .photoShare:
       return SharedDesignSystemAsset.Images.illustraitionPhotoShare.swiftUIImage
     case .bottleArrivalPhone:
