@@ -150,8 +150,8 @@ extension LoginFeature {
       case let .path(.element(id: _, action: .startGuide(.delegate(delegate)))):
         switch delegate {
         case .doneButtonDidTapped:
-          return goToOboarding(state: &state)
-
+          return goToOboarding(state: &state) 
+        }
       // appleLogin Delegate
     
       case let .path(.element(id: _, action: .appleLogin(.delegate(delegate)))):
