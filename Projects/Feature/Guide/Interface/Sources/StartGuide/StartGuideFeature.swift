@@ -22,8 +22,17 @@ public struct StartGuideFeature {
   }
   
   public enum Action {
+    
+    // User Action
     case doneButtonDidTapped
     case backButtonDidTapped
+    
+    // Delegate
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case doneButtonDidTapped
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -33,12 +42,18 @@ public struct StartGuideFeature {
 
 extension StartGuideFeature {
   public init() {
+    @Dependency(\.dismiss) var dismiss
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .doneButtonDidTapped:
-        return .none
+        return .send(.delegate(.doneButtonDidTapped))
         
       case .backButtonDidTapped:
+        return .run { send in
+          await dismiss()
+        }
+        
+      default:
         return .none
       }
     }

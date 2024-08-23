@@ -22,8 +22,17 @@ public struct PingPongGuideFeature {
   }
   
   public enum Action {
+    
+    // User Action
     case nextButtonDidTapped
     case backButtonDidTapped
+    
+    // Delegate
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case nextButtonDidTapped
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -33,12 +42,18 @@ public struct PingPongGuideFeature {
 
 extension PingPongGuideFeature {
   public init() {
+    @Dependency(\.dismiss) var dismiss
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .nextButtonDidTapped:
-        return .none
+        return .send(.delegate(.nextButtonDidTapped))
         
       case .backButtonDidTapped:
+        return .run { send in
+          await dismiss()
+        }
+        
+      default:
         return .none
       }
     }

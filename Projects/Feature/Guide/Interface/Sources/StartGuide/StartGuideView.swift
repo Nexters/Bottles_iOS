@@ -16,6 +16,7 @@ public struct StartGuideView: View {
   
   public init(store: StoreOf<StartGuideFeature>) {
     self.store = store
+    UINavigationBar.setAnimationsEnabled(true)
   }
   
   public var body: some View {

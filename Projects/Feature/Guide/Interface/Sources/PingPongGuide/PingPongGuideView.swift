@@ -16,6 +16,7 @@ public struct PingPongGuideView: View {
   
   public init(store: StoreOf<PingPongGuideFeature>) {
     self.store = store
+    UINavigationBar.setAnimationsEnabled(false)
   }
   
   public var body: some View {
@@ -29,11 +30,11 @@ public struct PingPongGuideView: View {
             VStack(spacing: 10) {
               firstPingPongImage
                 .aspectRatio(contentMode: .fit)
-                .frame(width: geometry.size.width - 70)
+                .frame(width: geometry.size.width - 70 > 0 ? geometry.size.width - 70 : 0)
                 .clipped()
               secondPingPongImage
                 .aspectRatio(contentMode: .fit)
-                .frame(width: geometry.size.width - 55)
+                .frame(width: geometry.size.width - 55 > 0 ? geometry.size.width - 55 : 0)
                 .clipped()
             }
             Spacer()

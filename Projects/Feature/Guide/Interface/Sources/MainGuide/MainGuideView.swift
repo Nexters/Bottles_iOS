@@ -28,7 +28,7 @@ public struct MainGuideView: View {
             Spacer()
             bottleArrivalImage
               .aspectRatio(contentMode: .fill)
-              .frame(width: geometry.size.width - 72)
+              .frame(width: geometry.size.width - 72 > 0 ? geometry.size.width - 72 : 0)
               .clipped()
               .offset(y: 48)
             Spacer()
@@ -46,6 +46,7 @@ public struct MainGuideView: View {
         store.send(.backButtonDidTapped)
       }
     }
+    .toolbar(.visible, for: .navigationBar)
   }
 }
 

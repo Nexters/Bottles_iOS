@@ -9,6 +9,7 @@ import Foundation
 
 import FeatureOnboardingInterface
 import FeatureGeneralSignUpInterface
+import FeatureGuideInterface
 
 import DomainAuth
 import DomainAuthInterface
@@ -47,7 +48,7 @@ extension LoginFeature {
           let userInfo = try await authClient.signInWithApple()
           await send(.socialLoginDidSuccess(userInfo))
           // clientSceret 받아오기
-
+          
           let clientSceret = try await authClient.fetchAppleClientSecret()
           KeyChainTokenStore.shared.save(property: .AppleClientSecret, value: clientSceret)
           
@@ -96,14 +97,18 @@ extension LoginFeature {
         if isSignUp {
           return .send(.goToMainTab)
         } else {
-          return goToOboarding(state: &state)
+          return goToGuide(state: &state)
         }
         
+      case .guideDidCompleted:
+        return goToOboarding(state: &state)
+
       case .snsLoginButtonDidTapped:
         state.path.append(.appleLogin(AppleLoginFeature.State()))
         return .none
         
       case .path(.element(id: _, action: .onBoarding(.delegate(.createOnboardingProfileDidCompleted)))):
+        state.path.removeAll()
         return .send(.delegate(.createOnboardingProfileDidCompleted))
         
       case let .path(.element(id: _, action: .generalLogin(.delegate(delegate)))):
@@ -118,6 +123,35 @@ extension LoginFeature {
           return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
         }
         
+      // MainGuide Delegate
+      case let .path(.element(id: _, action: .mainGuide(.delegate(delegate)))):
+        switch delegate {
+        case .nextButtonDidTapped:
+          state.path.append(.pingPongGuide(.init()))
+          return .none
+        }
+        
+      // PingPongGuide Delegate
+      case let .path(.element(id: _, action: .pingPongGuide(.delegate(delegate)))):
+        switch delegate {
+        case .nextButtonDidTapped:
+          state.path.append(.photoShareGuide(.init()))
+          return .none
+        }
+        // PhotoShareGuide Delegate
+        
+      case let .path(.element(id: _, action: .photoShareGuide(.delegate(delegate)))):
+        switch delegate {
+        case .nextButtonDidTapped:
+          state.path.append(.startGuide(.init()))
+          return .none
+        }
+        // StartGuide Delegate
+      case let .path(.element(id: _, action: .startGuide(.delegate(delegate)))):
+        switch delegate {
+        case .doneButtonDidTapped:
+          return goToOboarding(state: &state)
+
       // appleLogin Delegate
     
       case let .path(.element(id: _, action: .appleLogin(.delegate(delegate)))):
@@ -130,6 +164,10 @@ extension LoginFeature {
       }
       
       // MARK: - Inner Methods
+      func goToGuide(state: inout LoginFeature.State) -> Effect<Action> {
+        state.path.append(.mainGuide(.init()))
+        return .none
+      }
       
       func goToOboarding(state: inout LoginFeature.State) -> Effect<Action> {
         state.path.append(.onBoarding(.init()))
@@ -167,6 +205,10 @@ extension LoginFeature {
     case generalLogin(GeneralLogInFeature)
     case generalSignUp(GeneralSignUpFeature)
     case onBoarding(OnboardingFeature)
+    case mainGuide(MainGuideFeature)
+    case pingPongGuide(PingPongGuideFeature)
+    case photoShareGuide(PhotoShareGuideFeature)
+    case startGuide(StartGuideFeature)
     case appleLogin(AppleLoginFeature)
   }
   

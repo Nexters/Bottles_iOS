@@ -40,7 +40,7 @@ public struct PhotoShareGuideView: View {
             
             photoShareImage
               .aspectRatio(contentMode: .fit)
-              .frame(width: geometry.size.width - 100)
+              .frame(width: geometry.size.width - 100 > 0 ? geometry.size.width - 100 : 0)
               .clipped()
               .offset(y: -85)
           }
