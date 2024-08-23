@@ -44,7 +44,6 @@ public struct PingPongGuideView: View {
           .padding(.bottom, .lg)
           .background(to: ColorToken.container(.primary))
       }
-      .border(.red)
     }
     .padding(.top, .xl)
     .padding(.horizontal, .md)
