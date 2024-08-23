@@ -99,6 +99,10 @@ extension LoginFeature {
           return goToOboarding(state: &state)
         }
         
+      case .snsLoginButtonDidTapped:
+        state.path.append(.appleLogin(AppleLoginFeature.State()))
+        return .none
+        
       case .path(.element(id: _, action: .onBoarding(.delegate(.createOnboardingProfileDidCompleted)))):
         return .send(.delegate(.createOnboardingProfileDidCompleted))
         
@@ -114,6 +118,13 @@ extension LoginFeature {
           return handleLoginSuccessUserInfo(state: &state, userInfo: userInfo)
         }
         
+      // appleLogin Delegate
+    
+      case let .path(.element(id: _, action: .appleLogin(.delegate(delegate)))):
+        switch delegate {
+        case .signInAppleButtonDidTapped:
+          return .send(.signInAppleButtonDidTapped)
+        }
       default:
         return .none
       }
@@ -133,6 +144,7 @@ extension LoginFeature {
         
         Log.error(token)
         
+        state.path.removeAll()
         if let userName = userInfo.userName, !isSignUp {
           return .send(.userProfileFetchRequired(userName: userName))
         }
@@ -155,6 +167,7 @@ extension LoginFeature {
     case generalLogin(GeneralLogInFeature)
     case generalSignUp(GeneralSignUpFeature)
     case onBoarding(OnboardingFeature)
+    case appleLogin(AppleLoginFeature)
   }
   
   // MARK: - Destination

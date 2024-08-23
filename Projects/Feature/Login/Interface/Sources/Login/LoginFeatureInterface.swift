@@ -40,9 +40,11 @@ public struct LoginFeature {
     // View Life Cycle
     case onAppear
     
+    // User Action
     case signInKakaoButtonDidTapped
     case signInGeneralButtonDidTapped
     case signInAppleButtonDidTapped
+    case snsLoginButtonDidTapped
     
     case personalInformationTermButtonDidTapped
     case utilizationTermButtonDidTapped
