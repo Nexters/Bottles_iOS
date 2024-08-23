@@ -54,6 +54,8 @@ extension PingPongDetailFeature {
           return fetchPingPong(state: &state)
         case .popToRootDidRequired:
           return .send(.delegate(.popToRootDidRequired))
+        case .refreshPingPong:
+          return fetchPingPong(state: &state)
         }
         
       case let .matching(.delegate(delegate)):
