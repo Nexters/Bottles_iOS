@@ -12,7 +12,8 @@ let project = Project.makeModule(
                     .domain,
                     .feature(interface: .BaseWebView),
                     .feature(interface: .Onboarding),
-                    .feature(interface: .GeneralSignUp)
+                    .feature(interface: .GeneralSignUp),
+                    .feature(interface: .Guide)
                 ]
             )
         ),
