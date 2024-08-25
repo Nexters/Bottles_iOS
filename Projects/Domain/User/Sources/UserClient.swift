@@ -26,12 +26,20 @@ extension UserClient: DependencyKey {
         return !UserDefaults.standard.bool(forKey: "deleteState")
       },
       
+      fetchFcmToken: {
+        return UserDefaults.standard.string(forKey: "fcmToken")
+      },
+      
       updateLoginState: { isLoggedIn in
         UserDefaults.standard.set(isLoggedIn, forKey: "loginState")
       },
       
       updateDeleteState: { isDelete in
         UserDefaults.standard.set(!isDelete, forKey: "deleteState")
+      },
+      
+      updateFcmToken: { fcmToken in
+        UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
       }
     )
   }

@@ -44,7 +44,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     Log.debug("fcm token: \(fcmToken ?? "NO TOKEN")")
     if let fcmToken {
       // TODO: user defaults 설정 방법 변경
-      UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
+      store.send(.appDelegate(.didReceivedFcmToken(fcmToken: fcmToken)))
     }
   }
   

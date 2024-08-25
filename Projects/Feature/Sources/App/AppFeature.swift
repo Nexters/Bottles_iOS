@@ -52,6 +52,7 @@ public struct AppFeature {
     case login(LoginFeature.Action)
     case onboarding(OnboardingFeature.Action)
     
+    case checkUserLoginState
     case sceneDidActive
     case appleUserIdDidRevoked
     case loginCheckCompleted(isLoggedIn: Bool)
@@ -85,7 +86,7 @@ public struct AppFeature {
     action: Action
   ) -> EffectOf<Self> {
     switch action {
-    case .onAppear:
+    case .checkUserLoginState:
       let isAppDeleted = userClient.isAppDeleted()
       let isLoggedIn = authClient.checkTokenIsExist()
       
@@ -120,6 +121,14 @@ public struct AppFeature {
         return changeRoot(.Onboarding, state: &state)
       }
     
+    // AppDelegate Delegate
+    case let .appDelegate(.delegate(delegate)):
+      switch delegate {
+      case let .fcmTokenDidRecevied(fcmToken):
+        userClient.updateFcmToken(fcmToken: fcmToken)
+        return .send(.checkUserLoginState)
+      }
+      
     // Login Delegate
     case let .login(.delegate(delegate)):
       switch delegate {

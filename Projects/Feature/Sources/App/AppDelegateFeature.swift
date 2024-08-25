@@ -19,6 +19,14 @@ public struct AppDelegateFeature {
   
   public enum Action {
     case didFinishLunching
+    case didReceivedFcmToken(fcmToken: String)
+    
+    // Delegate
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case fcmTokenDidRecevied(fcmToken: String)
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -36,6 +44,14 @@ public struct AppDelegateFeature {
       }
       
       KakaoSDK.initSDK(appKey: kakaoAppKey)
+      return .none
+      
+    case let .didReceivedFcmToken(fcmToken):
+      return .run { send in
+        await send(.delegate(.fcmTokenDidRecevied(fcmToken: fcmToken)))
+      }
+      
+    default:
       return .none
     }
   }

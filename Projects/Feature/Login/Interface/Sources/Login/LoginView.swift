@@ -28,41 +28,40 @@ public struct LoginView: View {
   public var body: some View {
     WithPerceptionTracking {
       NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-          VStack(spacing: 0) {
-            Spacer()
-              .frame(height: 52)
-            whiteLogo
-              .padding(.top, 52)
-              .padding(.bottom, .xl)
-            
-            mainText
-              
-            Spacer()
-            
-            VStack(spacing: 30.0) {
-              signInWithKakaoButton
-              snsLoginButton
-            }
-            .padding(.bottom, 30.0)
+        VStack(spacing: 0) {
+          Spacer()
+            .frame(height: 52)
+          whiteLogo
+            .padding(.top, 52)
+            .padding(.bottom, .xl)
+          
+          mainText
+          
+          Spacer()
+          
+          VStack(spacing: 30.0) {
+            signInWithKakaoButton
+            snsLoginButton
           }
-          .background {
-            BottleImageView(
-              type: .local(bottleImageSystem: .illustraition(.loginBackground))
-            )
-          }
-          .edgesIgnoringSafeArea([.top, .bottom])
-          .sheet(
-            isPresented: $store.isPresentTermView,
-            content: {
-              TermsWebView(url: store.termURL)
-            }
+          .padding(.bottom, 30.0)
+        }
+        .background {
+          BottleImageView(
+            type: .local(bottleImageSystem: .illustraition(.loginBackground))
           )
-          .overlay {
-            if store.isLoading {
-              LoadingIndicator()
-            }
+        }
+        .edgesIgnoringSafeArea([.top, .bottom])
+        .sheet(
+          isPresented: $store.isPresentTermView,
+          content: {
+            TermsWebView(url: store.termURL)
           }
-
+        )
+        .overlay {
+          if store.isLoading {
+            LoadingIndicator()
+          }
+        }
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
@@ -70,12 +69,12 @@ public struct LoginView: View {
             if let store = store.scope(state: \.generalLogin, action: \.generalLogin) {
               GeneralLogInView(store: store)
             }
-
+            
           case .onBoarding:
             if let store = store.scope(state: \.onBoarding, action: \.onBoarding) {
               OnboardingView(store: store)
             }
-
+            
           case .generalSignUp:
             if let store = store.scope(state: \.generalSignUp, action: \.generalSignUp) {
               GeneralSignUpView(store: store)
@@ -99,11 +98,12 @@ public struct LoginView: View {
           case .startGuide:
             if let store = store.scope(state: \.startGuide, action: \.startGuide) {
               StartGuideView(store: store)
-			}
-
+            }
+            
           case .appleLogin:
             if let store = store.scope(state: \.appleLogin, action: \.appleLogin) {
               AppleLoginView(store: store)
+            }
           }
         }
       }
