@@ -10,8 +10,8 @@ import ProjectDescription
 public extension InfoPlist {
     static var app: InfoPlist {
         return .extendingDefault(with: [
-            "CFBundleShortVersionString": "1.0.2",
-            "CFBundleVersion": "21",
+            "CFBundleShortVersionString": "1.0.3",
+            "CFBundleVersion": "23",
             "UIUserInterfaceStyle": "Light",
             "CFBundleName": "보틀",
             "UILaunchScreen": [
@@ -25,7 +25,7 @@ public extension InfoPlist {
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
-            "LSApplicationQueriesSchemes": ["kakaokompassauth"],
+            "LSApplicationQueriesSchemes": ["kakaokompassauth", "kakaotalk"],
             "CFBundleURLTypes": [
                 [
                     "CFBundleTypeRole": "Editor",
@@ -39,8 +39,8 @@ public extension InfoPlist {
     
     static var example: InfoPlist {
         return .extendingDefault(with: [
-            "CFBundleShortVersionString": "1.0.2",
-            "CFBundleVersion": "21",
+            "CFBundleShortVersionString": "1.0.3",
+            "CFBundleVersion": "23",
             "UIUserInterfaceStyle": "Light",
             "UILaunchScreen": [:],
             "UISupportedInterfaceOrientations": [
@@ -49,7 +49,7 @@ public extension InfoPlist {
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
-            "LSApplicationQueriesSchemes": ["kakaokompassauth"],
+            "LSApplicationQueriesSchemes": ["kakaokompassauth", "kakaotalk"],
             "CFBundleURLTypes": [
                 [
                     "CFBundleTypeRole": "Editor",

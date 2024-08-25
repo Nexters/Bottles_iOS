@@ -8,6 +8,8 @@
 import Foundation
 
 import DomainAuthInterface
+import DomainUser
+
 import CoreNetwork
 import CoreLoggerInterface
 
@@ -19,12 +21,13 @@ extension AuthClient: DependencyKey {
   private static func live() -> AuthClient {
     @Dependency(\.network) var networkManager
     @Dependency(\.loginManager) var loginManager
-    
+    @Dependency(\.userClient) var userClient
     return .init(
       signInWithKakao: {
         let signInResult = try await loginManager.signIn(loginType: .kakao)
         let accessToken = signInResult.accessToken
-        guard let fcmToken = UserDefaults.standard.string(forKey: "fcmToken")
+        let fcmToken = userClient.fetchFcmToken()
+        guard let fcmToken = fcmToken
         else {
           Log.fault("no fcm token")
           fatalError()
@@ -40,8 +43,8 @@ extension AuthClient: DependencyKey {
         let signInResult = try await loginManager.signIn(loginType: .apple)
         let accessToken = signInResult.accessToken
         let userName = signInResult.userName
-        
-        guard let fcmToken = UserDefaults.standard.string(forKey: "fcmToken")
+        let fcmToken = userClient.fetchFcmToken()
+        guard let fcmToken = fcmToken
         else {
           Log.fault("no fcm token")
           fatalError()
@@ -62,7 +65,8 @@ extension AuthClient: DependencyKey {
         try await networkManager.reqeust(api: .apiType(AuthAPI.withdraw))
       },
       logout: {
-        guard let fcmToken = UserDefaults.standard.string(forKey: "fcmToken")
+        let fcmToken = userClient.fetchFcmToken()
+        guard let fcmToken = fcmToken
         else {
           Log.fault("no fcm token")
           return

@@ -49,6 +49,7 @@ public struct LoginFeature {
     case personalInformationTermButtonDidTapped
     case utilizationTermButtonDidTapped
     
+    case guideDidCompleted
     case indicatorStateChanged(isLoading: Bool)
     case socialLoginDidSuccess(UserInfo)
     case signUpCheckCompleted(isSignUp: Bool)
