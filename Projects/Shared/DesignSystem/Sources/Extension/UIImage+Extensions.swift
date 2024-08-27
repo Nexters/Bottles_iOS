@@ -16,7 +16,7 @@ public extension UIImage {
     while Double(imageSize) > targetMB * pow(2, 20) {
       compressedImage = self.resized(toLength: Double(resizeLength) * resizeScale)
       imageSize = compressedImage?.jpegData(compressionQuality: 0.8)?.count ?? 0
-      resizeScale = 0.75
+      resizeScale *= 0.75
     }
     
     return compressedImage?.jpegData(compressionQuality: 0.8)
