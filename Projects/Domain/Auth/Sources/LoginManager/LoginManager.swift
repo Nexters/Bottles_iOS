@@ -86,6 +86,7 @@ extension LoginManager {
           continuation.resume(throwing: URLError(.badServerResponse))
           Log.error("Kakao Login Error")
         }
+        return
       }
     }
   }
