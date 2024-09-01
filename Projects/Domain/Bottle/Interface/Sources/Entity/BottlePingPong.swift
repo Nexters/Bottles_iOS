@@ -81,23 +81,17 @@ public struct MatchResult: Equatable {
   public let matchStatus: BottleMatchStatus
   public let otherContact: String
   public let shouldAnswer: Bool
-  public let meetingPlace: String?
-  public let meetingPlaceImageURL: String?
   
   init(
     isFirstSelect: Bool,
     matchStatus: BottleMatchStatus,
     otherContact: String,
-    shouldAnswer: Bool,
-    meetingPlace: String?,
-    meetingPlaceImageUrl: String?
+    shouldAnswer: Bool
   ) {
     self.isFirstSelect = isFirstSelect
     self.matchStatus = matchStatus
     self.otherContact = otherContact
     self.shouldAnswer = shouldAnswer
-    self.meetingPlace = meetingPlace
-    self.meetingPlaceImageURL = meetingPlaceImageUrl
   }
 }
 

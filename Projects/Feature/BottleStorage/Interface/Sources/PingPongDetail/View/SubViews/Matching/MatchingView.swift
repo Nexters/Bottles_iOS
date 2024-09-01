@@ -27,17 +27,7 @@ public struct MatchingView: View {
             .padding(.vertical, 32)
           
           matchingInfo
-          
-          if store.matchingState == .success,
-             let placeName = store.matchingPlace,
-             let placeImageURL = store.matchingPlaceImageURL {
-            Spacer().frame(height: 12.0)
-            placeRecommendView(
-              placeName: placeName,
-              placeImageURL: placeImageURL
-            )
-          }
-          
+
           Spacer()
           
           bottomButton
@@ -193,60 +183,6 @@ private extension MatchingView {
     default:
       EmptyView()
     }
-  }
-  
-  func placeRecommendView(placeName: String, placeImageURL: String) -> some View {
-    VStack(alignment: .leading, spacing: .xl) {
-      VStack(spacing: .xs) {
-        VStack(alignment: .leading, spacing: 0.0) {
-          WantedSansStyleText(
-            "두근두근 첫만남, 이런장소는 어때요?",
-            style: .subTitle1,
-            color: .primary
-          )
-          
-          WantedSansStyleText(
-            "보틀 AI가 취향에 맞는 장소를 추천 드려요!",
-            style: .subTitle1,
-            color: .tertiary
-          )
-        }
-        
-        HStack(spacing: 0.0) {
-          Spacer()
-          WantedSansStyleText(
-            placeName,
-            style: .subTitle1,
-            color: .primary
-          )
-          Spacer()
-        }
-        
-        HStack(spacing: 0.0) {
-          Spacer()
-          
-          BottleImageView(type: .remote(
-            url: placeImageURL,
-            downsamplingWidth: 300.0,
-            downsamplingHeight: 300.0
-          ))
-          .frame(width: 200.0, height: 200.0)
-          .clipShape(RoundedRectangle(cornerRadius: BottleRadiusType.md.value))
-          
-          Spacer()
-        }
-      }
-    }
-    .padding(.horizontal, .md)
-    .padding(.vertical, .xl)
-    .overlay(
-      RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
-        .strokeBorder(
-          ColorToken.border(.primary).color,
-          lineWidth: 1.0
-        )
-    )
-    .padding(.bottom, 32.0)
   }
 }
 

@@ -35,8 +35,6 @@ public struct MatchingFeature {
     public var matchingState: MatchingStateType
     public var kakaoTalkId: String?
     public var peerUserName: String?
-    public var matchingPlace: String?
-    public var matchingPlaceImageURL: String?
     
     public init(
       matchingState: MatchingStateType = .none,
@@ -56,9 +54,7 @@ public struct MatchingFeature {
     // User Action
     case matchingStateDidFetched(
       matchResult: MatchResult,
-      userName: String,
-      matchingPlace: String?,
-      matchingPlaceImageURL: String?
+      userName: String
     )
     case copyButtonDidTapped
     case otherBottleButtonDidTapped
@@ -77,4 +73,3 @@ public struct MatchingFeature {
     reducer
   }
 }
-

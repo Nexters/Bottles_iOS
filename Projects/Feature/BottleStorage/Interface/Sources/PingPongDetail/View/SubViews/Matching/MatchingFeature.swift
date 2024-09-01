@@ -23,10 +23,7 @@ extension MatchingFeature {
       case .onAppear:
         return .none
         
-      case let .matchingStateDidFetched(matchResult, userName, matchingPlace, matchingPlaceImageURL):
-        state.matchingPlace = matchingPlace
-        state.matchingPlaceImageURL = matchingPlaceImageURL
-        
+      case let .matchingStateDidFetched(matchResult, userName):
         // 사용자 최종 선택 X
         state.peerUserName = userName
         
