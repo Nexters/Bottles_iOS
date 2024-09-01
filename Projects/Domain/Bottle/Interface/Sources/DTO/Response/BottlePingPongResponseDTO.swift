@@ -23,11 +23,11 @@ public struct BottlePingPongResponseDTO: Decodable {
       letters: (letters?.map { $0.toDomain() }) ?? [],
       matchResult: matchResult?.toDomain() ?? MatchResult(
         isFirstSelect: false,
-        matchStatus: .inConversation,
+        matchStatus: .disabled,
         otherContact: "",
         shouldAnswer: false
       ),
-      photo: photo?.toDomain() ?? Photo(photoStatus: .none),
+      photo: photo?.toDomain() ?? Photo(photoStatus: .disabled),
       stopUserName: stopUserName,
       userProfile: userProfile?.toDomain() ?? UserProfile(
         userId: -1,
@@ -78,14 +78,13 @@ public struct BottlePingPongResponseDTO: Decodable {
     let shouldAnswer: Bool?
     
     public func toDomain() -> MatchResult {
-      let matchStatus: BottleMatchStatus = switch matchStatus {
-      case "IN_CONVERSATION": .inConversation
-      case "MATCH_SUCCEEDED": .matchSucceeded
+      let matchStatus: PingPongMatchStatus = switch matchStatus {
+      case "NONE": .disabled
+      case "REQUIRE_SELECT": .requireSelect
+      case "WAITING_OTHER_ANSWER": .waitingOtherAnswer
       case "MATCH_FAILED": .matchFailed
-      case "NONE": .inConversation
-      case "REQUIRE_SELECT": .inConversation
-      case "WAITING_OTHER_ANSWER": .inConversation
-      default: .matchFailed
+      case "MATCH_SUCCEEDED": .matchSucceeded
+      default: .disabled
       }
       
       return .init(
@@ -109,7 +108,7 @@ public struct BottlePingPongResponseDTO: Decodable {
       case "MY_REJECT":
           .myReject
       case "NONE":
-          .none
+          .disabled
       case "OTHER_REJECT":
           .otherReject
       case "REQUIRE_SELECT_OTHER_SELECT":
@@ -119,7 +118,7 @@ public struct BottlePingPongResponseDTO: Decodable {
       case "WAITING_OTHER_ANSWER":
           .waitingOtherAnswer
       default:
-          .none
+          .disabled
       }
       return .init(
         photoStatus: photoStatus,

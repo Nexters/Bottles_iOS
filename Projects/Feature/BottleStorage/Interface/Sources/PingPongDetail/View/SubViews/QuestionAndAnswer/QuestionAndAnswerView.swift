@@ -89,7 +89,7 @@ public struct QuestionAndAnswerView: View {
           FinalSelectPingPongView(
             isActive: store.finalSelectIsActive,
             pingPongTitle: "최종 선택",
-            finalSelectState: store.finalSelectStateType,
+            pingPongMatchStatus: store.pingPongMatchStatus,
             isSelctedYesButton: $store.finalSelectIsSelctedYesButton,
             isSelctedNoButton: $store.finalSelectIsSelctedNoButton,
             doneButtonAction: {

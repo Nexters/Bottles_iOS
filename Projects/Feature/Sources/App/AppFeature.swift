@@ -88,7 +88,20 @@ public struct AppFeature {
     switch action {
     case .checkUserLoginState:
       let isAppDeleted = userClient.isAppDeleted()
-      let isLoggedIn = authClient.checkTokenIsExist()
+//      let isLoggedIn = authClient.checkTokenIsExist()
+      let isLoggedIn = true
+      
+      // 차은우
+//      authClient.saveToken(token: .init(
+//        accessToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1MTkyMTM4LCJleHAiOjE3MjUyMjgxMzh9.YK0ENYLvgb78mbr5D4Z7MknZkUoLU-TzKdatzAc5mH4",
+//        refershToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzI1MTkyMTM4LCJleHAiOjE3Mzk3MDczMzh9.MRrHvZupu6EwD-dF9EToJsCCsmXeqCg9bC_jIxKC2fI"
+//      ))
+      
+      // 카리나
+      authClient.saveToken(token: .init(
+        accessToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzI1MTkyMTM4LCJleHAiOjE3MjUyMjgxMzh9.wHz4Z2_kI3_qIMlkfKsVEJNiMexMswyLnE9vBfvyLmY",
+        refershToken: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzI1MTkyMTM4LCJleHAiOjE3Mzk3MDczMzh9.gH4SKWe6zzyYVQR9bLQwfStBHV9BlIJNLGkdo46gvIg"
+      ))
       
       if isAppDeleted {
         userClient.updateDeleteState(isDelete: false)

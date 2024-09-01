@@ -69,7 +69,7 @@ private extension PingPongDetailView {
           isSelected: store.selectedTab == tab,
           action: { store.send(.pingPongDetailViewTabDidTapped(tab)) }
         )
-        .disabled(tab == .matching && (store.pingPong?.matchResult.matchStatus == .inConversation || store.pingPong?.matchResult.matchStatus == .none))
+        .disabled(tab == .matching && store.isMatchingTabDisabled)
       })
       
       Spacer()

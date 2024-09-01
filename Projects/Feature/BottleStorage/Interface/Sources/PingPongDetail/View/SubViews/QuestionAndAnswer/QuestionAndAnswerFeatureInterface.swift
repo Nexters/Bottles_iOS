@@ -85,11 +85,16 @@ public struct QuestionAndAnswerFeature {
     
     // 사진 선택
     var photoShareIsActive: Bool {
-      return pingPong?.photo.photoStatus != PingPongPhotoStatus.none
+      guard let photoStatus = pingPong?.photo.photoStatus
+      else {
+        return false
+      }
+      
+      return photoStatus != PingPongPhotoStatus.disabled
     }
     
     var photoShareStateType: PingPongPhotoStatus {
-      return photoInfo?.photoStatus ?? .none
+      return photoInfo?.photoStatus ?? .disabled
     }
 
     var photoIsSelctedYesButton: Bool
@@ -97,23 +102,15 @@ public struct QuestionAndAnswerFeature {
     
     // 최종 선택
     var finalSelectIsActive: Bool {
-      return false
+      guard let matchStatus = pingPong?.matchResult.matchStatus
+      else {
+        return false
+      }
+      
+      return matchStatus != .disabled
     }
-    var finalSelectStateType: FinalSelectStateType {
-      if pingPong?.matchResult.matchStatus == .inConversation
-          && pingPong?.matchResult.shouldAnswer == true {
-        return .notSelected
-      }
-      
-      if pingPong?.matchResult.matchStatus == .inConversation && pingPong?.matchResult.shouldAnswer == false {
-        return .waitingForPeer
-      }
-      
-      if pingPong?.matchResult.matchStatus != .inConversation {
-        return .bothSelected
-      }
-      
-      return .notSelected
+    var pingPongMatchStatus: PingPongMatchStatus {
+      return pingPong?.matchResult.matchStatus ?? .disabled
     }
     var finalSelectIsSelctedYesButton: Bool
     var finalSelectIsSelctedNoButton: Bool

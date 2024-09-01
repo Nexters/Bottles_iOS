@@ -78,13 +78,13 @@ public struct Letter: Equatable {
 
 public struct MatchResult: Equatable {
   public let isFirstSelect: Bool
-  public let matchStatus: BottleMatchStatus
+  public let matchStatus: PingPongMatchStatus
   public let otherContact: String
   public let shouldAnswer: Bool
   
   init(
     isFirstSelect: Bool,
-    matchStatus: BottleMatchStatus,
+    matchStatus: PingPongMatchStatus,
     otherContact: String,
     shouldAnswer: Bool
   ) {
@@ -95,9 +95,16 @@ public struct MatchResult: Equatable {
   }
 }
 
-public enum BottleMatchStatus {
-  case inConversation
+public enum PingPongMatchStatus {
+  /// 최종 선택 단계 X
+  case disabled
+  /// 최종 선택해야 함
+  case requireSelect
+  /// 상대방의 답변을 기다리는 상황
+  case waitingOtherAnswer
+  /// 매칭 실패
   case matchFailed
+  /// 매칭 성공
   case matchSucceeded
 }
 
@@ -118,7 +125,7 @@ public struct Photo: Equatable {
 }
 
 public enum PingPongPhotoStatus: Equatable {
-  case none
+  case disabled
   case bothAgree
   case myReject
   case otherReject
