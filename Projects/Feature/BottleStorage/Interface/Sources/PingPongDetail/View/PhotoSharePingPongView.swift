@@ -7,12 +7,16 @@
 
 import SwiftUI
 
+import DomainBottleInterface
+
 import SharedDesignSystem
 
 public struct PhotoSharePingPongView: View {
   private let isActive: Bool
   private let pingPongTitle: String
-  private let photoShareState: PhotoShareStateType
+  private let photoShareState: PingPongPhotoStatus
+  private let myImageURL: String?
+  private let otherImageURL: String?
   @Binding var isSelctedYesButton: Bool
   @Binding var isSelctedNoButton: Bool
   private let doneButtonAction: (() -> Void)?
@@ -20,14 +24,18 @@ public struct PhotoSharePingPongView: View {
   public init(
     isActive: Bool,
     pingPongTitle: String, 
-    photoShareState: PhotoShareStateType,
-    isSelctedYesButton: Binding<Bool> = .constant(false), 
+    photoShareState: PingPongPhotoStatus,
+    myImageURL: String?,
+    otherImageURL: String?,
+    isSelctedYesButton: Binding<Bool> = .constant(false),
     isSelctedNoButton: Binding<Bool> = .constant(false), 
     doneButtonAction: (() -> Void)? = nil
   ) {
     self.isActive = isActive
     self.pingPongTitle = pingPongTitle
     self.photoShareState = photoShareState
+    self.myImageURL = myImageURL
+    self.otherImageURL = otherImageURL
     self._isSelctedYesButton = isSelctedYesButton
     self._isSelctedNoButton = isSelctedNoButton
     self.doneButtonAction = doneButtonAction
@@ -49,14 +57,19 @@ private extension PhotoSharePingPongView {
     VStack(spacing: .sm) {
       questionText
       
-      if photoShareState == .notSelected {
+      switch photoShareState {
+      case .requireSelect:
         notSelectedView
-      } else if photoShareState == .waitingForPeer {
+      case .waitingOtherAnswer:
         waitingForPeerView
-      } else if photoShareState == .eitherPrivate {
-        eitherPrivateView
-      } else {
+      case .bothAgree:
         bothPublicView
+      case .myReject:
+        myRejectView
+      case .otherReject:
+        otherRejectView
+      default:
+        EmptyView()
       }
     }
     .padding(.horizontal, .md)
@@ -100,6 +113,20 @@ private extension PhotoSharePingPongView {
     }
   }
   
+  var myRejectView: some View {
+    VStack(spacing: .sm) {
+      makeRightBubbleText(text: "공유를 거절했어요")
+      makeLeftBubbleText(text: "상대방에게 대화 중단을 알렸어요")
+    }
+  }
+  
+  var otherRejectView: some View {
+    VStack(spacing: .sm) {
+      makeLeftBubbleText(text: "공유를 거절했어요")
+      makeLeftBubbleText(text: "상대방이 대화를 중단헀어요")
+    }
+  }
+  
   var waitingForPeerView: some View {
     VStack(spacing: .sm) {
       makeRightBubbleText(text: "공유를 완료했어요")
@@ -123,7 +150,11 @@ private extension PhotoSharePingPongView {
   
   @ViewBuilder
   var questionText: some View {
-    if photoShareState == .notSelected || photoShareState == .waitingForPeer {
+    if photoShareState == .requireSelect(otherSelected: false)
+        || photoShareState == .requireSelect(otherSelected: true)
+        || photoShareState == .waitingOtherAnswer
+        || photoShareState == .myReject
+        || photoShareState == .otherReject {
       HStack(spacing: 0) {
         WantedSansStyleText(
           "나의 프로필 사진을 공유할까요?",
@@ -140,23 +171,27 @@ private extension PhotoSharePingPongView {
   
   @ViewBuilder
   var peerProfileImage: some View {
-    GeometryReader { geo in
-      RemoteImageView(
-        imageURL: photoShareState.peerProfileImageURL,
-        downsamplingWidth: 150,
-        downsamplingHeight: 150
-      )
-      .frame(height: geo.size.width)
-      .preventScreenshot()
+    if let peerProfileImageURL = otherImageURL {
+      GeometryReader { geo in
+        RemoteImageView(
+          imageURL: peerProfileImageURL,
+          downsamplingWidth: 150,
+          downsamplingHeight: 150
+        )
+        .frame(height: geo.size.width)
+        .preventScreenshot()
+      }
+      .aspectRatio(1, contentMode: .fit)
+      .clipped()
+      .cornerRadius(.md, corenrs: [.topRight, .bottomLeft, .bottomRight])
+    } else {
+      EmptyView()
     }
-    .aspectRatio(1, contentMode: .fit)
-    .clipped()
-    .cornerRadius(.md, corenrs: [.topRight, .bottomLeft, .bottomRight])
   }
   
   @ViewBuilder
   var myProfileImage: some View {
-    if let myProfileImageURL = photoShareState.myProfileImageURL {
+    if let myProfileImageURL = myImageURL {
       GeometryReader { geo in
         RemoteImageView(
           imageURL: myProfileImageURL,
@@ -164,7 +199,6 @@ private extension PhotoSharePingPongView {
           downsamplingHeight: 150
         )
         .frame(height: geo.size.width)
-        .preventScreenshot()
       }
       .aspectRatio(1, contentMode: .fit)
       .clipped()

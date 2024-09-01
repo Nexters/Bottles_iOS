@@ -108,28 +108,28 @@ public enum BottleMatchStatus {
 }
 
 public struct Photo: Equatable {
-  public let isDone: Bool
-  public let myAnswer: Bool?
+  public let photoStatus: PingPongPhotoStatus
   public let myImageURL: String?
-  public let otherAnswer: Bool?
   public let otherImageURL: String?
-  public let shouldAnswer: Bool
   
-  init(
-    isDone: Bool,
-    myAnswer: Bool? = nil,
+  public init(
+    photoStatus: PingPongPhotoStatus,
     myImageURL: String? = nil,
-    otherAnswer: Bool? = nil,
-    otherImageURL: String? = nil,
-    shouldAnswer: Bool
+    otherImageURL: String? = nil
   ) {
-    self.isDone = isDone
-    self.myAnswer = myAnswer
+    self.photoStatus = photoStatus
     self.myImageURL = myImageURL
-    self.otherAnswer = otherAnswer
     self.otherImageURL = otherImageURL
-    self.shouldAnswer = shouldAnswer
   }
+}
+
+public enum PingPongPhotoStatus: Equatable {
+  case none
+  case bothAgree
+  case myReject
+  case otherReject
+  case requireSelect(otherSelected: Bool)
+  case waitingOtherAnswer
 }
 
 public struct UserProfile: Equatable {

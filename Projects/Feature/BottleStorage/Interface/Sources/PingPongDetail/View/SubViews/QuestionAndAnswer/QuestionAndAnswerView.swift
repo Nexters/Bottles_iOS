@@ -77,6 +77,8 @@ public struct QuestionAndAnswerView: View {
             isActive: store.photoShareIsActive,
             pingPongTitle: "사진 공개",
             photoShareState: store.photoShareStateType,
+            myImageURL: store.photoInfo?.myImageURL,
+            otherImageURL: store.photoInfo?.otherImageURL,
             isSelctedYesButton: $store.photoIsSelctedYesButton,
             isSelctedNoButton: $store.photoIsSelctedNoButton,
             doneButtonAction: {

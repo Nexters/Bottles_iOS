@@ -29,10 +29,7 @@ public struct BottlePingPongResponseDTO: Decodable {
         meetingPlace: nil,
         meetingPlaceImageUrl: nil
       ),
-      photo: photo?.toDomain() ?? Photo(
-        isDone: false,
-        shouldAnswer: false
-      ),
+      photo: photo?.toDomain() ?? Photo(photoStatus: .none),
       stopUserName: stopUserName,
       userProfile: userProfile?.toDomain() ?? UserProfile(
         userId: -1,
@@ -107,21 +104,33 @@ public struct BottlePingPongResponseDTO: Decodable {
   }
   
   public struct PhotoDTO: Decodable {
-    let isDone: Bool?
-    let myAnswer: Bool?
+    let photoStatus: String?
     let myImageUrl: String?
-    let otherAnswer: Bool?
     let otherImageUrl: String?
-    let shouldAnswer: Bool?
     
     public func toDomain() -> Photo {
+      let photoStatus: PingPongPhotoStatus = switch photoStatus {
+      case "BOTH_AGREE":
+          .bothAgree
+      case "MY_REJECT":
+          .myReject
+      case "NONE":
+          .none
+      case "OTHER_REJECT":
+          .otherReject
+      case "REQUIRE_SELECT_OTHER_SELECT":
+          .requireSelect(otherSelected: true)
+      case "REQUIRE_SELECT_OTHER_NOT_SELECT":
+          .requireSelect(otherSelected: false)
+      case "WAITING_OTHER_ANSWER":
+          .waitingOtherAnswer
+      default:
+          .none
+      }
       return .init(
-        isDone: isDone ?? false,
-        myAnswer: myAnswer,
+        photoStatus: photoStatus,
         myImageURL: myImageUrl,
-        otherAnswer: otherAnswer,
-        otherImageURL: otherImageUrl,
-        shouldAnswer: shouldAnswer ?? false
+        otherImageURL: otherImageUrl
       )
     }
   }

@@ -24,6 +24,9 @@ public struct QuestionAndAnswerFeature {
   public struct State: Equatable {
     let bottleID: Int
     private var pingPong: BottlePingPong?
+    var photoInfo: Photo? {
+      pingPong?.photo
+    }
     var isStopped: Bool {
       return pingPong?.isStopped == true
     }
@@ -82,39 +85,11 @@ public struct QuestionAndAnswerFeature {
     
     // 사진 선택
     var photoShareIsActive: Bool {
-      return thirdLetter?.isDone == true
+      return pingPong?.photo.photoStatus != PingPongPhotoStatus.none
     }
     
-    var photoShareStateType: PhotoShareStateType {
-      guard let photo = pingPong?.photo
-      else {
-        return .notSelected
-      }
-      
-      guard photo.shouldAnswer == false
-      else {
-        return .notSelected
-      }
-      
-      guard photo.otherAnswer == true
-      else {
-        return .waitingForPeer
-      }
-      
-      guard let myAnswer = photo.myAnswer,
-            let otherAnswer = photo.otherAnswer
-      else {
-        return .notSelected
-      }
-      
-      if myAnswer && otherAnswer {
-        return .bothPublic(
-          peerProfileImageURL: photo.otherImageURL ?? "",
-          myProfileImageURL: photo.myImageURL ?? ""
-        )
-      }
-      
-      return .eitherPrivate
+    var photoShareStateType: PingPongPhotoStatus {
+      return photoInfo?.photoStatus ?? .none
     }
 
     var photoIsSelctedYesButton: Bool
@@ -122,7 +97,7 @@ public struct QuestionAndAnswerFeature {
     
     // 최종 선택
     var finalSelectIsActive: Bool {
-      return pingPong?.photo.isDone == true
+      return false
     }
     var finalSelectStateType: FinalSelectStateType {
       if pingPong?.matchResult.matchStatus == .inConversation
