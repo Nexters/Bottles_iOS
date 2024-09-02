@@ -29,7 +29,8 @@ public struct ButtonListView: View {
     ListContainerView(
       title: title,
       subTitle: subTitle,
-      content: button)
+      content: button
+    )
   }
 }
 
