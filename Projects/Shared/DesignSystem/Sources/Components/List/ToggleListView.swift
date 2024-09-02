@@ -23,40 +23,15 @@ public struct ToggleListView: View {
   }
   
   public var body: some View {
-    HStack(spacing: 0) {
-      VStack(alignment: .leading, spacing: 8) {
-        titleView
-        subTitleView
-      }
-      Spacer()
-      toggle
-    }
+    ListContainerView(
+      title: title,
+      subTitle: subTitle,
+      content: toggle)
   }
 }
 
 // MARK: - Views
 private extension ToggleListView {
-  var titleView: some View {
-    WantedSansStyleText(
-      title,
-      style: .subTitle2,
-      color: .secondary
-    )
-  }
-  
-  @ViewBuilder
-  var subTitleView: some View {
-    if let subTitle = subTitle {
-      WantedSansStyleText(
-        subTitle,
-        style: .caption,
-        color: .tertiary
-      )
-    } else {
-      EmptyView()
-    }
-  }
-  
   var toggle: some View {
     BottleToggle(isOn: $isOn)
   }

@@ -20,40 +20,16 @@ public struct ArrowListView: View {
   }
   
   public var body: some View {
-    HStack(spacing: 0) {
-      VStack(alignment: .leading, spacing: 8) {
-        titleView
-        subTitleView
-      }
-      Spacer()
-      rightArrowImage
-    }
+    ListContainerView(
+      title: title,
+      subTitle: subTitle,
+      content: rightArrowImage
+    )
   }
 }
 
 // MARK: - Views
 private extension ArrowListView {
-  var titleView: some View {
-    WantedSansStyleText(
-      title,
-      style: .subTitle2,
-      color: .secondary
-    )
-  }
-  
-  @ViewBuilder
-  var subTitleView: some View {
-    if let subTitle = subTitle {
-      WantedSansStyleText(
-        subTitle,
-        style: .caption,
-        color: .tertiary
-      )
-    } else {
-      EmptyView()
-    }
-  }
-  
   var rightArrowImage: some View {
     BottleImageView(
       type: .local(
