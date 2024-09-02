@@ -9,21 +9,30 @@ import SwiftUI
 
 private struct AsThrottleButtonModifier: ViewModifier {
   private let action: () -> Void
+  private let delay: TimeInterval
+  @State private var isThrottling: Bool = false
   
-  init(action: @escaping () -> Void) {
+  init(delay: TimeInterval, action: @escaping () -> Void) {
+    self.delay = delay
     self.action = action
   }
   
   func body(content: Content) -> some View {
     content
       .asButton {
-        action()
+        if !isThrottling {
+          action()
+          isThrottling = true
+          DispatchQueue.global().asyncAfter(deadline: .now() + delay) {
+            isThrottling = false
+          }
+        }
       }
   }
 }
 
 public extension View {
-  func asThrottleButton(action: @escaping () -> Void) -> some View {
-    modifier(AsThrottleButtonModifier(action: action))
+  func asThrottleButton(delay: TimeInterval = 0.5, action: @escaping () -> Void) -> some View {
+    modifier(AsThrottleButtonModifier(delay: delay, action: action))
   }
 }
