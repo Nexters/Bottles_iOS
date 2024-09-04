@@ -146,28 +146,29 @@ private extension PhotoSharePingPongView {
         downsamplingWidth: 150,
         downsamplingHeight: 150
       )
-      .cornerRadius(.md, corenrs: [.topRight, .bottomLeft, .bottomRight])
       .frame(height: geo.size.width)
+      .preventScreenshot()
     }
     .aspectRatio(1, contentMode: .fit)
-    .preventScreenshot()
+    .clipped()
+    .cornerRadius(.md, corenrs: [.topRight, .bottomLeft, .bottomRight])
   }
   
   @ViewBuilder
   var myProfileImage: some View {
     if let myProfileImageURL = photoShareState.myProfileImageURL {
       GeometryReader { geo in
-        
         RemoteImageView(
           imageURL: myProfileImageURL,
           downsamplingWidth: 150,
           downsamplingHeight: 150
         )
-        .cornerRadius(.md, corenrs: [.topRight, .topLeft, .bottomLeft])
         .frame(height: geo.size.width)
         .preventScreenshot()
       }
       .aspectRatio(1, contentMode: .fit)
+      .clipped()
+      .cornerRadius(.md, corenrs: [.topRight, .topLeft, .bottomLeft])
     } else {
       EmptyView()
     }
