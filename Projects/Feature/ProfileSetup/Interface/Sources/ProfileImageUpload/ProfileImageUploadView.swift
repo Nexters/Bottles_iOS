@@ -23,35 +23,37 @@ public struct ProfileImageUploadView: View {
   }
   
   public var body: some View {
-    ScrollView {
-      VStack(spacing: 0.0) {
-        titleView
-        
-        PhotosPicker(
-          selection: $selectedItems,
-          maxSelectionCount: 1,
-          matching: .images
-        ) {
-          imagePickerButton
-            .frame(height: UIScreen.main.bounds.width - 16.0 * 2)
-            .padding(.bottom, .md)
+    WithPerceptionTracking {
+      ScrollView {
+        VStack(spacing: 0.0) {
+          titleView
+          
+          PhotosPicker(
+            selection: $selectedItems,
+            maxSelectionCount: 1,
+            matching: .images
+          ) {
+            imagePickerButton
+              .frame(height: UIScreen.main.bounds.width - 16.0 * 2)
+              .padding(.bottom, .md)
+          }
+          .onChange(of: selectedItems) { item in
+            handleSelectedPhotos(item)
+          }
+          
+          doneButton
         }
-        .onChange(of: selectedItems) { item in
-          handleSelectedPhotos(item)
+        .padding(.bottom, .xl)
+      }
+      .padding(.horizontal, .md)
+      .setNavigationBar {
+        makeNaivgationleftButton {
+          store.send(.backButtonDidTapped)
         }
-        
-        doneButton
       }
-      .padding(.bottom, .xl)
+      .scrollIndicators(.hidden)
+      .toolbar(.hidden, for: .bottomBar)
     }
-    .padding(.horizontal, .md)
-    .setNavigationBar {
-      makeNaivgationleftButton {
-        store.send(.backButtonDidTapped)
-      }
-    }
-    .scrollIndicators(.hidden)
-    .toolbar(.hidden, for: .bottomBar)
   }
 }
 
