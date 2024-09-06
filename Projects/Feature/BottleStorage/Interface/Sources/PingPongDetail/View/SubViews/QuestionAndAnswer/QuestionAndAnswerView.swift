@@ -77,6 +77,8 @@ public struct QuestionAndAnswerView: View {
             isActive: store.photoShareIsActive,
             pingPongTitle: "사진 공개",
             photoShareState: store.photoShareStateType,
+            myProfileImageURL: store.photoInfo?.myProfileImageURL,
+            otherProfileImageURL: store.photoInfo?.otherProfileImageURL,
             isSelctedYesButton: $store.photoIsSelctedYesButton,
             isSelctedNoButton: $store.photoIsSelctedNoButton,
             doneButtonAction: {
@@ -87,7 +89,7 @@ public struct QuestionAndAnswerView: View {
           FinalSelectPingPongView(
             isActive: store.finalSelectIsActive,
             pingPongTitle: "최종 선택",
-            finalSelectState: store.finalSelectStateType,
+            pingPongMatchStatus: store.pingPongMatchStatus,
             isSelctedYesButton: $store.finalSelectIsSelctedYesButton,
             isSelctedNoButton: $store.finalSelectIsSelctedNoButton,
             doneButtonAction: {
