@@ -143,7 +143,9 @@ private extension PhotoSharePingPongView {
   var bothPublicView: some View {
     HStack(spacing: .sm) {
       peerProfileImage
+        .frame(maxWidth: .infinity)
       myProfileImage
+        .frame(maxWidth: .infinity)
     }
   }
   
@@ -196,6 +198,7 @@ private extension PhotoSharePingPongView {
           downsamplingHeight: 150
         )
         .frame(height: geo.size.width)
+        .preventScreenshot()
       }
       .aspectRatio(1, contentMode: .fit)
       .clipped()
