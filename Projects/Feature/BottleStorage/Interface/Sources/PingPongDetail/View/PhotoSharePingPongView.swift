@@ -150,11 +150,8 @@ private extension PhotoSharePingPongView {
   
   @ViewBuilder
   var questionText: some View {
-    if photoShareState == .requireSelect(otherSelected: false)
-        || photoShareState == .requireSelect(otherSelected: true)
-        || photoShareState == .waitingOtherAnswer
-        || photoShareState == .myReject
-        || photoShareState == .otherReject {
+    if photoShareState != .disabled
+        && photoShareState != .bothAgree {
       HStack(spacing: 0) {
         WantedSansStyleText(
           "나의 프로필 사진을 공유할까요?",
