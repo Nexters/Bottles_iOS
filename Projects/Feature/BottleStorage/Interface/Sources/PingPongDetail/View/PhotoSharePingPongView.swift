@@ -15,8 +15,8 @@ public struct PhotoSharePingPongView: View {
   private let isActive: Bool
   private let pingPongTitle: String
   private let photoShareState: PingPongPhotoStatus
-  private let myImageURL: String?
-  private let otherImageURL: String?
+  private let myProfileImageURL: String?
+  private let otherProfileImageURL: String?
   @Binding var isSelctedYesButton: Bool
   @Binding var isSelctedNoButton: Bool
   private let doneButtonAction: (() -> Void)?
@@ -25,8 +25,8 @@ public struct PhotoSharePingPongView: View {
     isActive: Bool,
     pingPongTitle: String, 
     photoShareState: PingPongPhotoStatus,
-    myImageURL: String?,
-    otherImageURL: String?,
+    myProfileImageURL: String?,
+    otherProfileImageURL: String?,
     isSelctedYesButton: Binding<Bool> = .constant(false),
     isSelctedNoButton: Binding<Bool> = .constant(false), 
     doneButtonAction: (() -> Void)? = nil
@@ -34,8 +34,8 @@ public struct PhotoSharePingPongView: View {
     self.isActive = isActive
     self.pingPongTitle = pingPongTitle
     self.photoShareState = photoShareState
-    self.myImageURL = myImageURL
-    self.otherImageURL = otherImageURL
+    self.myProfileImageURL = myProfileImageURL
+    self.otherProfileImageURL = otherProfileImageURL
     self._isSelctedYesButton = isSelctedYesButton
     self._isSelctedNoButton = isSelctedNoButton
     self.doneButtonAction = doneButtonAction
@@ -171,7 +171,7 @@ private extension PhotoSharePingPongView {
   
   @ViewBuilder
   var peerProfileImage: some View {
-    if let peerProfileImageURL = otherImageURL {
+    if let peerProfileImageURL = otherProfileImageURL {
       GeometryReader { geo in
         RemoteImageView(
           imageURL: peerProfileImageURL,
@@ -191,7 +191,7 @@ private extension PhotoSharePingPongView {
   
   @ViewBuilder
   var myProfileImage: some View {
-    if let myProfileImageURL = myImageURL {
+    if let myProfileImageURL = myProfileImageURL {
       GeometryReader { geo in
         RemoteImageView(
           imageURL: myProfileImageURL,

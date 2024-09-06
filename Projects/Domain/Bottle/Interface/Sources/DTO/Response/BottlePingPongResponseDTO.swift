@@ -122,8 +122,8 @@ public struct BottlePingPongResponseDTO: Decodable {
       }
       return .init(
         photoStatus: photoStatus,
-        myImageURL: myImageUrl,
-        otherImageURL: otherImageUrl
+        myProfileImageURL: myImageUrl,
+        otherProfileImageURL: otherImageUrl
       )
     }
   }
