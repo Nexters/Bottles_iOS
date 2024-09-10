@@ -7,10 +7,13 @@
 
 import Foundation
 
-import SharedDesignSystem
-import CoreLoggerInterface
 import DomainProfile
 import DomainBottle
+import DomainAuth
+
+import CoreLoggerInterface
+
+import SharedDesignSystem
 import SharedUtilInterface
 
 import ComposableArchitecture
@@ -57,6 +60,7 @@ public struct SandBeachFeature {
 // MARK: - init {
 extension SandBeachFeature {
   public init() {
+    @Dependency(\.authClient) var authClient
     @Dependency(\.profileClient) var profileClient
     @Dependency(\.bottleClient) var bottleClient
     
@@ -78,6 +82,9 @@ extension SandBeachFeature {
         })
 
         return .run { send in
+//          let test = try await authClient.fetchUpdateVersion()
+//          Log.debug(test)
+          
           let isExsit = try await profileClient.checkExistIntroduction()
           // 자기소개 없는 상태
           if !isExsit {
