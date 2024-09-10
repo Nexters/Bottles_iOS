@@ -46,6 +46,7 @@ public struct BaseWebView: UIViewRepresentable {
     
     let request = URLRequest(url: type.url)
     webView.load(request)
+    webView.allowsBackForwardNavigationGestures = true
     return webView
   }
   
