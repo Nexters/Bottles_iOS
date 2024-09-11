@@ -56,7 +56,7 @@ extension AuthAPI: BaseTargetType {
     case .profile:
       return .post
     case .updateVersion:
-      return .post
+      return .get
     }
   }
   
