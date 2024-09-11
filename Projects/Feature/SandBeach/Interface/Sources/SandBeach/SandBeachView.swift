@@ -12,7 +12,7 @@ import SharedDesignSystem
 import ComposableArchitecture
 
 public struct SandBeachView: View {
-  private let store: StoreOf<SandBeachFeature>
+  @Perception.Bindable private var store: StoreOf<SandBeachFeature>
   
   public init(store: StoreOf<SandBeachFeature>) {
     self.store = store
@@ -64,6 +64,7 @@ public struct SandBeachView: View {
           }
         }
       }
+      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
       .onAppear {
         store.send(.onAppear)
       }

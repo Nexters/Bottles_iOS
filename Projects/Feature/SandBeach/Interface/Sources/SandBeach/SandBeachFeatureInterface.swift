@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import UIKit
 
 import DomainProfile
 import DomainBottle
 import DomainAuth
+import DomainErrorInterface
 
 import CoreLoggerInterface
 
@@ -33,16 +35,21 @@ public struct SandBeachFeature {
     public var isLoading: Bool = false
     public var isDisableIslandBottle: Bool = false
     
+    @Presents var destination: Destination.State?
+    
     public init() {}
   }
   
-  public enum Action: Equatable {
+  public enum Action: BindableAction {
     case onAppear
     case userStateFetchCompleted(userState: UserStateType, isDisableButton: Bool)
     case updateIsDisableBottle(isDisable: Bool)
     case writeButtonDidTapped
     case newBottleIslandDidTapped
     case bottleStorageIslandDidTapped
+    case needUpdateAppVersionErrorOccured
+    case updateAppVersion
+    
     case delegate(Delegate)
     
     public enum Delegate {
@@ -50,10 +57,19 @@ public struct SandBeachFeature {
       case newBottleIslandDidTapped
       case bottleStorageIslandDidTapped
     }
+    
+    case alert(Alert)
+    public enum Alert: Equatable {
+      case needUpdateAppVersion
+    }
+    
+    case destination(PresentationAction<Destination.Action>)
+    case binding(BindingAction<State>)
   }
   
   public var body: some ReducerOf<Self> {
     reducer
+      .ifLet(\.$destination, action: \.destination)
   }
 }
 
@@ -82,12 +98,10 @@ extension SandBeachFeature {
         })
 
         return .run { send in
-//          let test = try await authClient.fetchUpdateVersion()
-//          Log.debug(test)
-          
-          let isExsit = try await profileClient.checkExistIntroduction()
+          async let _ = authClient.checkUpdateVersion()
+          async let isExsit = try await profileClient.checkExistIntroduction()
           // 자기소개 없는 상태
-          if !isExsit {
+            if try await !isExsit {
             await send(.userStateFetchCompleted(
               userState: .noIntroduction,
               isDisableButton: true))
@@ -125,6 +139,12 @@ extension SandBeachFeature {
         } catch: { error, send in
           // TODO: 에러 핸들링
           Log.error(error)
+          if let authError = error as? DomainError.AuthError {
+            switch authError {
+            case .needUpdateAppVersion:
+              await send(.needUpdateAppVersionErrorOccured)
+            }
+          }
         }
         
       case let .userStateFetchCompleted(userState, isDisableButton):
@@ -144,10 +164,45 @@ extension SandBeachFeature {
         Log.debug("newBottleIslandDidTapped")
         return .send(.delegate(.newBottleIslandDidTapped))
         
+      case .needUpdateAppVersionErrorOccured:
+        state.destination = .alert(.init(
+          title: { TextState("업데이트 안내") },
+          actions: {
+            ButtonState(
+              action: .needUpdateAppVersion,
+              label: { TextState("업데이트 하기") }
+            )
+          },
+          message: { TextState("최적의 사용 환경을 위해\n최신 버전의 앱으로 업데이트 해주세요") }
+        ))
+        return .none
+        
+      case let .destination(.presented(.alert(alert))):
+        switch alert {
+        case .needUpdateAppVersion:
+          return .send(.updateAppVersion)
+        }
+        
+      case .updateAppVersion:
+        let appStoreURL = URL(string: Bundle.main.infoDictionary?["APP_STORE_URL"] as? String ?? "")!
+        UIApplication.shared.open(appStoreURL)
+        return .run { _ in
+          // TODO: Custom Alert 만들면 확인 눌러도 dismiss 되지 않도록 수정
+          try await Task.sleep(nanoseconds: 3000_000_000)
+          exit(0)
+        }
+        
       default:
         return .none
       }
     }
     self.init(reducer: reducer)
+  }
+}
+
+extension SandBeachFeature {
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case alert(AlertState<SandBeachFeature.Action.Alert>)
   }
 }
