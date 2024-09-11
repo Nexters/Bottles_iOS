@@ -59,9 +59,8 @@ public struct SplashFeature {
     switch action {
     case .onAppear:
       return .run { send in
-        //        try await authClient.checkUpdateVersion()
-        //        await send(.delegate(.initialCheckCompleted))
-        await send(.needUpdateAppVersionErrorOccured)
+        try await authClient.checkUpdateVersion()
+        await send(.delegate(.initialCheckCompleted))
       } catch: { error, send in
         Log.error(error)
         // TODO: Error handling
@@ -95,7 +94,11 @@ public struct SplashFeature {
     case .updateAppVersion:
       let appStoreURL = URL(string: Bundle.main.infoDictionary?["APP_STORE_URL"] as? String ?? "")!
       UIApplication.shared.open(appStoreURL)
-      return .none
+      return .run { _ in
+        // TODO: Custom Alert 만들면 확인 눌러도 dismiss 되지 않도록 수정
+        try await Task.sleep(nanoseconds: 3000_000_000)
+        exit(0)
+      }
       
     case .alert, .delegate, .destination, .binding:
       return .none
@@ -109,4 +112,3 @@ extension SplashFeature {
     case alert(AlertState<SplashFeature.Action.Alert>)
   }
 }
-
