@@ -33,7 +33,7 @@ public struct AuthClient {
     fetchAppleClientSecret: @escaping () async throws -> String,
     registerUserProfile: @escaping (String) async throws -> Void,
     removeAllToken: @escaping () -> Void,
-    fetchUpdateVersion: @escaping () async throws -> Void
+    checkUpdateVersion: @escaping () async throws -> Void
   ) {
     self.signInWithKakao = signInWithKakao
     self.signInWithApple = signInWithApple
@@ -46,7 +46,7 @@ public struct AuthClient {
     self.fetchAppleClientSecret = fetchAppleClientSecret
     self.registerUserProfile = registerUserProfile
     self._removeAllToken = removeAllToken
-    self.checkUpdateVersion = fetchUpdateVersion
+    self.checkUpdateVersion = checkUpdateVersion
   }
   
   public func signInWithKakao() async throws -> UserInfo {
@@ -92,7 +92,7 @@ public struct AuthClient {
     _removeAllToken()
   }
   
-  public func fetchUpdateVersion() async throws {
+  public func checkUpdateVersion() async throws {
     return try await checkUpdateVersion()
   }
 }

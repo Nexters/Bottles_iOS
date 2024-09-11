@@ -93,18 +93,18 @@ extension AuthClient: DependencyKey {
       removeAllToken: {
         LocalAuthDataSourceImpl.removeAllToken()
       },
-      fetchUpdateVersion: {
-//        let minimumIosBuildNumber = try await networkManager.reqeust(api: .apiType(AuthAPI.updateVersion), dto: UpdateVersionResponseDTO.self).minimumIosVersion
-        let minimumIosBuildNumber: Int? = 33
-        guard let minimumIosBuildNumber,
-              let buildNumberString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
+      checkUpdateVersion: {
+        let minimumIosBuildNumber = try await networkManager.reqeust(api: .apiType(AuthAPI.updateVersion), dto: UpdateVersionResponseDTO.self).minimumIosVersion
+        
+        guard let buildNumberString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
               let buildNumber = Int(buildNumberString)
         else {
-          Log.assertion(message: "no minimum ios version or build number")
-          throw DomainError.unknown("no minimum ios version info or build number")
+          Log.assertion(message: "no build number")
+          throw DomainError.unknown("no build number")
         }
+        let minimumBuildNumber = minimumIosBuildNumber ?? buildNumber
         
-        guard minimumIosBuildNumber <= buildNumber
+        guard minimumBuildNumber <= buildNumber
         else {
           throw DomainError.AuthError.needUpdateAppVersion
         }
