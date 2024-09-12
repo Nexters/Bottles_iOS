@@ -30,6 +30,7 @@ public struct AppFeature {
     case Login
     case MainTab
     case Onboarding
+    case Splash
   }
   
   @ObservableState
@@ -39,6 +40,7 @@ public struct AppFeature {
     var mainTab: MainTabViewFeature.State?
     var login: LoginFeature.State?
     var onboarding: OnboardingFeature.State?
+    var splash: SplashFeature.State?
     
     public init() {
       self.appDelegate = .init()
@@ -51,6 +53,7 @@ public struct AppFeature {
     case mainTab(MainTabViewFeature.Action)
     case login(LoginFeature.Action)
     case onboarding(OnboardingFeature.Action)
+    case splash(SplashFeature.Action)
     
     case checkUserLoginState
     case sceneDidActive
@@ -78,6 +81,9 @@ public struct AppFeature {
       }
       .ifLet(\.onboarding, action: \.onboarding) {
         OnboardingFeature()
+      }
+      .ifLet(\.splash, action: \.splash) {
+        SplashFeature()
       }
   }
   
@@ -126,6 +132,13 @@ public struct AppFeature {
       switch delegate {
       case let .fcmTokenDidRecevied(fcmToken):
         userClient.updateFcmToken(fcmToken: fcmToken)
+        return changeRoot(.Splash, state: &state)
+      }
+      
+    // Splash Delegate
+    case let .splash(.delegate(delegate)):
+      switch delegate {
+      case .initialCheckCompleted:
         return .send(.checkUserLoginState)
       }
       
@@ -190,17 +203,25 @@ public struct AppFeature {
     case .Login:
       state.mainTab = nil
       state.onboarding = nil
+      state.splash = nil
       state.login = LoginFeature.State()
       userClient.updateLoginState(isLoggedIn: false)
       authClient.removeAllToken()
     case .MainTab:
       state.login = nil
       state.onboarding = nil
+      state.splash = nil
       state.mainTab = MainTabViewFeature.State()
     case .Onboarding:
       state.login = nil
       state.mainTab = nil
+      state.splash = nil
       state.onboarding = OnboardingFeature.State()
+    case .Splash:
+      state.login = nil
+      state.mainTab = nil
+      state.onboarding = nil
+      state.splash = SplashFeature.State()
     }
     
     return .none

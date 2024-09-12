@@ -48,6 +48,7 @@ public extension ModulePath {
 
 public extension ModulePath {
     enum Domain: String, CaseIterable {
+        case Error
         case User
         case Report
         case WebView

@@ -25,6 +25,7 @@ public extension InfoPlist {
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
+            "APP_STORE_URL": "$(APP_STORE_URL)",
             "LSApplicationQueriesSchemes": ["kakaokompassauth", "kakaotalk"],
             "CFBundleURLTypes": [
                 [
@@ -49,6 +50,7 @@ public extension InfoPlist {
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
+            "APP_STORE_URL": "$(APP_STORE_URL)",
             "LSApplicationQueriesSchemes": ["kakaokompassauth", "kakaotalk"],
             "CFBundleURLTypes": [
                 [

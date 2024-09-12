@@ -6,17 +6,31 @@
 //
 
 import SwiftUI
+
 import SharedDesignSystem
 
+import ComposableArchitecture
+
 public struct SplashView: View {
-  public init() {}
+  @Perception.Bindable private var store: StoreOf<SplashFeature>
+  
+  public init(store: StoreOf<SplashFeature>) {
+    self.store = store
+  }
+  
   public var body: some View {
-    ZStack {
-      ColorToken.container(.pressed).color
-        .ignoresSafeArea()
-      
-      Image.BottleImageSystem.illustraition(.splash).image
+    WithPerceptionTracking {
+      ZStack {
+        ColorToken.container(.pressed).color
+          .ignoresSafeArea()
+        
+        Image.BottleImageSystem.illustraition(.splash).image
+      }
+      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+      .ignoresSafeArea()
+      .task {
+        store.send(.onAppear)
+      }
     }
-    .ignoresSafeArea()
   }
 }
