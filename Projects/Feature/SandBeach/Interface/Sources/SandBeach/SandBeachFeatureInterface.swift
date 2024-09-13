@@ -186,10 +186,8 @@ extension SandBeachFeature {
       case .updateAppVersion:
         let appStoreURL = URL(string: Bundle.main.infoDictionary?["APP_STORE_URL"] as? String ?? "")!
         UIApplication.shared.open(appStoreURL)
-        return .run { _ in
-          // TODO: Custom Alert 만들면 확인 눌러도 dismiss 되지 않도록 수정
-          try await Task.sleep(nanoseconds: 3000_000_000)
-          exit(0)
+        return .run { send in
+          await send(.needUpdateAppVersionErrorOccured)
         }
         
       default:
