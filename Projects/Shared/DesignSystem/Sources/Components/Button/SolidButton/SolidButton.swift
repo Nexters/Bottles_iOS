@@ -95,6 +95,8 @@ extension SolidButton {
       EmptyView()
     case .generalSignIn:
       EmptyView()
+    case .cancel:
+      EmptyView()
     }
   }
   
