@@ -17,9 +17,13 @@ struct ListTestView: View {
   
   var body: some View {
     VStack(spacing: .md) {
-      ArrowListView(title: title)
+      ArrowListView(title: title) {
+        print("first ArrowListView Button DidTapped")
+      }
       
-      ArrowListView(title: title, subTitle: subTitle)
+      ArrowListView(title: title, subTitle: subTitle) {
+        print("second ArrowListView Button DidTapped")
+      }
       
       ToggleListView(title: title, isOn: $isOn)
       
