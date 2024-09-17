@@ -29,7 +29,14 @@ public struct PingPongDetailFeature {
     var isStopped: Bool {
       return pingPong?.isStopped == true || pingPong?.isStopped == nil
     }
-    
+    var isMatchingTabDisabled: Bool {
+      guard let matchStatus = pingPong?.matchResult.matchStatus
+      else {
+        return false
+      }
+      
+      return matchStatus == .disabled || matchStatus == .requireSelect
+    }
     
     var introduction: IntroductionFeature.State
     var questionAndAnswer: QuestionAndAnswerFeature.State
@@ -44,7 +51,7 @@ public struct PingPongDetailFeature {
       self.introduction = .init(bottleID: bottleID)
       self.isRead = isRead
       self.questionAndAnswer = .init(bottleID: bottleID)
-      self.matching = .init()
+      self.matching = .init(matchingState: .disabled)
       self.selectedTab = .introduction
       self.bottleID = bottleID
       self.userName = userName

@@ -23,28 +23,25 @@ extension MatchingFeature {
       case .onAppear:
         return .none
         
-      case let .matchingStateDidFetched(matchResult, userName, matchingPlace, matchingPlaceImageURL):
-        state.matchingPlace = matchingPlace
-        state.matchingPlaceImageURL = matchingPlaceImageURL
-        
+      case let .matchingStateDidFetched(matchResult, userName):
         // 사용자 최종 선택 X
         state.peerUserName = userName
         
         // 매칭 성공
         if matchResult.matchStatus == .matchSucceeded {
-          state.matchingState = .success
+          state.matchingState = .matchSucceeded
           state.kakaoTalkId = matchResult.otherContact
           return .none
         }
         
         // 매칭 실패
         if matchResult.matchStatus == .matchFailed {
-          state.matchingState = .failure
+          state.matchingState = .matchFailed
           return .none
         }
         
         // 상대방 답변 X
-        state.matchingState = .waiting
+        state.matchingState = .waitingOtherAnswer
         
         return .none
       case .copyButtonDidTapped:

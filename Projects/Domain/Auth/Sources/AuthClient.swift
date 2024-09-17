@@ -8,6 +8,7 @@
 import Foundation
 
 import DomainAuthInterface
+import DomainErrorInterface
 import DomainUser
 
 import CoreNetwork
@@ -91,6 +92,22 @@ extension AuthClient: DependencyKey {
       },
       removeAllToken: {
         LocalAuthDataSourceImpl.removeAllToken()
+      },
+      checkUpdateVersion: {
+        let minimumIosBuildNumber = try await networkManager.reqeust(api: .apiType(AuthAPI.updateVersion), dto: UpdateVersionResponseDTO.self).minimumIosVersion
+        
+        guard let buildNumberString = Bundle.main.infoDictionary?["CFBundleVersion"] as? String,
+              let buildNumber = Int(buildNumberString)
+        else {
+          Log.assertion(message: "no build number")
+          throw DomainError.unknown("no build number")
+        }
+        let minimumBuildNumber = minimumIosBuildNumber ?? buildNumber
+        
+        guard minimumBuildNumber <= buildNumber
+        else {
+          throw DomainError.AuthError.needUpdateAppVersion
+        }
       }
     )
   }

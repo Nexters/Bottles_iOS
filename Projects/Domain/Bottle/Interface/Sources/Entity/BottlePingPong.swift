@@ -78,58 +78,59 @@ public struct Letter: Equatable {
 
 public struct MatchResult: Equatable {
   public let isFirstSelect: Bool
-  public let matchStatus: BottleMatchStatus
+  public let matchStatus: PingPongMatchStatus
   public let otherContact: String
   public let shouldAnswer: Bool
-  public let meetingPlace: String?
-  public let meetingPlaceImageURL: String?
   
   init(
     isFirstSelect: Bool,
-    matchStatus: BottleMatchStatus,
+    matchStatus: PingPongMatchStatus,
     otherContact: String,
-    shouldAnswer: Bool,
-    meetingPlace: String?,
-    meetingPlaceImageUrl: String?
+    shouldAnswer: Bool
   ) {
     self.isFirstSelect = isFirstSelect
     self.matchStatus = matchStatus
     self.otherContact = otherContact
     self.shouldAnswer = shouldAnswer
-    self.meetingPlace = meetingPlace
-    self.meetingPlaceImageURL = meetingPlaceImageUrl
   }
 }
 
-public enum BottleMatchStatus {
-  case inConversation
+public enum PingPongMatchStatus {
+  /// 최종 선택 단계 X
+  case disabled
+  /// 최종 선택해야 함
+  case requireSelect
+  /// 상대방의 답변을 기다리는 상황
+  case waitingOtherAnswer
+  /// 매칭 실패
   case matchFailed
+  /// 매칭 성공
   case matchSucceeded
 }
 
 public struct Photo: Equatable {
-  public let isDone: Bool
-  public let myAnswer: Bool?
-  public let myImageURL: String?
-  public let otherAnswer: Bool?
-  public let otherImageURL: String?
-  public let shouldAnswer: Bool
+  public let photoStatus: PingPongPhotoStatus
+  public let myProfileImageURL: String?
+  public let otherProfileImageURL: String?
   
-  init(
-    isDone: Bool,
-    myAnswer: Bool? = nil,
-    myImageURL: String? = nil,
-    otherAnswer: Bool? = nil,
-    otherImageURL: String? = nil,
-    shouldAnswer: Bool
+  public init(
+    photoStatus: PingPongPhotoStatus,
+    myProfileImageURL: String? = nil,
+    otherProfileImageURL: String? = nil
   ) {
-    self.isDone = isDone
-    self.myAnswer = myAnswer
-    self.myImageURL = myImageURL
-    self.otherAnswer = otherAnswer
-    self.otherImageURL = otherImageURL
-    self.shouldAnswer = shouldAnswer
+    self.photoStatus = photoStatus
+    self.myProfileImageURL = myProfileImageURL
+    self.otherProfileImageURL = otherProfileImageURL
   }
+}
+
+public enum PingPongPhotoStatus: Equatable {
+  case disabled
+  case bothAgree
+  case myReject
+  case otherReject
+  case requireSelect(otherSelected: Bool)
+  case waitingOtherAnswer
 }
 
 public struct UserProfile: Equatable {

@@ -23,16 +23,11 @@ public struct BottlePingPongResponseDTO: Decodable {
       letters: (letters?.map { $0.toDomain() }) ?? [],
       matchResult: matchResult?.toDomain() ?? MatchResult(
         isFirstSelect: false,
-        matchStatus: .inConversation,
+        matchStatus: .disabled,
         otherContact: "",
-        shouldAnswer: false,
-        meetingPlace: nil,
-        meetingPlaceImageUrl: nil
-      ),
-      photo: photo?.toDomain() ?? Photo(
-        isDone: false,
         shouldAnswer: false
       ),
+      photo: photo?.toDomain() ?? Photo(photoStatus: .disabled),
       stopUserName: stopUserName,
       userProfile: userProfile?.toDomain() ?? UserProfile(
         userId: -1,
@@ -81,47 +76,54 @@ public struct BottlePingPongResponseDTO: Decodable {
     let matchStatus: String?
     let otherContact: String?
     let shouldAnswer: Bool?
-    let meetingPlace: String?
-    let meetingPlaceImageUrl: String?
     
     public func toDomain() -> MatchResult {
-      let matchStatus: BottleMatchStatus = switch matchStatus {
-      case "IN_CONVERSATION": .inConversation
-      case "MATCH_SUCCEEDED": .matchSucceeded
+      let matchStatus: PingPongMatchStatus = switch matchStatus {
+      case "NONE": .disabled
+      case "REQUIRE_SELECT": .requireSelect
+      case "WAITING_OTHER_ANSWER": .waitingOtherAnswer
       case "MATCH_FAILED": .matchFailed
-      case "NONE": .inConversation
-      case "REQUIRE_SELECT": .inConversation
-      case "WAITING_OTHER_ANSWER": .inConversation
-      default: .matchFailed
+      case "MATCH_SUCCEEDED": .matchSucceeded
+      default: .disabled
       }
       
       return .init(
         isFirstSelect: isFirstSelect ?? false,
         matchStatus: matchStatus,
         otherContact: otherContact ?? "",
-        shouldAnswer: shouldAnswer ?? false,
-        meetingPlace: meetingPlace,
-        meetingPlaceImageUrl: meetingPlaceImageUrl
+        shouldAnswer: shouldAnswer ?? false
       )
     }
   }
   
   public struct PhotoDTO: Decodable {
-    let isDone: Bool?
-    let myAnswer: Bool?
+    let photoStatus: String?
     let myImageUrl: String?
-    let otherAnswer: Bool?
     let otherImageUrl: String?
-    let shouldAnswer: Bool?
     
     public func toDomain() -> Photo {
+      let photoStatus: PingPongPhotoStatus = switch photoStatus {
+      case "BOTH_AGREE":
+          .bothAgree
+      case "MY_REJECT":
+          .myReject
+      case "NONE":
+          .disabled
+      case "OTHER_REJECT":
+          .otherReject
+      case "REQUIRE_SELECT_OTHER_SELECT":
+          .requireSelect(otherSelected: true)
+      case "REQUIRE_SELECT_OTHER_NOT_SELECT":
+          .requireSelect(otherSelected: false)
+      case "WAITING_OTHER_ANSWER":
+          .waitingOtherAnswer
+      default:
+          .disabled
+      }
       return .init(
-        isDone: isDone ?? false,
-        myAnswer: myAnswer,
-        myImageURL: myImageUrl,
-        otherAnswer: otherAnswer,
-        otherImageURL: otherImageUrl,
-        shouldAnswer: shouldAnswer ?? false
+        photoStatus: photoStatus,
+        myProfileImageURL: myImageUrl,
+        otherProfileImageURL: otherImageUrl
       )
     }
   }

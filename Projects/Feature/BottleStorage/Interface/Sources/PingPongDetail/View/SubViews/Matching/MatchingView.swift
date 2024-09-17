@@ -27,17 +27,7 @@ public struct MatchingView: View {
             .padding(.vertical, 32)
           
           matchingInfo
-          
-          if store.matchingState == .success,
-             let placeName = store.matchingPlace,
-             let placeImageURL = store.matchingPlaceImageURL {
-            Spacer().frame(height: 12.0)
-            placeRecommendView(
-              placeName: placeName,
-              placeImageURL: placeImageURL
-            )
-          }
-          
+
           Spacer()
           
           bottomButton
@@ -61,17 +51,17 @@ private extension MatchingView {
   @ViewBuilder
   var title: some View {
     switch store.matchingState {
-    case .waiting:
+    case .waitingOtherAnswer:
       TitleView(
         title: "\(store.peerUserName ?? "")님의\n결정을 기다리고 있어요",
         caption: "조금만 더 기다려주세요!"
       )
-    case .success:
+    case .matchSucceeded:
       TitleView(
         title: "축하해요! 지금부터 찐-하게\n서로를 알아가 보세요",
         caption: "아이디를 복사해 더 깊은 대화를 나눠보세요"
       )
-    case .failure:
+    case .matchFailed:
       TitleView(
         title: "다른 보틀을\n열어보는 건 어때요",
         caption: "아쉽지만 매칭에 실패했어요"
@@ -84,10 +74,10 @@ private extension MatchingView {
   @ViewBuilder
   var matchingInfo: some View {
     switch store.matchingState {
-    case .waiting:
+    case .waitingOtherAnswer:
       GeometryReader { geometryProxy in
         WithPerceptionTracking {
-          let width = geometryProxy.size.width - 50
+          let width = geometryProxy.size.width - 60.0
           HStack(spacing: 0 ) {
             Spacer()
             BottleImageView(
@@ -102,10 +92,10 @@ private extension MatchingView {
       }
       .aspectRatio(1, contentMode: .fit)
       
-    case .success:
+    case .matchSucceeded:
       kakaoTalkIdShareView
       
-    case .failure:
+    case .matchFailed:
       GeometryReader { geometryProxy in
         WithPerceptionTracking {
           let width = geometryProxy.size.width - 50
@@ -173,9 +163,9 @@ private extension MatchingView {
   @ViewBuilder
   var bottomButton: some View {
     switch store.matchingState {
-    case .waiting:
+    case .waitingOtherAnswer:
       EmptyView()
-    case .success:
+    case .matchSucceeded:
       SolidButton(
         title: "카카오톡 바로가기",
         sizeType: .large,
@@ -183,7 +173,7 @@ private extension MatchingView {
         action: { openKakaoTalk() }
       )
     
-    case .failure:
+    case .matchFailed:
       SolidButton(
         title: "다른 보틀 열어보기",
         sizeType: .large,
@@ -193,60 +183,6 @@ private extension MatchingView {
     default:
       EmptyView()
     }
-  }
-  
-  func placeRecommendView(placeName: String, placeImageURL: String) -> some View {
-    VStack(alignment: .leading, spacing: .xl) {
-      VStack(spacing: .xs) {
-        VStack(alignment: .leading, spacing: 0.0) {
-          WantedSansStyleText(
-            "두근두근 첫만남, 이런장소는 어때요?",
-            style: .subTitle1,
-            color: .primary
-          )
-          
-          WantedSansStyleText(
-            "보틀 AI가 취향에 맞는 장소를 추천 드려요!",
-            style: .subTitle1,
-            color: .tertiary
-          )
-        }
-        
-        HStack(spacing: 0.0) {
-          Spacer()
-          WantedSansStyleText(
-            placeName,
-            style: .subTitle1,
-            color: .primary
-          )
-          Spacer()
-        }
-        
-        HStack(spacing: 0.0) {
-          Spacer()
-          
-          BottleImageView(type: .remote(
-            url: placeImageURL,
-            downsamplingWidth: 300.0,
-            downsamplingHeight: 300.0
-          ))
-          .frame(width: 200.0, height: 200.0)
-          .clipShape(RoundedRectangle(cornerRadius: BottleRadiusType.md.value))
-          
-          Spacer()
-        }
-      }
-    }
-    .padding(.horizontal, .md)
-    .padding(.vertical, .xl)
-    .overlay(
-      RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
-        .strokeBorder(
-          ColorToken.border(.primary).color,
-          lineWidth: 1.0
-        )
-    )
-    .padding(.bottom, 32.0)
   }
 }
 

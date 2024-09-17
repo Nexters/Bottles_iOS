@@ -30,8 +30,8 @@ public struct AppView: View {
           LoginView(store: loginStore)
         } else if let onboardingStore = store.scope(state: \.onboarding, action: \.onboarding) {
           OnboardingView(store: onboardingStore)
-        } else {
-          SplashView()
+        } else if let splashStore = store.scope(state: \.splash, action: \.splash) {
+          SplashView(store: splashStore)
         }
       }
       .onAppear {

@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+
+import DomainBottleInterface
 import SharedDesignSystem
 
 public struct FinalSelectPingPongView: View {
   private let isActive: Bool
   private let pingPongTitle: String
-  private let finalSelectState: FinalSelectStateType
+  private let pingPongMatchStatus: PingPongMatchStatus
   @Binding var isSelctedYesButton: Bool
   @Binding var isSelctedNoButton: Bool
   private let doneButtonAction: (() -> Void)?
@@ -19,14 +21,14 @@ public struct FinalSelectPingPongView: View {
   public init(
     isActive: Bool,
     pingPongTitle: String,
-    finalSelectState: FinalSelectStateType,
+    pingPongMatchStatus: PingPongMatchStatus,
     isSelctedYesButton: Binding<Bool> = .constant(false),
     isSelctedNoButton: Binding<Bool> = .constant(false),
     doneButtonAction: (() -> Void)? = nil
   ) {
     self.isActive = isActive
     self.pingPongTitle = pingPongTitle
-    self.finalSelectState = finalSelectState
+    self.pingPongMatchStatus = pingPongMatchStatus
     self._isSelctedYesButton = isSelctedYesButton
     self._isSelctedNoButton = isSelctedNoButton
     self.doneButtonAction = doneButtonAction
@@ -46,12 +48,16 @@ private extension FinalSelectPingPongView {
   var content: some View {
     VStack(spacing: .sm) {
       questionText
-      if finalSelectState == .notSelected {
+      
+      switch pingPongMatchStatus {
+      case .requireSelect:
         notSelectedView
-      } else if finalSelectState == .waitingForPeer {
+      case .waitingOtherAnswer:
         waitingForPeerView
-      } else {
+      case .matchSucceeded, .matchFailed:
         bothSelectedView
+      default:
+        EmptyView()
       }
     }
     .padding(.horizontal, .md)

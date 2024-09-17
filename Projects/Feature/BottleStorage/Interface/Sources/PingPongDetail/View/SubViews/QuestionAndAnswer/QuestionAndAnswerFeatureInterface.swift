@@ -24,6 +24,9 @@ public struct QuestionAndAnswerFeature {
   public struct State: Equatable {
     let bottleID: Int
     private var pingPong: BottlePingPong?
+    var photoInfo: Photo? {
+      pingPong?.photo
+    }
     var isStopped: Bool {
       return pingPong?.isStopped == true
     }
@@ -82,39 +85,16 @@ public struct QuestionAndAnswerFeature {
     
     // 사진 선택
     var photoShareIsActive: Bool {
-      return thirdLetter?.isDone == true
+      guard let photoStatus = pingPong?.photo.photoStatus
+      else {
+        return false
+      }
+      
+      return photoStatus != PingPongPhotoStatus.disabled
     }
     
-    var photoShareStateType: PhotoShareStateType {
-      guard let photo = pingPong?.photo
-      else {
-        return .notSelected
-      }
-      
-      guard photo.shouldAnswer == false
-      else {
-        return .notSelected
-      }
-      
-      guard photo.otherAnswer == true
-      else {
-        return .waitingForPeer
-      }
-      
-      guard let myAnswer = photo.myAnswer,
-            let otherAnswer = photo.otherAnswer
-      else {
-        return .notSelected
-      }
-      
-      if myAnswer && otherAnswer {
-        return .bothPublic(
-          peerProfileImageURL: photo.otherImageURL ?? "",
-          myProfileImageURL: photo.myImageURL ?? ""
-        )
-      }
-      
-      return .eitherPrivate
+    var photoShareStateType: PingPongPhotoStatus {
+      return photoInfo?.photoStatus ?? .disabled
     }
 
     var photoIsSelctedYesButton: Bool
@@ -122,23 +102,15 @@ public struct QuestionAndAnswerFeature {
     
     // 최종 선택
     var finalSelectIsActive: Bool {
-      return pingPong?.photo.isDone == true
+      guard let matchStatus = pingPong?.matchResult.matchStatus
+      else {
+        return false
+      }
+      
+      return matchStatus != .disabled
     }
-    var finalSelectStateType: FinalSelectStateType {
-      if pingPong?.matchResult.matchStatus == .inConversation
-          && pingPong?.matchResult.shouldAnswer == true {
-        return .notSelected
-      }
-      
-      if pingPong?.matchResult.matchStatus == .inConversation && pingPong?.matchResult.shouldAnswer == false {
-        return .waitingForPeer
-      }
-      
-      if pingPong?.matchResult.matchStatus != .inConversation {
-        return .bothSelected
-      }
-      
-      return .notSelected
+    var pingPongMatchStatus: PingPongMatchStatus {
+      return pingPong?.matchResult.matchStatus ?? .disabled
     }
     var finalSelectIsSelctedYesButton: Bool
     var finalSelectIsSelctedNoButton: Bool
