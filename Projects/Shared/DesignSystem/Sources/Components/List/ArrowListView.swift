@@ -37,5 +37,7 @@ private extension ArrowListView {
       )
     )
     .foregroundStyle(to: ColorToken.icon(.primary))
+    .frame(width: 24)
+    .frame(height: 24)
   }
 }
