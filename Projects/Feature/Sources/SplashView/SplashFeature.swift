@@ -66,7 +66,7 @@ public struct SplashFeature {
         // TODO: Error handling
         if let authError = error as? DomainError.AuthError {
           switch authError {
-          case .needUpdateAppVersion:
+          case .invalidAppVersion:
             await send(.needUpdateAppVersionErrorOccured)
           }
         }

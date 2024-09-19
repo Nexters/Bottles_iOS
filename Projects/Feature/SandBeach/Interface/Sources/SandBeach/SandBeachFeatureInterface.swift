@@ -141,7 +141,7 @@ extension SandBeachFeature {
           Log.error(error)
           if let authError = error as? DomainError.AuthError {
             switch authError {
-            case .needUpdateAppVersion:
+            case .invalidAppVersion:
               await send(.needUpdateAppVersionErrorOccured)
             }
           }
