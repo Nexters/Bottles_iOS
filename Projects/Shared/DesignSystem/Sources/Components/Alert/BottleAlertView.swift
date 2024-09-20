@@ -38,7 +38,7 @@ struct BottleAlertView<A, M, T>: View where A: View, M: View {
         VStack(spacing: 0) {
           alertImage
           title
-            .padding(.bottom, 4)
+            .padding(.bottom, 7)
           messageView
           actionsView
         }
@@ -53,7 +53,7 @@ struct BottleAlertView<A, M, T>: View where A: View, M: View {
 
 private extension BottleAlertView {
   var alertImage: some View {
-    BottleImageView(type: .local(bottleImageSystem: .icom(.siren)))
+    BottleImageView(type: .local(bottleImageSystem: .icom(.warning)))
       .foregroundStyle(to: ColorToken.icon(.primary))
       .padding(.top, .lg)
       .padding(.bottom, .xs)
@@ -65,7 +65,7 @@ private extension BottleAlertView {
       message(data)
         .multilineTextAlignment(.center)
         .padding(.bottom, .sm)
-      
+        .lineSpacing(5)
     } else {
       EmptyView()
     }
