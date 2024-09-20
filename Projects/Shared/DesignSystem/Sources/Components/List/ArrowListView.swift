@@ -8,18 +8,15 @@
 import SwiftUI
 
 public struct ArrowListView: View {
-  private let title: String
-  private let subTitle: String?
-  private let action: () -> Void
+  public let title: String
+  public let subTitle: String?
   
   public init(
     title: String,
-    subTitle: String? = nil,
-    action: @escaping () -> Void
+    subTitle: String? = nil
   ) {
     self.title = title
     self.subTitle = subTitle
-    self.action = action
   }
   
   public var body: some View {
@@ -42,6 +39,5 @@ private extension ArrowListView {
     .foregroundStyle(to: ColorToken.icon(.primary))
     .frame(width: 24)
     .frame(height: 24)
-    .asThrottleButton(action: action)
   }
 }
