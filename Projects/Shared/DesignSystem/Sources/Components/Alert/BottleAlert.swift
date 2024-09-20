@@ -9,7 +9,7 @@ import SwiftUI
 import ComposableArchitecture
 
 extension View {
-  public func BottleAlert<Action>(_ item: Binding<Store<AlertState<Action>, Action>?>) -> some View {
+  public func bottleAlert<Action>(_ item: Binding<Store<AlertState<Action>, Action>?>) -> some View {
     
     let store = item.wrappedValue
     let alertState = store?.withState { $0 }
