@@ -24,6 +24,7 @@ public extension Image.BottleImageSystem {
     case bottleStorage
     case myPage
     case appleLogo
+    case warning
   }
 }
 
@@ -65,6 +66,9 @@ public extension Image.BottleImageSystem.Icon {
       
     case .appleLogo:
       return SharedDesignSystemAsset.Images.iconAppleLogo.swiftUIImage
+      
+    case .warning:
+      return SharedDesignSystemAsset.Images.iconWarning.swiftUIImage
     }
   }
 }
