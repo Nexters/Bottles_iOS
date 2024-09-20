@@ -32,6 +32,10 @@ struct ListTestView: View {
       ButtonListView(title: title, subTitle: subTitle, buttonTitle: buttonTitle) {
         print("second ButtonListView Button DidTapped")
       }
+      
+      TextListView(title: title)
+      
+      TextListView(title: title, subTitle: subTitle)
     }
     .padding(.horizontal, .md)
   }
