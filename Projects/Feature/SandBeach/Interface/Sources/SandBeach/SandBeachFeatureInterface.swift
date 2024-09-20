@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 import DomainProfile
 import DomainBottle
@@ -14,6 +13,7 @@ import DomainAuth
 import DomainErrorInterface
 
 import CoreLoggerInterface
+import CoreURLHandlerInterface
 
 import SharedDesignSystem
 import SharedUtilInterface
@@ -184,8 +184,7 @@ extension SandBeachFeature {
         }
         
       case .updateAppVersion:
-        let appStoreURL = URL(string: Bundle.main.infoDictionary?["APP_STORE_URL"] as? String ?? "")!
-        UIApplication.shared.open(appStoreURL)
+        URLHandler.shared.openURL(urlType: .bottleAppStore)
         return .run { send in
           await send(.needUpdateAppVersionErrorOccured)
         }
