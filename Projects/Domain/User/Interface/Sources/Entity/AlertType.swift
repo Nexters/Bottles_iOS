@@ -10,7 +10,7 @@ import Foundation
 public enum AlertType: String, Codable {
   case none = "NONE"
   case randomBottle = "DAILY_RANDOM"
-  case ArrivalBottle = "RECEIVE_LIKE"
+  case arrivalBottle = "RECEIVE_LIKE"
   case pingpong = "PINGPONG"
   case marketing = "MARKETING"
 }

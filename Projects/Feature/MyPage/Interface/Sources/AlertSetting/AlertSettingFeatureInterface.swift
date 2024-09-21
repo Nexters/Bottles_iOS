@@ -7,6 +7,8 @@
 
 import Foundation
 
+import DomainUserInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -45,7 +47,18 @@ public struct AlertSettingFeature {
     case pingpongToggleDidFetched(isOn: Bool)
     case marketingToggleDidFetched(isOn: Bool)
     
+    // UserAction
+    case toggleDidChanged(alertState: UserAlertState)
+    case backButtonDidTapped
+    
     case binding(BindingAction<State>)
+  }
+  
+  enum ID: Hashable {
+    case randomBottle
+    case arrivalBottle
+    case pingping
+    case marketing
   }
   
   public var body: some ReducerOf<Self> {

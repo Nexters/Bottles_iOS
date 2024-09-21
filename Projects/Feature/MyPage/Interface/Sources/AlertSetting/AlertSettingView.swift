@@ -37,9 +37,7 @@ public struct AlertSettingView: View {
       }
       .padding(.horizontal, .lg)
       .setNavigationBar {
-        makeNaivgationleftButton {
-          print("BackButtonDidTapped")
-        }
+        makeNaivgationleftButton { store.send(.backButtonDidTapped) }
       }
       .onLoad { store.send(.onLoad) }
     }
