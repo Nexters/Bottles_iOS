@@ -7,8 +7,8 @@
 
 import Foundation
 
-import DomainUser
 import DomainAuth
+import DomainProfile
 import DomainUserInterface
 
 import CoreKeyChainStore
@@ -17,7 +17,7 @@ import ComposableArchitecture
 
 extension AccountSettingFeature {
   public init() {
-    @Dependency(\.userClient) var userClient
+    @Dependency(\.profileClient) var profileClient
     @Dependency(\.authClient) var authClient
     @Dependency(\.dismiss) var dismiss
     
@@ -59,16 +59,16 @@ extension AccountSettingFeature {
         
       case .binding(\.isOnMatchingToggle):
         return .run { [isOn = state.isOnMatchingToggle] send in
-          await send(.toggleDidChanged(alertState: .init(alertType: .randomBottle, enabled: isOn)))
+          await send(.matchingToggleDidChanged(isOn: isOn))
         }
         .debounce(
           id: ID.matcingToggle,
           for: 1.0,
           scheduler: DispatchQueue.main)
         
-      case let .toggleDidChanged(alertState):
+      case let .matchingToggleDidChanged(isOn):
         return .run { send in
-          try await userClient.updateAlertState(alertState: alertState)
+          try await profileClient.updateMatcingActivate(isActive: isOn)
         }
         
       case let .destination(.presented(.alert(alert))):

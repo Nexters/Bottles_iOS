@@ -37,7 +37,7 @@ public struct AccountSettingFeature {
     case matchingToggleDidFetched(isOn: Bool)
     
     // UserAction
-    case toggleDidChanged(alertState: UserAlertState)
+    case matchingToggleDidChanged(isOn: Bool)
     case backButtonDidTapped
     case logoutButtonDidTapped
     case withdrawalButtonDidTapped
