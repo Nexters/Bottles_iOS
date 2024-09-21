@@ -106,7 +106,7 @@ extension AuthClient: DependencyKey {
         
         guard minimumBuildNumber <= buildNumber
         else {
-          throw DomainError.AuthError.needUpdateAppVersion
+          throw DomainError.AuthError.invalidAppVersion
         }
       }
     )

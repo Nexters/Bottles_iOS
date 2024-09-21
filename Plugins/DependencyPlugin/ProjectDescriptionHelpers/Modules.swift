@@ -64,6 +64,7 @@ public extension ModulePath {
 
 public extension ModulePath {
     enum Core: String, CaseIterable {
+        case URLHandler
         case Toast
         case KeyChainStore
         case WebView
