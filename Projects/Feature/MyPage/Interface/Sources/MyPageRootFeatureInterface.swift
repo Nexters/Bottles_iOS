@@ -27,6 +27,10 @@ extension MyPageRootFeature {
           state.path.append(.AlertSetting(.init()))
           return .none
           
+        case .accountSettingListDidTapped:
+          state.path.append(.AccountSetting(.init()))
+          return .none
+          
         default:
           return .none
         }

@@ -117,6 +117,8 @@ extension MyPageFeature {
       case .alertSettingListDidTapped:
         return .send(.delegate(.alertSettingListDidTapped))
         
+      case .accountSettingListDidTapped:
+        return .send(.delegate(.accountSettingListDidTapped))
       default:
         return .none
       }

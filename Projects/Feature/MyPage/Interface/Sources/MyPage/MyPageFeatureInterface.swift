@@ -51,6 +51,8 @@ public struct MyPageFeature {
     case withdrawalDidCompleted
     case selectedTabDidChanged(TabType)
     case alertSettingListDidTapped
+    case accountSettingListDidTapped
+    
     case delegate(Delegate)
     
     public enum Delegate {
@@ -59,6 +61,7 @@ public struct MyPageFeature {
       case logoutDidCompleted
       case selectedTabDidChanged(TabType)
       case alertSettingListDidTapped
+      case accountSettingListDidTapped
     }
       
     case alert(Alert)
