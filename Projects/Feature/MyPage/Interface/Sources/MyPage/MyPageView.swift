@@ -115,6 +115,7 @@ private extension MyPageView {
   
   var pushSettingList: some View {
     ArrowListView(title: "알림 설정")
+      .asThrottleButton(action: { store.send(.alertSettingListDidTapped)})
   }
   
   var accountSettingList: some View {
