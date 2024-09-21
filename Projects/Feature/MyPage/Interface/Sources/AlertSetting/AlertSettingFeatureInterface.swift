@@ -19,14 +19,37 @@ public struct AlertSettingFeature {
   
   @ObservableState
   public struct State: Equatable {
+    public var isOnRandomBottleToggle: Bool
+    public var isOnArrivalBottleToggle: Bool
+    public var isOnPingPongToggle: Bool
+    public var isOnMarketingToggle: Bool
     
+    public init(
+      isOnRandomBottleToggle: Bool = false,
+      isOnArrivalBottleToggle: Bool = false,
+      isOnPingPongToggle: Bool = false,
+      isOnMarketingToggle: Bool = false
+    ) {
+      self.isOnRandomBottleToggle = isOnRandomBottleToggle
+      self.isOnArrivalBottleToggle = isOnArrivalBottleToggle
+      self.isOnPingPongToggle = isOnPingPongToggle
+      self.isOnMarketingToggle = isOnMarketingToggle
+    }
   }
   
-  public enum Action {
+  public enum Action: BindableAction {
     case onLoad
+    
+    case randomBottleToggleDidFetched(isOn: Bool)
+    case arrivalBottleToggleDidFetched(isOn: Bool)
+    case pingpongToggleDidFetched(isOn: Bool)
+    case marketingToggleDidFetched(isOn: Bool)
+    
+    case binding(BindingAction<State>)
   }
   
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     reducer
   }
 }

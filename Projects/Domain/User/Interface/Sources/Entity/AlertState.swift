@@ -7,9 +7,9 @@
 
 import Foundation
 
-public struct AlertState {
-  private let alertType: AlertType
-  private let enabled: Bool
+public struct UserAlertState {
+  public let alertType: AlertType
+  public let enabled: Bool
   
   public init(
     alertType: AlertType,

@@ -12,32 +12,36 @@ import SharedDesignSystem
 import ComposableArchitecture
 
 public struct AlertSettingView: View {
-  private let store: StoreOf<AlertSettingFeature>
+  @Perception.Bindable private var store: StoreOf<AlertSettingFeature>
   
   public init(store: StoreOf<AlertSettingFeature>) {
     self.store = store
   }
   
   public var body: some View {
-    VStack(spacing: 0) {
-      VStack(spacing: .lg) {
-        randomBottleSetting
-        arrivalBottleSetting
-        pingpongSetting
-        Divider()
-        marketingSetting
+    WithPerceptionTracking {
+      
+      VStack(spacing: 0) {
+        VStack(spacing: .lg) {
+          randomBottleToggle
+          arrivalBottleToggle
+          pingpongToggle
+          Divider()
+          marketingToggle
+        }
+        .padding(.horizontal, .md)
+        .padding(.vertical, .xl)
+        .overlay(roundedRectangle)
+        .padding(.top, 32)
+        Spacer()
       }
-      .padding(.horizontal, .md)
-      .padding(.vertical, .xl)
-      .overlay(roundedRectangle)
-      .padding(.top, 32)
-      Spacer()
-    }
-    .padding(.horizontal, .lg)
-    .setNavigationBar {
-      makeNaivgationleftButton {
-        print("BackButtonDidTapped")
+      .padding(.horizontal, .lg)
+      .setNavigationBar {
+        makeNaivgationleftButton {
+          print("BackButtonDidTapped")
+        }
       }
+      .onLoad { store.send(.onLoad) }
     }
   }
 }
@@ -51,33 +55,34 @@ private extension AlertSettingView {
       )
   }
   
-  var randomBottleSetting: some View {
+  var randomBottleToggle: some View {
     ToggleListView(
       title: "떠나니는 보틀 알림",
       subTitle: "매일 랜덤으로 추천되는 보틀 안내",
-      isOn: .constant(true))
+      isOn: $store.isOnRandomBottleToggle
+    )
   }
   
-  var arrivalBottleSetting: some View {
+  var arrivalBottleToggle: some View {
     ToggleListView(
       title: "호감 도착 안내",
       subTitle: "내가 받은 호감 안내",
-      isOn: .constant(true)
+      isOn: $store.isOnArrivalBottleToggle
     )
   }
   
-  var pingpongSetting: some View {
+  var pingpongToggle: some View {
     ToggleListView(
       title: "대화 알림",
       subTitle: "가치관 문답 시작 · 진행 · 중단 , 매칭 안내",
-      isOn: .constant(true)
+      isOn: $store.isOnPingPongToggle
     )
   }
   
-  var marketingSetting: some View {
+  var marketingToggle: some View {
     ToggleListView(
       title: "마케팅 수신 동의",
-      isOn: .constant(true)
+      isOn: $store.isOnMarketingToggle
     )
   }
 }

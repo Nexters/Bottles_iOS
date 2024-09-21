@@ -7,22 +7,14 @@
 
 import Foundation
 
-public struct AlertStateReponseDTO: Decodable {
-  public let alertStateList: [AlertStateDTO]
+public struct AlertStateResponseDTO: Decodable {
+  let alimyType: String
+  let enabled: Bool
   
-  public struct AlertStateDTO: Decodable {
-    let alertType: String
-    let enabled: Bool
-    
-    public func toDomain() -> AlertState {
-      return .init(
-        alertType: AlertType(rawValue: alertType) ?? .none,
-        enabled: enabled
-      )
-    }
-  }
-  
-  public func toDomain() -> [AlertState] {
-    return alertStateList.map { $0.toDomain() }
+  public func toDomain() -> UserAlertState {
+    return .init(
+      alertType: AlertType(rawValue: alimyType) ?? .none,
+      enabled: enabled
+    )
   }
 }

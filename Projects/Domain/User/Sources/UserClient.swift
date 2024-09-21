@@ -10,13 +10,17 @@ import Foundation
 import DomainUserInterface
 
 import CoreKeyChainStore
+import CoreNetwork
 
 import ComposableArchitecture
+import Moya
 
 extension UserClient: DependencyKey {
   static public var liveValue: UserClient = .live()
   
   static func live() -> UserClient {
+    @Dependency(\.network) var networkManager
+    
     return .init(
       isLoggedIn: {
         return UserDefaults.standard.bool(forKey: "loginState")
@@ -40,6 +44,17 @@ extension UserClient: DependencyKey {
       
       updateFcmToken: { fcmToken in
         UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
+      },
+      
+      fetchAlertState: {
+        let responseData = try await networkManager.reqeust(api: .apiType(UserAPI.fetchAlertState), dto: [AlertStateResponseDTO].self)
+        return responseData.map { $0.toDomain() }
+        
+      },
+      
+      updateAlertState: { alertState in
+        let requestData = AlertStateRequestDTO(alertType: alertState.alertType, enabled: alertState.enabled)
+        try await networkManager.reqeust(api: .apiType(UserAPI.updateAlertState(reqeustData: requestData)))
       }
     )
   }
