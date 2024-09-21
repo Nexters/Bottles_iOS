@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import Contacts
 
 import FeatureTabBarInterface
 import FeatureBaseWebViewInterface
+
+import CoreLoggerInterface
+
 import SharedDesignSystem
 
 import ComposableArchitecture
+
 
 public struct MyPageView: View {
   @Perception.Bindable private var store: StoreOf<MyPageFeature>
@@ -63,7 +68,7 @@ public struct MyPageView: View {
           }
         }
       }
-      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+      .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
   }
 }
@@ -107,9 +112,11 @@ private extension MyPageView {
   var blockPhoneNumberList: some View {
     ButtonListView(
       title: "연락처 차단",
-      subTitle: "연락처 속 0명을 차단했어요",
+      subTitle: "연락처 속 \(store.blockedContactsCount)명을 차단했어요",
       buttonTitle: "업데이트",
-      action: {}
+      action: {
+        store.send(.updatePhoneNumberForBlockButtonDidTapped)
+      }
     )
   }
   

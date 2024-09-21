@@ -27,6 +27,7 @@ public struct MyPageFeature {
     public var keywordItem: [ClipItem]
     public var userInfo: UserInfo
     public var introduction: Introduction
+    public var blockedContactsCount: Int
     
     @Presents var destination: Destination.State?
     
@@ -37,14 +38,19 @@ public struct MyPageFeature {
       self.keywordItem = keywordItem
       self.userInfo = .init(userAge: -1, userImageURL: "", userName: "")
       self.introduction = .init(answer: "", question: "")
+      self.blockedContactsCount = 0
     }
   }
   
   public enum Action: BindableAction {
     // View Life Cycle
     case onLoad
+    
     case userProfileDidFetched(UserProfile)
     case userProfileUpdateDidRequest
+    case updatePhoneNumberForBlockButtonDidTapped
+    case updatePhoneNumberForBlockCompleted(count: Int)
+    case contactsAccessDeniedErrorOccurred
     case logOutButtonDidTapped
     case logOutDidCompleted
     case withdrawalButtonDidTapped
@@ -52,6 +58,8 @@ public struct MyPageFeature {
     case selectedTabDidChanged(TabType)
     case alertSettingListDidTapped
     case accountSettingListDidTapped
+    
+    case configureLoadingProgressView(isShow: Bool)
     
     case delegate(Delegate)
     
@@ -68,6 +76,7 @@ public struct MyPageFeature {
     public enum Alert: Equatable {
       case confirmLogOut
       case confirmWithdrawal
+      case dismissAlert
     }
   
     // ETC
