@@ -24,8 +24,10 @@ extension AccountSettingFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onLoad:
-        return .none
-      
+        return .run { send in
+          let profile = try await profileClient.fetchUserProfile()
+          await send(.matchingToggleDidFetched(isOn: profile.userInfo.isActiveMatching))
+        }      
       case let .matchingToggleDidFetched(isOn):
         state.isOnMatchingToggle = isOn
         return .none
@@ -63,7 +65,7 @@ extension AccountSettingFeature {
         }
         .debounce(
           id: ID.matcingToggle,
-          for: 1.0,
+          for: 0.5,
           scheduler: DispatchQueue.main)
         
       case let .matchingToggleDidChanged(isOn):
