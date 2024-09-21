@@ -38,6 +38,7 @@ public struct AccountSettingView: View {
         makeNaivgationleftButton { store.send(.backButtonDidTapped) }
       }
       .onLoad { store.send(.onLoad) }
+      .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     }
   }
 }
@@ -61,9 +62,11 @@ private extension AccountSettingView {
   
   var logoutList: some View {
     ArrowListView(title: "로그아웃")
+      .asThrottleButton(action: { store.send(.logoutButtonDidTapped) })
   }
   
   var withdrawList: some View {
     ArrowListView(title: "탈퇴하기")
+      .asThrottleButton(action: { store.send(.withdrawalButtonDidTapped) })
   }
 }

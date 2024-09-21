@@ -35,6 +35,20 @@ extension MyPageRootFeature {
           return .none
         }
         
+      // AccountSetting Delegate
+      case let .path(.element(id: _, action: .AccountSetting(.delegate(delegate)))):
+        switch delegate {
+        case .logoutDidCompleted:
+          return .send(.delegate(.logoutDidCompleted))
+          
+        case .withdrawalButtonDidTapped:
+          return .send(.delegate(.withdrawalButtonDidTapped))
+          
+        case .withdrawalDidCompleted:
+          return .send(.delegate(.withdrawalDidCompleted))
+        }
+      
+        
       default:
         return .none
       }

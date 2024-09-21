@@ -22,7 +22,8 @@ public struct AccountSettingFeature {
   @ObservableState
   public struct State: Equatable {
     public var isOnMatchingToggle: Bool
-    
+    @Presents var destination: Destination.State?
+
     public init(
       isOnMatchingToggle: Bool = false
     ) {
@@ -38,8 +39,37 @@ public struct AccountSettingFeature {
     // UserAction
     case toggleDidChanged(alertState: UserAlertState)
     case backButtonDidTapped
+    case logoutButtonDidTapped
+    case withdrawalButtonDidTapped
+    case logoutDidCompleted
+    case withdrawalDidCompleted
     
+    // binding
     case binding(BindingAction<State>)
+    
+    // alert
+    case alert(Alert)
+    public enum Alert: Equatable {
+      case confirmLogOut
+      case confirmWithdrawal
+      case dismiss
+    }
+    
+    // delegate
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case logoutDidCompleted
+      case withdrawalDidCompleted
+      case withdrawalButtonDidTapped
+    }
+    
+    case destination(PresentationAction<Destination.Action>)
+  }
+  
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case alert(AlertState<AccountSettingFeature.Action.Alert>)
   }
   
   enum ID: Hashable {
@@ -49,5 +79,6 @@ public struct AccountSettingFeature {
   public var body: some ReducerOf<Self> {
     BindingReducer()
     reducer
+      .ifLet(\.$destination, action: \.destination)
   }
 }
