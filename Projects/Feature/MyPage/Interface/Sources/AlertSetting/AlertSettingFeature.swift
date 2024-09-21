@@ -15,6 +15,7 @@ import CoreURLHandlerInterface
 import CoreLoggerInterface
 
 import DomainUser
+import DomainUserInterface
 
 import ComposableArchitecture
 
