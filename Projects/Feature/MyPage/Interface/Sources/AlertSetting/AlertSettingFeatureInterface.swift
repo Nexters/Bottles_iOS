@@ -18,7 +18,7 @@ public struct AlertSettingFeature {
   }
   
   @ObservableState
-  public struct State {
+  public struct State: Equatable {
     
   }
   

@@ -34,7 +34,7 @@ public struct MainTabView: View {
             .tag(TabType.bottleStorage)
             .toolbar(.hidden, for: .tabBar)
           
-          MyPageView(store: store.scope(state: \.myPage, action: \.myPage))
+          MyPageRootView(store: store.scope(state: \.myPageRoot, action: \.myPageRoot))
             .tag(TabType.myPage)
             .toolbar(.hidden, for: .tabBar)
         }

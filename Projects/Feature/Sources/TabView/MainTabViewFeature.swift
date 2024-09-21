@@ -24,13 +24,13 @@ public struct MainTabViewFeature {
   public struct State: Equatable {
     var sandBeachRoot: SandBeachRootFeature.State
     var bottleStorage: BottleStorageFeature.State
-    var myPage: MyPageFeature.State
+    var myPageRoot: MyPageRootFeature.State
     var selectedTab: TabType
     var isLoading: Bool
     public init() {
       self.sandBeachRoot = .init()
       self.bottleStorage = .init()
-      self.myPage = .init()
+      self.myPageRoot = .init()
       self.selectedTab = .sandBeach
       self.isLoading = false
     }
@@ -39,7 +39,7 @@ public struct MainTabViewFeature {
   public enum Action: BindableAction {
     case sandBeachRoot(SandBeachRootFeature.Action)
     case bottleStorage(BottleStorageFeature.Action)
-    case myPage(MyPageFeature.Action)
+    case myPageRoot(MyPageRootFeature.Action)
     case selectedTabChanged(TabType)
     
     case binding(BindingAction<State>)
@@ -60,8 +60,8 @@ public struct MainTabViewFeature {
     Scope(state: \.bottleStorage, action: \.bottleStorage) {
       BottleStorageFeature()
     }
-    Scope(state: \.myPage, action: \.myPage) {
-      MyPageFeature()
+    Scope(state: \.myPageRoot, action: \.myPageRoot) {
+      MyPageRootFeature()
     }
     Reduce(feature)
   }
@@ -83,7 +83,7 @@ public struct MainTabViewFeature {
       case let .selectedTabDidChanged(selectedTab):
         state.selectedTab = selectedTab
       case .profileSetUpDidCompleted:
-        return .send(.myPage(.userProfileUpdateDidRequest))
+        return .send(.myPageRoot(.userProfileUpdateDidRequest))
       }
       return .none
       
@@ -96,7 +96,7 @@ public struct MainTabViewFeature {
       return .none
       
     // MyPage Delegate
-    case let .myPage(.delegate(delegate)):
+    case let .myPageRoot(.delegate(delegate)):
       switch delegate {
       case .logoutDidCompleted:
         return .send(.delegate(.logoutDidCompleted))
