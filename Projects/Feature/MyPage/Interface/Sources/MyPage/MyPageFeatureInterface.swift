@@ -7,9 +7,11 @@
 
 import Foundation
 
-import SharedDesignSystem
 import DomainProfileInterface
+
 import FeatureTabBarInterface
+
+import SharedDesignSystem
 
 import ComposableArchitecture
 
@@ -24,10 +26,13 @@ public struct MyPageFeature {
   @ObservableState
   public struct State: Equatable {
     var isShowLoadingProgressView: Bool
+    
     public var keywordItem: [ClipItem]
     public var userInfo: UserInfo
     public var introduction: Introduction
     public var blockedContactsCount: Int
+    public var currentAppVersion: String?
+    public var isShowApplicationUpdateButton: Bool
     public var isPresentTerms: Bool
     public var temrsURL: String?
     
@@ -41,6 +46,7 @@ public struct MyPageFeature {
       self.userInfo = .init(userAge: -1, userImageURL: "", userName: "")
       self.introduction = .init(answer: "", question: "")
       self.blockedContactsCount = 0
+      self.isShowApplicationUpdateButton = false
       self.isPresentTerms = false
     }
   }
@@ -48,12 +54,11 @@ public struct MyPageFeature {
   public enum Action: BindableAction {
     // View Life Cycle
     case onLoad
+    case onAppear
     
     case userProfileDidFetched(UserProfile)
     case userProfileUpdateDidRequest
     case updatePhoneNumberForBlockButtonDidTapped
-    case updatePhoneNumberForBlockCompleted(count: Int)
-    case contactsAccessDeniedErrorOccurred
     case logOutButtonDidTapped
     case logOutDidCompleted
     case withdrawalButtonDidTapped
@@ -61,6 +66,11 @@ public struct MyPageFeature {
     case selectedTabDidChanged(TabType)
     case alertSettingListDidTapped
     case accountSettingListDidTapped
+    case updateApplicationButtonTapped
+    
+    case updatePhoneNumberForBlockCompleted(count: Int)
+    case contactsAccessDeniedErrorOccurred
+    case applicationVersionInfoFetched(currentAppVersion: String, isNeedUpdate: Bool)
     case termsOfServiceListDidTapped
     case privacyPolicyListDidTapped
     case termsWebViewDidDismiss
