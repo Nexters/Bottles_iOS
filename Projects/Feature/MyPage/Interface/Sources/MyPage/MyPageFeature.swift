@@ -173,7 +173,7 @@ extension MyPageFeature {
         
       case .contactListDidTapped:
         URLHandler.shared.openURL(urlType: .kakaoChannelTalk)
-		return .none
+        return .none
 
       case let .configureLoadingProgressView(isShow):
         state.isShowLoadingProgressView = isShow
