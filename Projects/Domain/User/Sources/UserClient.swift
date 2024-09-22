@@ -66,7 +66,6 @@ extension UserClient: DependencyKey {
       fetchPushNotificationAllowStatus: {
         return UserDefaults.standard.bool(forKey: UserDefaultsKeys.alertAllowState.rawValue)
       },
-      
       updateAlertState: { alertState in
         let requestData = AlertStateRequestDTO(alertType: alertState.alertType, enabled: alertState.enabled)
         try await networkManager.reqeust(api: .apiType(UserAPI.updateAlertState(reqeustData: requestData)))

@@ -79,6 +79,8 @@ public struct MyPageFeature {
     case contactsDidReceived(contacts: [String])
     case configureLoadingProgressView(isShow: Bool)
     
+    case configureLoadingProgressView(isShow: Bool)
+    
     case delegate(Delegate)
     
     public enum Delegate {
