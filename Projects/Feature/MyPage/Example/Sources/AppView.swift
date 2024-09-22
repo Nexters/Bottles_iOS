@@ -9,9 +9,9 @@ import ComposableArchitecture
 struct AppView: App {
   var body: some Scene {
     WindowGroup {
-      MyPageView(store: Store(
-        initialState: MyPageFeature.State(),
-        reducer: { MyPageFeature() }
+      MyPageRootView(store: Store(
+        initialState: MyPageRootFeature.State(),
+        reducer: { MyPageRootFeature() }
       ))
     }
   }

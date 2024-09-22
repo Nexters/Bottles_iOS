@@ -116,6 +116,9 @@ private extension MyPageView {
       .padding(.vertical, .xl)
       .overlay(roundedRectangle)
       .padding(.bottom, .md)
+      .asThrottleButton {
+        store.send(.profileEditListDidTapped)
+      }
   }
   
   var blockPhoneNumberList: some View {

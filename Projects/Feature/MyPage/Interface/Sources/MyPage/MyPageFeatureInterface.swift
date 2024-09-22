@@ -64,6 +64,7 @@ public struct MyPageFeature {
     case withdrawalButtonDidTapped
     case withdrawalDidCompleted
     case selectedTabDidChanged(TabType)
+    case profileEditListDidTapped
     case alertSettingListDidTapped
     case accountSettingListDidTapped
     case updateApplicationButtonTapped
@@ -85,6 +86,7 @@ public struct MyPageFeature {
       case withdrawalDidCompleted
       case logoutDidCompleted
       case selectedTabDidChanged(TabType)
+      case profileEditListDidTapped
       case alertSettingListDidTapped
       case accountSettingListDidTapped
     }

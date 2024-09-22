@@ -11,7 +11,8 @@ let project = Project.makeModule(
                 dependencies: [
                     .domain,
                     .feature(interface: .BaseWebView),
-                    .feature(interface: .TabBar)
+                    .feature(interface: .TabBar),
+                    .feature(interface: .GeneralSignUp)
                 ]
             )
         ),

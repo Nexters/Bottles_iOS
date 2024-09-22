@@ -24,11 +24,15 @@ extension MyPageRootFeature {
       case let .myPage(delegate):
         switch delegate {
         case .alertSettingListDidTapped:
-          state.path.append(.AlertSetting(.init()))
+          state.path.append(.alertSetting(.init()))
           return .none
           
         case .accountSettingListDidTapped:
-          state.path.append(.AccountSetting(.init()))
+          state.path.append(.accountSetting(.init()))
+          return .none
+          
+        case .profileEditListDidTapped:
+          state.path.append(.editProfile(.init()))
           return .none
           
         default:
@@ -36,7 +40,7 @@ extension MyPageRootFeature {
         }
         
       // AccountSetting Delegate
-      case let .path(.element(id: _, action: .AccountSetting(.delegate(delegate)))):
+      case let .path(.element(id: _, action: .accountSetting(.delegate(delegate)))):
         switch delegate {
         case .logoutDidCompleted:
           return .send(.delegate(.logoutDidCompleted))
@@ -47,7 +51,13 @@ extension MyPageRootFeature {
         case .withdrawalDidCompleted:
           return .send(.delegate(.withdrawalDidCompleted))
         }
-      
+        
+      case let .path(.element(id: _, action: .editProfile(.delegate(delegate)))):
+        switch delegate {
+        case .closeEditProfileView:
+          _ = state.path.popLast()
+          return .none
+        }
         
       default:
         return .none

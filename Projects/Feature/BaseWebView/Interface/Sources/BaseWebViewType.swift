@@ -11,33 +11,48 @@ import CoreWebViewInterface
 import CoreKeyChainStoreInterface
 import CoreKeyChainStore
 
-public enum BottleWebViewType: String {
+public enum BottleWebViewType {
   private var baseURL: String {
     (Bundle.main.infoDictionary?["WEB_VIEW_BASE_URL"] as? String) ?? ""
   }
   
-  case createProfile = "create-profile"
-  case myPage = "my"
-  case signUp = "signup"
+  case createProfile
+  case signUp
   case login
   case bottles
+  case editProfile
+  
+  var path: String {
+    switch self {
+    case .createProfile:
+      return "create-profile"
+    case .signUp:
+      return "signup"
+    case .login:
+      return "login"
+    case .bottles:
+      return "bottles"
+    case .editProfile:
+      return "profile/edit"
+    }
+  }
   
   public var url: URL {
     switch self {
     case .createProfile:
-      return makeUrlWithToken(rawValue)
-      
-    case .myPage:
-      return makeUrlWithToken(rawValue)
+      return makeUrlWithToken(path)
       
     case .signUp:
-      return URL(string: baseURL + "/" + rawValue)!
+      return URL(string: baseURL + "/" + path)!
       
     case .login:
-      return URL(string: baseURL + "/" + rawValue)!
+      return URL(string: baseURL + "/" + path)!
       
     case .bottles:
-      return makeUrlWithToken(rawValue)
+      return makeUrlWithToken(path)
+      
+    case .editProfile:
+      return makeUrlWithToken(path)
     }
   }
   
