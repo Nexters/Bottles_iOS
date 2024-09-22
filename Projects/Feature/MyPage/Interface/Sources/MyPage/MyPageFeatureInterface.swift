@@ -58,6 +58,7 @@ public struct MyPageFeature {
     case selectedTabDidChanged(TabType)
     case alertSettingListDidTapped
     case accountSettingListDidTapped
+    case contactListDidTapped
     
     case configureLoadingProgressView(isShow: Bool)
     

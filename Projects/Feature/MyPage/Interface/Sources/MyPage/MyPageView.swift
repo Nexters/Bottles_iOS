@@ -136,6 +136,7 @@ private extension MyPageView {
   
   var contactList: some View {
     ArrowListView(title: "1:1 문의")
+      .asThrottleButton(action: { store.send(.contactListDidTapped) })
   }
   
   var termsOfServiceList: some View {
