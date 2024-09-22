@@ -14,6 +14,7 @@ import DomainUserInterface
 import CoreKeyChainStore
 import CoreToastInterface
 import CoreLoggerInterface
+import CoreURLHandlerInterface
 
 import SharedDesignSystem
 
@@ -170,6 +171,10 @@ extension MyPageFeature {
       case .accountSettingListDidTapped:
         return .send(.delegate(.accountSettingListDidTapped))
         
+      case .contactListDidTapped:
+        URLHandler.shared.openURL(urlType: .kakaoChannelTalk)
+		return .none
+
       case let .configureLoadingProgressView(isShow):
         state.isShowLoadingProgressView = isShow
         return .none
