@@ -186,6 +186,10 @@ extension MyPageFeature {
         URLHandler.shared.openURL(urlType: .bottleAppStore)
         return .none
         
+      case .updateApplicationButtonTapped:
+        URLHandler.shared.openURL(urlType: .bottleAppStore)
+        return .none
+        
       case let .updatePhoneNumberForBlockCompleted(count):
         toastClient.presentToast(message: "차단이 완료됐어요")
         state.blockedContactsCount = count
