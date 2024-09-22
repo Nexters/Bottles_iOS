@@ -6,7 +6,7 @@
 //
 
 public struct BlockContactRequestDTO: Encodable {
-  public let blockContacts: [String]
+  private let blockContacts: [String]
   
   public init(blockContacts: [String]) {
     self.blockContacts = blockContacts
