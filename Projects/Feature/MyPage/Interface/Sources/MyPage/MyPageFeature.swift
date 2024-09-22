@@ -95,10 +95,21 @@ extension MyPageFeature {
             await send(.withdrawalDidCompleted)
           }
           
+        case .dismissAlert:
+          state.destination = nil
+          return .send(.configureLoadingProgressView(isShow: false))
+		
         case .dismissContactsAlert:
           state.destination = nil
           URLHandler.shared.openURL(urlType: .setting)
           return .none
+
+        case let .confirmBlockContacts(contacts):
+          return .run { send in
+            try await userClient.updateBlockContacts(contacts: contacts)
+            await send(.updatePhoneNumberForBlockCompleted(count: contacts.count))
+            await send(.configureLoadingProgressView(isShow: false))
+          }
         }
         
       case .userProfileDidFetched(let userProfile):
@@ -147,9 +158,7 @@ extension MyPageFeature {
         return .run { send in
           await send(.configureLoadingProgressView(isShow: true))
           let contacts = try await userClient.fetchContacts()
-          try await userClient.updateBlockContacts(contacts: contacts)
-          await send(.updatePhoneNumberForBlockCompleted(count: contacts.count))
-          await send(.configureLoadingProgressView(isShow: false))
+          await send(.contactsDidReceived(contacts: contacts))
         } catch: { error, send in
           await send(.configureLoadingProgressView(isShow: false))
           if let userError = error as? UserError {
@@ -161,6 +170,17 @@ extension MyPageFeature {
             }
           }
         }
+      
+      case let .contactsDidReceived(contacts):
+        let count = contacts.count
+        state.destination = .alert(.init(
+          title: { TextState("연락처 차단") },
+          actions: {
+            ButtonState(role: .cancel, action: .dismissAlert, label: { TextState("취소하기")})
+            ButtonState(role: .destructive, action: .confirmBlockContacts(contacts: contacts), label: { TextState("차단하기")})
+          },
+          message: { TextState("주소록에 있는 \(count)개의\n전화번호를 차단할까요?") }))
+        return .none
         
       case .updateApplicationButtonTapped:
         URLHandler.shared.openURL(urlType: .bottleAppStore)

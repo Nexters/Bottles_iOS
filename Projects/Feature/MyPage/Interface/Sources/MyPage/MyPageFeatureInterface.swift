@@ -76,7 +76,7 @@ public struct MyPageFeature {
     case privacyPolicyListDidTapped
     case termsWebViewDidDismiss
     case contactListDidTapped
-    
+    case contactsDidReceived(contacts: [String])
     case configureLoadingProgressView(isShow: Bool)
     
     case delegate(Delegate)
@@ -95,6 +95,8 @@ public struct MyPageFeature {
     public enum Alert: Equatable {
       case confirmLogOut
       case confirmWithdrawal
+      case confirmBlockContacts(contacts: [String])
+      case dismissAlert
       case dismissContactsAlert
     }
   
