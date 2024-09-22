@@ -28,17 +28,24 @@ public struct MyPageRootView: View {
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
-          case .AlertSetting:
+          case .alertSetting:
             if let store = store.scope(
-              state: \.AlertSetting,
-              action: \.AlertSetting) {
+              state: \.alertSetting,
+              action: \.alertSetting) {
               AlertSettingView(store: store)
             }
-          case .AccountSetting:
+          case .accountSetting:
             if let store = store.scope(
-              state: \.AccountSetting,
-              action: \.AccountSetting) {
+              state: \.accountSetting,
+              action: \.accountSetting) {
               AccountSettingView(store: store)
+            }
+          case .editProfile:
+            if let store = store.scope(
+              state: \.editProfile,
+              action: \.editProfile
+            ) {
+              ProfileEditView(store: store)
             }
           }
         }

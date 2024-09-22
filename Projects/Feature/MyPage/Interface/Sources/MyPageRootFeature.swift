@@ -21,8 +21,9 @@ public struct MyPageRootFeature {
   
   @Reducer(state: .equatable)
   public enum Path {
-    case AlertSetting(AlertSettingFeature)
-    case AccountSetting(AccountSettingFeature)
+    case alertSetting(AlertSettingFeature)
+    case accountSetting(AccountSettingFeature)
+    case editProfile(EditProfileFeature)
   }
 
   @ObservableState

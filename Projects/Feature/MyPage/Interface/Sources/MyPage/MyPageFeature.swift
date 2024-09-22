@@ -185,6 +185,9 @@ extension MyPageFeature {
         ))
         return .none
         
+      case .profileEditListDidTapped:
+        return .send(.delegate(.profileEditListDidTapped))
+        
       case .alertSettingListDidTapped:
         return .send(.delegate(.alertSettingListDidTapped))
         
