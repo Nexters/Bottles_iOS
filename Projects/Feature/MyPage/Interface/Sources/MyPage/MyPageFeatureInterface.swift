@@ -95,7 +95,7 @@ public struct MyPageFeature {
     public enum Alert: Equatable {
       case confirmLogOut
       case confirmWithdrawal
-      case dismissAlert
+      case dismissContactsAlert
     }
   
     // ETC
