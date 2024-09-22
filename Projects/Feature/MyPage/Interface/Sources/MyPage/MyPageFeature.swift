@@ -171,6 +171,21 @@ extension MyPageFeature {
       case .accountSettingListDidTapped:
         return .send(.delegate(.accountSettingListDidTapped))
         
+      case .termsOfServiceListDidTapped:
+        state.isPresentTerms = true
+        state.temrsURL = "https://spiral-ogre-a4d.notion.site/240724-e3676639ea864147bb293cfcda40d99f"
+        return .none
+        
+      case .privacyPolicyListDidTapped:
+        state.isPresentTerms = true
+        state.temrsURL = "https://spiral-ogre-a4d.notion.site/abb2fd284516408e8c2fc267d07c6421"
+        return .none
+        
+      case .termsWebViewDidDismiss:
+        state.isPresentTerms = false
+        state.temrsURL = ""
+        return .none
+        
       case .contactListDidTapped:
         URLHandler.shared.openURL(urlType: .kakaoChannelTalk)
         return .none
