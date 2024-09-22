@@ -120,6 +120,7 @@ private extension MyPageView {
   
   var accountSettingList: some View {
     ArrowListView(title: "계정 관리")
+      .asThrottleButton(action: { store.send(.accountSettingListDidTapped) })
   }
   
   var appVersionList: some View {

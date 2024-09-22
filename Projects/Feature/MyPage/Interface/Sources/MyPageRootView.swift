@@ -34,6 +34,12 @@ public struct MyPageRootView: View {
               action: \.AlertSetting) {
               AlertSettingView(store: store)
             }
+          case .AccountSetting:
+            if let store = store.scope(
+              state: \.AccountSetting,
+              action: \.AccountSetting) {
+              AccountSettingView(store: store)
+            }
           }
         }
       }

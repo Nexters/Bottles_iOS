@@ -46,6 +46,10 @@ extension ProfileClient: DependencyKey {
         let responseData = try await networkManager.reqeust(api: .apiType(ProfileAPI.fetchUserProfileStatus), dto: ProfileStatusResponseDTO.self)
         let userStatus = responseData.toDomain()
         return userStatus
+      },
+      updateMatchingActivate: { isActive in
+        let requestData = MatchingActivateRequestDTO(activate: isActive)
+        try await networkManager.reqeust(api: .apiType(ProfileAPI.updateMachingActivate(requestData: requestData)))
       }
     )
   }

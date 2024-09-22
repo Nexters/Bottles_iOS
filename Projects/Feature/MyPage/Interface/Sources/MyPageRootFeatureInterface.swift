@@ -27,9 +27,27 @@ extension MyPageRootFeature {
           state.path.append(.AlertSetting(.init()))
           return .none
           
+        case .accountSettingListDidTapped:
+          state.path.append(.AccountSetting(.init()))
+          return .none
+          
         default:
           return .none
         }
+        
+      // AccountSetting Delegate
+      case let .path(.element(id: _, action: .AccountSetting(.delegate(delegate)))):
+        switch delegate {
+        case .logoutDidCompleted:
+          return .send(.delegate(.logoutDidCompleted))
+          
+        case .withdrawalButtonDidTapped:
+          return .send(.delegate(.withdrawalButtonDidTapped))
+          
+        case .withdrawalDidCompleted:
+          return .send(.delegate(.withdrawalDidCompleted))
+        }
+      
         
       default:
         return .none
