@@ -167,6 +167,7 @@ extension MyPageFeature {
         return .none
         
       case let .updatePhoneNumberForBlockCompleted(count):
+        toastClient.presentToast(message: "차단이 완료됐어요")
         state.blockedContactsCount = count
         return .none
         
