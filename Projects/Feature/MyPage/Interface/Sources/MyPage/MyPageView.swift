@@ -10,6 +10,7 @@ import Contacts
 
 import FeatureTabBarInterface
 import FeatureBaseWebViewInterface
+import FeatureGeneralSignUpInterface
 
 import CoreLoggerInterface
 
@@ -69,6 +70,11 @@ public struct MyPageView: View {
         }
       }
       .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+      .sheet(isPresented: $store.isPresentTerms) {
+        store.send(.termsWebViewDidDismiss)
+      } content: {
+        TermsWebView(url: store.temrsURL ?? "")
+      }
     }
   }
 }
@@ -141,9 +147,11 @@ private extension MyPageView {
   
   var termsOfServiceList: some View {
     ArrowListView(title: "보틀 이용 약관")
+      .asThrottleButton(action: { store.send(.termsOfServiceListDidTapped) })
   }
   
   var privacyPolicyList: some View {
     ArrowListView(title: "개인정보처리방침")
+      .asThrottleButton(action: { store.send(.privacyPolicyListDidTapped) })
   }
 }

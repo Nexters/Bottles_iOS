@@ -28,6 +28,8 @@ public struct MyPageFeature {
     public var userInfo: UserInfo
     public var introduction: Introduction
     public var blockedContactsCount: Int
+    public var isPresentTerms: Bool
+    public var temrsURL: String?
     
     @Presents var destination: Destination.State?
     
@@ -39,6 +41,7 @@ public struct MyPageFeature {
       self.userInfo = .init(userAge: -1, userImageURL: "", userName: "")
       self.introduction = .init(answer: "", question: "")
       self.blockedContactsCount = 0
+      self.isPresentTerms = false
     }
   }
   
@@ -58,6 +61,9 @@ public struct MyPageFeature {
     case selectedTabDidChanged(TabType)
     case alertSettingListDidTapped
     case accountSettingListDidTapped
+    case termsOfServiceListDidTapped
+    case privacyPolicyListDidTapped
+    case termsWebViewDidDismiss
     case contactListDidTapped
     
     case configureLoadingProgressView(isShow: Bool)
