@@ -11,17 +11,20 @@ public struct ButtonListView: View {
   private let title: String
   private let subTitle: String?
   private let buttonTitle: String
+  private let isShowButton: Bool
   private let action: () -> Void
   
   public init(
     title: String,
     subTitle: String? = nil,
     buttonTitle: String,
+    isShowButton: Bool = true,
     action: @escaping () -> Void
   ) {
     self.title = title
     self.subTitle = subTitle
     self.buttonTitle = buttonTitle
+    self.isShowButton = isShowButton
     self.action = action
   }
   
@@ -36,12 +39,17 @@ public struct ButtonListView: View {
 
 // MARK: - Views
 public extension ButtonListView {
+  @ViewBuilder
   var button: some View {
-    OutlinedStyleButton(
-      .small(contentType: .text),
-      title: buttonTitle,
-      buttonType: .throttle,
-      action: action
-    )
+    if isShowButton {
+      OutlinedStyleButton(
+        .small(contentType: .text),
+        title: buttonTitle,
+        buttonType: .throttle,
+        action: action
+      )
+    } else {
+      EmptyView()
+    }
   }
 }

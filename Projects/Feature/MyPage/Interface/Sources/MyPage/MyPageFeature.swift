@@ -10,6 +10,7 @@ import Foundation
 import DomainAuth
 import DomainProfile
 import DomainUserInterface
+import DomainApplication
 
 import CoreKeyChainStore
 import CoreToastInterface
@@ -26,6 +27,7 @@ extension MyPageFeature {
     @Dependency(\.toastClient) var toastClient
     @Dependency(\.profileClient) var profileClient
     @Dependency(\.userClient) var userClient
+    @Dependency(\.applicationClient) var applicationClient
     
     let reducer = Reduce<State, Action> { state, action in
       switch action {
@@ -35,6 +37,20 @@ extension MyPageFeature {
           let userProfile = try await profileClient.fetchUserProfile()
           await send(.userProfileDidFetched(userProfile))
         }
+        
+      case .onAppear:
+        return .run { send in
+          let currentAppVersion = applicationClient.fetchCurrentAppVersion()
+          let isNeedUpdateApplication = try await applicationClient.checkNeedApplicationUpdate()
+          await send(.applicationVersionInfoFetched(currentAppVersion: currentAppVersion, isNeedUpdate: isNeedUpdateApplication))
+        } catch: { error, send in
+          Log.error(error)
+        }
+        
+      case let .applicationVersionInfoFetched(currentAppVersion, isNeedUpdate):
+        state.currentAppVersion = currentAppVersion
+        state.isShowApplicationUpdateButton = isNeedUpdate
+        return .none
         
       case .logOutButtonDidTapped:
         state.destination = .alert(.init(
@@ -143,6 +159,10 @@ extension MyPageFeature {
             }
           }
         }
+        
+      case .updateApplicationButtonTapped:
+        URLHandler.shared.openURL(urlType: .bottleAppStore)
+        return .none
         
       case let .updatePhoneNumberForBlockCompleted(count):
         state.blockedContactsCount = count

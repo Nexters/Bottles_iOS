@@ -62,6 +62,9 @@ public struct MyPageView: View {
       .onLoad {
         store.send(.onLoad)
       }
+      .task {
+        store.send(.onAppear)
+      }
       .overlay {
         if store.isShowLoadingProgressView {
           WithPerceptionTracking {
@@ -137,7 +140,15 @@ private extension MyPageView {
   }
   
   var appVersionList: some View {
-    ArrowListView(title: "앱 버전", subTitle: "0.0.0")
+    ButtonListView(
+      title: "앱 버전",
+      subTitle: "\(store.currentAppVersion ?? "0.0.0")",
+      buttonTitle: "업데이트",
+      isShowButton: store.isShowApplicationUpdateButton,
+      action: {
+        store.send(.updateApplicationButtonTapped)
+      }
+    )
   }
   
   var contactList: some View {
