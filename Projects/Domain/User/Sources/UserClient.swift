@@ -78,7 +78,7 @@ extension UserClient: DependencyKey {
         }
         
         try store.enumerateContacts(with: request) { contact, _ in
-          contacts = contact.phoneNumbers
+          contacts += contact.phoneNumbers
             .map { $0.value.stringValue }
             .map { $0.replacingOccurrences(of: "+82", with: "0") }
             .map { $0.trimmingCharacters(in: .whitespaces) }
