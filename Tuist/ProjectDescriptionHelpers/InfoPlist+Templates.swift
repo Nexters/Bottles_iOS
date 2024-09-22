@@ -22,6 +22,7 @@ public extension InfoPlist {
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
+            "NSContactsUsageDescription": "매칭 차단 기능을 위해 연락처가 필요합니다.",
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
@@ -47,6 +48,7 @@ public extension InfoPlist {
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
+            "NSContactsUsageDescription": "매칭 차단 기능을 위해 연락처가 필요합니다.",
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",

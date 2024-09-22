@@ -14,6 +14,7 @@ import Moya
 public enum UserAPI {
   case fetchAlertState
   case updateAlertState(reqeustData: AlertStateRequestDTO)
+  case updateBlockContacts(blockContactRequestDTO: BlockContactRequestDTO)
 }
 
 extension UserAPI: BaseTargetType {
@@ -23,6 +24,8 @@ extension UserAPI: BaseTargetType {
       return "api/v1/user/alimy"
     case .updateAlertState:
       return "api/v1/user/alimy"
+    case .updateBlockContacts:
+      return "api/v1/user/block/contact-list"
     }
   }
   
@@ -31,6 +34,8 @@ extension UserAPI: BaseTargetType {
     case .fetchAlertState:
       return .get
     case .updateAlertState:
+      return .post
+    case .updateBlockContacts:
       return .post
     }
   }
@@ -41,6 +46,8 @@ extension UserAPI: BaseTargetType {
       return .requestPlain
     case .updateAlertState(let requestData):
       return .requestJSONEncodable(requestData)
+    case let .updateBlockContacts(blockContactRequestDTO):
+      return .requestJSONEncodable(blockContactRequestDTO)
     }
   }
 }

@@ -9,10 +9,14 @@ import Foundation
 
 import DomainAuth
 import DomainProfile
+import DomainUserInterface
+
 import CoreKeyChainStore
 import CoreToastInterface
 import CoreLoggerInterface
+
 import SharedDesignSystem
+
 import ComposableArchitecture
 
 extension MyPageFeature {
@@ -20,6 +24,8 @@ extension MyPageFeature {
     @Dependency(\.authClient) var authClient
     @Dependency(\.toastClient) var toastClient
     @Dependency(\.profileClient) var profileClient
+    @Dependency(\.userClient) var userClient
+    
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onLoad:
@@ -71,6 +77,10 @@ extension MyPageFeature {
             }
             await send(.withdrawalDidCompleted)
           }
+          
+        case .dismissAlert:
+          state.destination = nil
+          return .none
         }
         
       case .userProfileDidFetched(let userProfile):
@@ -114,11 +124,56 @@ extension MyPageFeature {
           await send(.userProfileDidFetched(userProfile))
         }
         
+      case .updatePhoneNumberForBlockButtonDidTapped:
+        return .run { send in
+          await send(.configureLoadingProgressView(isShow: true))
+          let contacts = try await userClient.fetchContacts()
+          try await userClient.updateBlockContacts(contacts: contacts)
+          await send(.updatePhoneNumberForBlockCompleted(count: contacts.count))
+          await send(.configureLoadingProgressView(isShow: false))
+        } catch: { error, send in
+          await send(.configureLoadingProgressView(isShow: false))
+          if let userError = error as? UserError {
+            switch userError {
+            case .requestContactsAccessAuthorityFailed:
+              Log.debug("연락처 접근 요정 거부")
+            case .contactsAccessDenied:
+              await send(.contactsAccessDeniedErrorOccurred)
+            }
+          }
+        }
+        
+      case let .updatePhoneNumberForBlockCompleted(count):
+        state.blockedContactsCount = count
+        return .none
+        
+      case .contactsAccessDeniedErrorOccurred:
+        state.destination = .alert(.init(
+          title: {
+            TextState("안내")
+          },
+          actions: {
+            ButtonState(
+              action: .dismissAlert,
+              label: { TextState("확인") }
+            )
+          },
+          message: {
+            TextState("설정 > 개인정보 보호 및 보안 > 연락처에서 '보틀'의 연락처 접근을 허락해 주세요.")
+          }
+        ))
+        return .none
+        
       case .alertSettingListDidTapped:
         return .send(.delegate(.alertSettingListDidTapped))
         
       case .accountSettingListDidTapped:
         return .send(.delegate(.accountSettingListDidTapped))
+        
+      case let .configureLoadingProgressView(isShow):
+        state.isShowLoadingProgressView = isShow
+        return .none
+        
       default:
         return .none
       }

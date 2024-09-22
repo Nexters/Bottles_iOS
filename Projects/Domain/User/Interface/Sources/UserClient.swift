@@ -16,7 +16,8 @@ public struct UserClient {
   private let updateFcmToken: (String) -> Void
   private let _fetchAlertState: () async throws -> [UserAlertState]
   private let updateAlertState: (UserAlertState) async throws -> Void
-  
+  private let fetchContacts: () async throws -> [String]
+  private let updateBlockContacts: ([String]) async throws -> Void
   
   public init(
     isLoggedIn: @escaping () -> Bool,
@@ -26,7 +27,9 @@ public struct UserClient {
     updateDeleteState: @escaping (Bool) -> Void,
     updateFcmToken: @escaping (String) -> Void,
     fetchAlertState: @escaping () async throws -> [UserAlertState],
-    updateAlertState: @escaping (UserAlertState) async throws -> Void
+    updateAlertState: @escaping (UserAlertState) async throws -> Void,
+    fetchContacts: @escaping () async throws -> [String],
+    updateBlockContacts: @escaping ([String]) async throws -> Void
   ) {
     self._isLoggedIn = isLoggedIn
     self._isAppDeleted = isAppDeleted
@@ -36,6 +39,8 @@ public struct UserClient {
     self.updateFcmToken = updateFcmToken
     self._fetchAlertState = fetchAlertState
     self.updateAlertState = updateAlertState
+    self.fetchContacts = fetchContacts
+    self.updateBlockContacts = updateBlockContacts
   }
   
   public func isLoggedIn() -> Bool {
@@ -68,5 +73,13 @@ public struct UserClient {
   
   public func updateAlertState(alertState: UserAlertState) async throws {
     try await updateAlertState(alertState)
+  }
+  
+  public func fetchContacts() async throws -> [String] {
+    try await fetchContacts()
+  }
+  
+  public func updateBlockContacts(contacts: [String]) async throws {
+    try await updateBlockContacts(contacts)
   }
 }
