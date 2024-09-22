@@ -18,7 +18,8 @@ let project = Project.makeModule(
             factory: .init(
                 dependencies: [
                     .core(interface: .Network),
-                    .core(interface: .Logger)
+                    .core(interface: .Logger),
+                    .core(implements: .KeyChainStore)
                 ]
             )
         ),
