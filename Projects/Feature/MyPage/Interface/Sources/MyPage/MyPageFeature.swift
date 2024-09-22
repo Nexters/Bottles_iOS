@@ -107,6 +107,7 @@ extension MyPageFeature {
         let introduction = userProfile.introduction
         
         Log.debug(userProfile)
+        state.blockedContactsCount = userInfo.blockedContactsCount
         
         state.keywordItem = [
           ClipItem(
