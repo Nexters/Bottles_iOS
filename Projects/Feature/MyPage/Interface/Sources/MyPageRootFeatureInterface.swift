@@ -36,7 +36,11 @@ extension MyPageRootFeature {
           return .none
           
         case .accountSettingListDidTapped:
-          state.path.append(.AccountSetting(.init()))
+          state.path.append(.accountSetting(.init()))
+          return .none
+          
+        case .profileEditListDidTapped:
+          state.path.append(.editProfile(.init()))
           return .none
           
         default:
