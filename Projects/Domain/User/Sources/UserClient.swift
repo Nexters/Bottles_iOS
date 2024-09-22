@@ -78,15 +78,11 @@ extension UserClient: DependencyKey {
         }
         
         try store.enumerateContacts(with: request) { contact, _ in
-          contact.phoneNumbers.forEach { phoneNumber in
-            var finalPhoneNumber = phoneNumber.value.stringValue
-            if finalPhoneNumber.hasPrefix("+82") {
-              finalPhoneNumber = finalPhoneNumber.replacingOccurrences(of: "+82", with: "0")
-            }
-            finalPhoneNumber = finalPhoneNumber.trimmingCharacters(in: .whitespaces)
-            finalPhoneNumber = finalPhoneNumber.filter { $0.isNumber }
-            contacts.append(finalPhoneNumber)
-          }
+          contacts = contact.phoneNumbers
+            .map { $0.value.stringValue }
+            .map { $0.replacingOccurrences(of: "+82", with: "0") }
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .map { $0.filter { $0.isNumber } }
         }
         
         return contacts
