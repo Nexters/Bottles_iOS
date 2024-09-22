@@ -95,7 +95,7 @@ extension MyPageFeature {
             await send(.withdrawalDidCompleted)
           }
           
-        case .dismissAlert:
+        case .dismissContactsAlert:
           state.destination = nil
           return .send(.configureLoadingProgressView(isShow: false))
 		
