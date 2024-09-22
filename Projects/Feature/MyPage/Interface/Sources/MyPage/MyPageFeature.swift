@@ -95,8 +95,9 @@ extension MyPageFeature {
             await send(.withdrawalDidCompleted)
           }
           
-        case .dismissAlert:
+        case .dismissContactsAlert:
           state.destination = nil
+          URLHandler.shared.openURL(urlType: .setting)
           return .none
         }
         
@@ -175,7 +176,7 @@ extension MyPageFeature {
           },
           actions: {
             ButtonState(
-              action: .dismissAlert,
+              action: .dismissContactsAlert,
               label: { TextState("확인") }
             )
           },

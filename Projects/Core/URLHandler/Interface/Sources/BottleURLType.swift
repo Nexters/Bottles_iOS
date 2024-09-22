@@ -11,6 +11,7 @@ public enum BottleURLType {
   case bottleAppStore
   case bottleAppLookUp
   case kakaoChannelTalk
+  case setting
   
   public var url: URL {
     switch self {
@@ -22,6 +23,9 @@ public enum BottleURLType {
       
     case .bottleAppLookUp:
       return URL(string: Bundle.main.infoDictionary?["APP_LOOK_UP_URL"] as? String ?? "")!
+      
+    case .setting:
+      return URL(string: "App-prefs:root=General")!
     }
   }
 }
