@@ -113,6 +113,10 @@ extension MyPageFeature {
           let userProfile = try await profileClient.fetchUserProfile()
           await send(.userProfileDidFetched(userProfile))
         }
+        
+      case .alertSettingListDidTapped:
+        return .send(.delegate(.alertSettingListDidTapped))
+        
       default:
         return .none
       }
