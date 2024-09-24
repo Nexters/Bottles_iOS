@@ -35,7 +35,7 @@ public struct ReportUserView: View {
         }
       }
       .padding(.horizontal, .md)
-      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+      .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
       .toolbar(.hidden, for: .bottomBar)
     }
   }

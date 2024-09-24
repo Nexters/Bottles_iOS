@@ -70,6 +70,7 @@ public struct ReportUserFeature {
     case alert(Alert)
     public enum Alert: Equatable {
       case confirmReport
+      case dismiss
     }
     
     // ETC
