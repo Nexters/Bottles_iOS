@@ -28,14 +28,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     UIApplication.shared.registerForRemoteNotifications()
     UNUserNotificationCenter.current().delegate = self
     Messaging.messaging().delegate = self
-    
+    setNotification()
     application.registerForRemoteNotifications()
-    
     store.send(.appDelegate(.didFinishLunching))
     return true
   }
 }
 
+// MARK: - UNUserNotificationCenterDelegate
 extension AppDelegate: UNUserNotificationCenterDelegate {
   func messaging(
     _ messaging: Messaging,
@@ -60,5 +60,43 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     willPresent notification: UNNotification
   ) async -> UNNotificationPresentationOptions {
     return [.badge, .sound, .banner, .list]
+  }
+}
+
+// MARK: - objc funcs
+private extension AppDelegate {
+  @objc func checkNotificationSetting() {
+    UNUserNotificationCenter.current()
+      .getNotificationSettings { [weak self] permission in
+        guard let self = self else { return }
+        DispatchQueue.main.async {
+          switch permission.authorizationStatus {
+          case .notDetermined:
+            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: true)))
+          case .denied:
+            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: false)))
+          case .authorized:
+            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: true)))
+          case .provisional:
+            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: false)))
+          case .ephemeral:
+            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: true)))
+          @unknown default:
+            Log.error("Unknow Notification Status")
+          }
+        }
+      }
+  }
+}
+
+// MARK: - Private Methods
+private extension AppDelegate {
+  func setNotification() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(checkNotificationSetting),
+      name: UIApplication.willEnterForegroundNotification,
+      object: nil
+    )
   }
 }
