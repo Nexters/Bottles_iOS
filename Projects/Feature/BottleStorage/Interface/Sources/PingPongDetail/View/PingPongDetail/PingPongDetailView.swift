@@ -55,6 +55,7 @@ public struct PingPongDetailView: View {
       }
     )
     .ignoresSafeArea(.all, edges: .bottom)
+    .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
   }
 }
 

@@ -68,9 +68,7 @@ public struct IntroductionFeature {
         + (interest?.etc ?? [])
         + (interest?.sports ?? [])
     }
-    
-    @Presents var destination: Destination.State?
-    
+  
     public init (bottleID: Int) { 
       self.bottleID = bottleID
     }
@@ -88,32 +86,14 @@ public struct IntroductionFeature {
     
     // ETC.
     case binding(BindingAction<State>)
-    case destination(PresentationAction<Destination.Action>)
-    
-    case alert(Alert)
-    public enum Alert: Equatable {
-      case confirmStopTalk
-    }
-    
     case delegate(Delegate)
     
     public enum Delegate {
-      case popToRootDidRequired
+      case stopTaskButtonTapped
     }
   }
   
   public var body: some ReducerOf<Self> {
     reducer
-      .ifLet(\.$destination, action: \.destination)
   }
 }
-
-// MARK: - Destination
-
-extension IntroductionFeature {
-  @Reducer(state: .equatable)
-  public enum Destination {
-    case alert(AlertState<IntroductionFeature.Action.Alert>)
-  }
-}
-

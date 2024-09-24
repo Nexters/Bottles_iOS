@@ -81,9 +81,7 @@ public struct IntroductionView: View {
         .padding(.top, 32.0)
       }
       .scrollIndicators(.hidden)
-      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
       .background(to: ColorToken.background(.primary))
-      
     }
   }
 }
