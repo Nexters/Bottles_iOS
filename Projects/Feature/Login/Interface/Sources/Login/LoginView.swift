@@ -49,6 +49,7 @@ public struct LoginView: View {
           BottleImageView(
             type: .local(bottleImageSystem: .illustraition(.loginBackground))
           )
+          .scaledToFill()
         }
         .edgesIgnoringSafeArea([.top, .bottom])
         .sheet(
