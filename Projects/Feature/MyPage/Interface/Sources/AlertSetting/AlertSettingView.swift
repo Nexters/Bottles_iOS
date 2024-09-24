@@ -39,6 +39,7 @@ public struct AlertSettingView: View {
       .setNavigationBar {
         makeNaivgationleftButton { store.send(.backButtonDidTapped) }
       }
+      .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
       .onLoad { store.send(.onLoad) }
     }
   }

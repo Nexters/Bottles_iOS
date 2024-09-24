@@ -10,6 +10,8 @@ import Foundation
 import DomainUser
 import DomainUserInterface
 
+import CoreURLHandlerInterface
+
 import ComposableArchitecture
 
 extension AlertSettingFeature {
@@ -20,11 +22,13 @@ extension AlertSettingFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onLoad:
-        return .run { send in
+        updatePushNotificationAllowStatus(state: &state)
+        return .run { [state = state] send in
+          let isAllow = state.isAllowPushNotification
           let alertStateList = try await userClient.fetchAlertState()
           
           for alertState in alertStateList {
-            let isOn = alertState.enabled
+            let isOn = isAllow ? alertState.enabled : false
             switch alertState.alertType {
             case .randomBottle:
               await send(.randomBottleToggleDidFetched(isOn: isOn))
@@ -62,48 +66,97 @@ extension AlertSettingFeature {
         }
         
       case .binding(\.isOnRandomBottleToggle):
-        return .run { [isOn = state.isOnRandomBottleToggle] send in
-          await send(.toggleDidChanged(alertState: .init(alertType: .randomBottle, enabled: isOn)))
+        updatePushNotificationAllowStatus(state: &state)
+        if state.isAllowPushNotification {
+          return .run { [isOn = state.isOnRandomBottleToggle] send in
+            await send(.toggleDidChanged(alertState: .init(alertType: .randomBottle, enabled: isOn)))
+          }
+          .debounce(
+            id: ID.randomBottle,
+            for: 1.0,
+            scheduler: DispatchQueue.main)
+        } else {
+          state.isOnRandomBottleToggle = false
+          return .send(.pushNotificationAlertDidRequired)
         }
-        .debounce(
-          id: ID.randomBottle,
-          for: 1.0,
-          scheduler: DispatchQueue.main)
         
       case .binding(\.isOnArrivalBottleToggle):
-        return .run { [isOn = state.isOnArrivalBottleToggle] send in
-          await send(.toggleDidChanged(alertState: .init(alertType: .arrivalBottle, enabled: isOn)))
+        updatePushNotificationAllowStatus(state: &state)
+        if state.isAllowPushNotification {
+          return .run { [isOn = state.isOnArrivalBottleToggle] send in
+            await send(.toggleDidChanged(alertState: .init(alertType: .arrivalBottle, enabled: isOn)))
+          }
+          .debounce(
+            id: ID.arrivalBottle,
+            for: 1.0,
+            scheduler: DispatchQueue.main)
+        } else {
+          state.isOnArrivalBottleToggle = false
+          return .send(.pushNotificationAlertDidRequired)
         }
-        .debounce(
-          id: ID.arrivalBottle,
-          for: 1.0,
-          scheduler: DispatchQueue.main)
         
       case .binding(\.isOnPingPongToggle):
-        return .run { [isOn = state.isOnPingPongToggle] send in
-          await send(.toggleDidChanged(alertState: .init(alertType: .pingpong, enabled: isOn)))
+        updatePushNotificationAllowStatus(state: &state)
+        if state.isAllowPushNotification {
+          return .run { [isOn = state.isOnPingPongToggle] send in
+            await send(.toggleDidChanged(alertState: .init(alertType: .pingpong, enabled: isOn)))
+          }
+          .debounce(
+            id: ID.pingping,
+            for: 1.0,
+            scheduler: DispatchQueue.main)
+        } else {
+          state.isOnPingPongToggle = false
+          return .send(.pushNotificationAlertDidRequired)
         }
-        .debounce(
-          id: ID.pingping,
-          for: 1.0,
-          scheduler: DispatchQueue.main)
-        
       case .binding(\.isOnMarketingToggle):
-        return .run { [isOn = state.isOnMarketingToggle] send in
-          await send(.toggleDidChanged(alertState: .init(alertType: .marketing, enabled: isOn)))
-        }        
-        .debounce(
-          id: ID.marketing,
-          for: 1.0,
-          scheduler: DispatchQueue.main)
+        updatePushNotificationAllowStatus(state: &state)
+        if state.isAllowPushNotification {
+          return .run { [isOn = state.isOnMarketingToggle] send in
+            await send(.toggleDidChanged(alertState: .init(alertType: .marketing, enabled: isOn)))
+          }
+          .debounce(
+            id: ID.marketing,
+            for: 1.0,
+            scheduler: DispatchQueue.main)
+        } else {
+          state.isOnMarketingToggle = false
+          return .send(.pushNotificationAlertDidRequired)
+        }
         
       case let .toggleDidChanged(alertState):
         return .run { send in
           try await userClient.updateAlertState(alertState: alertState)
         }
+
+        
+      case .pushNotificationAlertDidRequired:
+        state.destination = .alert(.init(
+          title: { TextState("알림 권한 안내")},
+          actions: { ButtonState(
+            role: .destructive,
+            action: .confirmPushNotification,
+            label: { TextState("설정하러 가기") }) },
+          message: { TextState("설정 > '보틀' > 알림에서 알림을 허용해주세요.")}))
+
+        return .none
+        
+      case let .destination(.presented(.alert(alert))):
+        switch alert {
+        case .confirmPushNotification:
+          URLHandler.shared.openURL(urlType: .setting)
+          return .run { _ in
+            await dismiss()
+          }
+        }
         
       default:
         return .none
+      }
+      
+      func updatePushNotificationAllowStatus(state: inout State) {
+        let isAllow = userClient.fetchPushNotificationAllowStatus()
+        state.isAllowPushNotification = isAllow
       }
     }
     
