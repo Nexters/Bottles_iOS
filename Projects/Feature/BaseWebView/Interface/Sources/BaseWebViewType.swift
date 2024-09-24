@@ -7,9 +7,14 @@
 
 import Foundation
 
+import DomainApplicationInterface
+import DomainApplication
+
 import CoreWebViewInterface
 import CoreKeyChainStoreInterface
 import CoreKeyChainStore
+
+import Dependencies
 
 public enum BottleWebViewType {
   private var baseURL: String {
@@ -67,11 +72,15 @@ public enum BottleWebViewType {
 // MARK: - private methods
 private extension BottleWebViewType {
   func makeUrlWithToken(_ path: String) -> URL {
+    @Dependency(\.applicationClient) var applicationClient
+    
     var components = URLComponents(string: baseURL)
     components?.path = "/\(path)"
     components?.queryItems = [
       URLQueryItem(name: "accessToken", value: KeyChainTokenStore.shared.load(property: .accessToken)),
-      URLQueryItem(name: "refreshToken", value: KeyChainTokenStore.shared.load(property: .refreshToken))
+      URLQueryItem(name: "refreshToken", value: KeyChainTokenStore.shared.load(property: .refreshToken)),
+      URLQueryItem(name: "device", value: "ios"),
+      URLQueryItem(name: "version", value: applicationClient.fetchCurrentAppVersion())
     ]
     
     return (components?.url)!
