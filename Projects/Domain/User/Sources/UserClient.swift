@@ -47,11 +47,19 @@ extension UserClient: DependencyKey {
         UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
       },
       
+      updatePushNotificationAllowStatus: { isAllow in
+        UserDefaults.standard.set(isAllow, forKey: "alertAllowState")
+      },
+      
       fetchAlertState: {
         let responseData = try await networkManager.reqeust(api: .apiType(UserAPI.fetchAlertState), dto: [AlertStateResponseDTO].self)
         return responseData.map { $0.toDomain() }
-        
       },
+      
+      fetchPushNotificationAllowStatus: {
+        return UserDefaults.standard.bool(forKey: "alertAllowState")
+      },
+      
       updateAlertState: { alertState in
         let requestData = AlertStateRequestDTO(alertType: alertState.alertType, enabled: alertState.enabled)
         try await networkManager.reqeust(api: .apiType(UserAPI.updateAlertState(reqeustData: requestData)))

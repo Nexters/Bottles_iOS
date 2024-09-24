@@ -65,22 +65,22 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
 // MARK: - objc funcs
 private extension AppDelegate {
-  @objc func checkNotificationSetting() {
+  @objc func checkPushNotificationStatus() {
     UNUserNotificationCenter.current()
       .getNotificationSettings { [weak self] permission in
         guard let self = self else { return }
         DispatchQueue.main.async {
           switch permission.authorizationStatus {
           case .notDetermined:
-            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: true)))
+            self.store.send(.appDelegate(.pushNotificationAllowStatusDidChanged(isAllow: true)))
           case .denied:
-            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: false)))
+            self.store.send(.appDelegate(.pushNotificationAllowStatusDidChanged(isAllow: false)))
           case .authorized:
-            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: true)))
+            self.store.send(.appDelegate(.pushNotificationAllowStatusDidChanged(isAllow: true)))
           case .provisional:
-            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: false)))
+            self.store.send(.appDelegate(.pushNotificationAllowStatusDidChanged(isAllow: false)))
           case .ephemeral:
-            self.store.send(.appDelegate(.notificationSettingDidChanged(isAllow: true)))
+            self.store.send(.appDelegate(.pushNotificationAllowStatusDidChanged(isAllow: true)))
           @unknown default:
             Log.error("Unknow Notification Status")
           }
@@ -94,7 +94,7 @@ private extension AppDelegate {
   func setNotification() {
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(checkNotificationSetting),
+      selector: #selector(checkPushNotificationStatus),
       name: UIApplication.willEnterForegroundNotification,
       object: nil
     )

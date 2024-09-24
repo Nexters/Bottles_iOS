@@ -14,7 +14,9 @@ public struct UserClient {
   private let updateLoginState: (Bool) -> Void
   private let updateDeleteState: (Bool) -> Void
   private let updateFcmToken: (String) -> Void
+  private let updatePushNotificationAllowStatus: (Bool) -> Void
   private let _fetchAlertState: () async throws -> [UserAlertState]
+  private let _fetchPushNotificationAllowStatus: () -> Bool
   private let updateAlertState: (UserAlertState) async throws -> Void
   private let fetchContacts: () async throws -> [String]
   private let updateBlockContacts: ([String]) async throws -> Void
@@ -26,7 +28,9 @@ public struct UserClient {
     updateLoginState: @escaping (Bool) -> Void,
     updateDeleteState: @escaping (Bool) -> Void,
     updateFcmToken: @escaping (String) -> Void,
+    updatePushNotificationAllowStatus: @escaping (Bool) -> Void,
     fetchAlertState: @escaping () async throws -> [UserAlertState],
+    fetchPushNotificationAllowStatus: @escaping () -> Bool,
     updateAlertState: @escaping (UserAlertState) async throws -> Void,
     fetchContacts: @escaping () async throws -> [String],
     updateBlockContacts: @escaping ([String]) async throws -> Void
@@ -37,7 +41,9 @@ public struct UserClient {
     self.updateLoginState = updateLoginState
     self.updateDeleteState = updateDeleteState
     self.updateFcmToken = updateFcmToken
+    self.updatePushNotificationAllowStatus = updatePushNotificationAllowStatus
     self._fetchAlertState = fetchAlertState
+    self._fetchPushNotificationAllowStatus = fetchPushNotificationAllowStatus
     self.updateAlertState = updateAlertState
     self.fetchContacts = fetchContacts
     self.updateBlockContacts = updateBlockContacts
@@ -67,8 +73,16 @@ public struct UserClient {
     updateFcmToken(fcmToken)
   }
   
+  public func updatePushNotificationAllowStatus(isAllow: Bool) {
+    updatePushNotificationAllowStatus(isAllow)
+  }
+  
   public func fetchAlertState() async throws -> [UserAlertState] {
     try await _fetchAlertState()
+  }
+  
+  public func fetchPushNotificationAllowStatus() -> Bool {
+    _fetchPushNotificationAllowStatus()
   }
   
   public func updateAlertState(alertState: UserAlertState) async throws {
