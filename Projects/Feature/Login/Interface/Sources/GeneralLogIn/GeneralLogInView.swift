@@ -51,7 +51,7 @@ public struct GeneralLogInView: View {
           LoadingIndicator()
         }
       }
-      .ignoresSafeArea(.all, edges: .bottom)
+      .ignoresSafeArea(.all, edges: [.top, .bottom])
       .toolbar(.hidden, for: .navigationBar)
     }
   }

@@ -43,7 +43,7 @@ public struct BottleArrivalView: View {
           LoadingIndicator()
         }
       }
-      .ignoresSafeArea(.all, edges: .bottom)
+      .ignoresSafeArea(.all, edges: [.top, .bottom])
       .toolbar(.hidden, for: .navigationBar)
       .toolbar(.hidden, for: .bottomBar)
     }
