@@ -7,6 +7,8 @@
 
 import Foundation
 
+import Combine
+
 public struct UserClient {
   private let _isLoggedIn: () -> Bool
   private let _isAppDeleted: () -> Bool
@@ -20,6 +22,11 @@ public struct UserClient {
   private let updateAlertState: (UserAlertState) async throws -> Void
   private let fetchContacts: () async throws -> [String]
   private let updateBlockContacts: ([String]) async throws -> Void
+  private let pushNotificationAllowStatusSubject = CurrentValueSubject<Bool, Never>(true)
+  
+  public var pushNotificationAllowStatusPublisher: AnyPublisher<Bool, Never> {
+    return pushNotificationSubject.eraseToAnyPublisher()
+  }
   
   public init(
     isLoggedIn: @escaping () -> Bool,
@@ -74,6 +81,7 @@ public struct UserClient {
   }
   
   public func updatePushNotificationAllowStatus(isAllow: Bool) {
+    pushNotificationAllowStatusSubject.send(isAllow)
     updatePushNotificationAllowStatus(isAllow)
   }
   
