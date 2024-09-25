@@ -25,7 +25,7 @@ public struct UserClient {
   private let pushNotificationAllowStatusSubject = CurrentValueSubject<Bool, Never>(true)
   
   public var pushNotificationAllowStatusPublisher: AnyPublisher<Bool, Never> {
-    return pushNotificationSubject.eraseToAnyPublisher()
+    return pushNotificationAllowStatusSubject.eraseToAnyPublisher()
   }
   
   public init(
