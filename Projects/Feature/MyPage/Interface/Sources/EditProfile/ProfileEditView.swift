@@ -48,6 +48,6 @@ public struct ProfileEditView: View {
         }
       }
     }
-    .ignoresSafeArea(.all, edges: [.bottom])
+    .ignoresSafeArea(.all, edges: [.bottom, .top])
   }
 }
