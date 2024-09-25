@@ -62,7 +62,7 @@ public struct AlertSettingFeature {
     case alertStateFetchDidRequest
     
     // UserAction
-    case toggleDidChanged(alertState: UserAlertState)
+    case toggleDidChanged(alertState: UserAlertState, id: ID)
     case backButtonDidTapped
     
     // ETC
@@ -76,7 +76,7 @@ public struct AlertSettingFeature {
     }
   }
   
-  enum ID: Hashable {
+  public enum ID: Hashable {
     case randomBottle
     case arrivalBottle
     case pingping

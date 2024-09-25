@@ -92,69 +92,43 @@ extension AlertSettingFeature {
         }
         
       case .binding(\.isOnRandomBottleToggle):
-        updatePushNotificationAllowStatus(state: &state)
-        if state.isAllowPushNotification {
-          return .run { [isOn = state.isOnRandomBottleToggle] send in
-            await send(.toggleDidChanged(alertState: .init(alertType: .randomBottle, enabled: isOn)))
-          }
-          .debounce(
-            id: ID.randomBottle,
-            for: 1.0,
-            scheduler: DispatchQueue.main)
-        } else {
-          state.isOnRandomBottleToggle = false
-          return .send(.pushNotificationAlertDidRequired)
-        }
+        let isOn = state.isOnRandomBottleToggle
+        return .send(.toggleDidChanged(
+          alertState: .init(alertType: .randomBottle, enabled: isOn),
+          id: .randomBottle))
         
       case .binding(\.isOnArrivalBottleToggle):
-        updatePushNotificationAllowStatus(state: &state)
-        if state.isAllowPushNotification {
-          return .run { [isOn = state.isOnArrivalBottleToggle] send in
-            await send(.toggleDidChanged(alertState: .init(alertType: .arrivalBottle, enabled: isOn)))
-          }
-          .debounce(
-            id: ID.arrivalBottle,
-            for: 1.0,
-            scheduler: DispatchQueue.main)
-        } else {
-          state.isOnArrivalBottleToggle = false
-          return .send(.pushNotificationAlertDidRequired)
-        }
+        let isOn = state.isOnArrivalBottleToggle
+        return .send(.toggleDidChanged(
+          alertState: .init(alertType: .arrivalBottle, enabled: isOn),
+          id: .arrivalBottle))
         
       case .binding(\.isOnPingPongToggle):
-        updatePushNotificationAllowStatus(state: &state)
-        if state.isAllowPushNotification {
-          return .run { [isOn = state.isOnPingPongToggle] send in
-            await send(.toggleDidChanged(alertState: .init(alertType: .pingpong, enabled: isOn)))
-          }
-          .debounce(
-            id: ID.pingping,
-            for: 1.0,
-            scheduler: DispatchQueue.main)
-        } else {
-          state.isOnPingPongToggle = false
-          return .send(.pushNotificationAlertDidRequired)
-        }
-      case .binding(\.isOnMarketingToggle):
-        updatePushNotificationAllowStatus(state: &state)
-        if state.isAllowPushNotification {
-          return .run { [isOn = state.isOnMarketingToggle] send in
-            await send(.toggleDidChanged(alertState: .init(alertType: .marketing, enabled: isOn)))
-          }
-          .debounce(
-            id: ID.marketing,
-            for: 1.0,
-            scheduler: DispatchQueue.main)
-        } else {
-          state.isOnMarketingToggle = false
-          return .send(.pushNotificationAlertDidRequired)
-        }
+        let isOn = state.isOnPingPongToggle
+        return .send(.toggleDidChanged(
+          alertState: .init(alertType: .pingpong, enabled: isOn),
+          id: .pingping))
         
-      case let .toggleDidChanged(alertState):
-        return .run { send in
-          try await userClient.updateAlertState(alertState: alertState)
+      case .binding(\.isOnMarketingToggle):
+        let isOn = state.isOnMarketingToggle
+        return .send(.toggleDidChanged(
+          alertState: .init(alertType: .marketing, enabled: isOn),
+          id: .marketing))
+        
+      case let .toggleDidChanged(alertState, id):
+        updatePushNotificationAllowStatus(state: &state)
+        
+        if state.isAllowPushNotification {
+          return .run { send in
+            try await userClient.updateAlertState(alertState: alertState)
+          }
+          .debounce(
+            id: id,
+            for: 0.5,
+            scheduler: DispatchQueue.main)
+        } else {
+          return .send(.pushNotificationAlertDidRequired)
         }
-
         
       case .pushNotificationAlertDidRequired:
         state.destination = .alert(.init(
