@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 import DomainUserInterface
 
@@ -57,6 +58,8 @@ public struct AlertSettingFeature {
     case pingpongToggleDidFetched(isOn: Bool)
     case marketingToggleDidFetched(isOn: Bool)
     case pushNotificationAlertDidRequired
+    case pushNotificationAllowed(isAllow: Bool)
+    case alertStateFetchDidRequest
     
     // UserAction
     case toggleDidChanged(alertState: UserAlertState)

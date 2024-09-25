@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import Combine
 
 import DomainUser
 import DomainUserInterface
 
 import CoreURLHandlerInterface
+import CoreLoggerInterface
 
 import ComposableArchitecture
 
@@ -22,7 +24,18 @@ extension AlertSettingFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onLoad:
+        return Effect.publisher {
+            userClient.pushNotificationAllowStatusPublisher
+                .receive(on: DispatchQueue.main)
+                .map { isAllow in
+                    .pushNotificationAllowed(isAllow: isAllow)
+                }
+        }
+        .cancellable(id: "PushNotificationPublisher", cancelInFlight: true)
+        
+      case .alertStateFetchDidRequest:
         updatePushNotificationAllowStatus(state: &state)
+
         return .run { [state = state] send in
           let isAllow = state.isAllowPushNotification
           let alertStateList = try await userClient.fetchAlertState()
@@ -43,7 +56,20 @@ extension AlertSettingFeature {
             }
           }
         }
-      
+        
+      case let .pushNotificationAllowed(isAllow):
+        state.isAllowPushNotification = isAllow
+        if isAllow {
+          return .send(.alertStateFetchDidRequest)
+        } else {
+          return .merge(
+            .send(.randomBottleToggleDidFetched(isOn: false)),
+            .send(.pingpongToggleDidFetched(isOn: false)),
+            .send(.arrivalBottleToggleDidFetched(isOn: false)),
+            .send(.marketingToggleDidFetched(isOn: false))
+          )
+        }
+        
       case let .randomBottleToggleDidFetched(isOn):
         state.isOnRandomBottleToggle = isOn
         return .none
@@ -145,9 +171,7 @@ extension AlertSettingFeature {
         switch alert {
         case .confirmPushNotification:
           URLHandler.shared.openURL(urlType: .setting)
-          return .run { _ in
-            await dismiss()
-          }
+          return .none
         }
         
       default:
