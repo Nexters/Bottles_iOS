@@ -114,9 +114,7 @@ public struct QuestionAndAnswerFeature {
     }
     var finalSelectIsSelctedYesButton: Bool
     var finalSelectIsSelctedNoButton: Bool
-    
-    @Presents var destination: Destination.State?
-    
+        
     public init(bottleID: Int) {
       self.bottleID = bottleID
       self.isShowLoadingIndicator = false
@@ -181,12 +179,6 @@ public struct QuestionAndAnswerFeature {
     
     // ETC.
     case binding(BindingAction<State>)
-    case destination(PresentationAction<Destination.Action>)
-    
-    case alert(Alert)
-    public enum Alert: Equatable {
-      case confirmStopTalk
-    }
     
     case delegate(Delegate)
     
@@ -194,21 +186,12 @@ public struct QuestionAndAnswerFeature {
       case reloadPingPongRequired
       case popToRootDidRequired
       case refreshPingPong
+      case stopTaskButtonDidTapped
     }
   }
   
   public var body: some ReducerOf<Self> {
     BindingReducer()
     reducer
-      .ifLet(\.$destination, action: \.destination)
-  }
-}
-
-// MARK: - Destination
-
-extension QuestionAndAnswerFeature {
-  @Reducer(state: .equatable)
-  public enum Destination {
-    case alert(AlertState<QuestionAndAnswerFeature.Action.Alert>)
   }
 }

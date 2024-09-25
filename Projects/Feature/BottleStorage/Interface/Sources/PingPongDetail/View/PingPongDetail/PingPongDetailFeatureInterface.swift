@@ -43,6 +43,8 @@ public struct PingPongDetailFeature {
     var matching: MatchingFeature.State
     var selectedTab: PingPongDetailViewTabType
     
+    @Presents var destination: Destination.State?
+
     public init(
       bottleID: Int,
       isRead: Bool,
@@ -67,7 +69,7 @@ public struct PingPongDetailFeature {
     case pingPongDidFetched(_: BottlePingPong)
     case backButtonDidTapped
     case reportButtonDidTapped
-    
+    case stopTalkAlertDidRequired
     
     // Delegate
     case delegate(Delegate)
@@ -83,6 +85,13 @@ public struct PingPongDetailFeature {
     case questionAndAnswer(QuestionAndAnswerFeature.Action)
     case matching(MatchingFeature.Action)
     case binding(BindingAction<State>)
+    case destination(PresentationAction<Destination.Action>)
+    // Alert
+    case alert(Alert)
+    public enum Alert: Equatable {
+      case confirmStopTalk
+      case dismiss
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -97,6 +106,15 @@ public struct PingPongDetailFeature {
       MatchingFeature()
     }
     reducer
+      .ifLet(\.$destination, action: \.destination)
   }
 }
 
+// MARK: - Destination
+
+extension PingPongDetailFeature {
+  @Reducer(state: .equatable)
+  public enum Destination {
+    case alert(AlertState<PingPongDetailFeature.Action.Alert>)
+  }
+}
