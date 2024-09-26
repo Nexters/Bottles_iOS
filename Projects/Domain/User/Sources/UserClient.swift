@@ -17,6 +17,13 @@ import ComposableArchitecture
 import Moya
 
 extension UserClient: DependencyKey {
+  private enum UserDefaultsKeys: String {
+    case loginState
+    case deleteState
+    case fcmToken
+    case alertAllowState
+  }
+  
   static public var liveValue: UserClient = .live()
   
   static func live() -> UserClient {
@@ -24,34 +31,42 @@ extension UserClient: DependencyKey {
     
     return .init(
       isLoggedIn: {
-        return UserDefaults.standard.bool(forKey: "loginState")
+        return UserDefaults.standard.bool(forKey: UserDefaultsKeys.loginState.rawValue)
       },
       
       isAppDeleted: {
-        return !UserDefaults.standard.bool(forKey: "deleteState")
+        return !UserDefaults.standard.bool(forKey: UserDefaultsKeys.deleteState.rawValue)
       },
       
       fetchFcmToken: {
-        return UserDefaults.standard.string(forKey: "fcmToken")
+        return UserDefaults.standard.string(forKey: UserDefaultsKeys.fcmToken.rawValue)
       },
       
       updateLoginState: { isLoggedIn in
-        UserDefaults.standard.set(isLoggedIn, forKey: "loginState")
+        UserDefaults.standard.set(isLoggedIn, forKey: UserDefaultsKeys.loginState.rawValue)
       },
       
       updateDeleteState: { isDelete in
-        UserDefaults.standard.set(!isDelete, forKey: "deleteState")
+        UserDefaults.standard.set(!isDelete, forKey: UserDefaultsKeys.deleteState.rawValue)
       },
       
       updateFcmToken: { fcmToken in
-        UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
+        UserDefaults.standard.set(fcmToken, forKey: UserDefaultsKeys.fcmToken.rawValue)
+      },
+      
+      updatePushNotificationAllowStatus: { isAllow in
+        UserDefaults.standard.set(isAllow, forKey: UserDefaultsKeys.alertAllowState.rawValue)
       },
       
       fetchAlertState: {
         let responseData = try await networkManager.reqeust(api: .apiType(UserAPI.fetchAlertState), dto: [AlertStateResponseDTO].self)
         return responseData.map { $0.toDomain() }
-        
       },
+      
+      fetchPushNotificationAllowStatus: {
+        return UserDefaults.standard.bool(forKey: UserDefaultsKeys.alertAllowState.rawValue)
+      },
+      
       updateAlertState: { alertState in
         let requestData = AlertStateRequestDTO(alertType: alertState.alertType, enabled: alertState.enabled)
         try await networkManager.reqeust(api: .apiType(UserAPI.updateAlertState(reqeustData: requestData)))

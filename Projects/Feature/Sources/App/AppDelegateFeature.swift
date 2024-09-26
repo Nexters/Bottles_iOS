@@ -7,6 +7,8 @@
 
 import Foundation
 
+import DomainUserInterface
+
 import ComposableArchitecture
 
 import KakaoSDKCommon
@@ -20,6 +22,7 @@ public struct AppDelegateFeature {
   public enum Action {
     case didFinishLunching
     case didReceivedFcmToken(fcmToken: String)
+    case pushNotificationAllowStatusDidChanged(isAllow: Bool)
     
     // Delegate
     case delegate(Delegate)
@@ -37,6 +40,8 @@ public struct AppDelegateFeature {
     state: inout State,
     action: Action
   ) -> EffectOf<Self> {
+    @Dependency(\.userClient) var userClient
+    
     switch action {
     case .didFinishLunching:
       guard let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_APP_KEY"] as? String else { 
@@ -50,6 +55,10 @@ public struct AppDelegateFeature {
       return .run { send in
         await send(.delegate(.fcmTokenDidRecevied(fcmToken: fcmToken)))
       }
+      
+    case let .pushNotificationAllowStatusDidChanged(isAllow):
+      userClient.updatePushNotificationAllowStatus(isAllow: isAllow)
+      return .none
       
     default:
       return .none

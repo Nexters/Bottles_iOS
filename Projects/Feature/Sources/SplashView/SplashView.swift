@@ -26,7 +26,7 @@ public struct SplashView: View {
         
         Image.BottleImageSystem.illustraition(.splash).image
       }
-      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+      .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
       .ignoresSafeArea()
       .task {
         store.send(.onAppear)

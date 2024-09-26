@@ -55,7 +55,7 @@ extension AccountSettingFeature {
             ButtonState(role: .cancel, action: .confirmWithdrawal, label: { TextState("탈퇴하기") })
             ButtonState(role: .destructive, action: .dismiss, label: { TextState("계속 이용하기") })
           },
-          message: { TextState("탈퇴 시 계정 복구가 어려워요.\n정말 탈퇴하시겠어요?") }
+          message: { TextState("탈퇴 시 48시간 동안 재가입이 불가능하며 계정 복구가 어려워요.\n정말 탈퇴하시겠어요?") }
         ))
         return .none
         
