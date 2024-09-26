@@ -85,7 +85,7 @@ public struct AlertSettingFeature {
     case marketing
   }
   
-  enum ID: Hashable {
+  public enum ID: Hashable {
     case randomBottle
     case arrivalBottle
     case pingping
