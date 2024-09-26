@@ -83,30 +83,10 @@ extension QuestionAndAnswerFeature {
         }
         
       case .stopTalkButtonDidTapped:
-        state.destination = .alert(.init(
-          title: { TextState("중단하기") },
-          actions: {
-            ButtonState(
-              role: .destructive,
-              action: .confirmStopTalk,
-              label: { TextState("중단하기") })
-          },
-          message: { TextState("중단 시 모든 핑퐁 내용이 사라져요. 정말 중단하시겠어요?") }
-        ))
-        return .none
+        return .send(.delegate(.stopTaskButtonDidTapped))
         
       case .refreshDidPulled:
         return .send(.delegate(.refreshPingPong))
-
-      case let .destination(.presented(.alert(alert))):
-        switch alert {
-        case .confirmStopTalk:
-          state.isShowLoadingIndicator = true
-          return .run { [bottleID = state.bottleID] send in
-            try await bottleClient.stopTalk(bottleID: bottleID)
-            await send(.delegate(.popToRootDidRequired))
-          }
-        }
         
       case .binding(\.firstLetterTextFieldContent):
         if state.firstLetterTextFieldContent.count >= 50 {
@@ -132,7 +112,7 @@ extension QuestionAndAnswerFeature {
         }
         return .none
         
-      case .binding, .destination, .alert:
+      case .binding:
         return .none
         
       default:

@@ -329,6 +329,10 @@ struct ListSection: View {
           destination: BottleStorageList(),
           label: { Text("Bottle Storage List") }
         )
+        
+        NavigationLink(
+          destination: ListTestView(),
+          label: { Text("Lists View")})
       },
       header: {
         Text("List")

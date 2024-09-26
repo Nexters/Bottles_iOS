@@ -15,14 +15,15 @@ public struct ProfileClient {
   private var uploadProfileImage: (Data) async throws -> Void
   private var fetchUserProfile: () async throws -> UserProfile
   private var fetchUserProfileSelect: () async throws -> UserProfileStatus
-  
+  private var updateMatchingActivate: (Bool) async throws -> Void
   public init(
     checkExistIntroduction: @escaping () async throws -> Bool,
     registerIntroduction: @escaping (String) async throws -> Void,
     fetchProfileSelect: @escaping () async throws -> ProfileSelect,
     uploadProfileImage: @escaping (Data) async throws -> Void,
     fetchUserProfile: @escaping () async throws -> UserProfile,
-    fetchUserProfileSelect: @escaping () async throws -> UserProfileStatus
+    fetchUserProfileSelect: @escaping () async throws -> UserProfileStatus,
+    updateMatchingActivate: @escaping (Bool) async throws -> Void
   ) {
     self.checkExistIntroduction = checkExistIntroduction
     self.registerIntroduction = registerIntroduction
@@ -30,6 +31,7 @@ public struct ProfileClient {
     self.uploadProfileImage = uploadProfileImage
     self.fetchUserProfile = fetchUserProfile
     self.fetchUserProfileSelect = fetchUserProfileSelect
+    self.updateMatchingActivate = updateMatchingActivate
   }
   
   public func checkExistIntroduction() async throws -> Bool {
@@ -54,6 +56,10 @@ public struct ProfileClient {
   
   public func fetchUserProfileSelect() async throws -> UserProfileStatus {
     try await fetchUserProfileSelect()
+  }
+  
+  public func updateMatcingActivate(isActive: Bool) async throws {
+    try await updateMatchingActivate(isActive)
   }
 }
  

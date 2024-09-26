@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import Contacts
 
 import FeatureTabBarInterface
 import FeatureBaseWebViewInterface
+import FeatureGeneralSignUpInterface
+
+import CoreLoggerInterface
+
 import SharedDesignSystem
 
 import ComposableArchitecture
+
 
 public struct MyPageView: View {
   @Perception.Bindable private var store: StoreOf<MyPageFeature>
@@ -27,17 +33,22 @@ public struct MyPageView: View {
           Spacer()
             .frame(height: 52.0)
           userProfile
-          myIntroduction
-          myKeywords
+          profileEditList
           
-          HStack(spacing: 0) {
-            Spacer()
-            logoutButton
-            Spacer()
-            withdrawalButton
-            Spacer()
+          VStack(spacing: .lg) {
+            blockPhoneNumberList
+            pushSettingList
+            accountSettingList
+            Divider()
+            appVersionList
+            contactList
+            Divider()
+            termsOfServiceList
+            privacyPolicyList
           }
-          .padding(.bottom, .xl)
+          .padding(.horizontal, .md)
+          .padding(.vertical, .xl)
+          .overlay(roundedRectangle)
         }
         .padding(.horizontal, .md)
       }
@@ -51,6 +62,9 @@ public struct MyPageView: View {
       .onLoad {
         store.send(.onLoad)
       }
+      .task {
+        store.send(.onAppear)
+      }
       .overlay {
         if store.isShowLoadingProgressView {
           WithPerceptionTracking {
@@ -58,7 +72,12 @@ public struct MyPageView: View {
           }
         }
       }
-      .alert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+      .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+      .sheet(isPresented: $store.isPresentTerms) {
+        store.send(.termsWebViewDidDismiss)
+      } content: {
+        TermsWebView(url: store.temrsURL ?? "")
+      }
     }
   }
 }
@@ -83,40 +102,70 @@ private extension MyPageView {
     .padding(.bottom, .xl)
   }
   
-  @ViewBuilder
-  var myIntroduction: some View {
-    if store.introduction.answer == "" {
-      EmptyView()
-    } else {
-      LettetCardView(title: "내가 쓴 편지" , letterContent: store.introduction.answer)
-        .padding(.bottom, .sm)
-    }
+  var roundedRectangle: some View {
+    RoundedRectangle(cornerRadius: BottleRadiusType.xl.value)
+      .strokeBorder(
+        ColorToken.border(.primary).color,
+        lineWidth: 1
+      )
   }
   
-  var myKeywords: some View {
-    ClipListContainerView(clipItemList: store.keywordItem)
+  var profileEditList: some View {
+    ArrowListView(title: "프로필 수정")
+      .padding(.horizontal, .md)
+      .padding(.vertical, .xl)
+      .overlay(roundedRectangle)
       .padding(.bottom, .md)
+      .asThrottleButton {
+        store.send(.profileEditListDidTapped)
+      }
   }
   
-  var logoutButton: some View {
-    WantedSansStyleText(
-      "로그아웃",
-      style: .subTitle2,
-      color: .enableSecondary
+  var blockPhoneNumberList: some View {
+    ButtonListView(
+      title: "연락처 차단",
+      subTitle: "연락처 속 \(store.blockedContactsCount)명을 차단했어요",
+      buttonTitle: "업데이트",
+      action: {
+        store.send(.updatePhoneNumberForBlockButtonDidTapped)
+      }
     )
-    .asThrottleButton {
-      store.send(.logOutButtonDidTapped)
-    }
   }
   
-  var withdrawalButton: some View {
-    WantedSansStyleText(
-      "탈퇴하기",
-      style: .subTitle2,
-      color: .enableSecondary
+  var pushSettingList: some View {
+    ArrowListView(title: "알림 설정")
+      .asThrottleButton(action: { store.send(.alertSettingListDidTapped)})
+  }
+  
+  var accountSettingList: some View {
+    ArrowListView(title: "계정 관리")
+      .asThrottleButton(action: { store.send(.accountSettingListDidTapped) })
+  }
+  
+  var appVersionList: some View {
+    ButtonListView(
+      title: "앱 버전",
+      subTitle: "\(store.currentAppVersion ?? "0.0.0")",
+      buttonTitle: "업데이트",
+      isShowButton: store.isShowApplicationUpdateButton,
+      action: {
+        store.send(.updateApplicationButtonTapped)
+      }
     )
-    .asThrottleButton {
-      store.send(.withdrawalButtonDidTapped)
-    }
+  }
+  
+  var contactList: some View {
+    ArrowListView(title: "1:1 문의")
+      .asThrottleButton(action: { store.send(.contactListDidTapped) })
+  }
+  
+  var termsOfServiceList: some View {
+    ArrowListView(title: "보틀 이용 약관")
+      .asThrottleButton(action: { store.send(.termsOfServiceListDidTapped) })
+  }
+  
+  var privacyPolicyList: some View {
+    ArrowListView(title: "개인정보처리방침")
+      .asThrottleButton(action: { store.send(.privacyPolicyListDidTapped) })
   }
 }

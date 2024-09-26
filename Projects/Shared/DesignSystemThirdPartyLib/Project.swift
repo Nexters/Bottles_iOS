@@ -10,7 +10,8 @@ let project = Project.makeModule(
             factory: .init(
                 dependencies: [
                     .SPM.Kingfisher,
-                    .SPM.Lottie
+                    .SPM.Lottie,
+                    .SPM.ComposableArchitecture
                 ]
             )
         ),

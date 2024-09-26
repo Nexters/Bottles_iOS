@@ -9,7 +9,7 @@ import Foundation
 
 public enum DomainError: Error {
   public enum AuthError: Error {
-    case needUpdateAppVersion
+    case invalidAppVersion
   }
   
   case unknown(_ message: String? = nil)

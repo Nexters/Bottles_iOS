@@ -18,7 +18,8 @@ let project = Project.makeModule(
             factory: .init(
                 dependencies: [
                     .domain(interface: .Auth),
-                    .domain(interface: .Error)
+                    .domain(interface: .Error),
+                    .domain(implements: .User)
                 ]
             )
         ),

@@ -12,6 +12,8 @@ public struct ProfileResponseDTO: Decodable {
   public let userName: String?
   public let imageUrl: String?
   public let age: Int?
+  public let isMatchActivated: Bool?
+  public let blockedUserCount: Int?
   public let introduction: [IntroductionDTO]?
   public let profileSelect: ProfileSelectDTO?
   
@@ -77,7 +79,10 @@ public struct ProfileResponseDTO: Decodable {
       userInfo: UserInfo(
         userAge: age ?? -1,
         userImageURL: imageUrl ?? "",
-        userName: userName ?? ""),
+        userName: userName ?? "",
+        isActiveMatching: isMatchActivated ?? false,
+        blockedContactsCount: blockedUserCount ?? 0
+      ),
       introduction: Introduction(answer: introduction?.first?.answer ?? "", question: introduction?.first?.question ?? ""),
       profileSelect: profileSelect?.toDomain() ?? ProfileSelect(
         mbti: "",
@@ -105,11 +110,15 @@ public struct UserInfo: Equatable {
   public let userAge: Int
   public let userImageURL: String
   public let userName: String
-  
-  public init(userAge: Int, userImageURL: String, userName: String) {
+  public let isActiveMatching: Bool
+  public let blockedContactsCount: Int
+
+  public init(userAge: Int, userImageURL: String, userName: String, isActiveMatching: Bool = false, blockedContactsCount: Int = 0) {
     self.userAge = userAge
     self.userImageURL = userImageURL
     self.userName = userName
+    self.isActiveMatching = isActiveMatching
+    self.blockedContactsCount = blockedContactsCount
   }
 }
 

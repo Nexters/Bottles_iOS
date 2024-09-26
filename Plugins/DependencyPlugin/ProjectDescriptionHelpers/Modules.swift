@@ -48,6 +48,7 @@ public extension ModulePath {
 
 public extension ModulePath {
     enum Domain: String, CaseIterable {
+        case Application
         case Error
         case User
         case Report
@@ -64,6 +65,7 @@ public extension ModulePath {
 
 public extension ModulePath {
     enum Core: String, CaseIterable {
+        case URLHandler
         case Toast
         case KeyChainStore
         case WebView

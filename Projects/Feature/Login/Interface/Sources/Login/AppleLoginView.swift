@@ -19,31 +19,33 @@ public struct AppleLoginView: View {
   }
   
   public var body: some View {
-    VStack(spacing: 0) {
-      Spacer()
-        .frame(height: 52)
-      whiteLogo
-        .padding(.top, 52)
-        .padding(.bottom, .xl)
-      mainText
+    ZStack(alignment: .bottom) {
+      VStack(spacing: 0) {
+        Spacer()
+          .frame(height: 52)
+        whiteLogo
+          .padding(.top, 52)
+          .padding(.bottom, .xl)
+        mainText
         
-      Spacer()
+        Spacer()
+      }
+      .frame(maxWidth: .infinity)
+      .background {
+        BottleImageView(
+          type: .local(bottleImageSystem: .illustraition(.loginBackground))
+        )
+      }
+      .edgesIgnoringSafeArea([.top, .bottom])
 
       signInWithAppleButton
-        .padding(.bottom, 30.0)
-
-    }
-    .background {
-      BottleImageView(
-        type: .local(bottleImageSystem: .illustraition(.loginBackground))
-      )
+        .padding(.bottom, 16.0)
     }
     .setNavigationBar {
       makeNaivgationleftButton() {
         store.send(.backButtonDidTapped)
       }
     }
-    .edgesIgnoringSafeArea([.top, .bottom])
   }
 }
 

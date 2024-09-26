@@ -28,29 +28,33 @@ public struct LoginView: View {
   public var body: some View {
     WithPerceptionTracking {
       NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
-        VStack(spacing: 0) {
-          Spacer()
-            .frame(height: 52)
-          whiteLogo
-            .padding(.top, 52)
-            .padding(.bottom, .xl)
-          
-          mainText
-          
-          Spacer()
+        ZStack(alignment: .bottom) {
+          VStack(spacing: 0) {
+            Spacer()
+              .frame(height: 52)
+            whiteLogo
+              .padding(.top, 52)
+              .padding(.bottom, .xl)
+            
+            mainText
+            
+            Spacer()
+          }
+          .frame(maxWidth: .infinity)
+          .background {
+            BottleImageView(
+              type: .local(bottleImageSystem: .illustraition(.loginBackground))
+            )
+            .scaledToFill()
+          }
+          .edgesIgnoringSafeArea([.top, .bottom])
           
           VStack(spacing: 30.0) {
             signInWithKakaoButton
             snsLoginButton
           }
-          .padding(.bottom, 30.0)
+          .padding(.bottom, 16.0)
         }
-        .background {
-          BottleImageView(
-            type: .local(bottleImageSystem: .illustraition(.loginBackground))
-          )
-        }
-        .edgesIgnoringSafeArea([.top, .bottom])
         .sheet(
           isPresented: $store.isPresentTermView,
           content: {

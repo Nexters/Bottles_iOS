@@ -17,6 +17,7 @@ public enum ProfileAPI {
   case checkIntroduction
   case uploadProfileImage(data: Data)
   case fetchUserProfileStatus
+  case updateMachingActivate(requestData: MatchingActivateRequestDTO)
 }
 
 extension ProfileAPI: BaseTargetType {
@@ -32,6 +33,8 @@ extension ProfileAPI: BaseTargetType {
       return "api/v1/profile/images"
     case .fetchUserProfileStatus:
       return "api/v1/profile/status"
+    case .updateMachingActivate:
+      return "api/v1/profile/activate/matching"
     }
   }
   
@@ -47,6 +50,8 @@ extension ProfileAPI: BaseTargetType {
       return .post
     case .fetchUserProfileStatus:
       return .get
+    case .updateMachingActivate:
+      return .post
     }
   }
   
@@ -69,6 +74,8 @@ extension ProfileAPI: BaseTargetType {
       return .uploadMultipart([imageData])
     case .fetchUserProfileStatus:
       return .requestPlain
+    case let .updateMachingActivate(requestData):
+      return .requestJSONEncodable(requestData)
     }
   }
 }

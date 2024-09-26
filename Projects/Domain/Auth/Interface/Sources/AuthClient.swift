@@ -93,7 +93,7 @@ public struct AuthClient {
   }
   
   public func checkUpdateVersion() async throws {
-    return try await checkUpdateVersion()
+    try await checkUpdateVersion()
   }
 }
 

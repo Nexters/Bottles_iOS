@@ -12,6 +12,7 @@ public enum ButtonAppearanceType {
   case kakao
   case apple
   case generalSignIn
+  case cancel
 }
 
 struct SolidButtonStyle: ButtonStyle {
@@ -91,9 +92,10 @@ private extension SolidButtonStyle {
       return ColorToken.container(.kakao).color
     case .apple:
       return ColorToken.container(.primary).color
-      
     case .generalSignIn:
       return Color.white
+    case .cancel:
+      return ColorToken.container(.disableSecondary).color
     }
   }
   
@@ -115,6 +117,9 @@ private extension SolidButtonStyle {
       
     case .generalSignIn:
       return ColorToken.text(.primary).color
+      
+    case .cancel:
+      return ColorToken.text(.enablePrimary).color
     }
   }
 }

@@ -54,7 +54,7 @@ public struct GeneralSignUpView: View {
         }
       }
       .toolbar(.hidden, for: .navigationBar)
-      .ignoresSafeArea(.all, edges: .bottom)
+      .ignoresSafeArea(.all, edges: [.top, .bottom])
       .sheet(isPresented: $store.isPresentTerms) {
         TermsWebView(url: store.termsURL ?? "")
       }

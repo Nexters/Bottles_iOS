@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import UIKit
 
 import CoreLoggerInterface
+import CoreURLHandlerInterface
 
 import DomainAuthInterface
 import DomainErrorInterface
@@ -66,7 +66,7 @@ public struct SplashFeature {
         // TODO: Error handling
         if let authError = error as? DomainError.AuthError {
           switch authError {
-          case .needUpdateAppVersion:
+          case .invalidAppVersion:
             await send(.needUpdateAppVersionErrorOccured)
           }
         }
@@ -92,8 +92,7 @@ public struct SplashFeature {
       }
       
     case .updateAppVersion:
-      let appStoreURL = URL(string: Bundle.main.infoDictionary?["APP_STORE_URL"] as? String ?? "")!
-      UIApplication.shared.open(appStoreURL)
+      URLHandler.shared.openURL(urlType: .bottleAppStore)
       return .run { send in
         await send(.needUpdateAppVersionErrorOccured)
       }

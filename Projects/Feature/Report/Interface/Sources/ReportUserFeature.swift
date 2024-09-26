@@ -28,10 +28,19 @@ extension ReportUserFeature {
         print("tapped")
         state.destination = .alert(.init(
           title: { TextState("신고하기")},
-          actions: { ButtonState(
-            role: .destructive,
-            action: .confirmReport,
-            label: { TextState("신고하기") }) },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              action: .confirmReport,
+              label: { TextState("계속하기") }
+            )
+            
+            ButtonState(
+              role: .destructive,
+              action: .dismiss,
+              label: { TextState("중단하기") }
+            )
+          },
           message: { TextState("접수 후 취소할 수 없으며 해당 사용자는 차단되요.\n정말 신고하시겠어요?")}))
         return .none
         
@@ -43,10 +52,17 @@ extension ReportUserFeature {
         }
         return .none
         
-      case .destination(.presented(.alert(.confirmReport))):
-        return .run { [userProfile = state.userProfile, reportText = state.reportText] send in
-          try await reportClient.reportUser(userReportInfo: .init(reason: reportText, userId: userProfile.userID))
-          await send(.delegate(.reportDidCompleted))
+      case let .destination(.presented(.alert(alert))):
+        switch alert {
+        case .confirmReport:
+          return .run { [userProfile = state.userProfile, reportText = state.reportText] send in
+            try await reportClient.reportUser(userReportInfo: .init(reason: reportText, userId: userProfile.userID))
+            await send(.delegate(.reportDidCompleted))
+          }
+          
+        case .dismiss:
+          state.destination = nil
+          return .none
         }
         
       case .binding(\.reportText):
