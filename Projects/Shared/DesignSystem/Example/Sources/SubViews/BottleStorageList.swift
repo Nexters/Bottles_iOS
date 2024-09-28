@@ -75,11 +75,12 @@ struct BottleStorageList: View {
   var body: some View {
     VStack(spacing: 20.0) {
       ForEach(bottles, id: \.id) { bottle in
-        BottleStorageItem(
+        PingPongUserView(
+          status: "문답이 도착했어요",
+          lastPingPongTime: "3시간 전",
           userName: bottle.userName,
           age: bottle.age, 
           mbti: bottle.mbti,
-          keywords: bottle.keyworkds,
           imageURL: bottle.imageURL,
           isRead: bottle.isRead
         )
