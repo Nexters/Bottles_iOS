@@ -21,14 +21,16 @@ public struct BaseWebViewSettingFeature {
   
   @ObservableState
   public struct State: Equatable {
-    var path: String
+    var path = StackState<Path.State>()
+    var urlPath: String
     
-    init(path: String = "") {
-      self.path = path
+    init(urlPath: String = "") {
+      self.urlPath = urlPath
     }
   }
   
   public enum Action: BindableAction {
+    case path(StackAction<Path.State, Path.Action>)
     case binding(BindingAction<State>)
     
     case karinaButtonDidTapped
@@ -36,9 +38,14 @@ public struct BaseWebViewSettingFeature {
     case openWebViewButtonDidTapped
   }
   
+  @Reducer(state: .equatable)
+  public enum Path {
+    case webViewTest(BaseWebViewTestFeature)
+  }
   public var body: some ReducerOf<Self> {
     BindingReducer()
     reducer
+      .forEach(\.path, action: \.path)
   }
 }
 
@@ -58,6 +65,8 @@ extension BaseWebViewSettingFeature {
         }
         
       case .openWebViewButtonDidTapped:
+        state.path.append(.webViewTest(.init(urlPath: state.urlPath)))
+        
         return .none
         
       default:
