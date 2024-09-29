@@ -20,6 +20,8 @@ public struct AuthClient {
   private let registerUserProfile: (String) async throws -> Void
   private let _removeAllToken: () -> Void
   private let checkUpdateVersion: () async throws -> Void
+  private let fetchKarinaToken: () async throws -> Void
+  private let fetchUnwooToken: () async throws -> Void
   
   public init(
     signInWithKakao: @escaping () async throws -> UserInfo,
@@ -33,7 +35,9 @@ public struct AuthClient {
     fetchAppleClientSecret: @escaping () async throws -> String,
     registerUserProfile: @escaping (String) async throws -> Void,
     removeAllToken: @escaping () -> Void,
-    checkUpdateVersion: @escaping () async throws -> Void
+    checkUpdateVersion: @escaping () async throws -> Void,
+    fetchKerinaToken: @escaping () async throws -> Void,
+    fetchUnWooToken: @escaping () async throws -> Void
   ) {
     self.signInWithKakao = signInWithKakao
     self.signInWithApple = signInWithApple
@@ -47,6 +51,8 @@ public struct AuthClient {
     self.registerUserProfile = registerUserProfile
     self._removeAllToken = removeAllToken
     self.checkUpdateVersion = checkUpdateVersion
+    self.fetchKarinaToken = fetchKerinaToken
+    self.fetchUnwooToken = fetchUnWooToken
   }
   
   public func signInWithKakao() async throws -> UserInfo {
@@ -94,6 +100,14 @@ public struct AuthClient {
   
   public func checkUpdateVersion() async throws {
     try await checkUpdateVersion()
+  }
+  
+  public func fetchKarinaToken() async throws {
+    try await fetchKarinaToken()
+  }
+  
+  public func fetchUnWooToken() async throws {
+    try await fetchUnwooToken()
   }
 }
 

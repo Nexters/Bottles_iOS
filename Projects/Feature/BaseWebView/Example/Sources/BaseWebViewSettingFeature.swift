@@ -7,6 +7,8 @@
 
 import Foundation
 
+import DomainAuth
+
 import ComposableArchitecture
 
 @Reducer
@@ -42,13 +44,18 @@ public struct BaseWebViewSettingFeature {
 
 extension BaseWebViewSettingFeature {
   public init() {
+    @Dependency(\.authClient) var authClient
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .karinaButtonDidTapped:
-        return .none
+        return .run { send in
+          try await authClient.fetchKarinaToken()
+        }
         
       case .unwooButtonDidTapped:
-        return .none
+        return .run { send in
+          try await authClient.fetchUnWooToken()
+        }
         
       case .openWebViewButtonDidTapped:
         return .none

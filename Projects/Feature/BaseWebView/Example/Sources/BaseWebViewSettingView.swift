@@ -14,9 +14,9 @@ import SharedDesignSystem
 import ComposableArchitecture
 
 public struct BaseWebViewSettingView: View {
-  @Perception.Bindable private var store: StoreOf<BaseWebViewTestFeature>
+  @Perception.Bindable private var store: StoreOf<BaseWebViewSettingFeature>
   
-  public init(store: StoreOf<BaseWebViewTestFeature>) {
+  public init(store: StoreOf<BaseWebViewSettingFeature>) {
     self.store = store
   }
 

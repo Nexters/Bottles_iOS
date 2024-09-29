@@ -108,6 +108,16 @@ extension AuthClient: DependencyKey {
         else {
           throw DomainError.AuthError.invalidAppVersion
         }
+      },
+      
+      fetchKerinaToken: {
+        let token = try await networkManager.reqeust(api: .apiType(AuthAPI.afterProfile), dto: AfterProfileResponseDTO.self).karinaToken()
+        LocalAuthDataSourceImpl.saveToken(token: token)
+      },
+      
+      fetchUnWooToken: {
+          let token = try await networkManager.reqeust(api: .apiType(AuthAPI.afterProfile), dto: AfterProfileResponseDTO.self).unWooToken()
+          LocalAuthDataSourceImpl.saveToken(token: token)
       }
     )
   }
