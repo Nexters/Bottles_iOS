@@ -16,8 +16,15 @@ import CoreKeyChainStore
 
 import Dependencies
 
-public enum BottleWebViewType {
-  private var baseURL: String {
+public protocol WebResourceProtocol {
+  var baseURL: String { get }
+  var path: String { get }
+  var url: URL { get }
+  var messageHandler: WebViewMessageHandler { get }
+}
+
+public enum BottleWebViewType: WebResourceProtocol {
+  public var baseURL: String {
     (Bundle.main.infoDictionary?["WEB_VIEW_BASE_URL"] as? String) ?? ""
   }
   
@@ -27,7 +34,7 @@ public enum BottleWebViewType {
   case bottles
   case editProfile
   
-  var path: String {
+  public var path: String {
     switch self {
     case .createProfile:
       return "create-profile"
@@ -70,7 +77,7 @@ public enum BottleWebViewType {
 }
 
 // MARK: - private methods
-private extension BottleWebViewType {
+public extension WebResourceProtocol {
   func makeUrlWithToken(_ path: String) -> URL {
     @Dependency(\.applicationClient) var applicationClient
     

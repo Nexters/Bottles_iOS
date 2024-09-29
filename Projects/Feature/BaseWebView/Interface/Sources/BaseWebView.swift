@@ -17,12 +17,12 @@ import ComposableArchitecture
 
 public struct BaseWebView: UIViewRepresentable {
   private let webView: WKWebView
-  private let type: BottleWebViewType
+  private let type: WebResourceProtocol
   private let isScrollEnabled: Bool
   private let actionDidInputted: ((BottleWebViewAction) -> Void)?
   
   public init(
-    type: BottleWebViewType,
+    type: WebResourceProtocol,
     isScrollEnabled: Bool = false,
     actionDidInputted: ((BottleWebViewAction) -> Void)? = nil
   ) {

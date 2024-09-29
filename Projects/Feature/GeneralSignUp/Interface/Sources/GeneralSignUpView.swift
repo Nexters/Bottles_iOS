@@ -22,7 +22,7 @@ public struct GeneralSignUpView: View {
   public var body: some View {
     WithPerceptionTracking {
       BaseWebView(
-        type: .signUp,
+        type: BottleWebViewType.signUp,
         actionDidInputted: { action in
           switch action {
           case .webViewLoadingDidCompleted:

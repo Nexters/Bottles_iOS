@@ -24,7 +24,7 @@ public struct ProfileEditView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      BaseWebView(type: .editProfile) { action in
+      BaseWebView(type: BottleWebViewType.editProfile) { action in
         switch action {
         case .webViewLoadingDidCompleted:
           store.send(.initialLoadingCompleted)

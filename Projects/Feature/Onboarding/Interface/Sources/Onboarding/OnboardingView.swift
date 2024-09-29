@@ -25,7 +25,7 @@ public struct OnboardingView: View {
   public var body: some View {
     WithPerceptionTracking {
       BaseWebView(
-        type: .createProfile,
+        type: BottleWebViewType.createProfile,
         actionDidInputted: { action in
           switch action {
           case .webViewLoadingDidCompleted:

@@ -23,7 +23,7 @@ public struct BottleArrivalView: View {
 
     WithPerceptionTracking {
       BaseWebView(
-        type: .bottles) { action in
+        type: BottleWebViewType.bottles) { action in
         switch action {
         case .webViewLoadingDidCompleted:
           store.send(.webViewLoadingDidCompleted)

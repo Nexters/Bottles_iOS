@@ -22,7 +22,7 @@ public struct GeneralLogInView: View {
   public var body: some View {
     WithPerceptionTracking {
       BaseWebView(
-        type: .login,
+        type: BottleWebViewType.login,
         actionDidInputted: { action in
           switch action {
           case .webViewLoadingDidCompleted:
