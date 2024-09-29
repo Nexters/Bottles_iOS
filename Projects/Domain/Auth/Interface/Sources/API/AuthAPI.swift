@@ -19,6 +19,7 @@ public enum AuthAPI {
   case revoke
   case profile(_ requestDTO: ProfileRequestDTO)
   case updateVersion
+  case afterProfile
 }
 
 extension AuthAPI: BaseTargetType {
@@ -38,6 +39,9 @@ extension AuthAPI: BaseTargetType {
       return "api/v2/auth/profile"
     case .updateVersion:
       return "api/v1/auth/app-version"
+    case .afterProfile:
+      guard let adminPath = Bundle.main.infoDictionary?["ADMIN_PATH"] as? String else { return "" }
+      return adminPath + "/after-profile"
     }
   }
   
@@ -57,6 +61,8 @@ extension AuthAPI: BaseTargetType {
       return .post
     case .updateVersion:
       return .get
+    case .afterProfile:
+      return .post
     }
   }
   
@@ -76,6 +82,10 @@ extension AuthAPI: BaseTargetType {
       return .requestJSONEncodable(requestDTO)
     case .updateVersion:
       return .requestPlain
+    case .afterProfile:
+      return .requestPlain
     }
   }
 }
+
+
