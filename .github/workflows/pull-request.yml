@@ -20,7 +20,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*서버 PR* :bell: @김미성@손인준"
+                    "text": "*iOS PR* :bell: <@D07LESGF5NF> <@D07LTKV81L1>"
                   }
                 },
                 {
@@ -47,7 +47,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Pull Request URL:*\nView PR"
+                    "text": "*Pull Request URL:*\n<${{ github.event.pull_request.html_url }}|View PR>"
                   }
                 }
               ]
