@@ -29,6 +29,7 @@ public extension InfoPlist {
             "APP_STORE_URL": "$(APP_STORE_URL)",
             "APP_LOOK_UP_URL": "$(APP_LOOK_UP_URL)",
             "KAKAO_CHANNEL_TALK_URL": "$(KAKAO_CHANNEL_TALK_URL)",
+            "SLACK_WEBHOOK_URL": "$(SLACK_WEBHOOK_URL)",
             "LSApplicationQueriesSchemes": ["kakaokompassauth", "kakaotalk"],
             "CFBundleURLTypes": [
                 [
