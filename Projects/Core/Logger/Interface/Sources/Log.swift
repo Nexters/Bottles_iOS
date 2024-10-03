@@ -5,7 +5,7 @@
 //  Created by 임현규 on 7/23/24.
 //
 
-import Foundation
+import UIKit
 import OSLog
 
 public enum Log {
@@ -132,6 +132,79 @@ public extension Log {
     let logMessage = "\(message ?? "")"
     log(message: logMessage, level: level, fileName: fileName, line: line, funcName: funcName)
     assertionFailure(logMessage)
+#if !DEBUG
+    Task {
+      guard let url = URL(string: Bundle.main.infoDictionary?["SLACK_WEBHOOK_URL"] as? String ?? "")
+      else {
+        return
+      }
+      guard let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+            let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
+      else {
+        return
+      }
+      async let device = UIDevice.current
+      let systemVersion = await device.systemVersion
+      let deviceName = await UIDevice.current.name
+      
+      let errorLogJsonObject: [String: Any] = [
+        "pretext": "iOS Error Occured🔥",
+        "color": "#36a64f",
+        "fields": [
+          [
+            "title": "Message",
+            "value": "\(message ?? "no message")",
+            "short": true
+          ],
+          [
+            "title": "File Name",
+            "value": "\(fileName)",
+            "short": true
+          ],
+          [
+            "title": "Function Name",
+            "value": "\(funcName)",
+            "short": true
+          ],
+          [
+            "title": "Line",
+            "value": "\(line)",
+            "short": true
+          ],
+          [
+            "title": "Version",
+            "value": "\(appVersion)",
+            "short": true
+          ],
+          [
+            "title": "Build Number",
+            "value": "\(buildNumber)",
+            "short": true
+          ],
+          [
+            "title": "Device Name",
+            "value": "\(deviceName)",
+            "short": true
+          ],
+          [
+            "title": "iOS Version",
+            "value": "\(systemVersion)",
+            "short": true
+          ]
+        ]
+      ]
+      do {
+        let errorLogJsonData = try JSONSerialization.data(withJSONObject: errorLogJsonObject)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = errorLogJsonData
+        _ = try await URLSession.shared.data(for: request)
+      } catch {
+        Log.debug(error)
+      }
+    }
+#endif
   }
   
   static func fatal(message: Any?, level: Level = .fault, fileName: String = #fileID, line: Int = #line, funcName: StaticString = #function) {
