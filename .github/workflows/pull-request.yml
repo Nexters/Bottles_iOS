@@ -20,7 +20,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*iOS PR* :bell: <@D07LESGF5NF> <@D07LTKV81L1>"
+                    "text": "*iOS PR* :bell: <@U07LESGBQEP> <@U07LHEEU2BW>"
                   }
                 },
                 {
@@ -28,7 +28,7 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Author:*\n${{ github.event.sender.login }}"
+                      "text": "*Author:*\n<https://github.com/${{ github.event.sender.login }}|${{ github.event.sender.login }}>"
                     },
                     {
                       "type": "mrkdwn",
