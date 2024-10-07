@@ -24,7 +24,7 @@ public struct StartGuideView: View {
       title
       ZStack(alignment: .bottom) {
         GeometryReader { geometry in
-          let bottleImageTopPadding: CGFloat = 48
+          let bottleImageTopPadding: CGFloat = 62.0
           HStack(spacing: 0) {
             Spacer()
             bottleImage
@@ -32,6 +32,7 @@ public struct StartGuideView: View {
             Spacer()
           }
           .offset(y: bottleImageTopPadding)
+          .padding(.horizontal, 60.0 - BottlePaddingType.md.length)
         }
         doneButton
           .padding(.bottom, .lg)
