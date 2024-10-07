@@ -65,7 +65,7 @@ private extension StartGuideView {
   
   var doneButton: some View {
       SolidButton(
-        title: "완료",
+        title: "확인",
         sizeType: .large,
         buttonType: .throttle,
         action: { store.send(.doneButtonDidTapped) }
