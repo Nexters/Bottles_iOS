@@ -7,12 +7,14 @@
 
 import Foundation
 
+import FeatureSandBeach
+import FeatureSandBeachInterface
+import FeatureGoodFeeling
+import FeatureGoodFeelingInterface
 import FeatureBottleStorage
 import FeatureBottleStorageInterface
 import FeatureMyPage
 import FeatureMyPageInterface
-import FeatureSandBeach
-import FeatureSandBeachInterface
 import FeatureTabBarInterface
 
 import ComposableArchitecture
@@ -23,12 +25,14 @@ public struct MainTabViewFeature {
   @ObservableState
   public struct State: Equatable {
     var sandBeachRoot: SandBeachRootFeature.State
+    var goodFeelingRoot: GoodFeelingRootFeature.State
     var bottleStorage: BottleStorageFeature.State
     var myPageRoot: MyPageRootFeature.State
     var selectedTab: TabType
     var isLoading: Bool
     public init() {
       self.sandBeachRoot = .init()
+      self.goodFeelingRoot = .init()
       self.bottleStorage = .init()
       self.myPageRoot = .init()
       self.selectedTab = .sandBeach
@@ -38,6 +42,7 @@ public struct MainTabViewFeature {
   
   public enum Action: BindableAction {
     case sandBeachRoot(SandBeachRootFeature.Action)
+    case goodFeelingRoot(GoodFeelingRootFeature.Action)
     case bottleStorage(BottleStorageFeature.Action)
     case myPageRoot(MyPageRootFeature.Action)
     case selectedTabChanged(TabType)
@@ -56,6 +61,9 @@ public struct MainTabViewFeature {
     BindingReducer()
     Scope(state: \.sandBeachRoot, action: \.sandBeachRoot) {
       SandBeachRootFeature()
+    }
+    Scope(state: \.goodFeelingRoot, action: \.goodFeelingRoot) {
+      GoodFeelingRootFeature()
     }
     Scope(state: \.bottleStorage, action: \.bottleStorage) {
       BottleStorageFeature()
@@ -86,6 +94,14 @@ public struct MainTabViewFeature {
         return .send(.myPageRoot(.userProfileUpdateDidRequest))
       }
       return .none
+      
+    // GoodFeeling Delegate
+    case let .goodFeelingRoot(.delegate(delegate)):
+      switch delegate {
+      case let .selectedTabDidChanged(selectedTab):
+        state.selectedTab = selectedTab
+        return .none
+      }
       
     // BottleStorage Delegate
     case let .bottleStorage(.delegate(delegate)):
