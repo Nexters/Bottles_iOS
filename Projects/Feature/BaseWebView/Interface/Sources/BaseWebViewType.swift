@@ -26,6 +26,7 @@ public enum BottleWebViewType {
   case login
   case bottles
   case editProfile
+  case goodFeeling
   
   var path: String {
     switch self {
@@ -39,6 +40,8 @@ public enum BottleWebViewType {
       return "bottles"
     case .editProfile:
       return "profile/edit"
+    case .goodFeeling:
+      return "bottles/sents"
     }
   }
   
@@ -57,6 +60,9 @@ public enum BottleWebViewType {
       return makeUrlWithToken(path)
       
     case .editProfile:
+      return makeUrlWithToken(path)
+      
+    case .goodFeeling:
       return makeUrlWithToken(path)
     }
   }

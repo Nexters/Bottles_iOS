@@ -62,7 +62,7 @@ private extension PingPongContainer {
       
       Spacer()
       
-      LocalImageView(.icom(.up))
+      LocalImageView(.icon(.up))
         .rotationEffect(.degrees((isHidden ? -180 : 0)))
         .asButton {
           withAnimation(.snappy) {

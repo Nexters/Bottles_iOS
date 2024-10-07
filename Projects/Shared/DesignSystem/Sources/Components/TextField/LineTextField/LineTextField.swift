@@ -49,7 +49,7 @@ private extension LineTextField {
     if text.isEmpty {
       EmptyView()
     } else {
-      BottleImageView(type: .local(bottleImageSystem: .icom(.delete)))
+      BottleImageView(type: .local(bottleImageSystem: .icon(.delete)))
         .foregroundStyle(to: ColorToken.icon(.primary))
         .asThrottleButton {
           self.text = ""
