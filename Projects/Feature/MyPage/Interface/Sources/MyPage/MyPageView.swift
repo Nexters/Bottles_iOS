@@ -54,11 +54,7 @@ public struct MyPageView: View {
       }
       .scrollIndicators(.hidden)
       .background(to: ColorToken.container(.primary))
-      .padding(.bottom, 106)
       .padding(.top, 1)
-      .setTabBar(selectedTab: .myPage) { selectedTab in
-        store.send(.selectedTabDidChanged(selectedTab))
-      }
       .onLoad {
         store.send(.onLoad)
       }
