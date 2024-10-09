@@ -103,13 +103,13 @@ public extension View {
 
 public extension View {
   func makeNaivgationleftButton(action: (() -> Void)? = nil) -> some View {
-    BottleImageView(type: .local(bottleImageSystem: .icom(.leftArrow)))
+    BottleImageView(type: .local(bottleImageSystem: .icon(.leftArrow)))
       .foregroundStyle(to: ColorToken.icon(.primary))
       .asThrottleButton(action: action ?? {})
   }
   
   func makeNavigationReportButton(action: (() -> Void)? = nil) -> some View {
-    BottleImageView(type: .local(bottleImageSystem: .icom(.siren)))
+    BottleImageView(type: .local(bottleImageSystem: .icon(.siren)))
       .foregroundStyle(to: ColorToken.icon(.primary))
       .asThrottleButton(action: action ?? {})
   }

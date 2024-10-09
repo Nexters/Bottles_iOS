@@ -9,12 +9,12 @@ import SwiftUI
 
 public extension Image {
   enum BottleImageSystem: Imageable {
-    case icom(Icon)
+    case icon(Icon)
     case illustraition(Illustraition)
     
     public var image: Image {
       switch self {
-      case .icom(let icon):
+      case .icon(let icon):
         return icon.image
       case .illustraition(let illustraition):
         return illustraition.image
@@ -23,7 +23,7 @@ public extension Image {
     
     public var description: String {
       switch self {
-      case .icom:
+      case .icon:
         return "icon"
       case .illustraition:
         return "illustraition"
