@@ -35,7 +35,7 @@ extension WebViewClient: DependencyKey {
               message: dict["message"] as? String ?? "",
               accessToken: dict["accessToken"] as? String ?? "",
               refreshToken: dict["refreshToken"] as? String ?? "",
-              href: dict["href"] as? String ?? "",
+              url: dict["url"] as? String ?? "",
               isCompletedOnboardingIntroduction: dict["hasCompleteIntroduction"] as? Bool ?? false
             )
       else {

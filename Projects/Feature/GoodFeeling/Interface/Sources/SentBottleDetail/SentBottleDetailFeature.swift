@@ -1,8 +1,8 @@
 //
-//  GoodFeelingFeatureInterface.swift
-//  FeatureGoodFeelingInterface
+//  SentBottleDetailFeature.swift
+//  FeatureGoodFeeling
 //
-//  Created by JongHoon on 10/6/24.
+//  Created by JongHoon on 10/9/24.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-public struct GoodFeelingFeature {
+public struct SentBottleDetailFeature {
   private let reducer: Reduce<State, Action>
   
   public init(reducer: Reduce<State, Action>) {
@@ -19,17 +19,22 @@ public struct GoodFeelingFeature {
   
   @ObservableState
   public struct State: Equatable {
-    public init() {
-      
+    let sentBottleDetailURL: String
+    
+    public init(sentBottleDetailURL: String) {
+      self.sentBottleDetailURL = sentBottleDetailURL
     }
   }
   
   public enum Action: BindableAction {
-    case sentBottleTapped(url: String)
+    case backButtonDidTapped
+    case bottelDidAccepted
+    case showToast(message: String)
     
     case delegate(Delegate)
     public enum Delegate {
-      case sentBottleTapped(url: String)
+      case backButtonDidTapped
+      case bottelDidAccepted
     }
     
     case binding(BindingAction<State>)
@@ -41,3 +46,4 @@ public struct GoodFeelingFeature {
     reducer
   }
 }
+
