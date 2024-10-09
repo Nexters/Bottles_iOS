@@ -70,7 +70,7 @@ private extension UserProfileView {
   }
   
   var verticalLine: some View {
-    LocalImageView(.icom(.verticalLine))
+    LocalImageView(.icon(.verticalLine))
       .foregroundStyle(to: ColorToken.border(.secondary))
   }
   

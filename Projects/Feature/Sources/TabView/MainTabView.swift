@@ -7,9 +7,10 @@
 
 import SwiftUI
 
+import FeatureSandBeachInterface
+import FeatureGoodFeelingInterface
 import FeatureBottleStorageInterface
 import FeatureMyPageInterface
-import FeatureSandBeachInterface
 import FeatureTabBarInterface
 import SharedDesignSystem
 
@@ -28,6 +29,10 @@ public struct MainTabView: View {
         TabView(selection: $store.selectedTab.sending(\.selectedTabChanged)) {
           SandBeachRootView(store: store.scope(state: \.sandBeachRoot, action: \.sandBeachRoot))
             .tag(TabType.sandBeach)
+            .toolbar(.hidden, for: .tabBar)
+          
+          GoodFeelingRootView(store: store.scope(state: \.goodFeelingRoot, action: \.goodFeelingRoot))
+            .tag(TabType.goodFeeling)
             .toolbar(.hidden, for: .tabBar)
           
           BottleStorageView(store: store.scope(state: \.bottleStorage, action: \.bottleStorage))

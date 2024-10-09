@@ -23,8 +23,8 @@ extension BottleArrivalFeature {
         state.isLoading = false
         return .none
         
-      case .bottelDidAccepted:
-        return .send(.delegate(.bottelDidAccepted))
+      case let .arrivalBottleTapped(url):
+        return .send(.delegate(.arrivalBottleTapped(url: url)))
         
       case .closeWebView:
         return .send(.delegate(.closeWebView))

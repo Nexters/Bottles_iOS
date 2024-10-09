@@ -29,7 +29,7 @@ public struct BottleArrivalFeature {
     // View Life Cycle
     case onAppear
     case webViewLoadingDidCompleted
-    case bottelDidAccepted
+    case arrivalBottleTapped(url: String)
     case closeWebView
     case presentToastDidRequired(message: String)
     // Delegate
@@ -38,6 +38,7 @@ public struct BottleArrivalFeature {
     public enum Delegate {
       case bottelDidAccepted
       case closeWebView
+      case arrivalBottleTapped(url: String)
     }
   }
   

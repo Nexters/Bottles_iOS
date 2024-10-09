@@ -13,6 +13,7 @@ import DomainApplication
 import CoreWebViewInterface
 import CoreKeyChainStoreInterface
 import CoreKeyChainStore
+import CoreLoggerInterface
 
 import Dependencies
 
@@ -24,8 +25,10 @@ public enum BottleWebViewType {
   case createProfile
   case signUp
   case login
-  case bottles
+  case bottleArrival
   case editProfile
+  case goodFeeling
+  case openURL(url: String)
   
   var path: String {
     switch self {
@@ -35,10 +38,14 @@ public enum BottleWebViewType {
       return "signup"
     case .login:
       return "login"
-    case .bottles:
-      return "bottles"
+    case .bottleArrival:
+      return "bottles/recommendations"
     case .editProfile:
       return "profile/edit"
+    case .goodFeeling:
+      return "bottles/sents"
+    case .openURL:
+      return ""
     }
   }
   
@@ -53,11 +60,17 @@ public enum BottleWebViewType {
     case .login:
       return URL(string: baseURL + "/" + path)!
       
-    case .bottles:
+    case .bottleArrival:
       return makeUrlWithToken(path)
       
     case .editProfile:
       return makeUrlWithToken(path)
+      
+    case .goodFeeling:
+      return makeUrlWithToken(path)
+      
+    case let .openURL(url):
+      return URL(string: url)!
     }
   }
   
