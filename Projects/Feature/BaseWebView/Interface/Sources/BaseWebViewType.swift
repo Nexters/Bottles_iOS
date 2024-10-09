@@ -25,7 +25,7 @@ public enum BottleWebViewType {
   case createProfile
   case signUp
   case login
-  case bottles
+  case bottleArrival
   case editProfile
   case goodFeeling
   case openURL(url: String)
@@ -38,8 +38,8 @@ public enum BottleWebViewType {
       return "signup"
     case .login:
       return "login"
-    case .bottles:
-      return "bottles"
+    case .bottleArrival:
+      return "bottles/recommendations"
     case .editProfile:
       return "profile/edit"
     case .goodFeeling:
@@ -60,7 +60,7 @@ public enum BottleWebViewType {
     case .login:
       return URL(string: baseURL + "/" + path)!
       
-    case .bottles:
+    case .bottleArrival:
       return makeUrlWithToken(path)
       
     case .editProfile:
