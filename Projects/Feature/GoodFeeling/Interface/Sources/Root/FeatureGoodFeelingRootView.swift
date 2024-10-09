@@ -34,7 +34,15 @@ public struct GoodFeelingRootView: View {
         }
       } destination: { store in
         WithPerceptionTracking {
-          
+          switch store.state {
+          case .sentBottleDetail:
+            if let store = store.scope(
+              state: \.sentBottleDetail,
+              action: \.sentBottleDetail
+            ) {
+              SentBottleDetailView(store: store)
+            }
+          }
         }
       }
     }
