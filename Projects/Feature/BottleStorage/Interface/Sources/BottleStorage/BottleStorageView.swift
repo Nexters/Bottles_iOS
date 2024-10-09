@@ -29,16 +29,13 @@ public struct BottleStorageView: View {
           bottlsList
             .padding(.horizontal, .md)
             .padding(.top, 32.0)
-            .padding(.bottom, 36.0)
-  
-          Spacer()
         }
+        .frame(maxHeight: .infinity, alignment: .top)
+        .background(to: ColorToken.background(.primary))
+        .padding(.bottom, BottleConstants.bottomTabBarHeight.value)
         .setTabBar(selectedTab: .bottleStorage) { selectedTab in
           store.send(.selectedTabDidChanged(selectedTab: selectedTab))
         }
-        
-        .frame(maxHeight: .infinity, alignment: .top)
-        .background(to: ColorToken.background(.primary))
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
@@ -135,6 +132,9 @@ private extension BottleStorageView {
             }
           }
         }
+        
+        Spacer()
+          .frame(height: 36.0)
       }
       .scrollIndicators(.hidden)
     }
