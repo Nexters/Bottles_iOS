@@ -9,18 +9,15 @@ import SwiftUI
 
 public struct UserProfileView: View {
   private let imageURL: String
-  private let isBlurred: Bool
   private let userName: String
   private let userAge: Int
   
   public init(
     imageURL: String,
-    isBlurred: Bool,
     userName: String,
     userAge: Int
   ) {
     self.imageURL = imageURL
-    self.isBlurred = isBlurred
     self.userName = userName
     self.userAge = userAge
   }
@@ -41,25 +38,13 @@ private extension UserProfileView {
   
   @ViewBuilder
   var profileImage: some View {
-    switch isBlurred {
-    case true:
-      BlurImageView(
-        imageURL: imageURL,
-        downsamplingWidth: 80.0,
-        downsamplingHeight: 80.0
-      )
-      .clipShape(Circle())
-      .frame(width: 80.0, height: 80.0)
-      
-    case false:
-      RemoteImageView(
-        imageURL: imageURL,
-        downsamplingWidth: 80.0,
-        downsamplingHeight: 80.0
-      )
-      .clipShape(Circle())
-      .frame(width: 80, height: 80)
-    }
+    RemoteImageView(
+      imageURL: imageURL,
+      downsamplingWidth: 80.0,
+      downsamplingHeight: 80.0
+    )
+    .clipShape(Circle())
+    .frame(width: 80, height: 80)
   }
   
   var userNameText: some View {
