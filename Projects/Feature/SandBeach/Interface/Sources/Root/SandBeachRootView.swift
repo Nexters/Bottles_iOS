@@ -52,6 +52,14 @@ public struct SandBeachRootView: View {
               action: \.BottleArrival) {
               BottleArrivalView(store: store)
             }
+            
+          case .BottleArrivalDetail:
+            if let store = store.scope(
+              state: \.BottleArrivalDetail,
+              action: \.BottleArrivalDetail
+            ) {
+              BottleArrivalDetailView(store: store)
+            }
           }
         }
       }

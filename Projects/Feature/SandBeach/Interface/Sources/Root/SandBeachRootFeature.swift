@@ -29,6 +29,7 @@ public struct SandBeachRootFeature {
     case IntroductionSetup(IntroductionSetupFeature)
     case ProfileImageUpload(ProfileImageUploadFeature)
     case BottleArrival(BottleArrivalFeature)
+    case BottleArrivalDetail(BottleArrivalDetailFeature)
   }
   
   @ObservableState
@@ -127,6 +128,10 @@ extension SandBeachRootFeature {
         case .closeWebView:
           state.path.removeLast()
           return .none
+          
+        case let .arrivalBottleTapped(url):
+          state.path.append(.BottleArrivalDetail(.init(bottleArrivalURL: url)))
+          return .none
         }
         
       // SandBeach Delegate
@@ -141,6 +146,14 @@ extension SandBeachRootFeature {
           
         case .writeButtonDidTapped:
           state.path.append(.IntroductionSetup(IntroductionSetupFeature.State()))
+          return .none
+        }
+        
+    // BottleArrivalDetail Delegate
+      case let .path(.element(id: _, action: .BottleArrivalDetail(.delegate(delegate)))):
+        switch delegate {
+        case .backButtonDidTapped:
+          _ = state.path.popLast()
           return .none
         }
         
