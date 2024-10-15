@@ -12,7 +12,13 @@ import ComposableArchitecture
 extension GoodFeelingFeature {
   public init() {
     let reducer = Reduce<State, Action> { state, action in
-      return .none
+      switch action {
+      case let .sentBottleTapped(url):
+        return .send(.delegate(.sentBottleTapped(url: url)))
+        
+      default:
+        return .none
+      }
     }
     
     self.init(reducer: reducer)
