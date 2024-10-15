@@ -9,6 +9,8 @@ import SwiftUI
 
 import FeatureTabBarInterface
 
+import SharedDesignSystem
+
 import ComposableArchitecture
 
 public struct MyPageRootView: View {
@@ -22,6 +24,7 @@ public struct MyPageRootView: View {
     WithPerceptionTracking {
       NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
         MyPageView(store: store.scope(state: \.myPage, action: \.myPage))
+          .padding(.bottom, BottleConstants.bottomTabBarHeight.value)
           .setTabBar(selectedTab: .myPage) { selectedTab in
             store.send(.selectedTabDidChanged(selectedTab: selectedTab))
           }
