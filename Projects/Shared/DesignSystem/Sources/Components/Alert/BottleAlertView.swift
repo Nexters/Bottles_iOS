@@ -53,7 +53,7 @@ struct BottleAlertView<A, M, T>: View where A: View, M: View {
 
 private extension BottleAlertView {
   var alertImage: some View {
-    BottleImageView(type: .local(bottleImageSystem: .icom(.warning)))
+    BottleImageView(type: .local(bottleImageSystem: .icon(.warning)))
       .foregroundStyle(to: ColorToken.icon(.primary))
       .padding(.top, .lg)
       .padding(.bottom, .xs)
