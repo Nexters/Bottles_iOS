@@ -22,13 +22,12 @@ public struct BottleArrivalView: View {
   public var body: some View {
 
     WithPerceptionTracking {
-      BaseWebView(
-        type: .bottles) { action in
+      BaseWebView(type: .bottleArrival) { action in
         switch action {
         case .webViewLoadingDidCompleted:
           store.send(.webViewLoadingDidCompleted)
-        case .bottelDidAccepted:
-          store.send(.bottelDidAccepted)
+        case let .openLink(url):
+          store.send(.arrivalBottleTapped(url: url))
         case .closeWebView:
           store.send(.closeWebView)
         case let .showTaost(message):

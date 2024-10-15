@@ -109,7 +109,7 @@ extension SandBeachFeature {
           }
           
           let userBottleInfo = try await bottleClient.fetchUserBottleInfo()
-          let newBottlesCount = userBottleInfo.randomBottleCount + userBottleInfo.sendBottleCount
+          let newBottlesCount = userBottleInfo.randomBottleCount
           // 새로 도착한 보틀이 있는 상태
           
           if newBottlesCount > 0 {
