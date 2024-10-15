@@ -9,6 +9,8 @@ import SwiftUI
 
 import FeatureBaseWebViewInterface
 
+import CoreLoggerInterface
+
 import ComposableArchitecture
 
 public struct GoodFeelingView: View {
@@ -23,7 +25,16 @@ public struct GoodFeelingView: View {
       BaseWebView(
         type: .goodFeeling,
         actionDidInputted: { action in
-          // TODO: action handling
+          switch action {
+          case .webViewLoadingDidCompleted:
+            break
+            
+          case let .openLink(url):
+            store.send(.sentBottleTapped(url: url))
+            
+          default:
+            Log.assertion(message: "not handled action: \(action)")
+          }
         }
       )
     }

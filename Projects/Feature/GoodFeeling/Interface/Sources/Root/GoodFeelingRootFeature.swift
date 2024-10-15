@@ -21,7 +21,7 @@ public struct GoodFeelingRootFeature {
   
   @Reducer(state: .equatable)
   public enum Path {
-    
+    case sentBottleDetail(SentBottleDetailFeature)
   }
   
   @ObservableState
@@ -35,7 +35,7 @@ public struct GoodFeelingRootFeature {
     }
   }
   
-  public enum Action {
+  public enum Action: BindableAction {
     case selectedTabDidChanged(TabType)
     case goodFeeling(GoodFeelingFeature.Action)
     
@@ -45,9 +45,12 @@ public struct GoodFeelingRootFeature {
     public enum Delegate {
       case selectedTabDidChanged(TabType)
     }
+    
+    case binding(BindingAction<State>)
   }
   
   public var body: some ReducerOf<Self> {
+    BindingReducer()
     Scope(state: \.goodFeeling, action: \.goodFeeling) {
       GoodFeelingFeature()
     }
