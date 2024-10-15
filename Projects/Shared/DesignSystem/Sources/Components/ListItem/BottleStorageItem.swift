@@ -56,7 +56,7 @@ public struct BottleStorageItem: View {
       
       Spacer()
       
-      BlurImageView(
+      RemoteImageView(
         imageURL: imageURL,
         downsamplingWidth: 60.0,
         downsamplingHeight: 60.0

@@ -50,7 +50,6 @@ private extension ReportUserView {
   var userProfile: some View {
     UserProfileView(
       imageURL: store.userProfile.imageURL,
-      isBlurred: true,
       userName: store.userProfile.userName,
       userAge: store.userProfile.userAge
     )
