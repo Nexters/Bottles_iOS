@@ -31,7 +31,7 @@ public enum BottleWebViewType {
   var path: String {
     switch self {
     case .createProfile:
-      return "create-profile"
+      return "profile/create"
     case .signUp:
       return "signup"
     case .login:
