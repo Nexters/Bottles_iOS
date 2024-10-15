@@ -33,7 +33,7 @@ private extension ArrowListView {
   var rightArrowImage: some View {
     BottleImageView(
       type: .local(
-        bottleImageSystem: .icom(.right)
+        bottleImageSystem: .icon(.right)
       )
     )
     .foregroundStyle(to: ColorToken.icon(.primary))
