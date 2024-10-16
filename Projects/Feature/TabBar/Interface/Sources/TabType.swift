@@ -23,7 +23,7 @@ public enum TabType: Hashable, CaseIterable {
       return "호감"
       
     case .bottleStorage:
-      return "보틀 보관함"
+      return "문답"
       
     case .myPage:
       return "마이페이지"
@@ -39,7 +39,7 @@ public enum TabType: Hashable, CaseIterable {
       return .icon(.goodFeeling)
       
     case .bottleStorage:
-      return .icon(.bottleStorage)
+      return .icon(.talk)
       
     case .myPage:
       return .icon(.myPage)
