@@ -10,6 +10,7 @@ import SwiftUI
 import SharedDesignSystem
 import FeatureReportInterface
 import FeatureTabBarInterface
+import FeatureBottleArrivalInterface
 
 import ComposableArchitecture
 
@@ -17,24 +18,28 @@ public struct BottleStorageView: View {
   @Perception.Bindable private var store: StoreOf<BottleStorageFeature>
   
   public init(store: StoreOf<BottleStorageFeature>) {
-    self.store = store 
+    self.store = store
   }
   
   public var body: some View {
     WithPerceptionTracking {
       NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
         VStack(spacing: 0.0) {
-          bottleActiveStateSelectTab
-          
           bottlsList
             .padding(.horizontal, .md)
             .padding(.top, 32.0)
         }
+        .padding(.top, 72)
         .frame(maxHeight: .infinity, alignment: .top)
         .background(to: ColorToken.background(.primary))
         .padding(.bottom, BottleConstants.bottomTabBarHeight.value)
         .setTabBar(selectedTab: .bottleStorage) { selectedTab in
           store.send(.selectedTabDidChanged(selectedTab: selectedTab))
+        }
+        .overlay {
+          if store.pingPongBottleList.isEmpty && store.isLoading {
+            LoadingIndicator()
+          }
         }
       } destination: { store in
         WithPerceptionTracking {
@@ -64,62 +69,48 @@ public struct BottleStorageView: View {
 // MARK: - Private Views
 
 private extension BottleStorageView {
-  var bottleActiveStateSelectTab: some View {
-    HStack(spacing: .xs) {
-      OutlinedStyleButton(
-        .small(contentType: .text),
-        title: BottleActiveState.active.title,
-        buttonType: .throttle,
-        isSelected: store.selectedActiveStateTab == BottleActiveState.active,
-        action: {
-          store.send(.bottleActiveStateTabButtonTapped(.active))
-        }
-      )
-      
-      OutlinedStyleButton(
-        .small(contentType: .text),
-        title: BottleActiveState.done.title,
-        buttonType: .throttle,
-        isSelected: store.selectedActiveStateTab == BottleActiveState.done,
-        action: {
-          store.send(.bottleActiveStateTabButtonTapped(.done))
-        }
-      )
-      
-      Spacer()
-    }
-    .padding(.md)
-  }
-  
   @ViewBuilder
   var bottlsList: some View {
-    if store.currentSelectedBottles.isEmpty && store.activeBottleList != nil {
-      VStack(spacing: .xxl) {
-        HStack(spacing: 0.0) {
+    if store.pingPongBottleList.isEmpty && !store.isLoading {
+      VStack(alignment: .center, spacing: 0.0) {
+        
+        Spacer()
+        BottleImageView(type: .local(bottleImageSystem: .illustraition(.basket)))
+          .frame(height: 180)
+          .frame(width: 180)
+          .aspectRatio(1.0, contentMode: .fit)
+          .padding(.bottom, .xl)
+        
           WantedSansStyleText(
-            "아직 보관 중인\n보틀이 없어요!",
-            style: .title1,
+            "아직 대화를 시작하지 않으셨군요!",
+            style: .subTitle1,
             color: .primary
           )
-          
-          Spacer()
-        }
+          .padding(.bottom, .xs)
         
-        GeometryReader { geometry in
-          BottleImageView(type: .local(bottleImageSystem: .illustraition(.basket)))
-            .frame(height: geometry.size.width)
+          WantedSansStyleText(
+            "마음에 드는 상대를 찾아\n가치관 문답을 시작해 볼까요?",
+            style: .body,
+            color: .tertiary
+          )
+          .lineSpacing(5)
+          .multilineTextAlignment(.center)
+          .padding(.bottom, .xl)
+        
+        SolidButton(title: "모래사장 바로가기", sizeType: .extraSmall, buttonType: .throttle, action: { store.send(.sandBeachButtonDidTapped) })
+        
+        Spacer()
         }
-        .aspectRatio(1.0, contentMode: .fit)
-      }
     } else {
       ScrollView {
         VStack(spacing: .md) {
-          ForEach(store.currentSelectedBottles, id: \.id) { bottle in
-            BottleStorageItem(
+          ForEach(store.pingPongBottleList, id: \.id) { bottle in
+            PingPongUserView(
+              status: bottle.lastStatus?.title ?? "",
+              lastPingPongTime: bottle.lastActivatedAt ?? "",
               userName: bottle.userName ?? "(없음)",
               age: bottle.age ?? 0,
               mbti: bottle.mbti,
-              keywords: bottle.keyword,
               imageURL: bottle.userImageUrl,
               isRead: bottle.isRead
             )

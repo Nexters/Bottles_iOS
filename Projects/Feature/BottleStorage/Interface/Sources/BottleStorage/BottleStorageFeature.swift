@@ -8,6 +8,7 @@
 import CoreLoggerInterface
 import DomainBottle
 import FeatureReportInterface
+import FeatureBottleArrivalInterface
 
 import ComposableArchitecture
 
@@ -18,11 +19,12 @@ extension BottleStorageFeature {
     let reducer = Reduce<State, Action> { state, action in
       switch action {
       case .onAppear:
+        state.isLoading = true
         return popToRootAndReload(state: &state)
         
       case let .bottleStorageListFetched(bottleStorageList):
-        state.activeBottleList = bottleStorageList.activeBottles
-        state.doneBottlsList = bottleStorageList.doneBottles
+        state.pingPongBottleList = bottleStorageList.pingPongBottles
+        state.isLoading = false
         return .none
         
       case let .bottleStorageItemDidTapped(bottleID, isRead, userName):
@@ -33,9 +35,8 @@ extension BottleStorageFeature {
         )))
         return .none
         
-      case let .bottleActiveStateTabButtonTapped(activeState):
-        state.selectedActiveStateTab = activeState
-        return .none
+      case .sandBeachButtonDidTapped:
+        return .send(.delegate(.sandBeachButtonDidTapped))
         
       case let .path(.element(id: _, action: .pingPongDetail(.delegate(delegate)))):
         
@@ -74,7 +75,6 @@ extension BottleStorageFeature {
     self.init(reducer: reducer)
     
     func popToRootAndReload(state: inout State) -> Effect<Action> {
-      state.selectedActiveStateTab = .active
       state.path.removeAll()
       return .run { send in
         let bottleStorageList = try await bottleClient.fetchBottleStorageList()
