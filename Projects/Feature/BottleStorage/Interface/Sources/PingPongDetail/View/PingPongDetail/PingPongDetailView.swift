@@ -63,8 +63,7 @@ private extension PingPongDetailView {
   var tabButtons: some View {
     HStack(spacing: .xs) {
       ForEach(PingPongDetailViewTabType.allCases, id: \.title, content: { tab in
-        OutlinedStyleButton(
-          .small(contentType: .text),
+        SegmentControlButton(
           title: tab.title,
           buttonType: .throttle,
           isSelected: store.selectedTab == tab,
