@@ -10,8 +10,7 @@ import Foundation
 // MARK: - Bottle Storage List
 
 public struct BottleStorageListResponseDTO: Decodable {
-  let activeBottles: [BottleStorageItemResponseDTO]?
-  let doneBottles: [BottleStorageItemResponseDTO]?
+  let pingPongBottles: [BottleStorageItemResponseDTO]?
   
   public struct BottleStorageItemResponseDTO: Decodable {
     let age: Int?
@@ -21,6 +20,8 @@ public struct BottleStorageListResponseDTO: Decodable {
     let mbti: String?
     let userImageUrl: String?
     let userName: String?
+    let lastActivatedAt: String?
+    let lastStatus: String?
     
     public func toDomain() -> BottleStorageItem {
       return BottleStorageItem(
@@ -30,15 +31,15 @@ public struct BottleStorageListResponseDTO: Decodable {
         keyword: keyword ?? [],
         mbti: mbti ?? "",
         userImageUrl: userImageUrl ?? "",
-        userName: userName ?? ""
+        userName: userName ?? "",
+        lastActivatedAt: lastActivatedAt ?? "",
+        lastStatus: PingPongLastStatus(rawValue: lastStatus ?? "")
       )
     }
   }
   
   public func toDomain() -> BottleStorageList {
     return BottleStorageList(
-      activeBottles: activeBottles?.map { $0.toDomain() } ?? [],
-      doneBottles: doneBottles?.map { $0.toDomain() } ?? []
-    )
+      pingPongBottles: pingPongBottles?.map { $0.toDomain() } ?? [])
   }
 }

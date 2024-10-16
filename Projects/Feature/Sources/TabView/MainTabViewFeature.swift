@@ -108,8 +108,11 @@ public struct MainTabViewFeature {
       switch delegate {
       case let .selectedTabDidChanged(selectedTab):
         state.selectedTab = selectedTab
+        return .none
+      case .sandBeachButtonDidTapped:
+        state.selectedTab = .sandBeach
+        return .send(.sandBeachRoot(.sandBeach(.newBottleIslandDidTapped)))
       }
-      return .none
       
     // MyPage Delegate
     case let .myPageRoot(.delegate(delegate)):

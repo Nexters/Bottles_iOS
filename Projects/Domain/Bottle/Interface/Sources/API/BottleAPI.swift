@@ -35,7 +35,7 @@ extension BottleAPI: BaseTargetType {
     case .fetchBottles:
       return "api/v1/bottles"
     case .fetchBottleStorageList:
-      return "api/v1/bottles/ping-pong"
+      return "api/v2/bottles/ping-pong"
     case let .fetchBottlePingPong(bottleID):
       return "api/v1/bottles/ping-pong/\(bottleID)"
     case let .readBottle(bottleID):

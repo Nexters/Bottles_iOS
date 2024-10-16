@@ -22,36 +22,21 @@ public struct BottleStorageFeature {
   
   @ObservableState
   public struct State: Equatable {
-    // 보틀 상태 선택 탭(대화 중, 완료)
-    let bottleActiveStateTabs: [BottleActiveState]
-    var selectedActiveStateTab: BottleActiveState
-    var currentSelectedBottles: [BottleStorageItem] {
-      switch selectedActiveStateTab {
-      case .active:
-        return activeBottleList ?? []
-      case .done:
-        return doneBottlsList ?? []
-      }
-    }
     
     // 보틀 리스트
-    var activeBottleList: [BottleStorageItem]?
-    var doneBottlsList: [BottleStorageItem]?
+    var pingPongBottleList: [BottleStorageItem]
     
     var path = StackState<Path.State>()
+    var isLoading: Bool = false
     
     public init() {
-      self.bottleActiveStateTabs = BottleActiveState.allCases
-      self.selectedActiveStateTab = .active
+      self.pingPongBottleList = []
     }
   }
   
   public enum Action: BindableAction {
     // View Life Cycle
     case onAppear
-    
-    // 보틀 상태 선택 탭(대화 중, 완료)
-    case bottleActiveStateTabButtonTapped(BottleActiveState)
     
     // 보틀 리스트
     case bottleStorageListFetched(BottleStorageList)
@@ -60,6 +45,7 @@ public struct BottleStorageFeature {
       isRead: Bool,
       userName: String
     )
+    case sandBeachButtonDidTapped
     case selectedTabDidChanged(selectedTab: TabType)
     case delegate(Delegate)
     // ETC.
@@ -68,6 +54,7 @@ public struct BottleStorageFeature {
     
     public enum Delegate {
       case selectedTabDidChanged(selectedTab: TabType)
+      case sandBeachButtonDidTapped
     }
   }
   
@@ -78,16 +65,25 @@ public struct BottleStorageFeature {
   }
 }
 
-public enum BottleActiveState: String, CaseIterable, Equatable {
-  case active
-  case done
-  
+extension PingPongLastStatus {
   var title: String {
     switch self {
-    case .active:
-      return "대화 중"
-    case .done:
-      return "완료"
+    case .noAnswerFromBoth:
+      return "문답을 시작해 주세요"
+    case .answerFromOther:
+      return "새로운 문답이 도착했어요"
+    case .photoSharedByOther:
+      return "사진이 도착했어요"
+    case .contactSharedByOther:
+      return "연락처가 도착했어요"
+    case .answerFromMeOnly:
+      return "문답을 보냈어요"
+    case .photoSharedByMeOnly:
+      return "사진을 공유했어요"
+    case .contactSharedByMeOnly:
+      return "연락처를 공유했어요"
+    case .conversationStopped:
+      return "대화가 중단됐어요"
     }
   }
 }

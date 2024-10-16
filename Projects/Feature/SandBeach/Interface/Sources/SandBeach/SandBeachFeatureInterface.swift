@@ -119,7 +119,8 @@ extension SandBeachFeature {
             )
           } else {
             let bottlesStorageList = try await bottleClient.fetchBottleStorageList()
-            let activeBottlesCount = bottlesStorageList.activeBottles.count
+            let activeBottlesCount = bottlesStorageList.pingPongBottles
+              .filter { $0.lastStatus != .conversationStopped && $0.lastStatus != .contactSharedByMeOnly }.count
             
             // 자기소개만 작성한 상태
             if activeBottlesCount <= 0 {
@@ -127,7 +128,7 @@ extension SandBeachFeature {
               let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
               await send(.userStateFetchCompleted(
                 userState: .noBottle(time: nextBottleLeftHours ?? 0),
-                isDisableButton: true)
+                isDisableButton: false)
               )
             } else { // 대화 중인 보틀이 있는 상태
               await send(.userStateFetchCompleted(
