@@ -255,7 +255,14 @@ struct CardSection: View {
           label: {
             Text("StopCardView")
           }
-        )        
+        )    
+        
+        NavigationLink(
+          destination: BottleStorageList(),
+          label: {
+            Text("BottleStorageList")
+          }
+        )
 //        NavigationLink(
 //          destination: 
 //            QuestionPingPongTestView(),
