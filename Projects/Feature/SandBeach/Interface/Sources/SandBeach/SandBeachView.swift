@@ -51,10 +51,10 @@ public struct SandBeachView: View {
               .asThrottleButton {
                 if store.userState.isHasNewBottle {
                   store.send(.newBottleIslandDidTapped)
-                }
-                
-                if store.userState.isHasActiveBottle {
+                } else if store.userState.isHasActiveBottle {
                   store.send(.bottleStorageIslandDidTapped)
+                } else if store.userState != .noIntroduction {
+                  store.send(.newBottleIslandDidTapped)
                 }
               }
               .disabled(store.isDisableIslandBottle)

@@ -128,7 +128,7 @@ extension SandBeachFeature {
               let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
               await send(.userStateFetchCompleted(
                 userState: .noBottle(time: nextBottleLeftHours ?? 0),
-                isDisableButton: true)
+                isDisableButton: false)
               )
             } else { // 대화 중인 보틀이 있는 상태
               await send(.userStateFetchCompleted(
