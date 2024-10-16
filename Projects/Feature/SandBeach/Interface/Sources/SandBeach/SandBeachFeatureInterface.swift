@@ -119,7 +119,8 @@ extension SandBeachFeature {
             )
           } else {
             let bottlesStorageList = try await bottleClient.fetchBottleStorageList()
-            let activeBottlesCount = bottlesStorageList.pingPongBottles.count
+            let activeBottlesCount = bottlesStorageList.pingPongBottles
+              .filter { $0.lastStatus != .conversationStopped && $0.lastStatus != .contactSharedByMeOnly }.count
             
             // 자기소개만 작성한 상태
             if activeBottlesCount <= 0 {
