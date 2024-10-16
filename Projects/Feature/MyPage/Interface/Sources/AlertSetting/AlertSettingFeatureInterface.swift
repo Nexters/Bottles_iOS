@@ -10,6 +10,8 @@ import Combine
 
 import DomainUserInterface
 
+import DomainUserInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -74,6 +76,13 @@ public struct AlertSettingFeature {
     public enum Alert: Equatable {
       case confirmPushNotification
     }
+  }
+  
+  public enum ID: Hashable {
+    case randomBottle
+    case arrivalBottle
+    case pingping
+    case marketing
   }
   
   public enum ID: Hashable {

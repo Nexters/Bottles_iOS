@@ -10,6 +10,7 @@ import SharedDesignSystem
 
 public enum TabType: Hashable, CaseIterable {
   case sandBeach
+  case goodFeeling
   case bottleStorage
   case myPage
   
@@ -17,6 +18,9 @@ public enum TabType: Hashable, CaseIterable {
     switch self {
     case .sandBeach:
       return "모래사장"
+      
+    case .goodFeeling:
+      return "호감"
       
     case .bottleStorage:
       return "보틀 보관함"
@@ -29,13 +33,16 @@ public enum TabType: Hashable, CaseIterable {
   var image: Image.BottleImageSystem {
     switch self {
     case .sandBeach:
-      return .icom(.sandBeach)
+      return .icon(.sandBeach)
+      
+    case .goodFeeling:
+      return .icon(.goodFeeling)
       
     case .bottleStorage:
-      return .icom(.bottleStorage)
+      return .icon(.bottleStorage)
       
     case .myPage:
-      return .icom(.myPage)
+      return .icon(.myPage)
     }
   }
 }

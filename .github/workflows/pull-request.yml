@@ -1,0 +1,58 @@
+name: Bottles Pull Request Workflow
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types: [ opened, reopened, synchronize ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack Notification
+        if: github.event.action == 'opened' || github.event.action == 'reopened'
+        env:
+          DATA: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*iOS PR* :bell: <@U07LESGBQEP> <@U07LHEEU2BW>"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author:*\n<https://github.com/${{ github.event.sender.login }}|${{ github.event.sender.login }}>"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Title:*\n${{ github.event.pull_request.title }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Description:*\n${{ github.event.pull_request.body }}"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Pull Request URL:*\n<${{ github.event.pull_request.html_url }}|View PR>"
+                  }
+                }
+              ]
+            }
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          -d "$DATA" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -132,7 +132,7 @@ private extension OutlinedStyleButton {
           
         default:
           assertionFailure("Wrong Image Configuration")
-          return .local(bottleImageSystem: .icom(.siren))
+          return .local(bottleImageSystem: .icon(.siren))
         }
             
       case let .local(bottleImageSystem):

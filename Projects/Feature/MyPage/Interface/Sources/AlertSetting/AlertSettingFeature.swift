@@ -14,6 +14,12 @@ import DomainUserInterface
 import CoreURLHandlerInterface
 import CoreLoggerInterface
 
+import DomainUser
+import DomainUserInterface
+
+import CoreURLHandlerInterface
+import CoreLoggerInterface
+
 import ComposableArchitecture
 
 extension AlertSettingFeature {

@@ -139,7 +139,7 @@ private extension MatchingView {
       )
       
       OutlinedStyleButton(
-        .small(contentType: .image(type: .local(bottleImageSystem: .icom(.share)))),
+        .small(contentType: .image(type: .local(bottleImageSystem: .icon(.share)))),
         title: "복사하기",
         buttonType: .throttle
       ) {

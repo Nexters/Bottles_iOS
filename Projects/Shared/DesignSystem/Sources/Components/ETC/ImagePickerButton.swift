@@ -55,7 +55,7 @@ private extension ImagePickerButton {
             deleteButton
           }
       } else {
-        LocalImageView(.icom(.plus))
+        LocalImageView(.icon(.plus))
           .frame(width: width, height: width, alignment: .center)
       }
     }
@@ -68,7 +68,7 @@ private extension ImagePickerButton {
       .clipShape(RoundedRectangle(cornerRadius: BottleRadiusType.xs.value))
       .frame(width: 36, height: 36)
       .overlay {
-        LocalImageView(.icom(.clearDelete))
+        LocalImageView(.icon(.clearDelete))
           .asThrottleButton {
             self.selectedImage.removeAll()
             action()

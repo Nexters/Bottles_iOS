@@ -87,10 +87,10 @@ extension SolidButton {
   var image: some View {
     switch buttonApperance {
     case .kakao:
-      BottleImageView(type: .local(bottleImageSystem: .icom(.kakaoLogo)))
+      BottleImageView(type: .local(bottleImageSystem: .icon(.kakaoLogo)))
       
     case .apple:
-      BottleImageView(type: .local(bottleImageSystem: .icom(.appleLogo)))
+      BottleImageView(type: .local(bottleImageSystem: .icon(.appleLogo)))
     case .solid:
       EmptyView()
     case .generalSignIn:

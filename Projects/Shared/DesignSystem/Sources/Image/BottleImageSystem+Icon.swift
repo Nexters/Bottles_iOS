@@ -22,6 +22,7 @@ public extension Image.BottleImageSystem {
     case kakaoLogo
     case sandBeach
     case bottleStorage
+    case goodFeeling
     case myPage
     case appleLogo
     case warning
@@ -60,6 +61,9 @@ public extension Image.BottleImageSystem.Icon {
       
     case .bottleStorage:
       return SharedDesignSystemAsset.Images.iconBottleStorage.swiftUIImage
+      
+    case .goodFeeling:
+      return SharedDesignSystemAsset.Images.iconHeart.swiftUIImage
       
     case .myPage:
       return SharedDesignSystemAsset.Images.iconMyPage.swiftUIImage

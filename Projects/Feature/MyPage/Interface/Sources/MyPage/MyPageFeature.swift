@@ -101,6 +101,10 @@ extension MyPageFeature {
 		
         case .dismissContactsAlert:
           state.destination = nil
+          return .send(.configureLoadingProgressView(isShow: false))
+		
+        case .dismissContactsAlert:
+          state.destination = nil
           URLHandler.shared.openURL(urlType: .setting)
           return .none
 
@@ -180,6 +184,10 @@ extension MyPageFeature {
             ButtonState(role: .destructive, action: .confirmBlockContacts(contacts: contacts), label: { TextState("차단하기")})
           },
           message: { TextState("주소록에 있는 \(count)개의\n전화번호를 차단할까요?") }))
+        return .none
+        
+      case .updateApplicationButtonTapped:
+        URLHandler.shared.openURL(urlType: .bottleAppStore)
         return .none
         
       case .updateApplicationButtonTapped:
