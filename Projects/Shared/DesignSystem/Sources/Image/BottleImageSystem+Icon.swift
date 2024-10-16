@@ -26,6 +26,7 @@ public extension Image.BottleImageSystem {
     case myPage
     case appleLogo
     case warning
+    case talk
   }
 }
 
@@ -73,6 +74,9 @@ public extension Image.BottleImageSystem.Icon {
       
     case .warning:
       return SharedDesignSystemAsset.Images.iconWarning.swiftUIImage
+      
+    case .talk:
+      return SharedDesignSystemAsset.Images.iconTalk.swiftUIImage
     }
   }
 }
