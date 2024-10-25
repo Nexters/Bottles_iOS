@@ -20,6 +20,12 @@ public struct QuestionAndAnswerFeature {
     self.reducer = reducer
   }
   
+  public enum FocusField: Hashable {
+    case firstLetter
+    case secondLetter
+    case thirdLetter
+  }
+  
   @ObservableState
   public struct State: Equatable {
     let bottleID: Int
@@ -82,7 +88,8 @@ public struct QuestionAndAnswerFeature {
     var thirdLetterTextFieldContent: String
     
     var textFieldState: TextFieldState
-    
+    var focusedField: FocusField? = nil
+
     // 사진 선택
     var photoShareIsActive: Bool {
       guard let photoStatus = pingPong?.photo.photoStatus
@@ -177,6 +184,7 @@ public struct QuestionAndAnswerFeature {
     case stopTalkButtonDidTapped
     case refreshDidPulled
     
+    case focusedFieldDidChanged(FocusField?)
     // ETC.
     case binding(BindingAction<State>)
     
