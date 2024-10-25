@@ -24,6 +24,22 @@ extension QuestionAndAnswerFeature {
         state.configurePingPong(pingPong)
         return .none
         
+      case let .focusedFieldDidChanged(field):
+        guard let previousFocustedField = state.focusedField else {
+          state.focusedField = field
+          return .none
+        }
+        
+        if (previousFocustedField == .firstLetter && state.firstLetterTextFieldContent.count >= 50) ||
+            (previousFocustedField == .secondLetter && state.secondLetterTextFieldContent.count >= 50) ||
+            (previousFocustedField == .thirdLetter && state.thirdLetterTextFieldContent.count >= 50) {
+          state.textFieldState = .active
+        } else {
+          state.textFieldState = .enabled
+        }
+
+        return .none
+        
       case let .texFieldDidFocused(isFocused):
         state.textFieldState = isFocused ? .focused : .active
         return .none
