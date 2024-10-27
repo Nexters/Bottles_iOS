@@ -19,7 +19,7 @@ public struct PhotoSharePingPongView: View {
   @Binding var isSelctedYesButton: Bool
   @Binding var isSelctedNoButton: Bool
   private let doneButtonAction: (() -> Void)?
-  @Binding var selectionIndex: Int
+  @State var selectedIndex: Int = 0
   
   public init(
     isActive: Bool,
@@ -28,8 +28,7 @@ public struct PhotoSharePingPongView: View {
     isSelctedYesButton: Binding<Bool> = .constant(false),
     isSelctedNoButton: Binding<Bool> = .constant(false),
     doneButtonAction: (() -> Void)? = nil,
-    selectionIndex: Binding<Int> = .constant(0),
-    otherProfileImageURLs: [String]? = ["1", "2", "3"]
+    otherProfileImageURLs: [String]?
   ) {
     self.isActive = isActive
     self.pingPongTitle = pingPongTitle
@@ -37,7 +36,6 @@ public struct PhotoSharePingPongView: View {
     self._isSelctedYesButton = isSelctedYesButton
     self._isSelctedNoButton = isSelctedNoButton
     self.doneButtonAction = doneButtonAction
-    self._selectionIndex = selectionIndex
     self.otherProfileImageURLs = otherProfileImageURLs
   }
   
@@ -143,18 +141,46 @@ private extension PhotoSharePingPongView {
   @ViewBuilder
   var bothPublicView: some View {
     if let images = otherProfileImageURLs {
-      GeometryReader { geo in
-        TabView(selection: $selectionIndex) {
-          ForEach(images.indices, id: \.self) { index in
-            makePeerProfileImage(url: images[0])
+      VStack(spacing: .lg) {
+        GeometryReader { geo in
+          TabView(selection: $selectedIndex) {
+            ForEach(images.indices, id: \.self) { index in
+              makePeerProfileImage(url: images[index])
+                .tag(index)
+            }
           }
-        }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-        .frame(height: geo.size.width - 10)
+          .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+          .frame(height: geo.size.width - 10)
+        }      
+        .aspectRatio(1, contentMode: .fit)
+
+        photoIndicatorView
       }
-      .aspectRatio(1, contentMode: .fit)
     } else {
       EmptyView()
+    }
+  }
+  
+  var photoIndicatorView: some View {
+    HStack(spacing: .xxl) {
+      BottleImageView(type: .local(bottleImageSystem: .icon(.leftArrow)))
+        .foregroundStyle(to: ColorToken.icon(.primary))
+        .asButton {
+          if selectedIndex > 0 {
+            selectedIndex -= 1
+          }
+        }
+      
+      PageIndicatorView(pageInfo: .init(nowPage: selectedIndex + 1, totalCount: otherProfileImageURLs?.count ?? 0))
+      
+      BottleImageView(type: .local(bottleImageSystem: .icon(.leftArrow)))
+        .foregroundStyle(to: ColorToken.icon(.primary))
+        .rotationEffect(.degrees(180))
+        .asButton {
+          if selectedIndex + 1 < otherProfileImageURLs?.count ?? 0 {
+            selectedIndex += 1
+          }
+        }
     }
   }
   
