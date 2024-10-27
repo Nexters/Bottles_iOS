@@ -98,8 +98,7 @@ public struct BottlePingPongResponseDTO: Decodable {
   
   public struct PhotoDTO: Decodable {
     let photoStatus: String?
-    let myImageUrl: String?
-    let otherImageUrl: String?
+    let otherImageUrls: [String]?
     
     public func toDomain() -> Photo {
       let photoStatus: PingPongPhotoStatus = switch photoStatus {
@@ -122,8 +121,7 @@ public struct BottlePingPongResponseDTO: Decodable {
       }
       return .init(
         photoStatus: photoStatus,
-        myProfileImageURL: myImageUrl,
-        otherProfileImageURL: otherImageUrl
+        otherProfileImageURLs: otherImageUrls
       )
     }
   }
