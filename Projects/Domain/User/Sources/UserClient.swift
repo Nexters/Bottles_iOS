@@ -22,6 +22,7 @@ extension UserClient: DependencyKey {
     case deleteState
     case fcmToken
     case alertAllowState
+    case coachMarkState
   }
   
   static public var liveValue: UserClient = .live()
@@ -36,6 +37,10 @@ extension UserClient: DependencyKey {
       
       isAppDeleted: {
         return !UserDefaults.standard.bool(forKey: UserDefaultsKeys.deleteState.rawValue)
+      },
+      
+      isCoachMarkViewed: {
+        return UserDefaults.standard.bool(forKey: UserDefaultsKeys.coachMarkState.rawValue)
       },
       
       fetchFcmToken: {
@@ -56,6 +61,10 @@ extension UserClient: DependencyKey {
       
       updatePushNotificationAllowStatus: { isAllow in
         UserDefaults.standard.set(isAllow, forKey: UserDefaultsKeys.alertAllowState.rawValue)
+      },
+      
+      updateCoachMarkState: { isViewed in
+        UserDefaults.standard.set(isViewed, forKey: UserDefaultsKeys.coachMarkState.rawValue)
       },
       
       fetchAlertState: {

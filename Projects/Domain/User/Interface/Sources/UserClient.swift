@@ -12,9 +12,11 @@ import Combine
 public struct UserClient {
   private let _isLoggedIn: () -> Bool
   private let _isAppDeleted: () -> Bool
+  private let _isCoachMarkViewed: () -> Bool
   private let _fetchFcmToken: () -> String?
   private let updateLoginState: (Bool) -> Void
   private let updateDeleteState: (Bool) -> Void
+  private let updateCoachMarkState: (Bool) -> Void
   private let updateFcmToken: (String) -> Void
   private let updatePushNotificationAllowStatus: (Bool) -> Void
   private let _fetchAlertState: () async throws -> [UserAlertState]
@@ -31,11 +33,13 @@ public struct UserClient {
   public init(
     isLoggedIn: @escaping () -> Bool,
     isAppDeleted: @escaping () -> Bool,
+    isCoachMarkViewed: @escaping () -> Bool,
     fetchFcmToken: @escaping () -> String?,
     updateLoginState: @escaping (Bool) -> Void,
     updateDeleteState: @escaping (Bool) -> Void,
     updateFcmToken: @escaping (String) -> Void,
     updatePushNotificationAllowStatus: @escaping (Bool) -> Void,
+    updateCoachMarkState: @escaping (Bool) -> Void,
     fetchAlertState: @escaping () async throws -> [UserAlertState],
     fetchPushNotificationAllowStatus: @escaping () -> Bool,
     updateAlertState: @escaping (UserAlertState) async throws -> Void,
@@ -44,11 +48,13 @@ public struct UserClient {
   ) {
     self._isLoggedIn = isLoggedIn
     self._isAppDeleted = isAppDeleted
+    self._isCoachMarkViewed = isCoachMarkViewed
     self._fetchFcmToken = fetchFcmToken
     self.updateLoginState = updateLoginState
     self.updateDeleteState = updateDeleteState
     self.updateFcmToken = updateFcmToken
     self.updatePushNotificationAllowStatus = updatePushNotificationAllowStatus
+    self.updateCoachMarkState = updateCoachMarkState
     self._fetchAlertState = fetchAlertState
     self._fetchPushNotificationAllowStatus = fetchPushNotificationAllowStatus
     self.updateAlertState = updateAlertState
@@ -64,6 +70,10 @@ public struct UserClient {
     _isAppDeleted()
   }
   
+  public func isCoachMarkViewd() -> Bool {
+    _isCoachMarkViewed()
+  }
+  
   public func fetchFcmToken() -> String? {
     _fetchFcmToken()
   }
@@ -75,7 +85,10 @@ public struct UserClient {
   public func updateDeleteState(isDelete: Bool) {
     updateDeleteState(isDelete)
   }
-  
+
+  public func updateCoachMarkState(isViewed: Bool) {
+    updateCoachMarkState(isViewed)
+  }
   public func updateFcmToken(fcmToken: String) {
     updateFcmToken(fcmToken)
   }
