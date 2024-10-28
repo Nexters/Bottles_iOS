@@ -20,67 +20,73 @@ public struct SandBeachView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      GeometryReader { geo in
-        WithPerceptionTracking {
-          if store.userState == .none && store.isLoading {
-            LoadingIndicator()
-          } else {
-            VStack(spacing: 0) {
-              Spacer()
-              BottleImageView(type: .local(bottleImageSystem: .illustraition(.logo)))
-                .frame(width: 78.06, height: 20)
-                .padding(.top, geo.safeAreaInsets.top + 14)
-                .padding(.bottom, 38)
-              
-              WantedSansStyleText(
-                store.userState.title, style: .title1, color: .secondary)
-              .frame(height: 62)
-              .multilineTextAlignment(.center)
-              .padding(.bottom, 24)
-              Spacer()
-              
-              popup
-                .padding(.bottom, 8)
-              
-              BottleImageView(type: .local(
-                bottleImageSystem:
-                  store.userState.isEmptyBottle ? .illustraition(.islandEmptyBottle) : .illustraition(.islandHasBottle))
-              )
-              .frame(width: geo.size.width)
-              .frame(height: geo.size.width)
-              .asThrottleButton {
-                if store.userState.isHasNewBottle {
-                  store.send(.newBottleIslandDidTapped)
-                } else if store.userState.isHasActiveBottle {
-                  store.send(.bottleStorageIslandDidTapped)
-                } else if store.userState != .noIntroduction {
-                  store.send(.newBottleIslandDidTapped)
-                }
-              }
-              .disabled(store.isDisableIslandBottle)
-              
-              Spacer()
-            }
-          }
+      if store.userState == .none && store.isLoading {
+        LoadingIndicator()
+      } else {
+        VStack(spacing: 0) {
+          Spacer()
+            .frame(height: 1)
+          logoImage
+          userStateTitle
+          popup
+          islandImage
+          Spacer()
         }
       }
-      .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
-      .onAppear {
-        store.send(.onAppear)
-      }
-      .background {
-        BottleImageView(
-          type: .local(bottleImageSystem: .illustraition(.sandBeachBackground))
-        )
-      }
     }
-    .edgesIgnoringSafeArea([.top, .bottom])
+    
+    .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
+    .onAppear {
+      store.send(.onAppear)
+    }
+    .background {
+      BottleImageView(
+        type: .local(bottleImageSystem: .illustraition(.sandBeachBackground))
+      )
+      .edgesIgnoringSafeArea(.all)
+    }
   }
 }
 
 // MARK: - Views
 
 public extension SandBeachView {
+  var logoImage: some View {
+    BottleImageView(type: .local(bottleImageSystem: .illustraition(.logo)))
+      .frame(width: 78.06, height: 20)
+      .padding(.top, 14)
+      .padding(.bottom, 46)
+  }
+  
+  var userStateTitle: some View {
+    WantedSansStyleText(
+      store.userState.title, style: .mainTitle, color: .secondary)
+    .multilineTextAlignment(.center)
+    .padding(.bottom, store.userState == .noIntroduction ? 32 : 64)
+    .lineSpacing(5)
+  }
+  
+  var islandImage: some View {
+    GeometryReader { geo in
+      BottleImageView(type: .local(
+        bottleImageSystem:
+          store.userState.isEmptyBottle ? .illustraition(.islandEmptyBottle) : .illustraition(.islandHasBottle))
+      )
+      .frame(width: geo.size.width)
+      .frame(height: geo.size.width)
+      .asThrottleButton {
+        if store.userState.isHasNewBottle {
+          store.send(.newBottleIslandDidTapped)
+        } else if store.userState.isHasActiveBottle {
+          store.send(.bottleStorageIslandDidTapped)
+        } else if store.userState != .noIntroduction {
+          store.send(.newBottleIslandDidTapped)
+        }
+      }
+      .disabled(store.isDisableIslandBottle)
+    }
+  }
+  
   @ViewBuilder
   var popup: some View {
     let userState = store.userState
