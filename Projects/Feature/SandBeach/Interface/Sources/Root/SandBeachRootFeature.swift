@@ -10,7 +10,9 @@ import Foundation
 import FeatureProfileSetupInterface
 import FeatureBottleArrivalInterface
 import FeatureTabBarInterface
+
 import DomainProfile
+import DomainUserInterface
 
 import ComposableArchitecture
 
@@ -38,19 +40,24 @@ public struct SandBeachRootFeature {
     var introduction: String
     var profileImageData: Data
     var isLoading: Bool
+    public var isCoachMarkViewed: Bool = true
+
     public var sandBeach: SandBeachFeature.State
+    public var sandBeachCoachMark: SandBeachCoachMarkFeature.State
     
     public init(
       path: StackState<Path.State> = StackState<Path.State>(),
       introduction: String = "",
       profileImageData: Data = .init(),
       sandBeach: SandBeachFeature.State = .init(),
+      sandBeachCoachMark: SandBeachCoachMarkFeature.State = .init(),
       isLoading: Bool = false
     ) {
       self.path = path
       self.introduction = introduction
       self.profileImageData = profileImageData
       self.sandBeach = sandBeach
+      self.sandBeachCoachMark = sandBeachCoachMark
       self.isLoading = isLoading
     }
   }
@@ -58,6 +65,7 @@ public struct SandBeachRootFeature {
   public enum Action {
     case path(StackAction<Path.State, Path.Action>)
     case sandBeach(SandBeachFeature.Action)
+    case sandBeachCoachMark(SandBeachCoachMarkFeature.Action)
     case profileSetupDidCompleted
     case delegate(Delegate)
     case selectedTabDidChanged(selectedTab: TabType)
@@ -74,6 +82,10 @@ public struct SandBeachRootFeature {
       SandBeachFeature()
     }
     
+    Scope(state: \.sandBeachCoachMark, action: \.sandBeachCoachMark) {
+      SandBeachCoachMarkFeature()
+    }
+    
     reducer
       .forEach(\.path, action: \.path)
   }
@@ -84,7 +96,8 @@ extension SandBeachRootFeature {
 
     let reducer = Reduce<State, Action> { state, action in
       @Dependency(\.profileClient) var profileClient
-      
+      @Dependency(\.userClient) var userClient
+
       switch action {
         
       // IntrodctionSetup Delegate
@@ -146,6 +159,10 @@ extension SandBeachRootFeature {
           
         case .writeButtonDidTapped:
           state.path.append(.IntroductionSetup(IntroductionSetupFeature.State()))
+          return .none
+          
+        case .sandBeachLoadCompleted:
+          state.isCoachMarkViewed = userClient.isCoachMarkViewd()
           return .none
         }
         

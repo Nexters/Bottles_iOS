@@ -56,6 +56,7 @@ public struct SandBeachFeature {
       case writeButtonDidTapped
       case newBottleIslandDidTapped
       case bottleStorageIslandDidTapped
+      case sandBeachLoadCompleted
     }
     
     case alert(Alert)
@@ -152,7 +153,7 @@ extension SandBeachFeature {
         state.userState = userState
         state.isDisableIslandBottle = isDisableButton
         state.isLoading = false
-        return .none
+        return .send(.delegate(.sandBeachLoadCompleted))
                 
       case .writeButtonDidTapped:
         return .send(.delegate(.writeButtonDidTapped))
