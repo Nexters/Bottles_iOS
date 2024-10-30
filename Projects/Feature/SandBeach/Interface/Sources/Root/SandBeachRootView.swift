@@ -31,7 +31,7 @@ public struct SandBeachRootView: View {
               store.send(.selectedTabDidChanged(selectedTab: selectedTab))
             }
           
-          if !store.isCoachMarkViewed {
+          if !store.isCoachMarkViewed && store.sandBeach.userState == .noIntroduction {
             SandBeachCoachMarkView(
               store: store.scope(state: \.sandBeachCoachMark, action: \.sandBeachCoachMark))
           }

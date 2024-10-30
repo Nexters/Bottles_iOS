@@ -34,7 +34,6 @@ public struct SandBeachView: View {
         }
       }
     }
-    
     .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
     .onAppear {
       store.send(.onAppear)

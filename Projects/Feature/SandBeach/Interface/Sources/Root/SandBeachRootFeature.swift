@@ -174,6 +174,15 @@ extension SandBeachRootFeature {
           return .none
         }
         
+    // SandBeachCoachMark Delegate
+      case let .sandBeachCoachMark(.delegate(delegate)):
+        switch delegate {
+        case .coachMarkDidCompleted:
+          userClient.updateCoachMarkState(isViewed: true)
+          state.isCoachMarkViewed = true
+          return .none
+        }
+        
       case .profileSetupDidCompleted:
         state.isLoading = false
         state.path.removeAll()

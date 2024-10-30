@@ -25,6 +25,11 @@ public struct SandBeachCoachMarkFeature {
   
   public enum Action {
     case coachMarkDidTapped
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case coachMarkDidCompleted
+    }
   }
   
   public var body: some ReducerOf<Self> {
