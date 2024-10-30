@@ -10,5 +10,5 @@ import Foundation
 public enum PopupType {
   case text(content: String)
   case button(content: String, buttonTitle: String)
-
+  case coachMark(content: String)
 }
