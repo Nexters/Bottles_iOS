@@ -42,6 +42,8 @@ private extension PopupView {
       WantedSansStyleText(content, style: .subTitle2, color: .secondary)
     case .button(let content, _):
       WantedSansStyleText(content, style: .subTitle2, color: .secondary)
+    case .coachMark(let content):
+      WantedSansStyleText(content, style: .subTitle2, color: .secondary)
     }
   }
   
@@ -69,6 +71,9 @@ private extension PopupView {
         .frame(width: 227)
       }
       .padding(.lg)
+    case .coachMark:
+      popupText
+        .padding(.lg)
     }
   }
 }
@@ -84,8 +89,9 @@ private extension PopupView {
   
   var height: CGFloat {
     switch popupType {
-    case .button: return 106
-    case .text:   return 42
+    case .button:     return 106
+    case .text:       return 42
+    case .coachMark:  return 42
     }
   }
 }

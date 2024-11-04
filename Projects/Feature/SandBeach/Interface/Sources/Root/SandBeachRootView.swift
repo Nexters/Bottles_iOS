@@ -25,10 +25,17 @@ public struct SandBeachRootView: View {
   public var body: some View {
     WithPerceptionTracking {
       NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+        ZStack {
           SandBeachView(store: store.scope(state: \.sandBeach, action: \.sandBeach))
-          .setTabBar(selectedTab: .sandBeach) { selectedTab in
-            store.send(.selectedTabDidChanged(selectedTab: selectedTab))
+            .setTabBar(selectedTab: .sandBeach) { selectedTab in
+              store.send(.selectedTabDidChanged(selectedTab: selectedTab))
+            }
+          
+          if !store.isCoachMarkViewed && store.sandBeach.userState == .noIntroduction {
+            SandBeachCoachMarkView(
+              store: store.scope(state: \.sandBeachCoachMark, action: \.sandBeachCoachMark))
           }
+        }
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {
