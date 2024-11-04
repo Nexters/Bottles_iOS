@@ -57,7 +57,7 @@ public struct AppDelegateFeature {
       }
       
     case let .pushNotificationAllowStatusDidChanged(isAllow):
-      userClient.updatePushNotificationAllowStatus(isAllow: isAllow)
+      userClient.updatePushNotificationAllowStatusLocally(isAllow: isAllow)
       return .none
       
     default:

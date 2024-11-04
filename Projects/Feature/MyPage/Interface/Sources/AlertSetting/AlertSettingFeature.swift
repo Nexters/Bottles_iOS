@@ -153,7 +153,7 @@ extension AlertSettingFeature {
       }
       
       func updatePushNotificationAllowStatus(state: inout State) {
-        let isAllow = userClient.fetchPushNotificationAllowStatus()
+        let isAllow = userClient.fetchPushNotificationAllowStatusLocally()
         state.isAllowPushNotification = isAllow
       }
     }

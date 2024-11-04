@@ -14,13 +14,17 @@ public struct UserClient {
   private let _isAppDeleted: () -> Bool
   private let _isCoachMarkViewed: () -> Bool
   private let _fetchFcmToken: () -> String?
+  var _remotelyUploadedPushNotificationAllowStatus: () -> Bool?
   private let updateLoginState: (Bool) -> Void
   private let updateDeleteState: (Bool) -> Void
   private let updateCoachMarkState: (Bool) -> Void
   private let updateFcmToken: (String) -> Void
-  private let updatePushNotificationAllowStatus: (Bool) -> Void
+  private let updatePushNotificationAllowStatusLocally: (Bool) -> Void
+  private let updatePushNotificationAllowStatusRemotely: (Bool) async throws -> Void
+  private let updateRemotelyUploadedPushNotificationAllowStatus: (Bool) -> Void
+  private let _isNeedUpdatePushNotificationRemotely: () async -> NeedUpdatePushNotificationAllowStatusRemotelyType
   private let _fetchAlertState: () async throws -> [UserAlertState]
-  private let _fetchPushNotificationAllowStatus: () -> Bool
+  private let _fetchPushNotificationAllowStatusLocally: () -> Bool
   private let updateAlertState: (UserAlertState) async throws -> Void
   private let fetchContacts: () async throws -> [String]
   private let updateBlockContacts: ([String]) async throws -> Void
@@ -35,13 +39,17 @@ public struct UserClient {
     isAppDeleted: @escaping () -> Bool,
     isCoachMarkViewed: @escaping () -> Bool,
     fetchFcmToken: @escaping () -> String?,
+    remotelyUploadedPushNotificationAllowStatus: @escaping () -> Bool?,
     updateLoginState: @escaping (Bool) -> Void,
     updateDeleteState: @escaping (Bool) -> Void,
     updateFcmToken: @escaping (String) -> Void,
-    updatePushNotificationAllowStatus: @escaping (Bool) -> Void,
+    updatePushNotificationAllowStatusLocally: @escaping (Bool) -> Void,
+    updatePushNotificationAllowStatusRemotely: @escaping (Bool) async throws -> Void,
+    updateRemotelyUploadedPushNotificationAllowStatus: @escaping (Bool) -> Void,
+    isNeedUpdatePushNotificationRemotely: @escaping () async -> NeedUpdatePushNotificationAllowStatusRemotelyType,
     updateCoachMarkState: @escaping (Bool) -> Void,
     fetchAlertState: @escaping () async throws -> [UserAlertState],
-    fetchPushNotificationAllowStatus: @escaping () -> Bool,
+    fetchPushNotificationAllowStatusLocally: @escaping () -> Bool,
     updateAlertState: @escaping (UserAlertState) async throws -> Void,
     fetchContacts: @escaping () async throws -> [String],
     updateBlockContacts: @escaping ([String]) async throws -> Void
@@ -50,13 +58,17 @@ public struct UserClient {
     self._isAppDeleted = isAppDeleted
     self._isCoachMarkViewed = isCoachMarkViewed
     self._fetchFcmToken = fetchFcmToken
+    self._remotelyUploadedPushNotificationAllowStatus = remotelyUploadedPushNotificationAllowStatus
     self.updateLoginState = updateLoginState
     self.updateDeleteState = updateDeleteState
     self.updateFcmToken = updateFcmToken
-    self.updatePushNotificationAllowStatus = updatePushNotificationAllowStatus
+    self.updatePushNotificationAllowStatusLocally = updatePushNotificationAllowStatusLocally
+    self.updatePushNotificationAllowStatusRemotely = updatePushNotificationAllowStatusRemotely
+    self.updateRemotelyUploadedPushNotificationAllowStatus = updateRemotelyUploadedPushNotificationAllowStatus
+    self._isNeedUpdatePushNotificationRemotely = isNeedUpdatePushNotificationRemotely
     self.updateCoachMarkState = updateCoachMarkState
     self._fetchAlertState = fetchAlertState
-    self._fetchPushNotificationAllowStatus = fetchPushNotificationAllowStatus
+    self._fetchPushNotificationAllowStatusLocally = fetchPushNotificationAllowStatusLocally
     self.updateAlertState = updateAlertState
     self.fetchContacts = fetchContacts
     self.updateBlockContacts = updateBlockContacts
@@ -78,6 +90,10 @@ public struct UserClient {
     _fetchFcmToken()
   }
   
+  public func remotelyUploadedPushNotificationAllowStatus() -> Bool? {
+    _remotelyUploadedPushNotificationAllowStatus()
+  }
+  
   public func updateLoginState(isLoggedIn: Bool) {
     updateLoginState(isLoggedIn)
   }
@@ -93,17 +109,29 @@ public struct UserClient {
     updateFcmToken(fcmToken)
   }
   
-  public func updatePushNotificationAllowStatus(isAllow: Bool) {
+  public func updatePushNotificationAllowStatusLocally(isAllow: Bool) {
     pushNotificationAllowStatusSubject.send(isAllow)
-    updatePushNotificationAllowStatus(isAllow)
+    updatePushNotificationAllowStatusLocally(isAllow)
+  }
+  
+  public func updatePushNotificationAllowStatusRemotely(isAllow: Bool) async throws {
+    try await updatePushNotificationAllowStatusRemotely(isAllow)
+  }
+  
+  public func updateRemotelyUploadedPushNotificationAllowStatus(isAllow: Bool) {
+    updateRemotelyUploadedPushNotificationAllowStatus(isAllow)
+  }
+  
+  public func isNeedUpdatePushNotificationRemotely() async -> NeedUpdatePushNotificationAllowStatusRemotelyType {
+    await _isNeedUpdatePushNotificationRemotely()
   }
   
   public func fetchAlertState() async throws -> [UserAlertState] {
     try await _fetchAlertState()
   }
   
-  public func fetchPushNotificationAllowStatus() -> Bool {
-    _fetchPushNotificationAllowStatus()
+  public func fetchPushNotificationAllowStatusLocally() -> Bool {
+    _fetchPushNotificationAllowStatusLocally()
   }
   
   public func updateAlertState(alertState: UserAlertState) async throws {
