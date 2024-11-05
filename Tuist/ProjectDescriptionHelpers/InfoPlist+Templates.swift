@@ -10,8 +10,8 @@ import ProjectDescription
 public extension InfoPlist {
     static var app: InfoPlist {
         return .extendingDefault(with: [
-            "CFBundleShortVersionString": "1.0.9",
-            "CFBundleVersion": "31",
+            "CFBundleShortVersionString": "1.0.10",
+            "CFBundleVersion": "34",
             "UIUserInterfaceStyle": "Light",
             "CFBundleName": "보틀",
             "UILaunchScreen": [
@@ -22,7 +22,7 @@ public extension InfoPlist {
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
-            "NSContactsUsageDescription": "매칭 차단 기능을 위해 연락처가 필요합니다.",
+            "NSContactsUsageDescription": "매칭 차단 기능을 위해 연락처가 필요합니다. 허용하시면 연락처가 서버에 업로드됩니다.",
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
@@ -44,14 +44,14 @@ public extension InfoPlist {
     
     static var example: InfoPlist {
         return .extendingDefault(with: [
-            "CFBundleShortVersionString": "1.0.9",
-            "CFBundleVersion": "31",
+            "CFBundleShortVersionString": "1.0.10",
+            "CFBundleVersion": "34",
             "UIUserInterfaceStyle": "Light",
             "UILaunchScreen": [:],
             "UISupportedInterfaceOrientations": [
                 "UIInterfaceOrientationPortrait"
             ],
-            "NSContactsUsageDescription": "매칭 차단 기능을 위해 연락처가 필요합니다.",
+            "NSContactsUsageDescription": "매칭 차단 기능을 위해 연락처가 필요합니다. 허용하시면 연락처가 서버에 업로드됩니다.",
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
