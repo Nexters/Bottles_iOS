@@ -31,9 +31,11 @@ public struct EditProfileFeature {
     case presentToast(message: String)
     case backButtonDidTapped
     case delegate(Delegate)
+    case profileImageDidChanged
     
     public enum Delegate {
       case closeEditProfileView
+      case profileImageDidChanged
     }
     
     // binding

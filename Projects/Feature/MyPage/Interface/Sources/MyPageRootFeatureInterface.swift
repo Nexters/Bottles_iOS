@@ -57,6 +57,8 @@ extension MyPageRootFeature {
         case .closeEditProfileView:
           _ = state.path.popLast()
           return .none
+        case .profileImageDidChanged:
+          return .send(.myPage(.userProfileUpdateDidRequest))
         }
         
       default:
