@@ -42,8 +42,7 @@ extension BottleStorageFeature {
         
         switch delegate {
         case .backButtonDidTapped:
-          state.path.removeLast()
-          return .none
+          return popToRootAndReload(state: &state)
         case .reportButtonDidTapped(let userReportProfile):
           state.path.append(.report(ReportUserFeature.State(userProfile: userReportProfile)))
           return .none
