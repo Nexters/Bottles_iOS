@@ -38,6 +38,7 @@ public struct MatchingView: View {
         bottomButton
           .padding(.horizontal, .md)
           .padding(.bottom, 30)
+          .shadow(color: .white, radius: 15, y: -30)
       }
       .background(to: ColorToken.background(.primary))
     }
@@ -76,7 +77,7 @@ private extension MatchingView {
     case .waitingOtherAnswer:
       GeometryReader { geometryProxy in
         WithPerceptionTracking {
-          let width = geometryProxy.size.width - 60.0
+          let width = geometryProxy.size.width - 120.0
           HStack(spacing: 0 ) {
             Spacer()
             BottleImageView(
@@ -97,7 +98,7 @@ private extension MatchingView {
     case .matchFailed:
       GeometryReader { geometryProxy in
         WithPerceptionTracking {
-          let width = geometryProxy.size.width - 50
+          let width = geometryProxy.size.width - 120.0
           HStack(spacing: 0 ) {
             Spacer()
             BottleImageView(
