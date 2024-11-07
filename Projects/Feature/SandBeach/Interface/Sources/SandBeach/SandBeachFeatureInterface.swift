@@ -100,43 +100,36 @@ extension SandBeachFeature {
 
         return .run { send in
           async let _ = authClient.checkUpdateVersion()
-          async let isExsit = try await profileClient.checkExistIntroduction()
-          // 자기소개 없는 상태
-            if try await !isExsit {
-            await send(.userStateFetchCompleted(
-              userState: .noIntroduction,
-              isDisableButton: true))
-            return
-          }
-          
+          let userProfileStatus = try await profileClient.fetchUserProfileSelect()
           let userBottleInfo = try await bottleClient.fetchUserBottleInfo()
           let newBottlesCount = userBottleInfo.randomBottleCount
-          // 새로 도착한 보틀이 있는 상태
-          
+          let bottlesStorageList = try await bottleClient.fetchBottleStorageList()
+          let activeBottlesCount = bottlesStorageList.pingPongBottles
+            .filter { $0.lastStatus != .conversationStopped && $0.lastStatus != .contactSharedByMeOnly }.count
+          let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
+
           if newBottlesCount > 0 {
             await send(.userStateFetchCompleted(
               userState: .hasNewBottle(bottleCount: newBottlesCount),
-              isDisableButton: false)
-            )
-          } else {
-            let bottlesStorageList = try await bottleClient.fetchBottleStorageList()
-            let activeBottlesCount = bottlesStorageList.pingPongBottles
-              .filter { $0.lastStatus != .conversationStopped && $0.lastStatus != .contactSharedByMeOnly }.count
-            
-            // 자기소개만 작성한 상태
-            if activeBottlesCount <= 0 {
-              // TODO: time 설정
-              let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
-              await send(.userStateFetchCompleted(
-                userState: .noBottle(time: nextBottleLeftHours ?? 0),
-                isDisableButton: false)
-              )
-            } else { // 대화 중인 보틀이 있는 상태
-              await send(.userStateFetchCompleted(
-                userState: .hasActiveBottle(bottleCount: activeBottlesCount),
-                isDisableButton: false)
-              )
-            }
+              isDisableButton: false))
+            return
+          }
+          
+          if activeBottlesCount > 0 {
+            await send(.userStateFetchCompleted(
+              userState: .hasActiveBottle(bottleCount: activeBottlesCount),
+              isDisableButton: false))
+            return
+          }
+          
+          if userProfileStatus == .empty || userProfileStatus == .doneIntroduction {
+            await send(.userStateFetchCompleted(
+              userState: .noIntroduction,
+              isDisableButton: true))
+          } else if userProfileStatus == .doneProfileImage {
+            await send(.userStateFetchCompleted(
+              userState: .noBottle(time: nextBottleLeftHours ?? 0),
+              isDisableButton: false))
           }
         } catch: { error, send in
           // TODO: 에러 핸들링

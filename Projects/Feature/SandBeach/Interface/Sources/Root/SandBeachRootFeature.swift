@@ -100,13 +100,6 @@ extension SandBeachRootFeature {
 
       switch action {
         
-      // IntrodctionSetup Delegate
-      case let .path(.element(id: _, action:
-          .IntroductionSetup(.delegate(.nextButtonDidTapped(introductionText))))):
-        state.introduction = introductionText
-        state.path.append(.ProfileImageUpload(ProfileImageUploadFeature.State()))
-        return .none
-        
       // ProfileImageUpload Delegate
       case let .path(.element(id: _, action:
           .ProfileImageUpload(.delegate(.doneButtonDidTapped(selectedImageData))))):
