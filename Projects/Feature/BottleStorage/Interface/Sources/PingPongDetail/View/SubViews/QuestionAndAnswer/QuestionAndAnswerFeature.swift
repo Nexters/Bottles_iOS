@@ -30,9 +30,9 @@ extension QuestionAndAnswerFeature {
           return .none
         }
         
-        if (previousFocustedField == .firstLetter && state.firstLetterTextFieldContent.count >= 50) ||
-            (previousFocustedField == .secondLetter && state.secondLetterTextFieldContent.count >= 50) ||
-            (previousFocustedField == .thirdLetter && state.thirdLetterTextFieldContent.count >= 50) {
+        if (previousFocusedField == .firstLetter && state.firstLetterTextFieldContent.count >= 50) ||
+            (previousFocusedField == .secondLetter && state.secondLetterTextFieldContent.count >= 50) ||
+            (previousFocusedField  == .thirdLetter && state.thirdLetterTextFieldContent.count >= 50) {
           state.textFieldState = .active
         } else {
           state.textFieldState = .enabled
