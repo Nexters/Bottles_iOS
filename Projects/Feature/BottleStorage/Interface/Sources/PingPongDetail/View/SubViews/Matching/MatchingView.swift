@@ -21,26 +21,25 @@ public struct MatchingView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      ScrollView {
-        VStack(alignment: .leading, spacing: 0.0) {
-          title
-            .padding(.vertical, 32)
-          
-          matchingInfo
+      ZStack(alignment: .bottom) {
+        ScrollView {
+          VStack(alignment: .leading, spacing: 0.0) {
+            title
+              .padding(.vertical, 32)
 
-          Spacer()
-          
-          bottomButton
-          
-          Spacer()
-            .frame(height: 30)
+            matchingInfo
+          }
+          .padding(.horizontal, .md)
+          .frame(maxWidth: .infinity)
         }
-        .padding(.horizontal, .md)
-        .frame(maxHeight: .infinity)
         .background(to: ColorToken.background(.primary))
+        .scrollIndicators(.hidden)
+        
+        bottomButton
+          .padding(.horizontal, .md)
+          .padding(.bottom, 30)
       }
       .background(to: ColorToken.background(.primary))
-      .scrollIndicators(.hidden)
     }
   }
 }
