@@ -13,16 +13,19 @@ import DomainUserInterface
 import CoreKeyChainStore
 import CoreNetwork
 
+import CoreLoggerInterface
+
 import ComposableArchitecture
 import Moya
 
 extension UserClient: DependencyKey {
-  private enum UserDefaultsKeys: String {
+  private enum UserDefaultsKeys: String, CaseIterable {
     case loginState
     case deleteState
     case fcmToken
     case alertAllowState
     case coachMarkState
+    // case 추가시 deleteUserInfos 메소드에서 삭제 필터링 로직에 포함시킬 지 점검 필요.
   }
   
   static public var liveValue: UserClient = .live()
@@ -80,6 +83,7 @@ extension UserClient: DependencyKey {
         let requestData = AlertStateRequestDTO(alertType: alertState.alertType, enabled: alertState.enabled)
         try await networkManager.reqeust(api: .apiType(UserAPI.updateAlertState(reqeustData: requestData)))
       },
+      
       fetchContacts: {
         let store = CNContactStore()
         var contacts: [String] = []
@@ -111,9 +115,23 @@ extension UserClient: DependencyKey {
         
         return contacts
       },
+      
       updateBlockContacts: { contacts in
         let blockContactRequestDTO = BlockContactRequestDTO(blockContacts: contacts)
         try await networkManager.reqeust(api: .apiType(UserAPI.updateBlockContacts(blockContactRequestDTO: blockContactRequestDTO)))
+      },
+      
+      deleteUserInfos: {
+        UserDefaultsKeys.allCases.forEach { key in
+          switch key {
+          case .loginState, .deleteState, .fcmToken, .alertAllowState:
+            UserDefaults.standard.removeObject(forKey: key.rawValue)
+          case .coachMarkState:
+            break
+          @unknown default:
+            Log.assertion(message: "not handled case")
+          }
+        }
       }
     )
   }

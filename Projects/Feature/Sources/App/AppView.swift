@@ -34,8 +34,8 @@ public struct AppView: View {
           SplashView(store: splashStore)
         }
       }
-      .onAppear {
-        store.send(.onAppear)
+      .onLoad {
+        store.send(.onLoad)
       }
       .onChange(of: scenePhase) { newValue in
         if newValue == .active {

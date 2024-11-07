@@ -14,6 +14,8 @@ import DomainUser
 import CoreNetwork
 import CoreLoggerInterface
 
+import CoreKeyChainStore
+
 import ComposableArchitecture
 import Moya
 
@@ -66,6 +68,7 @@ extension AuthClient: DependencyKey {
         try await networkManager.reqeust(api: .apiType(AuthAPI.withdraw))
       },
       logout: {
+        @Dependency(\.userClient) var userClient
         let fcmToken = userClient.fetchFcmToken()
         guard let fcmToken = fcmToken
         else {
@@ -73,6 +76,8 @@ extension AuthClient: DependencyKey {
           return
         }
         try await networkManager.reqeust(api: .apiType(AuthAPI.logout(LogOutRequestDTO(fcmDeviceToken: fcmToken))))
+        userClient.deleteUserInfos()
+        KeyChainTokenStore.shared.deleteAll()
       },
       refreshAppleToken: {
         let appleToken = try await networkManager.reqeust(api: .apiType(AppleAuthAPI.refreshToken), dto: AppleTokenResponseDTO.self).toDomain()

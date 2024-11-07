@@ -10,6 +10,8 @@ import Foundation
 import CoreKeyChainStore
 import CoreLoggerInterface
 
+import SharedUtilInterface
+
 import Alamofire
 import Dependencies
 
@@ -40,6 +42,14 @@ public class TokenInterceptor: RequestInterceptor {
           let pathComponents = request.request?.url?.pathComponents,
           !pathComponents.contains("refresh") else {
       completion(.doNotRetryWithError(error))
+      return
+    }
+    
+    guard response.statusCode != 401 ||
+          !pathComponents.contains("api/v1/auth/refresh")
+    else {
+      NotificationCenter.default.post(name: .refreshTokenExpired, object: nil)
+      completion(.doNotRetry)
       return
     }
     

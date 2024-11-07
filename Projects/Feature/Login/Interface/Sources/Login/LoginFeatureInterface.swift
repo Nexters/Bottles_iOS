@@ -27,6 +27,7 @@ public struct LoginFeature {
     var isPresentTermView: Bool
     var termURL: String
     var isLoading: Bool
+    @Presents var destination: Destination.State?
     
     var path = StackState<Path.State>()
     public init() {
@@ -57,13 +58,21 @@ public struct LoginFeature {
     case goToGeneralLogin
     case userProfileFetchRequired(userName: String)
     case userProfileFetchDiduccess
+    case presentRefreshTokenExpiredAlert
+    
     case path(StackAction<Path.State, Path.Action>)
+    case destination(PresentationAction<Destination.Action>)
     case binding(BindingAction<State>)
     
     case delegate(Delegate)
     
     public enum Delegate {
       case createOnboardingProfileDidCompleted
+    }
+    
+    case alert(Alert)
+    public enum Alert: Equatable {
+      case refreshTokenExpiredAlert
     }
   }
   

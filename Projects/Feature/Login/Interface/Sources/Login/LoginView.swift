@@ -66,6 +66,7 @@ public struct LoginView: View {
             LoadingIndicator()
           }
         }
+        .bottleAlert($store.scope(state: \.destination?.alert, action: \.destination.alert))
       } destination: { store in
         WithPerceptionTracking {
           switch store.state {

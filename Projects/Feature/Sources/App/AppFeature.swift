@@ -18,6 +18,8 @@ import DomainProfile
 import CoreKeyChainStore
 import CoreLoggerInterface
 
+import SharedUtilInterface
+
 import ComposableArchitecture
 
 @Reducer
@@ -26,7 +28,7 @@ public struct AppFeature {
   @Dependency(\.profileClient) var profileClient
   @Dependency(\.userClient) var userClient
   
-  enum Root {
+  public enum Root {
     case Login
     case MainTab
     case Onboarding
@@ -48,7 +50,7 @@ public struct AppFeature {
   }
   
   public enum Action {
-    case onAppear
+    case onLoad
     case appDelegate(AppDelegateFeature.Action)
     case mainTab(MainTabViewFeature.Action)
     case login(LoginFeature.Action)
@@ -60,9 +62,11 @@ public struct AppFeature {
     case appleUserIdDidRevoked
     case loginCheckCompleted(isLoggedIn: Bool)
     case profileSelectExistCheckCompleted(isExist: Bool)
+    case changeRoot(_ : Root)
 
     // Error
     case requiredInvalidToken
+    case refreshTokenExpired
   }
   
   public init() {}
@@ -92,6 +96,13 @@ public struct AppFeature {
     action: Action
   ) -> EffectOf<Self> {
     switch action {
+    case .onLoad:
+      return .publisher {
+        NotificationCenter.default.publisher(for: .refreshTokenExpired)
+          .eraseToAnyPublisher()
+          .map { _ in Action.refreshTokenExpired }
+      }
+      
     case .checkUserLoginState:
       let isAppDeleted = userClient.isAppDeleted()
       let isLoggedIn = authClient.checkTokenIsExist()
@@ -126,6 +137,9 @@ public struct AppFeature {
       } else {
         return changeRoot(.Onboarding, state: &state)
       }
+      
+    case let .changeRoot(root):
+      return changeRoot(root, state: &state)
     
     // AppDelegate Delegate
     case let .appDelegate(.delegate(delegate)):
@@ -193,6 +207,17 @@ public struct AppFeature {
       
     case .requiredInvalidToken:
       return changeRoot(.Login, state: &state)
+      
+    case .refreshTokenExpired:
+      return .run { send in
+        try await authClient.logout()
+        await send(.changeRoot(.Login))
+        await send(.login(.presentRefreshTokenExpiredAlert))
+      } catch: { send, error in
+        // TODO: error 대응
+        Log.error(error)
+      }
+      
     default:
       return .none
     }

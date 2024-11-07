@@ -24,6 +24,7 @@ public struct UserClient {
   private let updateAlertState: (UserAlertState) async throws -> Void
   private let fetchContacts: () async throws -> [String]
   private let updateBlockContacts: ([String]) async throws -> Void
+  private let _deleteUserInfos: () -> Void
   private let pushNotificationAllowStatusSubject = CurrentValueSubject<Bool, Never>(true)
   
   public var pushNotificationAllowStatusPublisher: AnyPublisher<Bool, Never> {
@@ -44,7 +45,8 @@ public struct UserClient {
     fetchPushNotificationAllowStatus: @escaping () -> Bool,
     updateAlertState: @escaping (UserAlertState) async throws -> Void,
     fetchContacts: @escaping () async throws -> [String],
-    updateBlockContacts: @escaping ([String]) async throws -> Void
+    updateBlockContacts: @escaping ([String]) async throws -> Void,
+    deleteUserInfos: @escaping () -> Void
   ) {
     self._isLoggedIn = isLoggedIn
     self._isAppDeleted = isAppDeleted
@@ -60,6 +62,7 @@ public struct UserClient {
     self.updateAlertState = updateAlertState
     self.fetchContacts = fetchContacts
     self.updateBlockContacts = updateBlockContacts
+    self._deleteUserInfos = deleteUserInfos
   }
   
   public func isLoggedIn() -> Bool {
@@ -116,5 +119,9 @@ public struct UserClient {
   
   public func updateBlockContacts(contacts: [String]) async throws {
     try await updateBlockContacts(contacts)
+  }
+  
+  public func deleteUserInfos() {
+    _deleteUserInfos()
   }
 }

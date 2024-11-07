@@ -107,6 +107,19 @@ extension LoginFeature {
         state.path.append(.appleLogin(AppleLoginFeature.State()))
         return .none
         
+      case .presentRefreshTokenExpiredAlert:
+        state.destination = .alert(.init(
+          title: { TextState("로그인 만료") },
+          actions: {
+            ButtonState(
+              action: .refreshTokenExpiredAlert,
+              label: { TextState("로그인하러 가기") }
+            )
+          },
+          message: { TextState("로그인 유지 시간이 만료되어 자동으로 로그아웃 되었습니다. 다시 로그인해 주세요.") }
+        ))
+        return .none
+        
       case .path(.element(id: _, action: .onBoarding(.delegate(.createOnboardingProfileDidCompleted)))):
         state.path.removeAll()
         return .send(.delegate(.createOnboardingProfileDidCompleted))
@@ -138,27 +151,37 @@ extension LoginFeature {
           state.path.append(.photoShareGuide(.init()))
           return .none
         }
-        // PhotoShareGuide Delegate
         
+      // PhotoShareGuide Delegate
       case let .path(.element(id: _, action: .photoShareGuide(.delegate(delegate)))):
         switch delegate {
         case .nextButtonDidTapped:
           state.path.append(.startGuide(.init()))
           return .none
         }
-        // StartGuide Delegate
+        
+      // StartGuide Delegate
       case let .path(.element(id: _, action: .startGuide(.delegate(delegate)))):
         switch delegate {
         case .doneButtonDidTapped:
           return goToOboarding(state: &state) 
         }
+        
       // appleLogin Delegate
-    
       case let .path(.element(id: _, action: .appleLogin(.delegate(delegate)))):
         switch delegate {
         case .signInAppleButtonDidTapped:
           return .send(.signInAppleButtonDidTapped)
         }
+        
+      // alert action
+      case let .destination(.presented(.alert(alert))):
+        switch alert {
+        case .refreshTokenExpiredAlert:
+          state.destination = nil
+        }
+        return .none
+        
       default:
         return .none
       }
@@ -197,6 +220,7 @@ extension LoginFeature {
   }
 }
 
+
 extension LoginFeature {
   // MARK: - Path
   
@@ -217,5 +241,6 @@ extension LoginFeature {
   @Reducer(state: .equatable)
   public enum Destination {
     case termsView
+    case alert(AlertState<LoginFeature.Action.Alert>)
   }
 }
