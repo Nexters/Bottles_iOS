@@ -25,7 +25,7 @@ extension QuestionAndAnswerFeature {
         return .none
         
       case let .focusedFieldDidChanged(field):
-        guard let previousFocustedField = state.focusedField else {
+        guard let previousFocusedField = state.focusedField else {
           state.focusedField = field
           return .none
         }
