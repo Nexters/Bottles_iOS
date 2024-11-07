@@ -77,13 +77,12 @@ public struct QuestionAndAnswerView: View {
             isActive: store.photoShareIsActive,
             pingPongTitle: "사진 공개",
             photoShareState: store.photoShareStateType,
-            myProfileImageURL: store.photoInfo?.myProfileImageURL,
-            otherProfileImageURL: store.photoInfo?.otherProfileImageURL,
             isSelctedYesButton: $store.photoIsSelctedYesButton,
             isSelctedNoButton: $store.photoIsSelctedNoButton,
             doneButtonAction: {
               store.send(.sharePhotoSelectButtonDidTapped(willShare: store.photoIsSelctedYesButton))
-            }
+            },
+            otherProfileImageURLs: store.photoInfo?.otherProfileImageURLs
           )
           
           FinalSelectPingPongView(

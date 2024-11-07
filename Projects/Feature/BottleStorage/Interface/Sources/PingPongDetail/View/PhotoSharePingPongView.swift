@@ -15,30 +15,28 @@ public struct PhotoSharePingPongView: View {
   private let isActive: Bool
   private let pingPongTitle: String
   private let photoShareState: PingPongPhotoStatus
-  private let myProfileImageURL: String?
-  private let otherProfileImageURL: String?
+  private let otherProfileImageURLs: [String]?
   @Binding var isSelctedYesButton: Bool
   @Binding var isSelctedNoButton: Bool
   private let doneButtonAction: (() -> Void)?
+  @State var selectedIndex: Int = 0
   
   public init(
     isActive: Bool,
-    pingPongTitle: String, 
+    pingPongTitle: String,
     photoShareState: PingPongPhotoStatus,
-    myProfileImageURL: String?,
-    otherProfileImageURL: String?,
     isSelctedYesButton: Binding<Bool> = .constant(false),
-    isSelctedNoButton: Binding<Bool> = .constant(false), 
-    doneButtonAction: (() -> Void)? = nil
+    isSelctedNoButton: Binding<Bool> = .constant(false),
+    doneButtonAction: (() -> Void)? = nil,
+    otherProfileImageURLs: [String]?
   ) {
     self.isActive = isActive
     self.pingPongTitle = pingPongTitle
     self.photoShareState = photoShareState
-    self.myProfileImageURL = myProfileImageURL
-    self.otherProfileImageURL = otherProfileImageURL
     self._isSelctedYesButton = isSelctedYesButton
     self._isSelctedNoButton = isSelctedNoButton
     self.doneButtonAction = doneButtonAction
+    self.otherProfileImageURLs = otherProfileImageURLs
   }
   
   public var body: some View {
@@ -140,15 +138,51 @@ private extension PhotoSharePingPongView {
     makeRightBubbleText(text: "사진 공개가 실패했어요")
   }
   
+  @ViewBuilder
   var bothPublicView: some View {
-    HStack(spacing: .sm) {
-      peerProfileImage
-        .frame(maxWidth: .infinity)
-      myProfileImage
-        .frame(maxWidth: .infinity)
+    if let images = otherProfileImageURLs {
+      VStack(spacing: .lg) {
+        GeometryReader { geo in
+          TabView(selection: $selectedIndex) {
+            ForEach(images.indices, id: \.self) { index in
+              makePeerProfileImage(url: images[index])
+                .tag(index)
+            }
+          }
+          .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+          .frame(height: geo.size.width - 10)
+        }      
+        .aspectRatio(1, contentMode: .fit)
+
+        photoIndicatorView
+      }
+    } else {
+      EmptyView()
     }
   }
   
+  var photoIndicatorView: some View {
+    HStack(spacing: .xxl) {
+      BottleImageView(type: .local(bottleImageSystem: .icon(.leftArrow)))
+        .foregroundStyle(to: ColorToken.icon(.primary))
+        .asButton {
+          if selectedIndex > 0 {
+            selectedIndex -= 1
+          }
+        }
+      
+      PageIndicatorView(pageInfo: .init(nowPage: selectedIndex + 1, totalCount: otherProfileImageURLs?.count ?? 0))
+      
+      BottleImageView(type: .local(bottleImageSystem: .icon(.leftArrow)))
+        .foregroundStyle(to: ColorToken.icon(.primary))
+        .rotationEffect(.degrees(180))
+        .asButton {
+          if selectedIndex + 1 < otherProfileImageURLs?.count ?? 0 {
+            selectedIndex += 1
+          }
+        }
+    }
+  }
   
   @ViewBuilder
   var questionText: some View {
@@ -168,43 +202,16 @@ private extension PhotoSharePingPongView {
     }
   }
   
-  @ViewBuilder
-  var peerProfileImage: some View {
-    if let peerProfileImageURL = otherProfileImageURL {
-      GeometryReader { geo in
-        RemoteImageView(
-          imageURL: peerProfileImageURL,
-          downsamplingWidth: 150,
-          downsamplingHeight: 150
-        )
-        .frame(height: geo.size.width)
-        .preventScreenshot()
-      }
-      .aspectRatio(1, contentMode: .fit)
-      .clipped()
-      .cornerRadius(.md, corenrs: [.topRight, .bottomLeft, .bottomRight])
-    } else {
-      EmptyView()
-    }
-  }
-  
-  @ViewBuilder
-  var myProfileImage: some View {
-    if let myProfileImageURL = myProfileImageURL {
-      GeometryReader { geo in
-        RemoteImageView(
-          imageURL: myProfileImageURL,
-          downsamplingWidth: 150,
-          downsamplingHeight: 150
-        )
-        .frame(height: geo.size.width)
-        .preventScreenshot()
-      }
-      .aspectRatio(1, contentMode: .fit)
-      .clipped()
-      .cornerRadius(.md, corenrs: [.topRight, .topLeft, .bottomLeft])
-    } else {
-      EmptyView()
-    }
+  func makePeerProfileImage(url: String) -> some View {
+    RemoteImageView(
+      imageURL: url,
+      downsamplingWidth: 150,
+      downsamplingHeight: 150
+    )
+    .preventScreenshot()
+    .aspectRatio(1, contentMode: .fit)
+    .clipped()
+    .cornerRadius(.md, corenrs: [.topRight, .bottomLeft, .bottomRight])
   }
 }
+
