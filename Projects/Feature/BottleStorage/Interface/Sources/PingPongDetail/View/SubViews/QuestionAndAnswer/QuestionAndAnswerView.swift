@@ -114,7 +114,8 @@ public struct QuestionAndAnswerView: View {
           Spacer()
             .frame(height: 14)
         }
-        .padding(.md)
+        .padding(.horizontal, .md)
+        .padding(.top, 32)
         .frame(maxWidth: .infinity)
         .onChange(of: focusedField) { field in
           store.send(.focusedFieldDidChanged(field))
