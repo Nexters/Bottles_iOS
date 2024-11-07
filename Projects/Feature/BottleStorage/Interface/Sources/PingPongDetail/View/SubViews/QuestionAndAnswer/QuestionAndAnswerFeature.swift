@@ -84,7 +84,6 @@ extension QuestionAndAnswerFeature {
         }
         
       case let .finalSelectButtonDidTapped(willMatch: willMatch):
-        state.isShowLoadingIndicator = true
         return .run { [bottleID = state.bottleID] send in
           try await bottleClient.finalSelect(
             bottleID: bottleID,
@@ -92,7 +91,7 @@ extension QuestionAndAnswerFeature {
           )
           switch willMatch {
           case true:
-            await send(.refreshPingPongDidRequired)
+            await send(.delegate(.refreshPingPong))
           case false:
             await send(.delegate(.popToRootDidRequired))
           }
