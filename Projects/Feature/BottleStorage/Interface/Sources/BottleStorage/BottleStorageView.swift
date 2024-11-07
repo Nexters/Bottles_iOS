@@ -31,6 +31,7 @@ public struct BottleStorageView: View {
         }
         .padding(.top, 72)
         .frame(maxHeight: .infinity, alignment: .top)
+        .frame(maxWidth: .infinity)
         .background(to: ColorToken.background(.primary))
         .padding(.bottom, BottleConstants.bottomTabBarHeight.value)
         .setTabBar(selectedTab: .bottleStorage) { selectedTab in
@@ -73,7 +74,6 @@ private extension BottleStorageView {
   var bottlsList: some View {
     if store.pingPongBottleList.isEmpty && !store.isLoading {
       VStack(alignment: .center, spacing: 0.0) {
-        
         Spacer()
         BottleImageView(type: .local(bottleImageSystem: .illustraition(.basket)))
           .frame(height: 180)
@@ -81,26 +81,25 @@ private extension BottleStorageView {
           .aspectRatio(1.0, contentMode: .fit)
           .padding(.bottom, .xl)
         
-          WantedSansStyleText(
-            "아직 대화를 시작하지 않으셨군요!",
-            style: .subTitle1,
-            color: .primary
-          )
-          .padding(.bottom, .xs)
+        WantedSansStyleText(
+          "아직 대화를 시작하지 않으셨군요!",
+          style: .subTitle1,
+          color: .primary
+        )
+        .padding(.bottom, .xs)
         
-          WantedSansStyleText(
-            "마음에 드는 상대를 찾아\n가치관 문답을 시작해 볼까요?",
-            style: .body,
-            color: .tertiary
-          )
-          .lineSpacing(5)
-          .multilineTextAlignment(.center)
-          .padding(.bottom, .xl)
+        WantedSansStyleText(
+          "마음에 드는 상대를 찾아\n가치관 문답을 시작해 볼까요?",
+          style: .body,
+          color: .tertiary
+        )
+        .lineSpacing(5)
+        .multilineTextAlignment(.center)
+        .padding(.bottom, .xl)
         
         SolidButton(title: "모래사장 바로가기", sizeType: .extraSmall, buttonType: .throttle, action: { store.send(.sandBeachButtonDidTapped) })
-        
         Spacer()
-        }
+      }
     } else {
       ScrollView {
         VStack(spacing: .md) {
