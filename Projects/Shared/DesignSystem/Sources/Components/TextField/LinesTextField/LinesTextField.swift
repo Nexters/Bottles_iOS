@@ -109,6 +109,10 @@ private extension LinesTextField {
           if newValue.count >= textLimit {
             text = String(text.prefix(textLimit))
           }
+          
+          if newValue.count == 0 {
+            textFieldState = .enabled
+          }
         }
     }
   }
