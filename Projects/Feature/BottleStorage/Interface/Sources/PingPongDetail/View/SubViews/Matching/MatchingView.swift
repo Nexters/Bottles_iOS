@@ -125,7 +125,7 @@ private extension MatchingView {
         style: .body,
         color: .quinary
       )
-      .padding(.vertical, 2)
+      .padding(.vertical, 5)
       .padding(.horizontal, .xs)
       .background {
         RoundedRectangle(cornerRadius: BottleRadiusType.xs.value)
