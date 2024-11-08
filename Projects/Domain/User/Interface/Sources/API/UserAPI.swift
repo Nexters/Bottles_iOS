@@ -15,6 +15,7 @@ public enum UserAPI {
   case fetchAlertState
   case updateAlertState(reqeustData: AlertStateRequestDTO)
   case updateBlockContacts(blockContactRequestDTO: BlockContactRequestDTO)
+  case updatePushNotificationAllowStatus(requestDTO: UpdatePushNotificationAllowStatusRequestDTO)
 }
 
 extension UserAPI: BaseTargetType {
@@ -26,6 +27,8 @@ extension UserAPI: BaseTargetType {
       return "api/v1/user/alimy"
     case .updateBlockContacts:
       return "api/v1/user/block/contact-list"
+    case .updatePushNotificationAllowStatus:
+      return "api/v1/user/native-setting"
     }
   }
   
@@ -36,6 +39,8 @@ extension UserAPI: BaseTargetType {
     case .updateAlertState:
       return .post
     case .updateBlockContacts:
+      return .post
+    case .updatePushNotificationAllowStatus:
       return .post
     }
   }
@@ -48,6 +53,8 @@ extension UserAPI: BaseTargetType {
       return .requestJSONEncodable(requestData)
     case let .updateBlockContacts(blockContactRequestDTO):
       return .requestJSONEncodable(blockContactRequestDTO)
+    case let .updatePushNotificationAllowStatus(requestDTO):
+      return .requestJSONEncodable(requestDTO)
     }
   }
 }
