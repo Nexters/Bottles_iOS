@@ -35,6 +35,9 @@ public struct ProfileEditView: View {
         case .closeWebView:
           store.send(.backButtonDidTapped)
           
+        case .profileImageDidChanged:
+          store.send(.profileImageDidChanged)
+          
         default:
           Log.assertion(message: "\(action) - not handled action")
         }

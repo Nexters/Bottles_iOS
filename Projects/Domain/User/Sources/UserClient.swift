@@ -5,13 +5,17 @@
 //  Created by 임현규 on 8/22/24.
 //
 
+import UIKit
 import Foundation
+import UserNotifications
 import Contacts
 
 import DomainUserInterface
 
 import CoreKeyChainStore
 import CoreNetwork
+import CoreLoggerInterface
+import SharedUtilInterface
 
 import ComposableArchitecture
 import Moya
@@ -22,6 +26,8 @@ extension UserClient: DependencyKey {
     case deleteState
     case fcmToken
     case alertAllowState
+    case remotelyUploadedPushNotificationAllowStatus
+    case coachMarkState
   }
   
   static public var liveValue: UserClient = .live()
@@ -38,8 +44,22 @@ extension UserClient: DependencyKey {
         return !UserDefaults.standard.bool(forKey: UserDefaultsKeys.deleteState.rawValue)
       },
       
+      isCoachMarkViewed: {
+        return UserDefaults.standard.bool(forKey: UserDefaultsKeys.coachMarkState.rawValue)
+      },
+      
       fetchFcmToken: {
         return UserDefaults.standard.string(forKey: UserDefaultsKeys.fcmToken.rawValue)
+      },
+      
+      remotelyUploadedPushNotificationAllowStatus: {
+        let status = UserDefaults.standard.object(forKey: UserDefaultsKeys.remotelyUploadedPushNotificationAllowStatus.rawValue)
+        guard let status = status as? Bool
+        else {
+          return nil
+        }
+        
+        return status
       },
       
       updateLoginState: { isLoggedIn in
@@ -54,8 +74,90 @@ extension UserClient: DependencyKey {
         UserDefaults.standard.set(fcmToken, forKey: UserDefaultsKeys.fcmToken.rawValue)
       },
       
-      updatePushNotificationAllowStatus: { isAllow in
+      updatePushNotificationAllowStatusLocally: { isAllow in
         UserDefaults.standard.set(isAllow, forKey: UserDefaultsKeys.alertAllowState.rawValue)
+      },
+      
+      updatePushNotificationAllowStatusRemotely: { isAllow in
+        @Dependency(\.userClient) var userClient
+        
+        var deviceName: String? {
+          if let simulatorModelIdentifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] {
+            return simulatorModelIdentifier
+          } else {
+            var systemInfo = utsname()
+            uname(&systemInfo)
+            let modelIdentifier = withUnsafePointer(to: &systemInfo.machine) {
+              $0.withMemoryRebound(to: CChar.self, capacity: 1) { ptr in
+                String(validatingUTF8: ptr)
+              }
+            }
+            return modelIdentifier
+          }
+        }
+        
+        let requestDTO = await UpdatePushNotificationAllowStatusRequestDTO(
+          turnOn: isAllow,
+          deviceName: deviceName ?? "",
+          appVersion: (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "",
+          deviceId: UIDevice.current.identifierForVendor?.uuidString ?? ""
+        )
+        
+        try await networkManager.reqeust(api: .apiType(UserAPI.updatePushNotificationAllowStatus(requestDTO: requestDTO)))
+        userClient.updateRemotelyUploadedPushNotificationAllowStatus(isAllow: isAllow)
+      },
+      
+      updateRemotelyUploadedPushNotificationAllowStatus: { isAllow in
+        UserDefaults.standard.set(isAllow, forKey: UserDefaultsKeys.remotelyUploadedPushNotificationAllowStatus.rawValue)
+      },
+      
+      isNeedUpdatePushNotificationRemotely: {
+        @Dependency(\.userClient) var userClient
+        
+        guard userClient.isLoggedIn()
+        else {
+          return .notNeed
+        }
+        
+        let remotelyUploadedStatus = userClient.remotelyUploadedPushNotificationAllowStatus()
+        let isAuthorized = await withCheckedContinuation { continuation in
+          UNUserNotificationCenter.current().getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .notDetermined:
+              continuation.resume(returning: false)
+              
+            case .denied:
+              continuation.resume(returning: false)
+              
+            case .authorized:
+              continuation.resume(returning: true)
+              
+            case .provisional:
+              continuation.resume(returning: false)
+              
+            case .ephemeral:
+              continuation.resume(returning: false)
+              
+            @unknown default:
+              continuation.resume(returning: false)
+              Log.assertion(message: "not handled status")
+            }
+          }
+        }
+        
+        let isNeedType: NeedUpdatePushNotificationAllowStatusRemotelyType = switch remotelyUploadedStatus {
+        case .none:
+            .need(isAllow: isAuthorized)
+          
+        case let .some(localAllowStatus):
+          (localAllowStatus == isAuthorized) ? .notNeed : .need(isAllow: isAuthorized)
+        }
+        
+        return isNeedType
+      },
+      
+      updateCoachMarkState: { isViewed in
+        UserDefaults.standard.set(isViewed, forKey: UserDefaultsKeys.coachMarkState.rawValue)
       },
       
       fetchAlertState: {
@@ -63,7 +165,7 @@ extension UserClient: DependencyKey {
         return responseData.map { $0.toDomain() }
       },
       
-      fetchPushNotificationAllowStatus: {
+      fetchPushNotificationAllowStatusLocally: {
         return UserDefaults.standard.bool(forKey: UserDefaultsKeys.alertAllowState.rawValue)
       },
       

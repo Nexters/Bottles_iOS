@@ -19,16 +19,21 @@ public struct SentBottleDetailFeature {
   
   @ObservableState
   public struct State: Equatable {
+    var isLoading: Bool
     let sentBottleDetailURL: String
     
     public init(sentBottleDetailURL: String) {
+      self.isLoading = true
       self.sentBottleDetailURL = sentBottleDetailURL
     }
   }
   
   public enum Action: BindableAction {
+    case webViewLoadingDidCompleted
     case backButtonDidTapped
     case bottelDidAccepted
+    
+    case configureIsLoading(_: Bool)
     case showToast(message: String)
     
     case delegate(Delegate)

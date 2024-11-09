@@ -19,13 +19,19 @@ public struct GoodFeelingFeature {
   
   @ObservableState
   public struct State: Equatable {
+    var isLoading: Bool
+    
     public init() {
-      
+      self.isLoading = true
     }
   }
   
   public enum Action: BindableAction {
     case sentBottleTapped(url: String)
+    case webViewLoadingDidCompleted
+    
+    case configureIsLoading(_: Bool)
+    
     
     case delegate(Delegate)
     public enum Delegate {

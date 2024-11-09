@@ -56,6 +56,7 @@ public struct SandBeachFeature {
       case writeButtonDidTapped
       case newBottleIslandDidTapped
       case bottleStorageIslandDidTapped
+      case sandBeachLoadCompleted
     }
     
     case alert(Alert)
@@ -96,46 +97,51 @@ extension SandBeachFeature {
                     Log.error(error)
                 }
         })
-
+        
         return .run { send in
-          async let _ = authClient.checkUpdateVersion()
-          async let isExsit = try await profileClient.checkExistIntroduction()
-          // 자기소개 없는 상태
-            if try await !isExsit {
+          async let versionCheckTask: Void = authClient.checkUpdateVersion()
+          async let userProfileStatusTask = profileClient.fetchUserProfileSelect()
+          async let userBottleInfoTask = bottleClient.fetchUserBottleInfo()
+          async let bottlesStorageListTask = bottleClient.fetchBottleStorageList()
+          
+          let (_, userProfileStatus, userBottleInfo, bottlesStorageList) = try await (
+              versionCheckTask,
+              userProfileStatusTask,
+              userBottleInfoTask,
+              bottlesStorageListTask
+          )
+          
+          let newBottlesCount = userBottleInfo.randomBottleCount
+          let activeBottlesCount = bottlesStorageList.pingPongBottles
+            .filter { $0.lastStatus != .conversationStopped && $0.lastStatus != .contactSharedByMeOnly }.count
+          let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
+          
+          if userProfileStatus == .empty || userProfileStatus == .doneIntroduction {
             await send(.userStateFetchCompleted(
               userState: .noIntroduction,
               isDisableButton: true))
             return
           }
           
-          let userBottleInfo = try await bottleClient.fetchUserBottleInfo()
-          let newBottlesCount = userBottleInfo.randomBottleCount
-          // 새로 도착한 보틀이 있는 상태
+          if userProfileStatus == .doneProfileImage {
+            await send(.userStateFetchCompleted(
+              userState: .noBottle(time: nextBottleLeftHours ?? 0),
+              isDisableButton: false))
+            return
+          }
           
           if newBottlesCount > 0 {
             await send(.userStateFetchCompleted(
               userState: .hasNewBottle(bottleCount: newBottlesCount),
-              isDisableButton: false)
-            )
-          } else {
-            let bottlesStorageList = try await bottleClient.fetchBottleStorageList()
-            let activeBottlesCount = bottlesStorageList.pingPongBottles
-              .filter { $0.lastStatus != .conversationStopped && $0.lastStatus != .contactSharedByMeOnly }.count
-            
-            // 자기소개만 작성한 상태
-            if activeBottlesCount <= 0 {
-              // TODO: time 설정
-              let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
-              await send(.userStateFetchCompleted(
-                userState: .noBottle(time: nextBottleLeftHours ?? 0),
-                isDisableButton: false)
-              )
-            } else { // 대화 중인 보틀이 있는 상태
-              await send(.userStateFetchCompleted(
-                userState: .hasActiveBottle(bottleCount: activeBottlesCount),
-                isDisableButton: false)
-              )
-            }
+              isDisableButton: false))
+            return
+          }
+          
+          if activeBottlesCount > 0 {
+            await send(.userStateFetchCompleted(
+              userState: .hasActiveBottle(bottleCount: activeBottlesCount),
+              isDisableButton: false))
+            return
           }
         } catch: { error, send in
           // TODO: 에러 핸들링
@@ -152,7 +158,7 @@ extension SandBeachFeature {
         state.userState = userState
         state.isDisableIslandBottle = isDisableButton
         state.isLoading = false
-        return .none
+        return .send(.delegate(.sandBeachLoadCompleted))
                 
       case .writeButtonDidTapped:
         return .send(.delegate(.writeButtonDidTapped))

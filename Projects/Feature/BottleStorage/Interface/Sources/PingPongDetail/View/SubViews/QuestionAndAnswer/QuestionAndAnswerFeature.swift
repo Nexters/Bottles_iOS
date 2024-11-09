@@ -24,6 +24,22 @@ extension QuestionAndAnswerFeature {
         state.configurePingPong(pingPong)
         return .none
         
+      case let .focusedFieldDidChanged(field):
+        guard let previousFocusedField = state.focusedField else {
+          state.focusedField = field
+          return .none
+        }
+        
+        if (previousFocusedField == .firstLetter && state.firstLetterTextFieldContent.count >= 50) ||
+            (previousFocusedField == .secondLetter && state.secondLetterTextFieldContent.count >= 50) ||
+            (previousFocusedField  == .thirdLetter && state.thirdLetterTextFieldContent.count >= 50) {
+          state.textFieldState = .active
+        } else {
+          state.textFieldState = .enabled
+        }
+
+        return .none
+        
       case let .texFieldDidFocused(isFocused):
         state.textFieldState = isFocused ? .focused : .active
         return .none
@@ -68,7 +84,6 @@ extension QuestionAndAnswerFeature {
         }
         
       case let .finalSelectButtonDidTapped(willMatch: willMatch):
-        state.isShowLoadingIndicator = true
         return .run { [bottleID = state.bottleID] send in
           try await bottleClient.finalSelect(
             bottleID: bottleID,
@@ -76,7 +91,7 @@ extension QuestionAndAnswerFeature {
           )
           switch willMatch {
           case true:
-            await send(.refreshPingPongDidRequired)
+            await send(.delegate(.refreshPingPong))
           case false:
             await send(.delegate(.popToRootDidRequired))
           }

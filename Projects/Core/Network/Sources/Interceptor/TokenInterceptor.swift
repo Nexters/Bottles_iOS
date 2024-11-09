@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 import CoreKeyChainStore
 import CoreLoggerInterface
@@ -30,7 +31,32 @@ public class TokenInterceptor: RequestInterceptor {
       urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
     }
     
+    var deviceName: String {
+      if let simulatorModelIdentifier = ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] {
+        return simulatorModelIdentifier
+      } else {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let modelIdentifier = withUnsafePointer(to: &systemInfo.machine) {
+          $0.withMemoryRebound(to: CChar.self, capacity: 1) { ptr in
+            String(validatingUTF8: ptr)
+          }
+        }
+        return modelIdentifier ?? ""
+      }
+    }
+    let appVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? ""
+    let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? ""
+    var osVersion = UIDevice.current.systemVersion
+    
+    urlRequest.setValue(appVersion, forHTTPHeaderField: "X-App-Version")
+    urlRequest.setValue(deviceName, forHTTPHeaderField: "X-Device-Model")
+    urlRequest.setValue(osVersion, forHTTPHeaderField: "X-OS-Version")
+    urlRequest.setValue(deviceID, forHTTPHeaderField: "X-Device-ID")
+    urlRequest.setValue("iOS", forHTTPHeaderField: "X-App-Platform")
+    
     print(urlRequest.headers)
+    
     completion(.success(urlRequest))
   }
   

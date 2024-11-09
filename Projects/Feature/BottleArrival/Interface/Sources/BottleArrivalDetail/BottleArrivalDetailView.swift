@@ -41,7 +41,7 @@ public struct BottleArrivalDetailView: View {
         }
       )
       .navigationBarBackButtonHidden()
-      .ignoresSafeArea(.all, edges: .bottom)
+      .ignoresSafeArea(.all, edges: [.top, .bottom])
     }
   }
 }

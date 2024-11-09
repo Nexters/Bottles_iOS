@@ -28,6 +28,9 @@ extension EditProfileFeature {
       case .backButtonDidTapped:
         return .send(.delegate(.closeEditProfileView))
         
+      case .profileImageDidChanged:
+        return .send(.delegate(.profileImageDidChanged))
+        
       default:
         return .none
       }

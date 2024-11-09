@@ -21,26 +21,26 @@ public struct MatchingView: View {
   
   public var body: some View {
     WithPerceptionTracking {
-      ScrollView {
-        VStack(alignment: .leading, spacing: 0.0) {
-          title
-            .padding(.vertical, 32)
-          
-          matchingInfo
+      ZStack(alignment: .bottom) {
+        ScrollView {
+          VStack(alignment: .leading, spacing: 0.0) {
+            title
+              .padding(.vertical, 32)
 
-          Spacer()
-          
-          bottomButton
-          
-          Spacer()
-            .frame(height: 30)
+            matchingInfo
+          }
+          .padding(.horizontal, .md)
+          .frame(maxWidth: .infinity)
         }
-        .padding(.horizontal, .md)
-        .frame(maxHeight: .infinity)
         .background(to: ColorToken.background(.primary))
+        .scrollIndicators(.hidden)
+        
+        bottomButton
+          .padding(.horizontal, .md)
+          .padding(.bottom, 30)
+          .shadow(color: .white, radius: 15, y: -30)
       }
       .background(to: ColorToken.background(.primary))
-      .scrollIndicators(.hidden)
     }
   }
 }
@@ -77,7 +77,7 @@ private extension MatchingView {
     case .waitingOtherAnswer:
       GeometryReader { geometryProxy in
         WithPerceptionTracking {
-          let width = geometryProxy.size.width - 60.0
+          let width = geometryProxy.size.width - 120.0
           HStack(spacing: 0 ) {
             Spacer()
             BottleImageView(
@@ -98,7 +98,7 @@ private extension MatchingView {
     case .matchFailed:
       GeometryReader { geometryProxy in
         WithPerceptionTracking {
-          let width = geometryProxy.size.width - 50
+          let width = geometryProxy.size.width - 120.0
           HStack(spacing: 0 ) {
             Spacer()
             BottleImageView(
@@ -125,7 +125,7 @@ private extension MatchingView {
         style: .body,
         color: .quinary
       )
-      .padding(.vertical, 2)
+      .padding(.vertical, 5)
       .padding(.horizontal, .xs)
       .background {
         RoundedRectangle(cornerRadius: BottleRadiusType.xs.value)

@@ -33,7 +33,7 @@ final class MoyaLoggerPlugin: PluginType {
       log += "header: \(headers)\n"
     }
     if let body = httpRequest.httpBody, let bodyString = String(bytes: body, encoding: String.Encoding.utf8) {
-      log += "bodyString: \(bodyString)"
+      log += "bodyString: \(bodyString)\n"
     }
     
     log += "---------------------------------------------"
@@ -79,7 +79,7 @@ final class MoyaLoggerPlugin: PluginType {
     if let data = error.response?.data {
       log += "Data - \(data)\n"
     } else {
-      log += "Data - empty"
+      log += "Data - empty\n"
     }
     
     log += "---------------------------------------------"

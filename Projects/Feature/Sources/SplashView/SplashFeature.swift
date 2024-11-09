@@ -18,6 +18,7 @@ import ComposableArchitecture
 @Reducer
 public struct SplashFeature {
   @Dependency(\.authClient) private var authClient
+  @Dependency(\.userClient) private var userClient
   
   @ObservableState
   public struct State: Equatable {
@@ -59,7 +60,11 @@ public struct SplashFeature {
     switch action {
     case .onAppear:
       return .run { send in
-        try await authClient.checkUpdateVersion()
+        async let checkUpdateVersionTask: () = try await authClient.checkUpdateVersion()
+        async let updatePushNotificationAllowStatusTask: () = try await updatePushNotificationAllowStatusRemotely()
+        
+        let _ = try await (checkUpdateVersionTask, updatePushNotificationAllowStatusTask)
+        
         await send(.delegate(.initialCheckCompleted))
       } catch: { error, send in
         Log.error(error)
@@ -99,6 +104,17 @@ public struct SplashFeature {
       
     case .alert, .delegate, .destination, .binding:
       return .none
+    }
+    
+    @Sendable func updatePushNotificationAllowStatusRemotely() async throws {
+      let isNeed = await userClient.isNeedUpdatePushNotificationRemotely()
+      switch isNeed {
+      case let .need(isAllow):
+        try await userClient.updatePushNotificationAllowStatusRemotely(isAllow: isAllow)
+        
+      case .notNeed:
+        return
+      }
     }
   }
 }

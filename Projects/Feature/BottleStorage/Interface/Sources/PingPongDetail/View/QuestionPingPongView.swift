@@ -97,7 +97,7 @@ private extension QuestionPingPongView {
   var questionText: some View {
     HStack(spacing: 0) {
       WantedSansStyleText(
-        questionContent,
+        "Q. " + questionContent,
         style: .subTitle1,
         color: .focusePrimary
       )

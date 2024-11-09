@@ -47,6 +47,12 @@ public enum BottleWebViewAction: Equatable {
   case logOutButtonDidTapped
   /// 회원탈퇴
   case withdrawalButtonDidTap
+  /// 프로필 사진 수정 완료
+  case profileImageDidChanged
+  
+  // MARK: - Introduction Setup
+  /// 자기소개 & 프로필 사진 등록 완료
+  case introductionDidCompleted
   
   public init?(
     type: String,
@@ -141,6 +147,14 @@ public enum BottleWebViewAction: Equatable {
       
     case "deleteUser":
       self = .withdrawalButtonDidTap
+      
+    case "onProfileImageEditComplete":
+      self = .profileImageDidChanged
+
+    // MARK: - Introduction Setup
+      
+    case "onIntroductionComplete":
+      self = .introductionDidCompleted
       
     default:
       return nil

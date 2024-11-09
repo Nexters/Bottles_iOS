@@ -14,7 +14,7 @@ import ComposableArchitecture
 
 public struct QuestionAndAnswerView: View {
   @Perception.Bindable private var store: StoreOf<QuestionAndAnswerFeature>
-  @FocusState private var isTextFieldFocused: Bool
+  @FocusState private var focusedField: QuestionAndAnswerFeature.FocusField?
           
   public init(store: StoreOf<QuestionAndAnswerFeature>) {
     self.store = store
@@ -39,8 +39,8 @@ public struct QuestionAndAnswerView: View {
               ))
             }
           )
-          .focused($isTextFieldFocused)
-          
+          .focused($focusedField, equals: .firstLetter)
+
           QuestionPingPongView(
             pingpongTitle: "두 번째 질문",
             textFieldContent: $store.secondLetterTextFieldContent,
@@ -55,8 +55,8 @@ public struct QuestionAndAnswerView: View {
               ))
             }
           )
-          .focused($isTextFieldFocused)
-          
+          .focused($focusedField, equals: .secondLetter)
+
           QuestionPingPongView(
             pingpongTitle: "세 번째 질문",
             textFieldContent: $store.thirdLetterTextFieldContent,
@@ -71,19 +71,18 @@ public struct QuestionAndAnswerView: View {
               ))
             }
           )
-          .focused($isTextFieldFocused)
-          
+          .focused($focusedField, equals: .thirdLetter)
+
           PhotoSharePingPongView(
             isActive: store.photoShareIsActive,
             pingPongTitle: "사진 공개",
             photoShareState: store.photoShareStateType,
-            myProfileImageURL: store.photoInfo?.myProfileImageURL,
-            otherProfileImageURL: store.photoInfo?.otherProfileImageURL,
             isSelctedYesButton: $store.photoIsSelctedYesButton,
             isSelctedNoButton: $store.photoIsSelctedNoButton,
             doneButtonAction: {
               store.send(.sharePhotoSelectButtonDidTapped(willShare: store.photoIsSelctedYesButton))
-            }
+            },
+            otherProfileImageURLs: store.photoInfo?.otherProfileImageURLs
           )
           
           FinalSelectPingPongView(
@@ -115,13 +114,11 @@ public struct QuestionAndAnswerView: View {
           Spacer()
             .frame(height: 14)
         }
-        .padding(.md)
+        .padding(.horizontal, .md)
+        .padding(.top, 32)
         .frame(maxWidth: .infinity)
-        .onChange(of: isTextFieldFocused) { isFocused in
-          store.send(.texFieldDidFocused(isFocused: isFocused))
-        }
-        .onChange(of: store.textFieldState) { textFieldState in
-          isTextFieldFocused = textFieldState == .active || textFieldState == .enabled ? false : true
+        .onChange(of: focusedField) { field in
+          store.send(.focusedFieldDidChanged(field))
         }
       }
       .refreshable {

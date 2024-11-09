@@ -42,7 +42,7 @@ private struct TabBarModifier: ViewModifier {
                 color: selectedTab == item ? .primary : .enableTertiary
               )
             }
-            .offset(y: -9)
+            .offset(y: -15)
             .asThrottleButton {
               action(item)
             }

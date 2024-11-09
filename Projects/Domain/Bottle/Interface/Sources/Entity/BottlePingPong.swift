@@ -110,17 +110,14 @@ public enum PingPongMatchStatus {
 
 public struct Photo: Equatable {
   public let photoStatus: PingPongPhotoStatus
-  public let myProfileImageURL: String?
-  public let otherProfileImageURL: String?
+  public let otherProfileImageURLs: [String]?
   
   public init(
     photoStatus: PingPongPhotoStatus,
-    myProfileImageURL: String? = nil,
-    otherProfileImageURL: String? = nil
+    otherProfileImageURLs: [String]? = nil
   ) {
     self.photoStatus = photoStatus
-    self.myProfileImageURL = myProfileImageURL
-    self.otherProfileImageURL = otherProfileImageURL
+    self.otherProfileImageURLs = otherProfileImageURLs
   }
 }
 

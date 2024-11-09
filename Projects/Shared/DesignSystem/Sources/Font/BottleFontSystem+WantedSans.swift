@@ -15,6 +15,7 @@ public extension Font.BottleFontSystem {
     case subTitle2
     case body
     case caption
+    case mainTitle
   }
 }
 
@@ -33,6 +34,8 @@ public extension Font.BottleFontSystem.WantedSans {
       return SharedDesignSystemFontFamily.WantedSans.medium.swiftUIFont(size: 14)
     case .caption:
       return SharedDesignSystemFontFamily.WantedSans.medium.swiftUIFont(size: 12)
+    case .mainTitle:
+      return SharedDesignSystemFontFamily.WantedSans.bold.swiftUIFont(size: 32)
     }
   }
 }
