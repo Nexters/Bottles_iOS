@@ -140,6 +140,7 @@ extension SandBeachFeature {
           await send(.userStateFetchCompleted(
             userState: .noBottle(time: nextBottleLeftHours ?? 0),
             isDisableButton: false))
+          
         } catch: { error, send in
           // TODO: 에러 핸들링
           Log.error(error)
