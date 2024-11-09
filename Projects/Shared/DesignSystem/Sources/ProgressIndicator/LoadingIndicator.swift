@@ -15,12 +15,11 @@ public struct LoadingIndicator: View {
   
   public var body: some View {
     ZStack {
-      Color(.black)
-        .opacity(0.5)
+      ColorToken.background(.primary).color
       
-      LottieView(animation: try? .from(data: SharedDesignSystemAsset.Lotties.progressIndicator.data.data))
+      LottieView(animation: try? .from(data: SharedDesignSystemAsset.Lotties.bottleLoadingEllipse.data.data))
         .looping()
-        .frame(width: 150.0, height: 84.0)
+        .frame(width: 100.0, height: 100.0)
     }
     .ignoresSafeArea()
   }
