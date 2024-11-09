@@ -23,6 +23,7 @@ public extension InfoPlist {
                 "UIInterfaceOrientationPortrait"
             ],
             "NSContactsUsageDescription": "매칭 차단 기능을 위해 연락처가 필요합니다. 허용하시면 연락처가 서버에 업로드됩니다.",
+            "NSCameraUsageDescription": "카메라는 자기소개 사진을 찍기 위해 사용됩니다.",
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
@@ -52,6 +53,7 @@ public extension InfoPlist {
                 "UIInterfaceOrientationPortrait"
             ],
             "NSContactsUsageDescription": "매칭 차단 기능을 위해 연락처가 필요합니다. 허용하시면 연락처가 서버에 업로드됩니다.",
+            "NSCameraUsageDescription": "카메라는 자기소개 사진을 찍기 위해 사용됩니다.",
             "BASE_URL": "$(BASE_URL)",
             "WEB_VIEW_BASE_URL": "$(WEB_VIEW_BASE_URL)",
             "WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME": "$(WEB_VIEW_MESSAGE_HANDLER_DEFAULT_NAME)",
