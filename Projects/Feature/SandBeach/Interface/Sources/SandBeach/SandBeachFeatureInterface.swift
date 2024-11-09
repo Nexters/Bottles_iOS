@@ -97,17 +97,39 @@ extension SandBeachFeature {
                     Log.error(error)
                 }
         })
-
+        
         return .run { send in
-          async let _ = authClient.checkUpdateVersion()
-          let userProfileStatus = try await profileClient.fetchUserProfileSelect()
-          let userBottleInfo = try await bottleClient.fetchUserBottleInfo()
+          async let versionCheckTask: Void = authClient.checkUpdateVersion()
+          async let userProfileStatusTask = profileClient.fetchUserProfileSelect()
+          async let userBottleInfoTask = bottleClient.fetchUserBottleInfo()
+          async let bottlesStorageListTask = bottleClient.fetchBottleStorageList()
+          
+          let (_, userProfileStatus, userBottleInfo, bottlesStorageList) = try await (
+              versionCheckTask,
+              userProfileStatusTask,
+              userBottleInfoTask,
+              bottlesStorageListTask
+          )
+          
           let newBottlesCount = userBottleInfo.randomBottleCount
-          let bottlesStorageList = try await bottleClient.fetchBottleStorageList()
           let activeBottlesCount = bottlesStorageList.pingPongBottles
             .filter { $0.lastStatus != .conversationStopped && $0.lastStatus != .contactSharedByMeOnly }.count
           let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
-
+          
+          if userProfileStatus == .empty || userProfileStatus == .doneIntroduction {
+            await send(.userStateFetchCompleted(
+              userState: .noIntroduction,
+              isDisableButton: true))
+            return
+          }
+          
+          if userProfileStatus == .doneProfileImage {
+            await send(.userStateFetchCompleted(
+              userState: .noBottle(time: nextBottleLeftHours ?? 0),
+              isDisableButton: false))
+            return
+          }
+          
           if newBottlesCount > 0 {
             await send(.userStateFetchCompleted(
               userState: .hasNewBottle(bottleCount: newBottlesCount),
@@ -120,16 +142,6 @@ extension SandBeachFeature {
               userState: .hasActiveBottle(bottleCount: activeBottlesCount),
               isDisableButton: false))
             return
-          }
-          
-          if userProfileStatus == .empty || userProfileStatus == .doneIntroduction {
-            await send(.userStateFetchCompleted(
-              userState: .noIntroduction,
-              isDisableButton: true))
-          } else if userProfileStatus == .doneProfileImage {
-            await send(.userStateFetchCompleted(
-              userState: .noBottle(time: nextBottleLeftHours ?? 0),
-              isDisableButton: false))
           }
         } catch: { error, send in
           // TODO: 에러 핸들링
