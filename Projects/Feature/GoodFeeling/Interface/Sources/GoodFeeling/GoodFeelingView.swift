@@ -11,6 +11,8 @@ import FeatureBaseWebViewInterface
 
 import CoreLoggerInterface
 
+import SharedDesignSystem
+
 import ComposableArchitecture
 
 public struct GoodFeelingView: View {
@@ -27,7 +29,7 @@ public struct GoodFeelingView: View {
         actionDidInputted: { action in
           switch action {
           case .webViewLoadingDidCompleted:
-            break
+            store.send(.webViewLoadingDidCompleted)
             
           case let .openLink(url):
             store.send(.sentBottleTapped(url: url))
@@ -37,6 +39,11 @@ public struct GoodFeelingView: View {
           }
         }
       )
+      .overlay {
+        if store.isLoading {
+          LoadingIndicator()
+        }
+      }
     }
   }
 }

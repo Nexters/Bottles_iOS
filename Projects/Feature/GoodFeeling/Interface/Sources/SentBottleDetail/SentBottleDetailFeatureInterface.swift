@@ -17,11 +17,18 @@ extension SentBottleDetailFeature {
 
     let reducer = Reduce<State, Action> { state, action in
       switch action {
+      case .webViewLoadingDidCompleted:
+        return .send(.configureIsLoading(false))
+        
       case .backButtonDidTapped:
         return .send(.delegate(.backButtonDidTapped))
         
       case let .showToast(message):
         toastClient.presentToast(message: message)
+        return .none
+        
+      case let .configureIsLoading(isLoading):
+        state.isLoading = isLoading
         return .none
         
       case .bottelDidAccepted:

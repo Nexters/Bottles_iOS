@@ -11,6 +11,8 @@ import FeatureBaseWebViewInterface
 
 import CoreLoggerInterface
 
+import SharedDesignSystem
+
 import ComposableArchitecture
 
 public struct SentBottleDetailView: View {
@@ -27,7 +29,7 @@ public struct SentBottleDetailView: View {
         actionDidInputted: { action in
           switch action {
           case .webViewLoadingDidCompleted:
-            break
+            store.send(.webViewLoadingDidCompleted)
             
           case .closeWebView:
             store.send(.backButtonDidTapped)
@@ -45,6 +47,11 @@ public struct SentBottleDetailView: View {
       )
       .navigationBarBackButtonHidden()
       .ignoresSafeArea(.all, edges: [.top, .bottom])
+      .overlay {
+        if store.isLoading {
+          LoadingIndicator()
+        }
+      }
     }
   }
 }
