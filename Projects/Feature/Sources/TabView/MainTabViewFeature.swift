@@ -111,7 +111,12 @@ public struct MainTabViewFeature {
         return .none
       case .sandBeachButtonDidTapped:
         state.selectedTab = .sandBeach
-        return .send(.sandBeachRoot(.sandBeach(.newBottleIslandDidTapped)))
+
+        if state.sandBeachRoot.sandBeach.userState == .noIntroduction {
+          return .none
+        } else {
+          return .send(.sandBeachRoot(.sandBeach(.newBottleIslandDidTapped)))
+        }
       }
       
     // MyPage Delegate

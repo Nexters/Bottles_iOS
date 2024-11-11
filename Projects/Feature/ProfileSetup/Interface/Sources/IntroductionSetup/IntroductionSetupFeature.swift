@@ -34,6 +34,14 @@ public struct IntroductionSetupFeature {
     // Web Bridge
     case closeWebView
     case presentToastDidRequired(message: String)
+    case introductionDidCompleted
+    
+    // Delegate
+    case delegate(Delegate)
+    
+    public enum Delegate {
+      case introductionDidCompleted
+    }
   }
   
   public var body: some ReducerOf<Self> {
@@ -55,8 +63,14 @@ extension IntroductionSetupFeature {
           await dismiss()
         }
         
+      case .introductionDidCompleted:
+        return .send(.delegate(.introductionDidCompleted))
+        
       case let .presentToastDidRequired(message):
         toastClient.presentToast(message: message)
+        return .none
+        
+      default:
         return .none
       }
     }
