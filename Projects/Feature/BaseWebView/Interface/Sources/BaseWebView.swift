@@ -87,7 +87,7 @@ public struct BaseWebView: UIViewRepresentable {
         actionDidInputted?(action)
         Log.debug(action)
       } catch {
-        Log.assertion(message: "webview action parsing error")
+        Log.assertion(message: "webview action parsing error - \(message.body)")
         return
       }
     }
