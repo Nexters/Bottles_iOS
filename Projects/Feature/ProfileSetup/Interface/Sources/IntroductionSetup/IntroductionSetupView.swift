@@ -34,7 +34,7 @@ public struct IntroductionSetupView: View {
           store.send(.closeWebView)
           
         case .introductionDidCompleted:
-          store.send(.closeWebView)
+          store.send(.introductionDidCompleted)
           
         case let .showTaost(message):
           store.send(.presentToastDidRequired(message: message))
