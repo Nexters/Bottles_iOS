@@ -123,26 +123,23 @@ extension SandBeachFeature {
             return
           }
           
-          if userProfileStatus == .doneProfileImage {
-            await send(.userStateFetchCompleted(
-              userState: .noBottle(time: nextBottleLeftHours ?? 0),
-              isDisableButton: false))
-            return
-          }
-          
-          if newBottlesCount > 0 {
+          if userProfileStatus == .doneProfileImage && newBottlesCount > 0 {
             await send(.userStateFetchCompleted(
               userState: .hasNewBottle(bottleCount: newBottlesCount),
               isDisableButton: false))
             return
           }
           
-          if activeBottlesCount > 0 {
+          if userProfileStatus == .doneProfileImage && activeBottlesCount > 0 {
             await send(.userStateFetchCompleted(
               userState: .hasActiveBottle(bottleCount: activeBottlesCount),
               isDisableButton: false))
             return
           }
+          
+          await send(.userStateFetchCompleted(
+            userState: .noBottle(time: nextBottleLeftHours ?? 0),
+            isDisableButton: false))
         } catch: { error, send in
           // TODO: 에러 핸들링
           Log.error(error)

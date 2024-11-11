@@ -11,7 +11,7 @@ public extension InfoPlist {
     static var app: InfoPlist {
         return .extendingDefault(with: [
             "CFBundleShortVersionString": "1.0.10",
-            "CFBundleVersion": "34",
+            "CFBundleVersion": "37",
             "UIUserInterfaceStyle": "Light",
             "CFBundleName": "보틀",
             "UILaunchScreen": [
@@ -46,7 +46,7 @@ public extension InfoPlist {
     static var example: InfoPlist {
         return .extendingDefault(with: [
             "CFBundleShortVersionString": "1.0.10",
-            "CFBundleVersion": "34",
+            "CFBundleVersion": "37",
             "UIUserInterfaceStyle": "Light",
             "UILaunchScreen": [:],
             "UISupportedInterfaceOrientations": [
