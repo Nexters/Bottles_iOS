@@ -159,6 +159,12 @@ extension SandBeachRootFeature {
           return .none
         }
         
+    // IntroductionSetup Delegate
+      case let .path(.element(id: _, action: .IntroductionSetup(.delegate(delegate)))):
+        switch delegate {
+        case .introductionDidCompleted:
+          return .send(.profileSetupDidCompleted)
+        }
     // BottleArrivalDetail Delegate
       case let .path(.element(id: _, action: .BottleArrivalDetail(.delegate(delegate)))):
         switch delegate {

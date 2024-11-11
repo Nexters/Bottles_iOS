@@ -116,7 +116,7 @@ extension SandBeachFeature {
             .filter { $0.lastStatus != .conversationStopped && $0.lastStatus != .contactSharedByMeOnly }.count
           let nextBottleLeftHours = userBottleInfo.nextBottlLeftHours
           
-          if userProfileStatus == .empty || userProfileStatus == .doneIntroduction {
+          if userProfileStatus == .empty || userProfileStatus == .doneIntroduction || userProfileStatus == .doneProfileSelect {
             await send(.userStateFetchCompleted(
               userState: .noIntroduction,
               isDisableButton: true))
